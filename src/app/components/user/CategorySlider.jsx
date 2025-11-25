@@ -34,7 +34,7 @@ export default function CategorySlider({ categoryName, heading, description }) {
 
   useEffect(() => {
     if (categoryId) {
-      const filtered = productsByCategory.filter((p) => p.category === categoryId);
+      const filtered = productsByCategory.filter((p) => p?.category === categoryId);
       setProducts(filtered);
     }
   }, [productsByCategory, categoryId]);
@@ -81,7 +81,7 @@ export default function CategorySlider({ categoryName, heading, description }) {
           grabCursor={true}
         >
           {loop.map((item, idx) => {
-            const categoryPath = item.category?.name?.toLowerCase().replace(/\s+/g, '-') || 'category';
+            const categoryPath = item?.category?.name?.toLowerCase().replace(/\s+/g, '-') || 'category';
             const subcategoryPath = item.subcategory?.name?.toLowerCase().replace(/\s+/g, '-') || 'subcategory';
             const productPath = `${categoryPath}/${subcategoryPath}`;
 

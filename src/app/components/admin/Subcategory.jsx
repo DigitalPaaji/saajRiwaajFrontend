@@ -159,7 +159,7 @@ const TagsPage = () => {
                   <td className="px-4 py-3">{index + 1}</td>
                   <td className="px-4 py-3 capitalize">{tag.name}</td>
                   <td className="px-4 py-3 capitalize">
-  {categories.find((c) => c._id === tag.category)?.name || "—"}
+  {categories.find((c) => c._id === tag?.category)?.name || "—"}
 </td>
                   <td className="px-4 py-3">
                     <button

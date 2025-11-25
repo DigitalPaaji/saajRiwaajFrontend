@@ -20,7 +20,7 @@ export default function Collection({ Pid, filters = { subCategories: [], tags: [
       try {
         const result = await refetchProductsByCategory(Pid);
         let filtered = Array.isArray(result)
-          ? result.filter(p => p.category === Pid || p.category?._id === Pid)
+          ? result.filter(p => p?.category === Pid || p?.category?._id === Pid)
           : [];
 
         const { subCategories = [], tags = [], prices = [] } = filters;

@@ -233,14 +233,14 @@ export default function AddProductPage() {
   const router = useRouter();
   useEffect(() => {
     const categoryId =
-      typeof product.category === "string"
-        ? product.category
-        : product.category?._id;
+      typeof product?.category === "string"
+        ? product?.category
+        : product?.category?._id;
 
     if (categoryId) {
       fetchSubCategoriesByCategory(categoryId);
     }
-  }, [product.category, fetchSubCategoriesByCategory]);
+  }, [product?.category, fetchSubCategoriesByCategory]);
 
   // --- Effects ---
   useEffect(() => {
@@ -403,7 +403,7 @@ export default function AddProductPage() {
                     />
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {(categories.length > 0 || product.category) && (
+                    {(categories.length > 0 || product?.category) && (
                       <div>
                         <label htmlFor="category" className={labelClasses}>
                           Category
@@ -412,9 +412,9 @@ export default function AddProductPage() {
                         <select
   name="category"
   value={
-    typeof product.category === "string"
-      ? product.category
-      : product.category?._id || ""
+    typeof product?.category === "string"
+      ? product?.category
+      : product?.category?._id || ""
   }
   onChange={handleInputChange}
   disabled={isViewMode}
@@ -426,21 +426,21 @@ export default function AddProductPage() {
 
   {/* Manually show selected if not in categories (edge case) */}
   {!isViewMode &&
-    product.category &&
+    product?.category &&
     !categories.find((c) =>
-      typeof product.category === "string"
-        ? c._id === product.category
-        : c._id === product.category._id
+      typeof product?.category === "string"
+        ? c._id === product?.category
+        : c._id === product?.category._id
     ) && (
       <option
         value={
-          typeof product.category === "string"
-            ? product.category
-            : product.category._id
+          typeof product?.category === "string"
+            ? product?.category
+            : product?.category._id
         }
       >
-        {typeof product.category === "object"
-          ? product.category.name
+        {typeof product?.category === "object"
+          ? product?.category.name
           : "Selected Category"}
       </option>
     )}
@@ -470,11 +470,11 @@ export default function AddProductPage() {
       : product.subcategory?._id || ""
   }
   onChange={handleInputChange}
-  disabled={!product.category || isViewMode}
+  disabled={!product?.category || isViewMode}
   className={inputClasses}
 >
   <option value="" disabled>
-    {product.category
+    {product?.category
       ? subCategories.length > 0
         ? "Select a Sub Category"
         : "No Sub Categories"

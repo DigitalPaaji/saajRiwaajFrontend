@@ -25,7 +25,7 @@ export default function EarringsMarquee() {
 
 //         if (Array.isArray(result)) {
 //           const filtered = result.filter(
-//             (p) => p.category === categoryId || p.category?._id === categoryId
+//             (p) => p?.category === categoryId || p?.category?._id === categoryId
 //           );
 //           setFilteredProducts(filtered);
 //         } else {

@@ -53,7 +53,7 @@ export default function AdminDashboard() {
   // ⭐ Product Category Chart Data
   const categoryChartData = Object.values(
     allProducts?.reduce((acc, product) => {
-      const cat = product.category.name || "Unknown";
+      const cat = product?.category?.name || "Unknown";
       if (!acc[cat]) acc[cat] = { category: cat, count: 0 };
       acc[cat].count += 1;
       return acc;
@@ -84,8 +84,8 @@ let productitem = {};
 
 orders?.forEach(order => {
   order.items?.forEach(item => {
-    const category = categories.find(cat => cat._id === item.product.category);
-    const categoryName = category ? category.name : null;
+    const category = categories.find(cat => cat._id === item.product?.category);
+    const categoryName = category ? category?.name : null;
     productitem[categoryName] = productitem[categoryName] ? productitem[categoryName] + 1 : 1;
   });
 });

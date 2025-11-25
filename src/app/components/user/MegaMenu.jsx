@@ -60,7 +60,7 @@ function formatCategoryLabel(name) {
           <h3 className="text-sm font-semibold uppercase text-stone-500 mb-4">Featured</h3>
           <div className="grid grid-cols-5 gap-8">
           {productsByCategory.slice(0, 5).map((item, idx) => {
-  // const categoryPath = item.category?.name?.toLowerCase().replace(/\s+/g, '-') || 'category';
+  // const categoryPath = item?.category?.name?.toLowerCase().replace(/\s+/g, '-') || 'category';
   // const subcategoryPath = item.subcategory?.name?.toLowerCase().replace(/\s+/g, '-') || 'subcategory';
   // const productPath = `${categoryPath}/${subcategoryPath}`;
 

@@ -252,7 +252,7 @@ export default function ProductDetail() {
                 {product.name}
               </h1>
               <p className="lg:text-md text-stone-700 mt-2 capitalize">
-                {product.category?.name}{" "}
+                {product?.category?.name}{" "}
                 {product.subcategory?.name && `→ ${product.subcategory.name}`}
               </p>
             </div>
@@ -585,10 +585,10 @@ onClick={()=>handelAddtocart()}
         </div>
       </div>
 
-      {product.category && (
+      {product?.category && (
         <Similar
-          categoryId={product.category._id}
-          categoryName={product.category.name}
+          categoryId={product?.category._id}
+          categoryName={product?.category.name}
         />
       )}
     </div>

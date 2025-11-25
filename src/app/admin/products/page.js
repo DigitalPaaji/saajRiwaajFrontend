@@ -135,7 +135,7 @@ setnewPRoduct(newdata)
                   <td className="px-4 py-3">{idx + 1} </td>
                   <td className="px-4 py-3"><Image alt='' width={220} height={220}  src={product.images?.[0]} className="w-16 h-16 object-cover"/></td>
                   <td className="px-4 py-3">{product.name}</td>
-                  <td className="px-4 py-3 capitalize">{product.category?.name}</td>
+                  <td className="px-4 py-3 capitalize">{product?.category?.name}</td>
                   <td className="px-4 py-3 capitalize">
                     {/* {Array.isArray(product.tags) && product.tags.length > 0
   ? product.tags.map(tag => tag.name).join(', ')

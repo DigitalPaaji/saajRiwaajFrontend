@@ -423,7 +423,7 @@ const handleSubmit = async (e) => {
                       </label>
                       <select
                         name="category"
-                        value={product.category}
+                        value={product?.category}
                         onChange={handleInputChange}
                         required
                         className={inputClasses}
@@ -451,7 +451,7 @@ const handleSubmit = async (e) => {
                           // only require if there are subcategories
                           required={subCategories.length > 0}
                           disabled={
-                            !product.category || subCategories.length === 0
+                            !product?.category || subCategories.length === 0
                           }
                           className={inputClasses}
                         >

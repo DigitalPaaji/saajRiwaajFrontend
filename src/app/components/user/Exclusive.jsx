@@ -23,8 +23,8 @@ export default function ShopByCategory() {
         const filtered = Array.isArray(result)
           ? result.filter(
               (p) =>
-                p.category === earringsCategoryId ||
-                p.category?._id === earringsCategoryId
+                p?.category === earringsCategoryId ||
+                p?.category?._id === earringsCategoryId
             )
           : [];
 
