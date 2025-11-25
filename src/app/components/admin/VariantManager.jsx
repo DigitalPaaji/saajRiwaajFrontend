@@ -10,8 +10,8 @@ import { toast } from 'react-toastify';
 const VariantChip = ({ variant, onRemove }) => (
     <div className="bg-gray-100 rounded-lg p-2 flex items-center justify-between text-sm">
         <div className="flex items-center gap-2">
-            <span className="font-semibold">{variant.colorName}</span>
-            <span className="text-gray-500">(Qty: {variant.quantity})</span>
+            <span className="font-semibold">{variant?.colorName}</span>
+            <span className="text-gray-500">(Qty: {variant?.quantity})</span>
             {variant.images.length > 0 && 
                 <div className="flex items-center gap-1 text-gray-500">
                     <ImageIcon className="w-4 h-4" />
@@ -65,7 +65,7 @@ export default function VariantManager({ variants, setVariants }) {
                         <Input
                             id="colorName"
                             placeholder="e.g., Rose Gold"
-                            value={colorName}
+                            value={colorName?colorName :""}
                             onChange={(e) => setColorName(e.target.value)}
                         />
                     </div>

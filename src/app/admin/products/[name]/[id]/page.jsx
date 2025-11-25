@@ -718,7 +718,7 @@ export default function AddProductPage() {
                           id="quantity"
                           type="number"
                           placeholder="1"
-                          value={variant.quantity}
+                          value={variant?.quantity}
                           onChange={(e) =>
                             setVariant((v) => ({
                               ...v,
@@ -753,7 +753,7 @@ export default function AddProductPage() {
                           <div className="flex items-center gap-2">
                             <span className="font-semibold">{v.colorName}</span>
                             <span className="text-gray-500">
-                              (Qty: {v.quantity})
+                              (Qty: {v?.quantity})
                             </span>
                           </div>
                           {!isViewMode && (

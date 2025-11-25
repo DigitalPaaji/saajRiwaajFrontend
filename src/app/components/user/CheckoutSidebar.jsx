@@ -52,7 +52,7 @@ export default function CheckoutSidebar({
       const payload = {
         items: cart.map((c) => ({
           product: c._id,
-          quantity: c.quantity,
+          quantity: c?.quantity,
           price: c.price,
         })),
         shippingAddress: address,
@@ -118,7 +118,7 @@ const loadRazorpay = () => {
     type: "ONLINE",  // IMPORTANT
     items: cart.map((c) => ({
       product: c._id,
-      quantity: c.quantity,
+      quantity: c?.quantity,
       price: c.price,
     })),
     shippingAddress: address,

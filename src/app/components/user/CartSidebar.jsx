@@ -51,7 +51,7 @@ const [showoffer,setShowOffer]= useState(true)
 
 
 
-  const total = Math.round( cart?.reduce((acc, item) => acc + item.price * item.quantity, 0)+subAmount || 0  )
+  const total = Math.round( cart?.reduce((acc, item) => acc + item.price * item?.quantity, 0)+subAmount || 0  )
 
 const fetchCart= async()=>{
   try {
@@ -196,7 +196,7 @@ try {
                   <div className="flex-1 space-y-2">
                     <p className="">{item?.product?.name}</p>
                     <p className="">₹{item?.price}</p>
-                   <p className=" border w-fit border-gray-200 rounded-full px-2  text-gray-600 text-sm font-semibold">{item.product.colorVariants.find((itm2)=>`${itm2._id}`==item.color).colorName}</p>
+                   <p className=" border w-fit border-gray-200 rounded-full px-2  text-gray-600 text-sm font-semibold">{item.product.colorVariants.find((itm2)=>`${itm2._id}`==item.color)?.colorName}</p>
 
 
 
@@ -206,22 +206,22 @@ try {
 
                     <div className="flex items-center gap-2 ">
                       <button
-                        className={` px-2 text-md bg-gray-100 ${item.quantity == 1? "cursor-not-allowed text-gray-300":"cursor-pointer" }`}
+                        className={` px-2 text-md bg-gray-100 ${item?.quantity == 1? "cursor-not-allowed text-gray-300":"cursor-pointer" }`}
                         onClick={() =>
                           handelcartQuantity(item._id,"sub")
                         }
-                        disabled={item.quantity <= 1}
+                        disabled={item?.quantity <= 1}
                       >
                         -
                       </button>
 
-                      <span>{item.quantity}</span>
+                      <span>{item?.quantity}</span>
 
                       <button
                        
 
 
-className={` px-2 bg-gray-100 hover:bg-gray-200 ${item.product.colorVariants.find((itm2)=>`${itm2._id}`==item.color).quantity <=item.quantity? "cursor-not-allowed text-gray-300" :"cursor-pointer"}
+className={` px-2 bg-gray-100 hover:bg-gray-200 ${item.product.colorVariants.find((itm2)=>`${itm2._id}`==item.color)?.quantity <=item?.quantity? "cursor-not-allowed text-gray-300" :"cursor-pointer"}
                          }`}
 
 
@@ -229,7 +229,7 @@ className={` px-2 bg-gray-100 hover:bg-gray-200 ${item.product.colorVariants.fin
                          handelcartQuantity(item._id,"add") 
                         }}
 
-                        disabled={item.product.colorVariants.find((itm2)=>`${itm2._id}`==item.color).quantity <=item.quantity}
+                        disabled={item.product.colorVariants.find((itm2)=>`${itm2._id}`==item.color)?.quantity <=item?.quantity}
                       >
                         +
                       </button>

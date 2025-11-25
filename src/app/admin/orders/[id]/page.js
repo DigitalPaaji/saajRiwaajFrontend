@@ -255,9 +255,9 @@ const OrderDetails = () => {
               <td className="p-3 border-b">
                 {item.product?.name || "Unknown"}
               </td>
-              <td className="p-3 border-b">{item.quantity}</td>
+              <td className="p-3 border-b">{item?.quantity}</td>
               <td className="p-3 border-b">₹{item.price}</td>
-              <td className="p-3 border-b">₹{item.quantity * item.price}</td>
+              <td className="p-3 border-b">₹{item?.quantity * item.price}</td>
               <td className="p-3 border-b">
                 <span
                   className={`px-2 py-1 rounded-lg  ${

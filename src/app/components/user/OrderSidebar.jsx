@@ -201,10 +201,10 @@ const cancelOrder = useCallback(
                           <div className="flex justify-between items-center mt-2">
                             <p className="text-sm text-gray-700">
                               Qty:{" "}
-                              <span className="font-medium">{item.quantity}</span>
+                              <span className="font-medium">{item?.quantity}</span>
                             </p>
                             <p className="text-base font-semibold text-[#99571d]">
-                              ₹{item.price * item.quantity}
+                              ₹{item.price * item?.quantity}
                             </p>
                           </div>
                         </div>

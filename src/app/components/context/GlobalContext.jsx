@@ -339,14 +339,14 @@ const addToCart = async (product) => {
           const prod = item.product || {};
           const stock = item.color
             ? prod.colorVariants?.find(
-                (v) => v.colorName.toLowerCase() === item.color.toLowerCase()
+                (v) => v?.colorName.toLowerCase() === item.color.toLowerCase()
               )?.quantity || 0
-            : prod.quantity || 0;
+            : prod?.quantity || 0;
 
           return {
             ...prod,
             cartItemId: item._id,
-            quantity: item.quantity,
+            quantity: item?.quantity,
             color: item.color,
             stock,
           };
@@ -389,7 +389,7 @@ const removeFromCart = async (productId, color) => {
       const data = await res.json();
       const updatedCart = data.cart.map((item) => ({
         ...item.product,
-        quantity: item.quantity,
+        quantity: item?.quantity,
         color: item.color,
         stock:
           item.product.colorVariants.find(
@@ -431,12 +431,12 @@ const updateQty = async (productId, qty, color) => {
       setCart(
         data.cart.map((item) => ({
           ...item.product,
-          quantity: item.quantity,
+          quantity: item?.quantity,
           color: item.color,
           stock:
             item.product.colorVariants.find(
               (v) =>
-                v.colorName.toLowerCase() ===
+                v?.colorName.toLowerCase() ===
                 (item.color || "").toLowerCase() // ✅ prevent null crash
             )?.quantity ?? 1,
         }))

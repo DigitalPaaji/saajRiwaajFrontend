@@ -393,12 +393,12 @@ export default function ProductDetail() {
         setSelectedQty(1);
       }}
       className={`px-3 py-1 rounded-md border text-sm transition ${
-        selectedColor?.colorName === v.colorName
+        selectedColor?.colorName === v?.colorName
           ? "ring-2 ring-[#B67032] border-[#B67032] text-[#B67032] font-medium"
           : "border-gray-300 text-gray-700"
       }`}
     >
-      {v.colorName}
+      {v?.colorName}
     </button>
   ))}
 </div>
@@ -406,11 +406,11 @@ export default function ProductDetail() {
 
               {/* Stock Info */}
               <p className="text-sm text-stone-600">
-                {selectedColor.quantity > 0 ? (
+                {selectedColor?.quantity > 0 ? (
                   <>
                     Only{" "}
                     <span className="font-semibold">
-                      {selectedColor.quantity}
+                      {selectedColor?.quantity}
                     </span>{" "}
                     left - order fast!
                   </>

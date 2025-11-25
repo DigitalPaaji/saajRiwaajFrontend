@@ -272,7 +272,7 @@ export default function AddProductPage() {
   }, []);
 
   const handleAddVariant = () => {
-    if (!variant.colorName) return toast.warning("Please enter a color name.");
+    if (!variant?.colorName) return toast.warning("Please enter a color name.");
     setProduct((prev) => ({
       ...prev,
       colorVariants: [...prev.colorVariants, variant],
@@ -633,7 +633,7 @@ const handleSubmit = async (e) => {
                       <input
                         id="colorName"
                         placeholder="e.g., Rose Gold"
-                        value={variant.colorName}
+                        value={variant?.colorName}
                         onChange={(e) =>
                           setVariant((v) => ({
                             ...v,
@@ -651,7 +651,7 @@ const handleSubmit = async (e) => {
                         id="quantity"
                         type="number"
                         placeholder="1"
-                        value={variant.quantity}
+                        value={variant?.quantity}
                         onChange={(e) =>
                           setVariant((v) => ({
                             ...v,
@@ -683,9 +683,9 @@ const handleSubmit = async (e) => {
                           className="bg-gray-100 rounded-lg p-2 flex items-center justify-between text-sm w-full"
                         >
                           <div className="flex items-center gap-2">
-                            <span className="font-semibold">{v.colorName}</span>
+                            <span className="font-semibold">{v?.colorName}</span>
                             <span className="text-gray-500">
-                              (Qty: {v.quantity})
+                              (Qty: {v?.quantity})
                             </span>
                           </div>
                           <button

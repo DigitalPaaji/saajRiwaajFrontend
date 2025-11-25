@@ -33,13 +33,13 @@ cart.forEach((item) => {
     }
 
     // Add quantity
-    grouped[key][0] += item.quantity;
+    grouped[key][0] += item?.quantity;
 
     // Add price total (finalPrice * quantity)
-    grouped[key][1] += item.product.finalPrice * item.quantity;
+    grouped[key][1] += item.product.finalPrice * item?.quantity;
 
     // Add count
-    grouped[key][2] += item.quantity;
+    grouped[key][2] += item?.quantity;
   }
 });
 
