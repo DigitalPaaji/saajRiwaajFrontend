@@ -106,7 +106,7 @@ export const GlobalProvider = ({ children }) => {
         `${process.env.NEXT_PUBLIC_LOCAL_PORT}/user/all`,
         {
           method: "GET",
-          credentials: "include", // send cookies if required
+           credentials: "include", 
         }
       );
       const data = await res.json();
