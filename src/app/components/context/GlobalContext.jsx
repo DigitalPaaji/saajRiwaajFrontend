@@ -627,7 +627,7 @@ const updateQty = async (productId, qty, color) => {
         await fetchFeaturedProducts();
         await fetchTags();
         await fetchOffers();
-        await fetchAllUsers();
+        // await fetchAllUsers();
       })();
     },
     [
