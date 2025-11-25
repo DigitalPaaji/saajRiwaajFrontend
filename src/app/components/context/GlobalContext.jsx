@@ -352,7 +352,7 @@ const addToCart = async (product) => {
           };
         })
       );
-console.log(cart)
+
       toast.success("Added to cart ✅");
     } else {
       const error = await res.json();
@@ -458,7 +458,7 @@ const updateQty = async (productId, qty, color) => {
         `${process.env.NEXT_PUBLIC_LOCAL_PORT}/product/featured`
       );
       const data = await res.json();
-      // console.log(data)
+  
       setFeaturedProducts(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error("Error fetching featured products:", err);
@@ -478,7 +478,7 @@ const updateQty = async (productId, qty, color) => {
   const fetchTags = useCallback(async () => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/tag/`);
     const data = await res.json();
-    // console.log(data.tags)
+ 
     setTags(data.tags || []);
     return data.tags || [];
   }, []);
@@ -504,7 +504,7 @@ const updateQty = async (productId, qty, color) => {
       // const res = await fetch(`${Apiurl}/products`);
       const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/product/`);
       const data = await res.json();
-      // console.log(Object.values(data.products));
+
 
       // Check if data is array
       if (Array.isArray(data)) {
@@ -530,9 +530,9 @@ const updateQty = async (productId, qty, color) => {
         }
       );
 
-      console.log("Response status:", res.status);
+ 
       const data = await res.json();
-      console.log("Order data:", data);
+     
 
       if (!res.ok) throw new Error("Failed to fetch order");
       return data.order;
@@ -560,7 +560,7 @@ const updateQty = async (productId, qty, color) => {
 
       const data = await res.json();
       setOrders(data.orders || []);
-      console.log(data)
+
       setOrderedProduct(data.product || [])
       setAlluser(data.user || [])
     } catch (err) {

@@ -75,8 +75,7 @@ export default function AuthSidebar() {
     });
 
     const data = await res.json();
-    // console.log("Status:", res.status);
-    // console.log("Response data:", data);
+   
 
     if (!res.ok) {
       // Try to extract a proper error message
@@ -131,7 +130,7 @@ export default function AuthSidebar() {
 
     try {
       const data = await signupUser({ name, email, password });
-      console.log("vgchgch   ", data);
+     
       // Handle success
       toast.success("Signup Successful!");
       setForm({ name: "", email: "", password: "", confirmPassword: "" });
@@ -186,7 +185,7 @@ export default function AuthSidebar() {
       const data = await loginUser({ email, password });
       setUser(data.user)
       toast.success("Login Successful!");
-      console.log("Logged In User:", data.user);
+  
 
       // You can save user in localStorage or context here
       setForm({ name: "", email: "", password: "", confirmPassword: "" });

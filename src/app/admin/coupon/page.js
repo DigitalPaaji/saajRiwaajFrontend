@@ -20,7 +20,7 @@ const CouponPage = () => {
         credentials:'include'
       });
       const data = await res.json();
-      console.log(data)
+  
       setCoupons(data.coupons || []);
     } catch (err) {
       console.error("Error fetching coupons:", err);

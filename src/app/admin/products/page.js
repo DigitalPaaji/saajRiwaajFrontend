@@ -55,7 +55,7 @@ const ProductsList = () => {
       await refetchAllProducts()
       }else{
         const data = await res.json();
-        // console.log(data)
+     
         toast.error(data.message || 'Failed to delete Product.')
       }
     }catch(err){

@@ -105,7 +105,7 @@ const payNowOrder=async(id,amount)=>{
       const ok = await loadRazorpay();
 
      if (!ok) return alert("Failed to load Razorpay");
-console.log(amount,"amount")
+
 try {
    const orderRes = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/order`, {
   method: "POST",

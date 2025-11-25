@@ -155,7 +155,7 @@ export default function AddProductPage() {
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/category`);
       const data = await res.json();
-      //   console.log(data)
+    
       setCategories(data.cats || []);
     } catch (err) {
       console.error("Error fetching categories:", err);
@@ -168,7 +168,7 @@ export default function AddProductPage() {
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/tag`);
       const data = await res.json();
-      //   console.log(data)
+      
       setTags(data.tags || []);
     } catch (err) {
       console.error("Error fetching tags:", err);
@@ -342,7 +342,7 @@ const handleSubmit = async (e) => {
       );
 
       const result = await response.json();
-      console.log("API Response:", result);
+
 
       if (!response.ok)
         throw new Error(`HTTP error! Status: ${response.status}`);

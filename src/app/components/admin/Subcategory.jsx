@@ -20,7 +20,7 @@ const TagsPage = () => {
       try {
         const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/category`);
         const data = await res.json();
-      //   console.log(data)
+      
         setCategories(data.cats || []);
       } catch (err) {
         console.error("Error fetching categories:", err);
@@ -30,7 +30,7 @@ const TagsPage = () => {
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/subcategory/`);
       const data = await res.json();
-      console.log(data)
+
       setTags(data.cats || []);
     } catch (err) {
       console.error("Error fetching subcategories:", err);

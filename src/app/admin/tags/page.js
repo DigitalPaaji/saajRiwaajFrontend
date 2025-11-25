@@ -17,7 +17,7 @@ const TagsPage = () => {
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/tag`);
       const data = await res.json();
-    //   console.log(data)
+ 
       setTags(data.tags || []);
     } catch (err) {
       console.error("Error fetching tags:", err);
@@ -62,7 +62,7 @@ const TagsPage = () => {
       });
 
       if (res.ok) {
-        console.log('delted')
+        
 
         await fetchTags();
         toast.success("Tag deleted successfully!");

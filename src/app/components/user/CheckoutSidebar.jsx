@@ -144,7 +144,7 @@ const loadRazorpay = () => {
         });
 
         const verifyData = await verifyRes.json();
-        console.log(verifyData,"asd;asd,sadlas,d");
+    
         if (verifyData.success) {
            setSuccess(true); 
         setCart([])

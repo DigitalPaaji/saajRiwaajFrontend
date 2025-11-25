@@ -94,7 +94,7 @@ if (!data.user.role?.includes("admin")) {
     try {
     const data = await loginAdmin({ email, password });
     toast.success("Login Successful!");
-    console.log("Logged In User:", data.user);
+ 
 
     // You can save user in localStorage or context here
     setForm({  email: "", password: "" });

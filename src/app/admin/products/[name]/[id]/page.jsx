@@ -171,7 +171,8 @@ export default function AddProductPage() {
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/category`);
       const data = await res.json();
-      //   console.log(data)
+  
+
       setCategories(data.cats || []);
     } catch (err) {
       console.error("Error fetching categories:", err);
@@ -196,7 +197,7 @@ export default function AddProductPage() {
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/tag/`);
       const data = await res.json();
-      //   console.log(data)
+ 
       setTags(data.tags || []);
     } catch (err) {
       console.error("Error fetching tags:", err);
@@ -219,7 +220,7 @@ export default function AddProductPage() {
       const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/product/id/${id}`);
       const data = await res.json();
       setProduct(data);
-      // console.log(data)
+    
     } catch (err) {
       console.error("Error fetching products:", err);
     }
@@ -340,7 +341,7 @@ export default function AddProductPage() {
           finalPrice: parseFloat(finalPrice),
         }),
       });
-      // console.log(...product, finalPrice)
+    
       if (!response.ok)
         throw new Error(`HTTP error! Status: ${response.status}`);
       toast.success("Product updated successfully!");

@@ -98,7 +98,6 @@ Order:item[1]
 }))
 
 
-console.log(categoryChartData,"fsdfsd[pf")
 
   return ( 
     <div className="flex min-h-screen font-mosetta">
