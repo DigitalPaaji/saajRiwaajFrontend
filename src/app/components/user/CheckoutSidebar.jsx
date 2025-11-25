@@ -10,11 +10,15 @@ export default function CheckoutSidebar({
   isOpen,
   setIsOpen,
   
-  cart,
+ 
   total,
   discountPercent,
 }) {
-  const { user, setCart, setIsOrderOpen } = useGlobalContext();
+  const { user,cart, setCart, setIsOrderOpen } = useGlobalContext();
+
+
+
+
   const [address, setAddress] = useState({
     name: "",
     email: "",
@@ -100,15 +104,18 @@ const loadRazorpay = () => {
 };
 
   const handlePayOnline = async () => {
-    // try {
+ 
     const ok = await loadRazorpay();
-
      if (!ok) return alert("Failed to load Razorpay");
+ 
 
       const amount = discountPercent > 0
                     ? Math.floor(total * (1 - discountPercent / 100))
                     : total
 
+
+
+          
     const orderRes = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/order`, {
   method: "POST",
   headers: { "Content-Type": "application/json" },
@@ -117,7 +124,7 @@ const loadRazorpay = () => {
     amount,
     type: "ONLINE",  // IMPORTANT
     items: cart.map((c) => ({
-      product: c._id,
+      product: c?.product?._id,
       quantity: c?.quantity,
       price: c.price,
     })),
@@ -140,7 +147,7 @@ const loadRazorpay = () => {
         const verifyRes = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/order/verify`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({...response,productId:order.productOrder._id}),
+          body: JSON.stringify({...response,productId:order._id}),
         });
 
         const verifyData = await verifyRes.json();
