@@ -30,7 +30,7 @@ useEffect(() => {
   });
 
   const handleBuy = (data) => {
-    toast(`💎${data.name} bought a product now!`, { 
+    toast(`💎 ${data.name} bought a product now!`, { 
 position: "bottom-left",
 autoClose: 2000,
 hideProgressBar: true,

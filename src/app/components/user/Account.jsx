@@ -32,12 +32,12 @@ function Account() {
     pincode: "",
   });
 
-  // Load user
+  
   useEffect(() => {
     refetchUser();
   }, [refetchUser]);
 
-  // Sync form data
+
   useEffect(() => {
     if (user) {
       setFormData({
