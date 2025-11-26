@@ -33,7 +33,7 @@ export default function ProductDetail() {
     addToCart,
     setIsCartOpen,
     updateQty,
-    cart,setAllCart,
+    cart,setAllCart,setIsAuthOpen,setAuthTab
   } = useGlobalContext();
   const [product, setProduct] = useState(null);
   const [selectedImage, setSelectedImage] = useState("");
@@ -41,6 +41,7 @@ export default function ProductDetail() {
   const [zoomPos, setZoomPos] = useState({ x: 0, y: 0 });
   const [isZoomed, setIsZoomed] = useState(false);
   const [addedtoCart,setAddedToCart] =useState(false)
+
 
   const handleMouseMove = (e) => {
     const { left, top, width, height } =
@@ -177,19 +178,22 @@ export default function ProductDetail() {
       const response = await axios.post(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/cart/post`,item,{
         withCredentials:true
       })
-      const data = await response.data;
      
+      const data = await response.data;
+   
       if(data.success){
         toast.success(data.message)
         setAddedToCart(true)
         setAllCart(data.cart)
       }else{
-        toast.error(data.message)
+      setAuthTab("login"); 
+              setIsAuthOpen(true);
                 setAddedToCart(false)
 
       }
     } catch (error) {
-              toast.error(error.message)
+               setAuthTab("login"); 
+              setIsAuthOpen(true);
            setAddedToCart(false)
 
     }

@@ -27,13 +27,12 @@ useEffect(() => {
 
   // Log only once
   socket.once("connect", () => {
-    console.log("Socket connected:", socket.id);
   });
 
   const handleBuy = (data) => {
-    toast(`${data.name} bought a product now!`, { 
+    toast(`💎${data.name} bought a product now!`, { 
 position: "bottom-left",
-autoClose: 1000,
+autoClose: 2000,
 hideProgressBar: true,
 closeOnClick: true,
 pauseOnHover: false,
@@ -49,7 +48,7 @@ transition: Flip,
   socket.on("buy", handleBuy);
 
   return () => {
-    socket.off("buy", handleBuy); // remove only this event
+    socket.off("buy", handleBuy); 
   };
 }, []);
 

@@ -80,7 +80,7 @@ for (const key in grouped) {
           />
         ))
       ) : (
-        <div className="text-gray-500">No offers available</div>
+        <div className="text-gray-500"></div>
       )}
     </div>
   );

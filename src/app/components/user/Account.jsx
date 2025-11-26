@@ -247,7 +247,7 @@ const handleSave = async () => {
           onCancel={() => setShowLogoutPopup(false)}
           onConfirm={async () => {
             setShowLogoutPopup(false);
-            await logoutAdmin();
+            await logoutUser();
             toast.success("Logged out!");
           }}
           confirmText="Logout"
