@@ -269,7 +269,7 @@ const cancelReasonOptions = [
                           <span className="font-medium">{item?.quantity}</span>
                         </p>
                         <p className="text-lg font-semibold text-[#99571d] md:mt-1">
-                          ₹{item.price * item?.quantity}
+                          ₹{order.amount }
                         </p>
                       </div>
                       <div className="lg:col-span-1">
