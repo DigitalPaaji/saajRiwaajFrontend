@@ -5,6 +5,9 @@ import { toast } from "react-toastify";
 import { useGlobalContext } from "../context/GlobalContext";
 import Image from "next/image";
 import Link from "next/link";
+import { getSocket } from "../socket";
+
+ 
 
 export default function CheckoutSidebar({
   isOpen,
@@ -104,7 +107,9 @@ const loadRazorpay = () => {
 };
 
   const handlePayOnline = async () => {
+ const socket = getSocket();
  
+
     const ok = await loadRazorpay();
      if (!ok) return alert("Failed to load Razorpay");
  
@@ -134,6 +139,7 @@ const loadRazorpay = () => {
 });
 
     const order = await orderRes.json();
+    console.log(order,"orderrr")
  const options = {
       key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
       amount: order.order.amount,
@@ -147,7 +153,7 @@ const loadRazorpay = () => {
         const verifyRes = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/order/verify`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({...response,productId:order._id}),
+          body: JSON.stringify({...response,productId:order.productOrder._id}),
         });
 
         const verifyData = await verifyRes.json();
@@ -155,9 +161,13 @@ const loadRazorpay = () => {
         if (verifyData.success) {
            setSuccess(true); 
         setCart([])
+         socket.emit("buy", {
+      name:verifyData.name
+    });
                 location.reload()
         } else {
-          alert("Payment Verification Failed!");
+          console.log(verifyData)
+          // alert("Payment Verification Failed!");
         }
       },
       prefill: {

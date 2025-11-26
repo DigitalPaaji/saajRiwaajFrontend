@@ -1,8 +1,10 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Facebook, Instagram, Twitter, Youtube } from 'lucide-react';
 import { useGlobalContext } from "../context/GlobalContext";
+import { getSocket } from '../socket';
+import { Slide, toast } from 'react-toastify';
 
 export default function Footer() {
     const { categories, subCategoriesMap } = useGlobalContext();
@@ -17,6 +19,36 @@ function formatCategoryLabel(name) {
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' '); // e.g., saaj riwaaj → Saaj Riwaaj
 }
+
+
+
+useEffect(() => {
+    const socket = getSocket();
+
+    socket.on("connect", () => {
+     
+    });
+
+    socket.on("buy", (data) => {
+    toast.success(`${data.name} Buy a Product Now`,{
+      position: "bottom-left",
+autoClose: 3000,
+hideProgressBar: false,
+closeOnClick: true,
+pauseOnHover: false,
+draggable: true,
+progress:undefined ,
+theme: "light",
+transition: Slide,
+    })
+    });
+
+    return () => {
+      socket.off("buy");   
+    };
+  }, []);
+
+
   return (
     <footer className="bg-[#2b2a29ef] ">
       <div className=" mx-4 md:mx-12 xl:mx-24 py-16">
