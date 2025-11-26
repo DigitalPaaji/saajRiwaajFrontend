@@ -139,7 +139,7 @@ const loadRazorpay = () => {
 });
 
     const order = await orderRes.json();
-    console.log(order,"orderrr")
+  
  const options = {
       key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
       amount: order.order.amount,
@@ -149,11 +149,11 @@ const loadRazorpay = () => {
       // image: `${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/logo.jpeg`,
       order_id: order.order.id,
       handler: async function (response) {
-        // 3️⃣ verify signature
+
         const verifyRes = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/order/verify`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({...response,productId:order.productOrder._id}),
+          body: JSON.stringify({...response,productId:order.productOrder._id,userId:order.userId}),
         });
 
         const verifyData = await verifyRes.json();
