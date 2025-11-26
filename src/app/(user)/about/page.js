@@ -25,10 +25,8 @@ Adorn yourself with beauty. Adorn yourself with Saajriwaaj.`,
 export default function PrivacyPage() {
   return (
     <div>
-      {/* Banner */}
       <Banner title="About Us" />
 
-      {/* Content */}
       <div className="px-4 sm:px-8 lg:px-24 xl:px-60 mx-auto my-16">
         {returnsPolicyData.map((section, index) => (
           <div key={index} className="mb-10">

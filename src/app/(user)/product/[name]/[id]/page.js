@@ -37,7 +37,7 @@ export default function ProductDetail() {
   } = useGlobalContext();
   const [product, setProduct] = useState(null);
   const [selectedImage, setSelectedImage] = useState("");
-  // Add this above return in component
+
   const [zoomPos, setZoomPos] = useState({ x: 0, y: 0 });
   const [isZoomed, setIsZoomed] = useState(false);
   const [addedtoCart,setAddedToCart] =useState(false)

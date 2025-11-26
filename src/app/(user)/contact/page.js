@@ -14,17 +14,15 @@ export default function ContactPage() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // handle input change
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
 
-   // email & phone validation
   const validateForm = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const phoneRegex = /^(\+91)?[6-9]\d{9}$/; // allows 10 digits, starts with 6-9, optional +91
+    const phoneRegex = /^(\+91)?[6-9]\d{9}$/; 
 
     if (!emailRegex.test(formData.email)) {
       toast.error("Please enter a valid email address!");
@@ -39,16 +37,13 @@ export default function ContactPage() {
     return true;
   };
 
-
-
-  // handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
       if (!validateForm()) return;
     setIsSubmitting(true);
 
     try {
-      const response = await fetch("http://localhost:5000/api/send-mail", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/api/send-mail`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData)
@@ -71,13 +66,12 @@ export default function ContactPage() {
 
   return (
     <div className="bg">
-      {/* Banner */}
+    
       {/* <Banner title="Contact Us" image="/contact-banner.jpg" /> */}
 
-      {/* Content */}
       <div className="px-4 sm:px-8 lg:px-24 xl:px-60 mx-auto py-16">
         <div className="max-w-3xl mx-auto">
-          {/* Heading */}
+         
           <h3 className="text-2xl font-semibold mb-8 text-center text-[#B67032]">
             Any Questions? <br />
             <span className="text-gray-700 text-4xl font-normal">Let Us Know!</span>
@@ -85,12 +79,12 @@ export default function ContactPage() {
 
           <ToastContainer />
 
-          {/* Form */}
+    
           <form
             onSubmit={handleSubmit}
             className="grid grid-cols-1 gap-6 bg-white rounded-2xl border border-[#d4af37]/40 shadow-sm hover:shadow-md transition-shadow duration-300 p-8"
           >
-            {/* Name */}
+       
             <div>
               <label className="block mb-2 font-medium">Full Name *</label>
               <input
@@ -104,7 +98,7 @@ export default function ContactPage() {
               />
             </div>
 
-            {/* Email */}
+       
             <div>
               <label className="block mb-2 font-medium">Email *</label>
               <input
@@ -118,7 +112,7 @@ export default function ContactPage() {
               />
             </div>
 
-            {/* Phone */}
+          
             <div>
               <label className="block mb-2 font-medium">Phone *</label>
               <input
@@ -132,7 +126,7 @@ export default function ContactPage() {
               />
             </div>
 
-            {/* Message */}
+        
             <div>
               <label className="block mb-2 font-medium">Message *</label>
               <textarea
@@ -146,7 +140,7 @@ export default function ContactPage() {
               ></textarea>
             </div>
 
-            {/* Submit */}
+
             <div className="flex justify-center">
               <button
                 type="submit"

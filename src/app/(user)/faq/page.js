@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
-import Banner from "../../components/user/InnerBanner"; // adjust path if needed
+import Banner from "../../components/user/InnerBanner";
 
 function Faq() {
   const [openIndex, setOpenIndex] = useState(null);
@@ -66,10 +66,10 @@ const faqData = [
 
   return (
     <div>
-      {/* Banner */}
+   
       <Banner title="Frequently Asked Questions" />
 
-      {/* Content */}
+    
       <div className="px-4 sm:px-8 lg:px-24 xl:px-60 mx-auto my-16">
         <div className="space-y-6">
           {faqData.map((faq, index) => (

@@ -9,11 +9,9 @@ import "react-toastify/dist/ReactToastify.css";
 import PopupModal from "@/app/components/admin/ConfirmPopup";
 import ImagePreviewModal from "@/app/components/user/ImagePreview";
 
-// Cloudinary setup
 const CLOUDINARY_CLOUD_NAME = "dj0z0q0ut";
 const CLOUDINARY_UPLOAD_PRESET = "saajRiwaajProducts";
 
-// UI classes
 const inputClasses =
   "w-full px-3 py-2 text-gray-800 bg-gray-50 border border-gray-300 rounded-lg transition";
 const cardClasses =
@@ -31,7 +29,6 @@ export default function BannerManager() {
   const [dragActiveDesktop, setDragActiveDesktop] = useState(false);
   const [dragActiveMobile, setDragActiveMobile] = useState(false);
 
-  // Fetch banners
   const fetchBanners = useCallback(async () => {
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/banner`);
@@ -46,7 +43,6 @@ export default function BannerManager() {
     fetchBanners();
   }, [fetchBanners]);
 
-  // Drag handlers
   const handleDrag = (e, type) => {
     e.preventDefault();
     e.stopPropagation();
@@ -170,10 +166,8 @@ export default function BannerManager() {
         Homepage Banner Images
       </h1>
 
-      {/* Upload Area */}
       <div className={`${cardClasses}`}>
         <div className="flex items-start justify-center gap-8 flex-wrap lg:flex-nowrap">
-          {/* Desktop Upload */}
           <div className="w-full lg:w-1/2">
             <h2 className="text-lg font-semibold mb-2">Upload Desktop Banner</h2>
             <div

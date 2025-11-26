@@ -42,10 +42,10 @@ const returnsPolicyData = [
 export default function PrivacyPage() {
   return (
     <div>
-      {/* Banner */}
+     
       <Banner title="Refund Policy" />
 
-      {/* Content */}
+
       <div className="px-4 sm:px-8 lg:px-24 xl:px-60 mx-auto my-16">
         {returnsPolicyData.map((section, index) => (
           <div key={index} className="mb-10">

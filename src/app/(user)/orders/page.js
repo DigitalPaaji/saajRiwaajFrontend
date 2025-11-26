@@ -27,7 +27,7 @@ const [customReason, setCustomReason] = useState("");
       );
 
       if (!res.ok) {
-        setOrders([]); // safe fallback
+        setOrders([]); 
         return;
       }
 
@@ -192,10 +192,10 @@ const cancelReasonOptions = [
 
   return (
     <div>
-      {/* Banner */}
+    
       <Banner title="My Orders" />
 
-      {/* Content */}
+    
       <div className="px-4 sm:px-8 lg:px-24 xl:px-60 mx-auto my-16">
         {loading ? (
             <Skeleton count={5} height={40} className="mb-2 rounded" />
@@ -228,10 +228,9 @@ const cancelReasonOptions = [
                     key={item._id}
                     className="bg-white rounded-xl shadow-md border border-gray-100 hover:shadow-lg transition p-5"
                   >
-                    {/* Grid Layout */}
+                   
                     <div className="flex flex-wrap  md:grid  md:grid-cols-5 lg:grid-cols-12 px-4 place-items-center">
-                      {/* 1st Column: Image + Details */}
-                      {/* <div className="flex items-start gap-4"> */}
+                     
                       <div className="lg:col-span-1 w-20 h-20 flex-shrink-0 rounded-lg overflow-hidden bg-gray-50">
                         <Link href={`/product/${product.name}/${product._id}`}>
                           <Image
@@ -264,9 +263,6 @@ const cancelReasonOptions = [
                         </p>
                       </div>
 
-                      {/* </div> */}
-
-                      {/* 2nd Column: Qty + Price */}
                       <div className="lg:col-span-1 flex md:flex-col items-center md:items-start gap-6 md:gap-0">
                         <p className="text-sm text-gray-700">
                           Qty:{" "}
@@ -308,7 +304,7 @@ const cancelReasonOptions = [
                           </div>}
   </div>
 
-                      {/* 3rd Column: Buttons */}
+                      
                       <div className="lg:col-span-1 xl:col-span-2 flex flex-row md:flex-col gap-2 w-full lg:w-fit">
                         {order.paymentStatus === "paid" ? (<>
                           {order.orderStatus =="placed" &&

@@ -9,7 +9,7 @@ import { Flip, Slide, toast } from 'react-toastify';
 export default function Footer() {
     const { categories, subCategoriesMap } = useGlobalContext();
   function formatCategoryPath(name) {
-  return name.trim().toLowerCase().replace(/\s+/g, '-'); // e.g., Saaj Riwaaj Exclusive → saaj-riwaaj-exclusive
+  return name.trim().toLowerCase().replace(/\s+/g, '-'); 
 }
 
 function formatCategoryLabel(name) {
@@ -17,15 +17,13 @@ function formatCategoryLabel(name) {
   .trim()
     .split(' ')
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' '); // e.g., saaj riwaaj → Saaj Riwaaj
+    .join(' '); 
 }
 
 
 
 useEffect(() => {
   const socket = getSocket();
-
-  // Log only once
   socket.once("connect", () => {
   });
 
@@ -44,7 +42,6 @@ transition: Flip,
     });
   };
 
-  // Attach event listener
   socket.on("buy", handleBuy);
 
   return () => {
@@ -95,20 +92,12 @@ Delivery Information</Link></li>
               <li><Link href={"/contact"} className="hover:text-[#B67032]">Contact Us</Link></li>
               <li><Link href={"/faq"} className="hover:text-[#B67032]">FAQ</Link></li>
               <li><Link href={"/about"} className="hover:text-[#B67032]">About Us</Link></li>
-              {/* <li><Link href={"/returns"} className="hover:text-[#B67032]">Returns</Link></li> */}
             </ul>
           </div>
-          {/* <div className="col-span-2 md:col-span-4 lg:col-span-1">
-             <h3 className="text-[#f3ecdf] text-md font-semibold mb-4">Sign Up for Our Newsletter</h3>
-             <p className="text-stone-200 mb-4">Receive exclusive offers, styling tips, and more.</p>
-             <form className="flex">
-               <input type="email" placeholder="Your email" className="w-full text-[#f3ecdf] px-3 py-2 border border-r-0 rounded-l-md focus:outline-none focus:ring-1 focus:ring-amber-500" />
-               <button className="bg-[#f3ecdf] font-semibold hover:text-white rounded-r-md hover:bg-[#B67032] transition-colors w-full">Sign Up</button>
-             </form>
-          </div> */}
+        
         </div>
         <div className="border-t mt-12 pt-8 text-center text-md text-[#f3ecdf]">
-          <p>&copy; {new Date().getFullYear()} Saaj Riwaaj. Developed and Designed By <a href="https://digitalpaaji.com" className='text-[#c09167] '>Digital Paaji</a>. All Rights Reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Saaj Riwaaj. Developed and Designed By <a href="https://digitalpaaji.com" target='_blank' className='text-[#c09167] '>Digital Paaji</a>. All Rights Reserved.</p>
         </div>
       </div>
     </footer>

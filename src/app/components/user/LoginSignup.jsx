@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import Account from "./Account";
 import Image from "next/image";
+import { GoogleLogin } from "@react-oauth/google";
+import axios from "axios";
 
 export default function AuthSidebar() {
   const {
@@ -196,6 +198,32 @@ export default function AuthSidebar() {
     }
   };
 
+const handleGoogleLogin=async(credentialResponse)=>{
+  const token = credentialResponse.credential;
+try {
+  const response = await axios.post(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/user/loginUser/google`,{token2:token})
+const data = response.data;
+ setUser(data.user);
+
+ if (!res.ok) {
+      const errorMessage =
+        data.message ||
+        (data.errors && Object.values(data.errors)[0]?.message) ||
+        "Login failed.";
+      throw new Error(errorMessage);
+    }
+  toast.success("Login Successful!");
+  
+
+      // You can save user in localStorage or context here
+      setForm({ name: "", email: "", password: "", confirmPassword: "" });
+      setIsAuthOpen(false);
+
+} catch (error) {
+    setError(error.message || "Something went wrong.");
+}
+}
+
   return (
     <>
       {isAuthOpen && (
@@ -215,6 +243,7 @@ export default function AuthSidebar() {
         {isLoggedIn && <Account />}
 
         <div className="flex justify-between items-center px-4 py-6 border-b-[1px] border-[#99571d]">
+
           <h2 className="text-xl font-semibold">
             {authTab === "login" ? "Customer Login" : "Create New Account"}
           </h2>
@@ -223,6 +252,8 @@ export default function AuthSidebar() {
             <X className="w-5 h-5" />
           </button>
         </div>
+
+
         <div className="p-5 space-y-4">
           {/* Tab Switch */}
           {authTab === "signup" && (
@@ -324,6 +355,11 @@ export default function AuthSidebar() {
                 : "Forgot password?"}
             </p>
           )}
+
+          {authTab === "login" && <div>
+                  <GoogleLogin  onSuccess={handleGoogleLogin} onError={() => console.log("Error")} />
+
+            </div>}
 
           <button
             className="w-full bg-[#B67032] text-white py-2 rounded"

@@ -11,6 +11,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import OrderSidebar from '../components/user/OrderSidebar'
 import Icon from "../components/user/Icons";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,6 +29,8 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+  console.log("Google ID:", process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID);
+
   return (
     <html lang="en">
  <head>
@@ -39,6 +42,7 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased  `}
       >
+        <GoogleOAuthProvider  clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}>
         <GlobalProvider>
             <AnnouncementBar />
                 <Navbar/>
@@ -52,6 +56,7 @@ export default function RootLayout({ children }) {
               <Footer />
         </GlobalProvider>
         <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
+        </GoogleOAuthProvider>
       </body>
     </html>
   );

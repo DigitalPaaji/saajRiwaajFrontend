@@ -49,10 +49,8 @@ Contact: +91 99888 23422`
 export default function PrivacyPage() {
   return (
     <div>
-      {/* Banner */}
       <Banner title="Privacy Policy" />
 
-      {/* Content */}
       <div className="px-4 sm:px-8 lg:px-24 xl:px-60 mx-auto my-16">
         {privacyData.map((section, index) => (
           <div key={index} className="mb-10">

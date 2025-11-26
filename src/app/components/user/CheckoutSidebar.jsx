@@ -166,8 +166,7 @@ const loadRazorpay = () => {
     });
                 location.reload()
         } else {
-          console.log(verifyData)
-          // alert("Payment Verification Failed!");
+          alert("Payment Verification Failed!");
         }
       },
       prefill: {
