@@ -23,30 +23,34 @@ function formatCategoryLabel(name) {
 
 
 useEffect(() => {
-    const socket = getSocket();
+  const socket = getSocket();
 
-    socket.on("connect", () => {
-     
-    });
+  // Log only once
+  socket.once("connect", () => {
+    console.log("Socket connected:", socket.id);
+  });
 
-    socket.on("buy", (data) => {
-    toast.success(`${data.name} Buy a Product Now`,{
+  const handleBuy = (data) => {
+    toast.success(`${data.name} bought a product now!`, {
       position: "bottom-left",
-autoClose: 3000,
-hideProgressBar: false,
-closeOnClick: true,
-pauseOnHover: false,
-draggable: true,
-progress:undefined ,
-theme: "light",
-transition: Slide,
-    })
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      theme: "light",
+      transition: Slide,
     });
+  };
 
-    return () => {
-      socket.off("buy");   
-    };
-  }, []);
+  // Attach event listener
+  socket.on("buy", handleBuy);
+
+  return () => {
+    socket.off("buy", handleBuy); // remove only this event
+  };
+}, []);
+
 
 
   return (
