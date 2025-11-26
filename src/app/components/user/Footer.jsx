@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { Facebook, Instagram, Twitter, Youtube } from 'lucide-react';
 import { useGlobalContext } from "../context/GlobalContext";
 import { getSocket } from '../socket';
-import { Slide, toast } from 'react-toastify';
+import { Flip, Slide, toast } from 'react-toastify';
 
 export default function Footer() {
     const { categories, subCategoriesMap } = useGlobalContext();
@@ -31,15 +31,17 @@ useEffect(() => {
   });
 
   const handleBuy = (data) => {
-    toast.success(`${data.name} bought a product now!`, {
-      position: "bottom-left",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      theme: "light",
-      transition: Slide,
+    toast(`${data.name} bought a product now!`, { 
+position: "bottom-left",
+autoClose: 1000,
+hideProgressBar: true,
+closeOnClick: true,
+pauseOnHover: false,
+draggable: true,
+progress: undefined,
+theme: "dark",
+transition: Flip,
+
     });
   };
 
