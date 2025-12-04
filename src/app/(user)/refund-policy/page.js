@@ -5,7 +5,7 @@ import Banner from "../../components/user/InnerBanner";
 const returnsPolicyData = [
   {
     heading: "Hassle-Free Returns & Exchanges",
-    para: "We offer 7 days of hassle-free returns & exchanges from the date of delivery and a further 5-7 days for the returned product(s) to reach us. We also offer reverse pick-up services. A reverse shipment fee of Rs 100 will be deducted at the time of refund per order, regardless of the number of items within that order. This means that if an order contains multiple items, only a single deduction of Rs 100 will be made for the entire order, not on each individual item.Exchanged products will be delivered with in 3 working days"
+    para: "We offer 7 days of hassle-free returns & exchanges from the date of delivery and a further 5-7 days for the returned product(s) to reach us. We also offer reverse pick-up services. A reverse shipment fee of Rs 100 will be deducted at the time of refund per order, regardless of the number of items within that order. This means that if an order contains multiple items, only a single deduction of Rs 100 will be made for the entire order, not on each individual item. Exchanged products will be delivered with in 3 working days"
   },
   {
     heading: "Pick-Up Attempts",
