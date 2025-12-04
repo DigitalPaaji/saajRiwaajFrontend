@@ -325,7 +325,6 @@ const cancelReasonOptions = [
       )}
     </div>
 
-    {/* Cancel Popup (Untouched) */}
     {cancelingOrder && (
       <div className="h-screen w-screen bg-black/60 fixed top-0 left-0 z-[100] flex items-center justify-center">
         <div className="bg-white p-6 rounded-xl w-[90%] max-w-md shadow-xl">

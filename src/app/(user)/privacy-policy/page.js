@@ -12,7 +12,8 @@ All personal details shared during order placement — including your name, cont
 We never share, sell, or misuse your data in any way. Your shopping experience and privacy are always our top priority.
 
 Email: saajriwaaj22@gmail.com
-Contact: +91 99888 23422`
+Contact: +91 99888 23422
+Founder – Saaj Riwaaj: Aakashkabir Singh Rattan`
   },
 
   {
@@ -24,7 +25,8 @@ Contact: +91 99888 23422`
 
 For any shipping-related questions, feel free to contact us at:
 Email: saajriwaaj22@gmail.com 
-Contact: +91 99888 23422`
+Contact: +91 99888 23422
+Founder – Saaj Riwaaj: Aakashkabir Singh Rattan`
   },
 
   {
@@ -38,11 +40,14 @@ If you receive a defective or damaged product, you can request a return or excha
 • The product should be unused, in its original packaging, with all tags intact.
 • Once verified, we will initiate an exchange or refund (as per your request).
 • Refunds are processed within 7–10 business days after approval.
+•  Exchanged product will be delivered within 3 working days
+
 
 At Saaj Riwaaj, we believe in honesty, trust, and transparency — because every jewel we send carries our name and your happiness.
 
 Email: saajriwaaj22@gmail.com
-Contact: +91 99888 23422`
+Contact: +91 99888 23422
+Founder – Saaj Riwaaj: Aakashkabir Singh Rattan`
   }
 ];
 
