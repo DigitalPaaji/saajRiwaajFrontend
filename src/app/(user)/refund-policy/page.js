@@ -13,7 +13,7 @@ const returnsPolicyData = [
   },
   {
     heading: "Refund / Store Credit",
-    para: "For Prepaid and COD orders, a store credit will be provided within 1-2 working days once we receive the return shipment. Store credit equivalent to the amount paid by you, which can be used anytime."
+    para: "For Prepaid and COD orders, a store credit will be processed within 1-2 working days once we receive the return shipment. Store credit equivalent to the amount paid by you, which can be used anytime."
   },
   {
     heading: "Product Condition",
