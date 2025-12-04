@@ -230,7 +230,6 @@ const cancelReasonOptions = [
                   >
                    
                     <div className="flex flex-wrap  md:grid  md:grid-cols-5 lg:grid-cols-12 px-4 place-items-center">
-                     
                       <div className="lg:col-span-1 w-20 h-20 flex-shrink-0 rounded-lg overflow-hidden bg-gray-50">
                         <Link href={`/product/${product.name}/${product._id}`}>
                           <Image
@@ -242,14 +241,12 @@ const cancelReasonOptions = [
                           />
                         </Link>
                       </div>
-
                       <div className="lg:col-span-1 xl:col-span-5 flex flex-col w-full xl:ml-6">
                         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
                           <p className="text-lg font-medium text-gray-700 font-serif">
                             {product.name || ""}
                           </p>
                         </div>
-
                         <p className="text-sm text-gray-500 mt-1">
                           {order.orderStatus === "delivered"
                             ? `Delivered on ${new Date(
@@ -262,7 +259,6 @@ const cancelReasonOptions = [
                               ).toLocaleDateString()}`}
                         </p>
                       </div>
-
                       <div className="lg:col-span-1 flex md:flex-col items-center md:items-start gap-6 md:gap-0">
                         <p className="text-sm text-gray-700">
                           Qty:{" "}
@@ -297,14 +293,12 @@ const cancelReasonOptions = [
                             : "Placed"}
                         </span>
                       </div>
-<div className="lg:col-span-2">
+                      <div className="lg:col-span-2">
     {order?.trackingnumber && <div className="flex flex-col items-center gap-0 ">
                         <span >  {order?.trackingnumber  }</span>
                         <b>Tracking number</b>
                           </div>}
-  </div>
-
-                      
+                      </div>
                       <div className="lg:col-span-1 xl:col-span-2 flex flex-row md:flex-col gap-2 w-full lg:w-fit">
                         {order.paymentStatus === "paid" ? (<>
                           {order.orderStatus =="placed" &&
@@ -326,8 +320,10 @@ const cancelReasonOptions = [
                            Pay Now
                           </button>
                       }
-                 </div>
-                    </div>
+                      </div>
+
+                      
+                      </div>
                   </div>
                 );
               })

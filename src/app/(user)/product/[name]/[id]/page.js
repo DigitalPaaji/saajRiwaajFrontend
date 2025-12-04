@@ -395,6 +395,7 @@ export default function ProductDetail() {
       onClick={() => {
         setSelectedColor(v);
         setSelectedQty(1);
+       setAddedToCart(false)
       }}
       className={`px-3 py-1 rounded-md border text-sm transition ${
         selectedColor?.colorName === v?.colorName
