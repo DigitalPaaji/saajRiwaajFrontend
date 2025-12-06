@@ -99,15 +99,6 @@ export default function CheckoutSidebar({
 
 
 
-const loadRazorpay = () => {
- return new Promise((resolve) => {
-      const script = document.createElement("script");
-      script.src = "https://checkout.razorpay.com/v1/checkout.js";
-      script.onload = () => resolve(true);
-      script.onerror = () => resolve(false);
-      document.body.appendChild(script);
-    });
-};
 
 //   const handlePayOnline = async () => {
 //  const socket = getSocket();
@@ -251,6 +242,7 @@ async function openPhonePePayPage(tokenUrl, orderId) {
       tokenUrl,
       type: "IFRAME",
       callback: async function (response) {
+        console.log(response)
         if (response === "USER_CANCEL") {
           alert("Payment cancelled by user");
         } else if (response === "CONCLUDED") {
