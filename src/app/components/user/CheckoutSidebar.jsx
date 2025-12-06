@@ -6,6 +6,9 @@ import { useGlobalContext } from "../context/GlobalContext";
 import Image from "next/image";
 import Link from "next/link";
 import { getSocket } from "../socket";
+import axios from "axios";
+import Swal from "sweetalert2";
+import { data } from "autoprefixer";
 
  
 
@@ -106,103 +109,197 @@ const loadRazorpay = () => {
     });
 };
 
-  const handlePayOnline = async () => {
- const socket = getSocket();
+//   const handlePayOnline = async () => {
+//  const socket = getSocket();
  
 
-    const ok = await loadRazorpay();
-     if (!ok) return alert("Failed to load Razorpay");
+//     const ok = await loadRazorpay();
+//      if (!ok) return alert("Failed to load Razorpay");
  
 
-      const amount = discountPercent > 0
-                    ? Math.floor(total * (1 - discountPercent / 100))
-                    : total
+//       const amount = discountPercent > 0
+//                     ? Math.floor(total * (1 - discountPercent / 100))
+//                     : total
 
 
 
           
-    const orderRes = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/order`, {
+//     const orderRes = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/order`, {
+//   method: "POST",
+//   headers: { "Content-Type": "application/json" },
+//   credentials: "include",
+//   body: JSON.stringify({
+//     amount,
+//     type: "ONLINE",  // IMPORTANT
+//     items: cart.map((c) => ({
+//       product: c?.product?._id,
+//       quantity: c?.quantity,
+//       price: c.price,
+//     })),
+//     shippingAddress: address,
+//     paymentMethod: "ONLINE",
+//   }),
+// });
+
+//     const order = await orderRes.json();
+  
+//  const options = {
+//       key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+//       amount: order.order.amount,
+//       currency: "INR",
+//       name: "Sajriwaaj",
+//       description: "Order Payment",
+//       // image: `${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/logo.jpeg`,
+//       order_id: order.order.id,
+//       handler: async function (response) {
+
+//         const verifyRes = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/order/verify`, {
+//           method: "POST",
+//           headers: { "Content-Type": "application/json" },
+//           body: JSON.stringify({...response,productId:order.productOrder._id,userId:order.userId}),
+//         });
+
+//         const verifyData = await verifyRes.json();
+    
+//         if (verifyData.success) {
+//            setSuccess(true); 
+//         setCart([])
+//          socket.emit("buy", {
+//       name:verifyData.name
+//     });
+//                 location.reload()
+//         } else {
+//           alert("Payment Verification Failed!");
+//         }
+//       },
+//       prefill: {
+//         name: "Test User",
+//         email: "test@example.com",
+//         contact: "9876543210",
+//       },
+//       theme: {color: "#FAF8EA",
+//       hide_topbar: false },
+//     };
+
+//      const paymentObject = new window.Razorpay(options);
+//     paymentObject.open();
+   
+//   };
+
+const handlePayOnline = async () => {
+  const amount =
+    discountPercent > 0
+      ? Math.floor(total * (1 - discountPercent / 100))
+      : total;
+
+  // 1) Create backend order
+  const orderRes = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/order`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify({
+      amount,
+      type: "ONLINE",
+      items: cart.map((c) => ({
+        product: c?.product?._id,
+        quantity: c?.quantity,
+        price: c.price,
+      })),
+      shippingAddress: address,
+      paymentMethod: "ONLINE",
+    }),
+  });
+
+  const order = await orderRes.json();
+
+  // 2) Start PhonePe payment
+  const ppRes = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/order/phonepe/pay`, {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   credentials: "include",
   body: JSON.stringify({
+    orderId: order.productOrder._id,
     amount,
-    type: "ONLINE",  // IMPORTANT
-    items: cart.map((c) => ({
-      product: c?.product?._id,
-      quantity: c?.quantity,
-      price: c.price,
-    })),
-    shippingAddress: address,
-    paymentMethod: "ONLINE",
+    userId: order.userId,
   }),
 });
 
-    const order = await orderRes.json();
-  
- const options = {
-      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-      amount: order.order.amount,
-      currency: "INR",
-      name: "Sajriwaaj",
-      description: "Order Payment",
-      // image: `${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/logo.jpeg`,
-      order_id: order.order.id,
-      handler: async function (response) {
+const data = await ppRes.json();
 
-        const verifyRes = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/order/verify`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({...response,productId:order.productOrder._id,userId:order.userId}),
-        });
+if (data.tokenUrl) {
+  openPhonePePayPage(data.tokenUrl,order.productOrder._id)
+}else {
+    alert("Failed to start payment!");
+  }
+};
+function loadPhonePeScript() {
+  return new Promise((resolve, reject) => {
+    if (window.PhonePeCheckout) return resolve();
+    const script = document.createElement("script");
+    script.src = "https://mercury.phonepe.com/web/bundle/checkout.js";
+    script.onload = () => resolve();
+    script.onerror = () => reject("Failed to load PhonePe script");
+    document.body.appendChild(script);
+  });
+}
 
-        const verifyData = await verifyRes.json();
-    
-        if (verifyData.success) {
-           setSuccess(true); 
-        setCart([])
-         socket.emit("buy", {
-      name:verifyData.name
-    });
-                location.reload()
-        } else {
-          alert("Payment Verification Failed!");
+async function openPhonePePayPage(tokenUrl, orderId) {
+  try {
+    await loadPhonePeScript(); 
+
+    window.PhonePeCheckout.transact({
+      tokenUrl,
+      type: "IFRAME",
+      callback: async function (response) {
+        if (response === "USER_CANCEL") {
+          alert("Payment cancelled by user");
+        } else if (response === "CONCLUDED") {
+          const statusRes = await axios.post(
+            `${process.env.NEXT_PUBLIC_LOCAL_PORT}/order/phonepe/status/${orderId}`
+          );
+          if (statusRes.data.success) {
+        Swal.fire({
+  title: data.message,
+  icon: "success",
+  draggable: true
+});
+location.reload()
+          } else {
+              Swal.fire({
+                 title: "Oops...",
+  text: data.message,
+  icon: "error",
+  draggable: true
+});
+location.reload()
+          }
         }
       },
-      prefill: {
-        name: "Test User",
-        email: "test@example.com",
-        contact: "9876543210",
-      },
-      theme: {color: "#FAF8EA",
-      hide_topbar: false },
+    });
+  } catch (err) {
+    console.error("Error opening PhonePe PayPage:", err);
+  }
+}
+
+
+    const handlePlaceOrder = () => {
+      const { name, email, phone, addressLine, city, state, pincode } = address;
+      let newErrors = {};
+
+      if (!name) newErrors.name = "Full name is required";
+      if (!email) newErrors.email = "Email is required";
+      if (!phone) newErrors.phone = "Phone number is required";
+      if (!addressLine) newErrors.addressLine = "Address is required";
+      if (!city) newErrors.city = "City is required";
+      if (!state) newErrors.state = "State is required";
+      if (!pincode) newErrors.pincode = "Pincode is required";
+
+      setErrors(newErrors);
+
+      if (Object.keys(newErrors).length !== 0) return;
+
+    handlePayOnline();
     };
-
-     const paymentObject = new window.Razorpay(options);
-    paymentObject.open();
-   
-  };
-
-  
-
-  const handlePlaceOrder = () => {
-    const { name, email, phone, addressLine, city, state, pincode } = address;
-    let newErrors = {};
-
-    if (!name) newErrors.name = "Full name is required";
-    if (!email) newErrors.email = "Email is required";
-    if (!phone) newErrors.phone = "Phone number is required";
-    if (!addressLine) newErrors.addressLine = "Address is required";
-    if (!city) newErrors.city = "City is required";
-    if (!state) newErrors.state = "State is required";
-    if (!pincode) newErrors.pincode = "Pincode is required";
-
-    setErrors(newErrors);
-
-    if (Object.keys(newErrors).length !== 0) return;
-
-   handlePayOnline();
-  };
 
   return (
     <>

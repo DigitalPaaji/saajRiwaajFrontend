@@ -17,7 +17,6 @@ const [cancelReason, setCancelReason] = useState("");
 const [customReason, setCustomReason] = useState("");
 
 
-console.log(orders,"assss")
 
   const fetchOrders = useCallback(async () => {
     try {
@@ -229,7 +228,7 @@ const cancelReasonOptions = [
                   </h3>
 
                   <span
-                    className={`text-xs sm:text-sm font-medium px-3 py-1 rounded-lg ${
+                    className={` flex items-center text-xs sm:text-sm font-medium h-fit md:h-full  px-3 py-2 md:py-1 rounded-lg ${
                       order.orderStatus === "delivered"
                         ? "bg-green-100 text-green-700"
                         : order.orderStatus === "confirmed"

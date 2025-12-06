@@ -131,7 +131,7 @@ const OrderDetails = () => {
           <strong>Payment:</strong> {order.paymentMethod}
         </p>
         <p>
-          <strong>Status:</strong> {order.orderStatus}
+          <strong>Status:</strong> {order.orderStatus} {order.cancelreason? ` : ( ${order.cancelreason} )`:""}
         </p>
         <p>
           <strong>Payment Status:</strong>{" "}
