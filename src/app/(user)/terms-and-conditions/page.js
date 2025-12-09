@@ -40,7 +40,7 @@ const termsData = [
   },
   {
     heading: "Governing Law",
-    para: "These Terms and Conditions are governed by and construed in accordance with the laws of India. Any disputes arising out of or in connection with these Terms shall be subject to the jurisdiction of courts in Bangalore, Karnataka."
+    para: "These terms and conditions are governed by and construed in accordance with the laws of india. Any disputes arising out of or in connection with these terms shall be subject to the jurisdiction of courts in patiala punjab"
   },
   {
     heading: "Changes to Terms",

@@ -261,7 +261,7 @@ location.reload()
                  title: "Oops...",
   text: data.message,
   icon: "error",
-  draggable: true
+  draggable: true                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
 });
 location.reload()
           }
