@@ -188,7 +188,7 @@ export default function AddProductPage() {
       paragraphs: [""],
       bulletPoints: [""],
     },
-    offer: [],
+    offer: null,
     tags: [],
     isFeatured: false,
     isNewArrival: false,
