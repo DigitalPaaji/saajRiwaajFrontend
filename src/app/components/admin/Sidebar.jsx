@@ -20,7 +20,7 @@ import {
   LogOut,
 } from 'lucide-react'
 import PopupModal from './ConfirmPopup'
-
+import { RiPagesLine } from "react-icons/ri";
 // Updated nav items with correct icons
 const navItems = [
   { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
@@ -34,6 +34,7 @@ const navItems = [
   { name: 'Account', href: '/admin/account', icon: User },
   { name: 'Coupon', href: '/admin/coupon', icon: TicketPercent },
   { name: 'Orders', href: '/admin/orders', icon: ShoppingCart },
+  { name: 'Pages', href: '/admin/webpages', icon: RiPagesLine  },
 ]
 
 function Sidebar() {

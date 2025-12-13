@@ -48,7 +48,7 @@ export default function HeroBanner() {
         loop={true}
         className="w-full relative min-h-[300px]"
       >
-        {banners.map((banner, index) => (
+        {banners?.map((banner, index) => (
           <SwiperSlide key={index}>
             <div className="relative w-full h-full">
               <img
