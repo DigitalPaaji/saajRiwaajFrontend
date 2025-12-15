@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { X } from "lucide-react";
+import { IoSearch } from "react-icons/io5";
 
 export default function SearchBar({ products, onClose }) {
   const [query, setQuery] = useState("");
@@ -21,7 +22,7 @@ export default function SearchBar({ products, onClose }) {
       } else {
       
         const matches = products.filter((p) =>
-          p.name?.toLowerCase().includes(query.toLowerCase())
+          p.name?.toLowerCase().includes(query.toLowerCase()) || p.category?.name?.toLowerCase().includes(query.toLowerCase())
         );
 
         if (matches.length > 0) {
@@ -65,7 +66,7 @@ export default function SearchBar({ products, onClose }) {
         className="max-w-screen-2xl mx-auto px-8 py-6 relative"
       >
         
-        <div className="mb-4 flex items-center justify-center gap-2 mx-2">
+        <div className="mb-4 flex items-center justify-center gap-2 mx-2  relative">
           <input
             type="text"
             placeholder={`Search for '${placeholder}'`}
@@ -74,7 +75,7 @@ export default function SearchBar({ products, onClose }) {
             autoFocus
             className="w-full border px-4 py-2 rounded-md focus:outline-none text-sm"
           />
-          
+          <IoSearch  className="absolute right-14 text-xl" />
           <button
             onClick={onClose}
             className="p-2 rounded-full hover:bg-stone-200 transition transform hover:rotate-90"
