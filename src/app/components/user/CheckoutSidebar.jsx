@@ -178,6 +178,9 @@ export default function CheckoutSidebar({
 //   };
 
 const handlePayOnline = async () => {
+  if(address.phone.length <10 || address.length >12){
+    return 
+  }
   const amount =
     discountPercent > 0
       ? Math.floor(total * (1 - discountPercent / 100))
@@ -281,6 +284,8 @@ location.reload()
       if (!name) newErrors.name = "Full name is required";
       if (!email) newErrors.email = "Email is required";
       if (!phone) newErrors.phone = "Phone number is required";
+       if (phone.startsWith("+")? phone.length!==14: phone.length !==10 ) newErrors.phone = "Enter valid Phone number";
+       
       if (!addressLine) newErrors.addressLine = "Address is required";
       if (!city) newErrors.city = "City is required";
       if (!state) newErrors.state = "State is required";

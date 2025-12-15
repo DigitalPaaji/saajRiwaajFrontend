@@ -42,28 +42,25 @@ const ImageUploader = ({
     else if (e.type === "dragleave") setDragActive(false);
   };
 
-const handleDrop = (e) => {
-  e.preventDefault();
-  e.stopPropagation();
-  setDragActive(false);
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
 
-  if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-    multiple
-      ? onUpload(e.dataTransfer.files)
-      : onUpload(e.dataTransfer.files[0]);
-  }
-};
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      multiple
+        ? onUpload(e.dataTransfer.files)
+        : onUpload(e.dataTransfer.files[0]);
+    }
+  };
 
-const handleChange = (e) => {
-  e.preventDefault();
+  const handleChange = (e) => {
+    e.preventDefault();
 
-  if (e.target.files && e.target.files[0]) {
-    multiple
-      ? onUpload(e.target.files)
-      : onUpload(e.target.files[0]);
-  }
-};
-
+    if (e.target.files && e.target.files[0]) {
+      multiple ? onUpload(e.target.files) : onUpload(e.target.files[0]);
+    }
+  };
 
   return (
     <div className="space-y-4">
@@ -113,7 +110,7 @@ const handleChange = (e) => {
                 width={300}
                 height={300}
                 className="w-full h-full object-cover rounded-lg shadow-sm"
-                unoptimized // Optional if using external URLs without loader config
+                unoptimized
               />
               <button
                 type="button"
@@ -131,18 +128,18 @@ const handleChange = (e) => {
 };
 
 export default function AddProductPage() {
-   const {  offers } = useGlobalContext();
+  const { offers } = useGlobalContext();
   const [categories, setCategories] = useState([]);
 
   const [tags, setTags] = useState([]);
 
   const [subCategories, setSubCategories] = useState([]);
   const [errors, setErrors] = useState({
-  images: "",
-  variants: "",
-  price: "",
-  name: "",
-  discount: "",
+    images: "",
+    variants: "",
+    price: "",
+    name: "",
+    discount: "",
   });
 
   const fetchSubCategoriesByCategory = useCallback(async (categoryId) => {
@@ -163,20 +160,18 @@ export default function AddProductPage() {
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/category`);
       const data = await res.json();
-    
+
       setCategories(data.cats || []);
     } catch (err) {
       console.error("Error fetching categories:", err);
     }
   }, []);
 
-
-
   const fetchTags = useCallback(async () => {
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/tag`);
       const data = await res.json();
-      
+
       setTags(data.tags || []);
     } catch (err) {
       console.error("Error fetching tags:", err);
@@ -204,7 +199,7 @@ export default function AddProductPage() {
     discount: "",
     images: [],
     colorVariants: [],
-    barcode:null,
+    barcode: null,
   });
 
   const [finalPrice, setFinalPrice] = useState("0.00");
@@ -280,55 +275,47 @@ export default function AddProductPage() {
     }
   }, []);
 
+  const handleFileUploadBarcode = useCallback(async (file, type) => {
+    const setIsLoading =
+      type === "main" ? setIsMainUploading : setIsVariantUploading;
 
+    setIsLoading(true);
 
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
 
- const handleFileUploadBarcode = useCallback(async (file, type) => {
-  const setIsLoading =
-    type === "main" ? setIsMainUploading : setIsVariantUploading;
+      const res = await fetch(
+        `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
-  setIsLoading(true);
+      const data = await res.json();
 
-  try {
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
-
-    const res = await fetch(
-      `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
-      {
-        method: "POST",
-        body: formData,
+      if (!data.secure_url) {
+        throw new Error("Upload failed");
       }
-    );
 
-    const data = await res.json();
-
-    if (!data.secure_url) {
-      throw new Error("Upload failed");
+      if (type === "main") {
+        setProduct((prev) => ({
+          ...prev,
+          barcode: data.secure_url, // single image URL
+        }));
+      } else {
+        // setVariant((prev) => ({ ...prev, barcode: data.secure_url }));
+      }
+    } catch (error) {
+      toast.error(
+        "Image upload failed. Please check credentials and try again."
+      );
+    } finally {
+      setIsLoading(false);
     }
-
-    if (type === "main") {
-      setProduct((prev) => ({
-        ...prev,
-        barcode: data.secure_url, // single image URL
-      }));
-    } else {
-      // setVariant((prev) => ({ ...prev, barcode: data.secure_url }));
-    }
-  } catch (error) {
-    toast.error(
-      "Image upload failed. Please check credentials and try again."
-    );
-  } finally {
-    setIsLoading(false);
-  }
-}, []);
-
-
-
-
-
+  }, []);
 
   const handleAddVariant = () => {
     if (!variant?.colorName) return toast.warning("Please enter a color name.");
@@ -346,41 +333,46 @@ export default function AddProductPage() {
     }));
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  let formErrors = { images: "", variants: "", price: "", name: "", discount: "" };
-  let hasError = false;
+    let formErrors = {
+      images: "",
+      variants: "",
+      price: "",
+      name: "",
+      discount: "",
+    };
+    let hasError = false;
 
-  if (!product.name.trim()) {
-    formErrors.name = "Product name is required.";
-    hasError = true;
-  }
+    if (!product.name.trim()) {
+      formErrors.name = "Product name is required.";
+      hasError = true;
+    }
 
-  if (product.images.length === 0) {
-    formErrors.images = "Please upload at least one product image.";
-    hasError = true;
-  }
+    if (product.images.length === 0) {
+      formErrors.images = "Please upload at least one product image.";
+      hasError = true;
+    }
 
-  if (product.colorVariants.length === 0) {
-    formErrors.variants = "Please add at least one color variant.";
-    hasError = true;
-  }
+    if (product.colorVariants.length === 0) {
+      formErrors.variants = "Please add at least one color variant.";
+      hasError = true;
+    }
 
-  if (!product.price || parseFloat(product.price) <= 0) {
-    formErrors.price = "Please enter a valid price greater than 0.";
-    hasError = true;
-  }
+    if (!product.price || parseFloat(product.price) <= 0) {
+      formErrors.price = "Please enter a valid price greater than 0.";
+      hasError = true;
+    }
 
-  if (product.discount && (product.discount < 0 || product.discount > 90)) {
-    formErrors.discount = "Discount must be between 0 and 90%.";
-    hasError = true;
-  }
+    if (product.discount && (product.discount < 0 || product.discount > 90)) {
+      formErrors.discount = "Discount must be between 0 and 90%.";
+      hasError = true;
+    }
 
-  setErrors(formErrors);
+    setErrors(formErrors);
 
-  if (hasError) return; // stop submit if errors exist
-
+    if (hasError) return; // stop submit if errors exist
 
     // --- Submit API ---
     const productToSubmit = {
@@ -401,7 +393,6 @@ const handleSubmit = async (e) => {
       );
 
       const result = await response.json();
-
 
       if (!response.ok)
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -473,7 +464,9 @@ const handleSubmit = async (e) => {
                       required
                       className={inputClasses}
                     />
-                    {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
+                    {errors.name && (
+                      <p className="text-red-500 text-sm mt-1">{errors.name}</p>
+                    )}
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
@@ -507,7 +500,6 @@ const handleSubmit = async (e) => {
                           name="subcategory"
                           value={product.subcategory}
                           onChange={handleInputChange}
-                          // only require if there are subcategories
                           required={subCategories.length > 0}
                           disabled={
                             !product?.category || subCategories.length === 0
@@ -528,8 +520,6 @@ const handleSubmit = async (e) => {
                       </div>
                     </div>
                   </div>
-                  {/* --- Paragraphs Section --- */}
-
                   <div>
                     <label className={labelClasses}>Paragraphs</label>
 
@@ -591,7 +581,6 @@ const handleSubmit = async (e) => {
                     </button>
                   </div>
 
-                  {/* --- Bullet Points Section --- */}
                   <div className="mt-6">
                     <label className={labelClasses}>Bullet Points</label>
                     {product.description.bulletPoints.map((point, index) => (
@@ -680,52 +669,47 @@ const handleSubmit = async (e) => {
                 )}
               </div>
 
+              <div className={cardClasses}>
+                <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                  Product Barcode
+                </h3>
 
+                <ImageUploader
+                  onUpload={(file) => handleFileUploadBarcode(file, "main")}
+                  onRemove={() =>
+                    setProduct((p) => ({
+                      ...p,
+                      barcode: null,
+                    }))
+                  }
+                  images={product.barcode ? [product.barcode] : []}
+                  uploaderId="barcode-uploader"
+                  isUploading={isMainUploading}
+                  multiple={false}
+                />
 
-    <div className={cardClasses}>
-  <h3 className="text-lg font-semibold text-gray-800 mb-4">
-    Product Barcode
-  </h3>
-
-  <ImageUploader
-    onUpload={(file) => handleFileUploadBarcode(file, "main")}
-    onRemove={() =>
-      setProduct((p) => ({
-        ...p,
-        barcode: null,
-      }))
-    }
-    images={product.barcode ? [product.barcode] : []}
-    uploaderId="barcode-uploader"
-    isUploading={isMainUploading}
-    multiple={false}
-  />
-
-  {product.barcode && (
-    <div className="mt-4 relative w-40">
-      <Image
-        src={product.barcode}
-        alt="Barcode Preview"
-        width={200}
-        height={200}
-        className="rounded-lg border"
-        unoptimized
-      />
-      <button
-        type="button"
-        className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full p-1"
-        onClick={() =>
-          setProduct((p) => ({ ...p, barcode: null }))
-        }
-      >
-        <X className="w-4 h-4" />
-      </button>
-    </div>
-  )}
-</div>
-
-
-
+                {product.barcode && (
+                  <div className="mt-4 relative w-40">
+                    <Image
+                      src={product.barcode}
+                      alt="Barcode Preview"
+                      width={200}
+                      height={200}
+                      className="rounded-lg border"
+                      unoptimized
+                    />
+                    <button
+                      type="button"
+                      className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full p-1"
+                      onClick={() =>
+                        setProduct((p) => ({ ...p, barcode: null }))
+                      }
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                )}
+              </div>
               <div className={cardClasses}>
                 <h3 className="text-lg font-semibold text-gray-800 mb-4">
                   Color Variants
@@ -778,7 +762,9 @@ const handleSubmit = async (e) => {
                     Add Variant
                   </button>
                 </div>
-                {errors.variants && <p className="text-red-500 text-sm mt-2">{errors.variants}</p>}
+                {errors.variants && (
+                  <p className="text-red-500 text-sm mt-2">{errors.variants}</p>
+                )}
                 {product.colorVariants.length > 0 && (
                   <div className="space-y-2 pt-4">
                     <label className={labelClasses}>Added Variants</label>
@@ -789,7 +775,9 @@ const handleSubmit = async (e) => {
                           className="bg-gray-100 rounded-lg p-2 flex items-center justify-between text-sm w-full"
                         >
                           <div className="flex items-center gap-2">
-                            <span className="font-semibold">{v?.colorName}</span>
+                            <span className="font-semibold">
+                              {v?.colorName}
+                            </span>
                             <span className="text-gray-500">
                               (Qty: {v?.quantity})
                             </span>
@@ -830,7 +818,9 @@ const handleSubmit = async (e) => {
                     required
                     className={inputClasses}
                   />
-                  {errors.price && <p className="text-red-500 text-sm mt-1">{errors.price}</p>}
+                  {errors.price && (
+                    <p className="text-red-500 text-sm mt-1">{errors.price}</p>
+                  )}
                 </div>
                 <div>
                   <label
@@ -848,7 +838,11 @@ const handleSubmit = async (e) => {
                     placeholder="0"
                     className={inputClasses}
                   />
-                  {errors.discount && <p className="text-red-500 text-sm mt-1">{errors.discount}</p>}
+                  {errors.discount && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.discount}
+                    </p>
+                  )}
                 </div>
                 <div>
                   <label className={"labelClasses + flex items-center"}>
@@ -919,7 +913,7 @@ const handleSubmit = async (e) => {
                   })}
                 </div>
               </div>
-          
+
               <div>
                 <label htmlFor="tags" className={labelClasses}>
                   Tags
@@ -953,11 +947,7 @@ const handleSubmit = async (e) => {
                   })}
                 </div>
               </div>
-
             </div>
-
-
-
           </div>
         </form>
       </div>

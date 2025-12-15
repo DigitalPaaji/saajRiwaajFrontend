@@ -82,7 +82,7 @@ const cartItemCount = cart.reduce((acc, item) => acc + item?.quantity, 0);
 
           {/* Desktop Nav */}
           <nav className="hidden xl:flex items-center space-x-10">
-  {categories.map((cat) => {
+ {categories.map((cat) => {
     const hasSubCats = subCategoriesMap[cat._id]?.length > 0;
     const categoryPath = `/category/${formatCategoryPath(cat.name)}/${formatCategoryPath(cat._id)}`;
     const categoryLabel = formatCategoryLabel(cat.name);
@@ -90,7 +90,7 @@ const cartItemCount = cart.reduce((acc, item) => acc + item?.quantity, 0);
       <div
         key={cat._id}
         onMouseEnter={() => hasSubCats && setActiveMegaMenu(cat.name.toLowerCase())}
-        // onMouseLeave={() => setActiveMegaMenu(null)}
+        onMouseLeave={() => setActiveMegaMenu(null)}
       >
         <Link
            href={categoryPath}
@@ -106,7 +106,6 @@ const cartItemCount = cart.reduce((acc, item) => acc + item?.quantity, 0);
           )}
         </Link>
 
-        {/* MegaMenu dropdown */}
         {activeMegaMenu === cat.name.toLowerCase() && hasSubCats && (
           <MegaMenu
             onClose={() => setActiveMegaMenu(null)}
@@ -117,7 +116,7 @@ const cartItemCount = cart.reduce((acc, item) => acc + item?.quantity, 0);
         )}
       </div>
     );
-  })}
+  })} 
 </nav>
 
           {/* Right Icons */}
