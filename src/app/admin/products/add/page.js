@@ -103,7 +103,7 @@ const handleChange = (e) => {
         )}
       </div>
 
-      {/* {images?.length > 0 && (
+      {images?.length > 0 && (
         <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4">
           {images.map((url, index) => (
             <div key={index} className="relative aspect-square group">
@@ -125,7 +125,7 @@ const handleChange = (e) => {
             </div>
           ))}
         </div>
-      )} */}
+      )}
     </div>
   );
 };
