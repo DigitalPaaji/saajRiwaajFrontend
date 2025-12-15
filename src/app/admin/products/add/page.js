@@ -30,6 +30,7 @@ const ImageUploader = ({
   uploaderId,
   maxFiles = 5,
   isUploading,
+  multiple,
 }) => {
   const [dragActive, setDragActive] = useState(false);
   const inputRef = useRef(null);
@@ -41,21 +42,28 @@ const ImageUploader = ({
     else if (e.type === "dragleave") setDragActive(false);
   };
 
-  const handleDrop = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(false);
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      onUpload(e.dataTransfer.files);
-    }
-  };
+const handleDrop = (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  setDragActive(false);
 
-  const handleChange = (e) => {
-    e.preventDefault();
-    if (e.target.files && e.target.files[0]) {
-      onUpload(e.target.files);
-    }
-  };
+  if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+    multiple
+      ? onUpload(e.dataTransfer.files)
+      : onUpload(e.dataTransfer.files[0]);
+  }
+};
+
+const handleChange = (e) => {
+  e.preventDefault();
+
+  if (e.target.files && e.target.files[0]) {
+    multiple
+      ? onUpload(e.target.files)
+      : onUpload(e.target.files[0]);
+  }
+};
+
 
   return (
     <div className="space-y-4">
@@ -74,7 +82,7 @@ const ImageUploader = ({
           ref={inputRef}
           type="file"
           id={uploaderId}
-          multiple
+          multiple={multiple}
           accept="image/*"
           onChange={handleChange}
           className="hidden"
@@ -95,7 +103,7 @@ const ImageUploader = ({
         )}
       </div>
 
-      {images.length > 0 && (
+      {/* {images?.length > 0 && (
         <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4">
           {images.map((url, index) => (
             <div key={index} className="relative aspect-square group">
@@ -117,7 +125,7 @@ const ImageUploader = ({
             </div>
           ))}
         </div>
-      )}
+      )} */}
     </div>
   );
 };
@@ -196,6 +204,7 @@ export default function AddProductPage() {
     discount: "",
     images: [],
     colorVariants: [],
+    barcode:null,
   });
 
   const [finalPrice, setFinalPrice] = useState("0.00");
@@ -270,6 +279,56 @@ export default function AddProductPage() {
       setIsLoading(false);
     }
   }, []);
+
+
+
+
+ const handleFileUploadBarcode = useCallback(async (file, type) => {
+  const setIsLoading =
+    type === "main" ? setIsMainUploading : setIsVariantUploading;
+
+  setIsLoading(true);
+
+  try {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+
+    const res = await fetch(
+      `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+
+    const data = await res.json();
+
+    if (!data.secure_url) {
+      throw new Error("Upload failed");
+    }
+
+    if (type === "main") {
+      setProduct((prev) => ({
+        ...prev,
+        barcode: data.secure_url, // single image URL
+      }));
+    } else {
+      // setVariant((prev) => ({ ...prev, barcode: data.secure_url }));
+    }
+  } catch (error) {
+    toast.error(
+      "Image upload failed. Please check credentials and try again."
+    );
+  } finally {
+    setIsLoading(false);
+  }
+}, []);
+
+
+
+
+
 
   const handleAddVariant = () => {
     if (!variant?.colorName) return toast.warning("Please enter a color name.");
@@ -614,11 +673,58 @@ const handleSubmit = async (e) => {
                   images={product.images}
                   uploaderId="main-uploader"
                   isUploading={isMainUploading}
+                  multiple={true}
                 />
                 {errors.images && (
                   <p className="text-red-500 text-sm mt-2">{errors.images}</p>
                 )}
               </div>
+
+
+
+    <div className={cardClasses}>
+  <h3 className="text-lg font-semibold text-gray-800 mb-4">
+    Product Barcode
+  </h3>
+
+  <ImageUploader
+    onUpload={(file) => handleFileUploadBarcode(file, "main")}
+    onRemove={() =>
+      setProduct((p) => ({
+        ...p,
+        barcode: null,
+      }))
+    }
+    images={product.barcode ? [product.barcode] : []}
+    uploaderId="barcode-uploader"
+    isUploading={isMainUploading}
+    multiple={false}
+  />
+
+  {product.barcode && (
+    <div className="mt-4 relative w-40">
+      <Image
+        src={product.barcode}
+        alt="Barcode Preview"
+        width={200}
+        height={200}
+        className="rounded-lg border"
+        unoptimized
+      />
+      <button
+        type="button"
+        className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full p-1"
+        onClick={() =>
+          setProduct((p) => ({ ...p, barcode: null }))
+        }
+      >
+        <X className="w-4 h-4" />
+      </button>
+    </div>
+  )}
+</div>
+
+
 
               <div className={cardClasses}>
                 <h3 className="text-lg font-semibold text-gray-800 mb-4">

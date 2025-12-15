@@ -54,12 +54,8 @@ Founder – Saaj Riwaaj: Aakashkabir Singh Rattan`
 ];
  
 export default function PrivacyPage() {
-
-
-  
- const [privacyData,setFaqData]=useState()
+const [privacyData,setFaqData]=useState()
 const [loading,setLoading]=useState(false)
-
 
  const fetchPages = async () => {
     setLoading(true);

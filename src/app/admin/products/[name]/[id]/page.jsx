@@ -150,6 +150,7 @@ export default function AddProductPage() {
     discount: "",
     images: [],
     colorVariants: [],
+      barcode: null,
   });
 
   const [finalPrice, setFinalPrice] = useState("0.00");
@@ -209,7 +210,33 @@ export default function AddProductPage() {
     fetchCategories();
   }, [fetchTags, fetchCategories]);
 
-  // const [products, setProducts] = useState([]);
+const handleBarcodeUpload = useCallback(async (file) => {
+  setIsMainUploading(true);
+
+  try {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+
+    const res = await fetch(
+      `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
+      { method: "POST", body: formData }
+    );
+
+    const data = await res.json();
+    if (!data.secure_url) throw new Error("Upload failed");
+
+    setProduct((prev) => ({
+      ...prev,
+      barcode: data.secure_url,
+    }));
+  } catch (err) {
+    toast.error("Barcode upload failed");
+  } finally {
+    setIsMainUploading(false);
+  }
+}, []);
+
   const { name, id } = useParams();
   const isViewMode = name === "view";
   const isEditMode = name === "edit";
@@ -686,6 +713,41 @@ export default function AddProductPage() {
                   </div>
                       )}
               </div>
+
+
+              <div className={cardClasses}>
+  <h3 className="text-lg font-semibold text-gray-800 mb-4">
+    Product Barcode
+  </h3>
+
+  {/* EDIT MODE */}
+  {!isViewMode && (
+    <ImageUploader
+      onUpload={(files) => handleBarcodeUpload(files[0])}
+      onRemove={() =>
+        setProduct((p) => ({ ...p, barcode: null }))
+      }
+      images={product.barcode ? [product.barcode] : []}
+      uploaderId="barcode-uploader"
+      isUploading={isMainUploading}
+    />
+  )}
+
+  {/* VIEW MODE */}
+  {isViewMode && product.barcode && (
+    <div className="mt-4">
+      <Image
+        src={product.barcode}
+        alt="Product Barcode"
+        width={200}
+        height={200}
+        onClick={() => setPreviewImage(product.barcode)}
+        className="w-40 h-40 object-contain border rounded cursor-pointer"
+      />
+    </div>
+  )}
+</div>
+
 
               <div className={cardClasses}>
                 <h3 className="text-lg font-semibold text-gray-800 mb-4">
