@@ -23,6 +23,8 @@ function formatCategoryLabel(name) {
 
 
 useEffect(() => {
+        window.scrollTo({ top: 0, behavior: "instant" });
+
   const socket = getSocket();
   socket.once("connect", () => {
   });
