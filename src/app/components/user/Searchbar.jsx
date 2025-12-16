@@ -65,7 +65,6 @@ export default function SearchBar({ products, onClose }) {
         ref={modalRef}
         className="max-w-screen-2xl mx-auto px-8 py-6 relative"
       >
-        
         <div className="mb-4 flex items-center justify-center gap-2 mx-2  relative">
           <input
             type="text"
@@ -83,8 +82,6 @@ export default function SearchBar({ products, onClose }) {
             <X className="w-5 h-5" />
           </button>
         </div>
-
-        
 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 gap-4 mx-auto w-fit overflow-hidden pb-2">
   {(query.trim() === "" 
     ? filtered.slice(

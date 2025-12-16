@@ -12,7 +12,7 @@ export default function ShopByCategory() {
   const [loading, setLoading] = useState(true);
 
   const skeletons = Array.from({ length: 6 });
-  const earringsCategoryId = "688321125c75af760aa800e7"; // Your actual category ID
+  const earringsCategoryId = "693bbf62430ea8120089b320"; 
 
   useEffect(() => {
     const fetchData = async () => {
