@@ -778,7 +778,7 @@ export default function AddProductPage() {
                       {showImg && (
                         <div className="grid grid-cols-5 top-full w-full left-0 gap-5 absolute bg-white p-4  z-50">
                           {product.images.map((img, idx) => (
-                            <div className="relative">
+                            <div className="relative" key={idx}>
                               {variant.images.includes(img) && (
                                 <FaCheckCircle className="absolute top-3 right-3 text-red-600 font-bold text-xl shadow bg-white p-0 rounded-full" />
                               )}

@@ -71,7 +71,7 @@ const ProductsList = () => {
 useEffect(()=>{
 if(!searchVal) setnewPRoduct(allProducts);
 
-const newdata = allProducts.filter((item)=> item.name.toLowerCase().includes(searchVal.toLowerCase()))
+const newdata = allProducts?.filter((item)=> item.name.toLowerCase().includes(searchVal.toLowerCase()))
 
 setnewPRoduct(newdata)
 
