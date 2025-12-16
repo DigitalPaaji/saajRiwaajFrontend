@@ -201,7 +201,7 @@ const cartItemCount = cart.reduce((acc, item) => acc + item?.quantity, 0);
         }[isMobileMenuOpen]}`}
       >
         <div
-          className="absolute inset-0 bg-black/40"
+          className="absolute inset-0 bg-black/40 h-screen"
           onClick={() => setIsMobileMenuOpen(false)}
         ></div>
         <div className="relative w-4/5 max-w-sm h-screen bg-white shadow-xl flex flex-col">
