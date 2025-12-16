@@ -34,7 +34,7 @@ export default function Navbar() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const { allProducts , user, refetchUser, isLoggedIn, products, wishlist, setAuthTab, setIsWishlistOpen, setIsAuthOpen, categories, subCategoriesMap, cart, setIsCartOpen } = useGlobalContext();
   useEffect(() => {
-      window.scrollTo({ top: 0, behavior: "instant" });
+      window.scrollTo(0, 0);
 
     refetchUser();
   }, []);
