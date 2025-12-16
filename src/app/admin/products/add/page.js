@@ -2,9 +2,10 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { UploadCloud, X, Loader2, Tag } from "lucide-react";
 import Image from "next/image";
-import { FaPlus, FaRupeeSign } from "react-icons/fa";
+import { FaCheckCircle, FaPlus, FaRupeeSign } from "react-icons/fa";
 import { toast, ToastContainer } from "react-toastify";
 import { useGlobalContext } from "../../../components/context/GlobalContext";
+import { GrFormDown } from "react-icons/gr";
 
 // IMPORTANT: Replace with your Cloudinary details
 const CLOUDINARY_CLOUD_NAME = "dj0z0q0ut";
@@ -205,6 +206,7 @@ export default function AddProductPage() {
   const [finalPrice, setFinalPrice] = useState("0.00");
   const [tagInput, setTagInput] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showImg, setShowImg] = useState(false);
 
   // Variant-specific state
   const [variant, setVariant] = useState({
@@ -223,7 +225,14 @@ export default function AddProductPage() {
     const discount = parseFloat(product.discount) || 0;
     const final = price - (price * discount) / 100;
     setFinalPrice(final.toFixed(2));
-  }, [product.price, product.discount]);
+  }, [product.price]);
+
+  useEffect(()=>{
+    const price = parseFloat(product.price) || 0;
+  const discountPercent = ((price - finalPrice) / price) * 100;
+  setProduct({...product,discount:discountPercent.toFixed(2)})
+  
+  },[finalPrice])
 
   // --- Handlers ---
   const handleInputChange = (e) => {
@@ -753,6 +762,83 @@ export default function AddProductPage() {
                       />
                     </div>
                   </div>
+ <div className="relative">
+                      <div
+                        className={`${inputClasses} cursor-pointer flex items-center justify-between`}
+                        onClick={() => setShowImg(!showImg)}
+                      >
+                        {" "}
+                        <p>Select Images</p>{" "}
+                        <GrFormDown
+                          className={` ${
+                            showImg ? "rotate-180" : "rotate-0"
+                          } duration-500`}
+                        />{" "}
+                      </div>
+                      {showImg && (
+                        <div className="grid grid-cols-5 top-full w-full left-0 gap-5 absolute bg-white p-4  z-50">
+                          {product.images.map((img, idx) => (
+                            <div className="relative">
+                              {variant.images.includes(img) && (
+                                <FaCheckCircle className="absolute top-3 right-3 text-red-600 font-bold text-xl shadow bg-white p-0 rounded-full" />
+                              )}
+                              <img
+                                key={idx}
+                                alt={`Product image ${idx + 1}`}
+                                src={img}
+                                width={300}
+                                height={300}
+                                onClick={() => {
+                                  variant.images.includes(img)
+                                    ? setVariant({
+                                        ...variant,
+                                        images: variant.images.filter(
+                                          (item) => item !== img
+                                        ),
+                                      })
+                                    : setVariant({
+                                        ...variant,
+                                        images: [...variant.images, img],
+                                      });
+                                }}
+                                className="w-40 h-40 object-cover rounded cursor-pointer"
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                    {/* </select> */}
+
+                    <div className="grid grid-cols-5 gap-3">
+                      {variant.images.map((item, index) => {
+                        return (
+                          <div key={index} className="relative">
+                            <X
+                              onClick={() =>
+                                setVariant({
+                                  ...variant,
+                                  images: variant.images.filter(
+                                    (item2) => item2 !== item
+                                  ),
+                                })
+                              }
+                              className="absolute top-3 right-3 text-red-600 font-bold text-xl shadow bg-white p-0 rounded-full cursor-pointer"
+                            />
+                            <img
+                              src={item}
+                              alt={`Product image ${index + 1}`}
+                              width={300}
+                              height={300}
+                              className="w-40 h-40 object-cover rounded cursor-pointer"
+                            />
+                          </div>
+                        );
+                      })}
+                    </div>
+
+
+                  
                   {/* <div><label className={labelClasses}>Variant Images (Optional)</label><ImageUploader onUpload={(files) => handleFileUpload(files, 'variant')} onRemove={(idx) => setVariant(v => ({...v, images: v.images.filter((_, i) => i !== idx)}))} images={variant.images} uploaderId="variant-uploader" maxFiles={3} isUploading={isVariantUploading} /></div> */}
                   <button
                     type="button"
@@ -846,10 +932,19 @@ export default function AddProductPage() {
                 </div>
                 <div>
                   <label className={"labelClasses + flex items-center"}>
-                    Final Price (<FaRupeeSign className="w-3 h-3 " />)
+                    Final Price
                   </label>
                   <div className="p-2 mt-1 rounded-md bg-gray-100 font-semibold text-gray-700 flex items-center">
-                    <FaRupeeSign className="w-3 h-3 " /> {finalPrice}
+                   <input
+                   
+                    id="finalPrice"
+                    name="finalPrice"
+                    type="number"
+                    value={finalPrice ?? 0}
+                    onChange={(e)=>setFinalPrice(e.target.value)}
+                    placeholder="0"
+                    className={inputClasses}
+                  />
                   </div>
                 </div>
               </div>

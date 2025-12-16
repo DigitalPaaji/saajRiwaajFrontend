@@ -8,6 +8,9 @@ import Link from "next/link";
 import { toast, ToastContainer } from "react-toastify";
 import ImagePreviewModal from "@/app/components/user/ImagePreview";
 import { useGlobalContext } from "../../../../components/context/GlobalContext";
+import { GrFormDown } from "react-icons/gr";
+import { FaCheckCircle } from "react-icons/fa";
+
 // IMPORTANT: Replace with your Cloudinary details
 const CLOUDINARY_CLOUD_NAME = "dj0z0q0ut";
 const CLOUDINARY_UPLOAD_PRESET = "saajRiwaajProducts";
@@ -32,7 +35,6 @@ const ImageUploader = ({
   uploaderId,
   maxFiles = 5,
   isUploading,
-  
 }) => {
   const [dragActive, setDragActive] = useState(false);
   const inputRef = useRef(null);
@@ -109,7 +111,6 @@ const ImageUploader = ({
                 height={300}
                 className="w-full h-full object-cover rounded-lg shadow-sm"
                 unoptimized // Optional if using external URLs without loader config
-         
               />
               <button
                 type="button"
@@ -127,7 +128,7 @@ const ImageUploader = ({
 };
 
 export default function AddProductPage() {
-        const {  offers } = useGlobalContext();
+  const { offers } = useGlobalContext();
   const [previewImage, setPreviewImage] = useState(null);
   const [categories, setCategories] = useState([]);
 
@@ -138,9 +139,9 @@ export default function AddProductPage() {
     category: "",
     subcategory: "",
     description: {
-  paragraphs: [''],
-  bulletPoints: ['']
-},
+      paragraphs: [""],
+      bulletPoints: [""],
+    },
     offer: [],
 
     tags: [],
@@ -150,19 +151,21 @@ export default function AddProductPage() {
     discount: "",
     images: [],
     colorVariants: [],
-      barcode: null,
+    barcode: null,
   });
+  console.log(product, "producttt");
 
   const [finalPrice, setFinalPrice] = useState("0.00");
   const [tagInput, setTagInput] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);
-
+  const [showImg, setShowImg] = useState(false);
   // Variant-specific state
   const [variant, setVariant] = useState({
     colorName: "",
     quantity: 1,
     images: [],
   });
+  console.log(variant, "sadsaddd");
 
   // Upload-specific state
   const [isMainUploading, setIsMainUploading] = useState(false);
@@ -172,7 +175,6 @@ export default function AddProductPage() {
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/category`);
       const data = await res.json();
-  
 
       setCategories(data.cats || []);
     } catch (err) {
@@ -198,7 +200,7 @@ export default function AddProductPage() {
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/tag/`);
       const data = await res.json();
- 
+
       setTags(data.tags || []);
     } catch (err) {
       console.error("Error fetching tags:", err);
@@ -210,32 +212,32 @@ export default function AddProductPage() {
     fetchCategories();
   }, [fetchTags, fetchCategories]);
 
-const handleBarcodeUpload = useCallback(async (file) => {
-  setIsMainUploading(true);
+  const handleBarcodeUpload = useCallback(async (file) => {
+    setIsMainUploading(true);
 
-  try {
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
 
-    const res = await fetch(
-      `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
-      { method: "POST", body: formData }
-    );
+      const res = await fetch(
+        `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
+        { method: "POST", body: formData }
+      );
 
-    const data = await res.json();
-    if (!data.secure_url) throw new Error("Upload failed");
+      const data = await res.json();
+      if (!data.secure_url) throw new Error("Upload failed");
 
-    setProduct((prev) => ({
-      ...prev,
-      barcode: data.secure_url,
-    }));
-  } catch (err) {
-    toast.error("Barcode upload failed");
-  } finally {
-    setIsMainUploading(false);
-  }
-}, []);
+      setProduct((prev) => ({
+        ...prev,
+        barcode: data.secure_url,
+      }));
+    } catch (err) {
+      toast.error("Barcode upload failed");
+    } finally {
+      setIsMainUploading(false);
+    }
+  }, []);
 
   const { name, id } = useParams();
   const isViewMode = name === "view";
@@ -244,10 +246,11 @@ const handleBarcodeUpload = useCallback(async (file) => {
   const fetchProducts = useCallback(async () => {
     try {
       // const res = await fetch(`${Apiurl}/products`);
-      const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/product/id/${id}`);
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_LOCAL_PORT}/product/id/${id}`
+      );
       const data = await res.json();
       setProduct(data);
-    
     } catch (err) {
       console.error("Error fetching products:", err);
     }
@@ -276,37 +279,43 @@ const handleBarcodeUpload = useCallback(async (file) => {
     const discount = parseFloat(product.discount) || 0;
     const final = price - (price * discount) / 100;
     setFinalPrice(final.toFixed(2));
-  }, [product.price, product.discount]);
+  }, [product.price]);
+
+useEffect(()=>{
+  const price = parseFloat(product.price) || 0;
+const discountPercent = ((price - finalPrice) / price) * 100;
+setProduct({...product,discount:discountPercent.toFixed(2)})
+
+},[finalPrice])
 
   // --- Handlers ---
- const handleInputChange = (e) => {
-  const { name, value, type, checked } = e.target;
-  const newValue = type === "checkbox" ? checked : value;
+  const handleInputChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    const newValue = type === "checkbox" ? checked : value;
 
-  // Handle category change
-  if (name === "category") {
-    setProduct((prev) => ({
-      ...prev,
-      category: value,
-      subcategory: "", // reset subcategory on category change
-    }));
+    // Handle category change
+    if (name === "category") {
+      setProduct((prev) => ({
+        ...prev,
+        category: value,
+        subcategory: "", // reset subcategory on category change
+      }));
 
-    fetchSubCategoriesByCategory(value).then((subs) => {
-      if (!subs || subs.length === 0) {
-        setProduct((prev) => ({
-          ...prev,
-          subcategory: null, // explicitly remove subcategory
-        }));
-      }
-    });
-  } else {
-    setProduct((prev) => ({
-      ...prev,
-      [name]: newValue,
-    }));
-  }
-};
-
+      fetchSubCategoriesByCategory(value).then((subs) => {
+        if (!subs || subs.length === 0) {
+          setProduct((prev) => ({
+            ...prev,
+            subcategory: null, 
+          }));
+        }
+      });
+    } else {
+      setProduct((prev) => ({
+        ...prev,
+        [name]: newValue,
+      }));
+    }
+  };
 
   const handleFileUpload = useCallback(async (files, type) => {
     const setIsLoading =
@@ -334,7 +343,9 @@ const handleBarcodeUpload = useCallback(async (file) => {
       const results = await Promise.all(uploadPromises);
       onComplete(results.map((r) => r.secure_url).filter(Boolean));
     } catch (error) {
-      toast.error("Image upload failed. Please check credentials and try again.");
+      toast.error(
+        "Image upload failed. Please check credentials and try again."
+      );
     } finally {
       setIsLoading(false);
     }
@@ -342,11 +353,16 @@ const handleBarcodeUpload = useCallback(async (file) => {
 
   const handleAddVariant = () => {
     if (!variant.colorName) return toast.warning("Please enter a color name.");
+    if (!variant.quantity)
+      return toast.warning("Please enter a color quantity.");
+    if (!variant.images || !variant.images.length)
+      return toast.warning("Please select color Images.");
+
     setProduct((prev) => ({
       ...prev,
       colorVariants: [...prev.colorVariants, variant],
     }));
-    setVariant({ colorName: "", quantity: 1, images: [] }); // Reset for next variant
+    setVariant({ colorName: "", quantity: 1, images: [] });
   };
 
   const removeVariant = (indexToRemove) => {
@@ -360,15 +376,18 @@ const handleBarcodeUpload = useCallback(async (file) => {
     e.preventDefault();
     setIsUpdating(true);
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/product/id/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...product,
-          finalPrice: parseFloat(finalPrice),
-        }),
-      });
-    
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_LOCAL_PORT}/product/id/${id}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            ...product,
+            finalPrice: parseFloat(finalPrice),
+          }),
+        }
+      );
+
       if (!response.ok)
         throw new Error(`HTTP error! Status: ${response.status}`);
       toast.success("Product updated successfully!");
@@ -438,49 +457,48 @@ const handleBarcodeUpload = useCallback(async (file) => {
                         </label>
 
                         <select
-  name="category"
-  value={
-    typeof product?.category === "string"
-      ? product?.category
-      : product?.category?._id || ""
-  }
-  onChange={handleInputChange}
-  disabled={isViewMode}
-  className={inputClasses}
->
-  <option value="" disabled>
-    Select a category
-  </option>
+                          name="category"
+                          value={
+                            typeof product?.category === "string"
+                              ? product?.category
+                              : product?.category?._id || ""
+                          }
+                          onChange={handleInputChange}
+                          disabled={isViewMode}
+                          className={inputClasses}
+                        >
+                          <option value="" disabled>
+                            Select a category
+                          </option>
 
-  {/* Manually show selected if not in categories (edge case) */}
-  {!isViewMode &&
-    product?.category &&
-    !categories.find((c) =>
-      typeof product?.category === "string"
-        ? c._id === product?.category
-        : c._id === product?.category._id
-    ) && (
-      <option
-        value={
-          typeof product?.category === "string"
-            ? product?.category
-            : product?.category._id
-        }
-      >
-        {typeof product?.category === "object"
-          ? product?.category.name
-          : "Selected Category"}
-      </option>
-    )}
+                          {/* Manually show selected if not in categories (edge case) */}
+                          {!isViewMode &&
+                            product?.category &&
+                            !categories.find((c) =>
+                              typeof product?.category === "string"
+                                ? c._id === product?.category
+                                : c._id === product?.category._id
+                            ) && (
+                              <option
+                                value={
+                                  typeof product?.category === "string"
+                                    ? product?.category
+                                    : product?.category._id
+                                }
+                              >
+                                {typeof product?.category === "object"
+                                  ? product?.category.name
+                                  : "Selected Category"}
+                              </option>
+                            )}
 
-  {/* Actual category list */}
-  {categories.map((cat) => (
-    <option key={cat._id} value={cat._id}>
-      {cat.name}
-    </option>
-  ))}
-</select>
-
+                          {/* Actual category list */}
+                          {categories.map((cat) => (
+                            <option key={cat._id} value={cat._id}>
+                              {cat.name}
+                            </option>
+                          ))}
+                        </select>
                       </div>
                     )}
                     {(subCategories.length > 0 || product.subcategory) && (
@@ -489,172 +507,193 @@ const handleBarcodeUpload = useCallback(async (file) => {
                           Sub Category
                         </label>
 
+                        <select
+                          name="subcategory"
+                          value={
+                            typeof product.subcategory === "string"
+                              ? product.subcategory
+                              : product.subcategory?._id || ""
+                          }
+                          onChange={handleInputChange}
+                          disabled={!product?.category || isViewMode}
+                          className={inputClasses}
+                        >
+                          <option value="" disabled>
+                            {product?.category
+                              ? subCategories.length > 0
+                                ? "Select a Sub Category"
+                                : "No Sub Categories"
+                              : "Select category first"}
+                          </option>
 
-         <select
-  name="subcategory"
-  value={
-    typeof product.subcategory === "string"
-      ? product.subcategory
-      : product.subcategory?._id || ""
-  }
-  onChange={handleInputChange}
-  disabled={!product?.category || isViewMode}
-  className={inputClasses}
->
-  <option value="" disabled>
-    {product?.category
-      ? subCategories.length > 0
-        ? "Select a Sub Category"
-        : "No Sub Categories"
-      : "Select category first"}
-  </option>
+                          {/* Manually show selected if not in subCategories (edge case) */}
+                          {!isViewMode &&
+                            product.subcategory &&
+                            !subCategories.find((s) =>
+                              typeof product.subcategory === "string"
+                                ? s._id === product.subcategory
+                                : s._id === product.subcategory._id
+                            ) && (
+                              <option
+                                value={
+                                  typeof product.subcategory === "string"
+                                    ? product.subcategory
+                                    : product.subcategory._id
+                                }
+                              >
+                                {typeof product.subcategory === "object"
+                                  ? product.subcategory.name
+                                  : "Selected Subcategory"}
+                              </option>
+                            )}
 
-  {/* Manually show selected if not in subCategories (edge case) */}
-  {!isViewMode &&
-    product.subcategory &&
-    !subCategories.find((s) =>
-      typeof product.subcategory === "string"
-        ? s._id === product.subcategory
-        : s._id === product.subcategory._id
-    ) && (
-      <option
-        value={
-          typeof product.subcategory === "string"
-            ? product.subcategory
-            : product.subcategory._id
-        }
-      >
-        {typeof product.subcategory === "object"
-          ? product.subcategory.name
-          : "Selected Subcategory"}
-      </option>
-    )}
-
-  {/* Actual subcategory list */}
-  {subCategories.map((sub) => (
-    <option key={sub._id} value={sub._id}>
-      {sub.name}
-    </option>
-  ))}
-</select>
-
-
+                          {/* Actual subcategory list */}
+                          {subCategories.map((sub) => (
+                            <option key={sub._id} value={sub._id}>
+                              {sub.name}
+                            </option>
+                          ))}
+                        </select>
                       </div>
                     )}
                   </div>
-                {/* Paragraphs Input Section */}
-<div className="mb-6">
-  <label className={labelClasses}>Description Paragraphs</label>
-  {product.description.paragraphs.map((para, index) => (
-    <div key={index} className="flex items-start gap-2 mb-2">
-      <textarea
-        disabled={isViewMode}
-        value={para}
-        onChange={(e) => {
-          const updated = [...product.description.paragraphs];
-          updated[index] = e.target.value;
-          setProduct((prev) => ({
-            ...prev,
-            description: { ...prev.description, paragraphs: updated },
-          }));
-        }}
-        placeholder="Enter paragraph text..."
-        className={inputClasses}
-        rows="2"
-      />
-      {!isViewMode && (
-        <button
-          type="button"
-          className="text-red-500 font-bold"
-          onClick={() => {
-            const updated = product.description.paragraphs.filter((_, i) => i !== index);
-            setProduct((prev) => ({
-              ...prev,
-              description: { ...prev.description, paragraphs: updated },
-            }));
-          }}
-        >
-          ✕
-        </button>
-      )}
-    </div>
-  ))}
-  {!isViewMode && (
-    <button
-      type="button"
-      className="text-sm text-blue-600 mt-1"
-      onClick={() =>
-        setProduct((prev) => ({
-          ...prev,
-          description: {
-            ...prev.description,
-            paragraphs: [...prev.description.paragraphs, ''],
-          },
-        }))
-      }
-    >
-      + Add Paragraph
-    </button>
-  )}
-</div>
+                  {/* Paragraphs Input Section */}
+                  <div className="mb-6">
+                    <label className={labelClasses}>
+                      Description Paragraphs
+                    </label>
+                    {product.description.paragraphs.map((para, index) => (
+                      <div key={index} className="flex items-start gap-2 mb-2">
+                        <textarea
+                          disabled={isViewMode}
+                          value={para}
+                          onChange={(e) => {
+                            const updated = [...product.description.paragraphs];
+                            updated[index] = e.target.value;
+                            setProduct((prev) => ({
+                              ...prev,
+                              description: {
+                                ...prev.description,
+                                paragraphs: updated,
+                              },
+                            }));
+                          }}
+                          placeholder="Enter paragraph text..."
+                          className={inputClasses}
+                          rows="2"
+                        />
+                        {!isViewMode && (
+                          <button
+                            type="button"
+                            className="text-red-500 font-bold"
+                            onClick={() => {
+                              const updated =
+                                product.description.paragraphs.filter(
+                                  (_, i) => i !== index
+                                );
+                              setProduct((prev) => ({
+                                ...prev,
+                                description: {
+                                  ...prev.description,
+                                  paragraphs: updated,
+                                },
+                              }));
+                            }}
+                          >
+                            ✕
+                          </button>
+                        )}
+                      </div>
+                    ))}
+                    {!isViewMode && (
+                      <button
+                        type="button"
+                        className="text-sm text-blue-600 mt-1"
+                        onClick={() =>
+                          setProduct((prev) => ({
+                            ...prev,
+                            description: {
+                              ...prev.description,
+                              paragraphs: [...prev.description.paragraphs, ""],
+                            },
+                          }))
+                        }
+                      >
+                        + Add Paragraph
+                      </button>
+                    )}
+                  </div>
 
-{/* Bullet Points Input Section */}
-<div>
-  <label className={labelClasses}>Bullet Points</label>
-  {product.description.bulletPoints.map((point, index) => (
-    <div key={index} className="flex items-center gap-2 mb-2">
-      <input
-        disabled={isViewMode}
-        type="text"
-        value={point}
-        onChange={(e) => {
-          const updated = [...product.description.bulletPoints];
-          updated[index] = e.target.value;
-          setProduct((prev) => ({
-            ...prev,
-            description: { ...prev.description, bulletPoints: updated },
-          }));
-        }}
-        placeholder="Enter a bullet point..."
-        className={inputClasses}
-      />
-      {!isViewMode && (
-        <button
-          type="button"
-          className="text-red-500 font-bold"
-          onClick={() => {
-            const updated = product.description.bulletPoints.filter((_, i) => i !== index);
-            setProduct((prev) => ({
-              ...prev,
-              description: { ...prev.description, bulletPoints: updated },
-            }));
-          }}
-        >
-          ✕
-        </button>
-      )}
-    </div>
-  ))}
-  {!isViewMode && (
-    <button
-      type="button"
-      className="text-sm text-blue-600"
-      onClick={() =>
-        setProduct((prev) => ({
-          ...prev,
-          description: {
-            ...prev.description,
-            bulletPoints: [...prev.description.bulletPoints, ''],
-          },
-        }))
-      }
-    >
-      + Add Bullet Point
-    </button>
-  )}
-</div>
+                  {/* Bullet Points Input Section */}
+                  <div>
+                    <label className={labelClasses}>Bullet Points</label>
+                    {product.description.bulletPoints.map((point, index) => (
+                      <div key={index} className="flex items-center gap-2 mb-2">
+                        <input
+                          disabled={isViewMode}
+                          type="text"
+                          value={point}
+                          onChange={(e) => {
+                            const updated = [
+                              ...product.description.bulletPoints,
+                            ];
+                            updated[index] = e.target.value;
+                            setProduct((prev) => ({
+                              ...prev,
+                              description: {
+                                ...prev.description,
+                                bulletPoints: updated,
+                              },
+                            }));
+                          }}
+                          placeholder="Enter a bullet point..."
+                          className={inputClasses}
+                        />
+                        {!isViewMode && (
+                          <button
+                            type="button"
+                            className="text-red-500 font-bold"
+                            onClick={() => {
+                              const updated =
+                                product.description.bulletPoints.filter(
+                                  (_, i) => i !== index
+                                );
+                              setProduct((prev) => ({
+                                ...prev,
+                                description: {
+                                  ...prev.description,
+                                  bulletPoints: updated,
+                                },
+                              }));
+                            }}
+                          >
+                            ✕
+                          </button>
+                        )}
+                      </div>
+                    ))}
+                    {!isViewMode && (
+                      <button
+                        type="button"
+                        className="text-sm text-blue-600"
+                        onClick={() =>
+                          setProduct((prev) => ({
+                            ...prev,
+                            description: {
+                              ...prev.description,
+                              bulletPoints: [
+                                ...prev.description.bulletPoints,
+                                "",
+                              ],
+                            },
+                          }))
+                        }
+                      >
+                        + Add Bullet Point
+                      </button>
+                    )}
+                  </div>
 
-                
                   {/* <div>
                     <label htmlFor="description" className={labelClasses}>
                       Description
@@ -676,8 +715,7 @@ const handleBarcodeUpload = useCallback(async (file) => {
                 <h3 className="text-lg font-semibold text-gray-800 mb-4">
                   Product Images
                 </h3>
-                
-            
+
                 {!isViewMode && (
                   <div className="flex gap-2 items-start flex-wrap">
                     <ImageUploader
@@ -689,15 +727,13 @@ const handleBarcodeUpload = useCallback(async (file) => {
                         }))
                       }
                       images={product.images}
-                           onClick={() => onImageClick?.(img)} 
-
+                      onClick={() => onImageClick?.(img)}
                       uploaderId="main-uploader"
                       isUploading={isMainUploading}
                     />
                   </div>
                 )}
                 {isViewMode && (
-
                   <div className="flex gap-2 items-start flex-wrap mt-6">
                     {product.images.map((img, idx) => (
                       <Image
@@ -711,43 +747,41 @@ const handleBarcodeUpload = useCallback(async (file) => {
                       />
                     ))}
                   </div>
-                      )}
+                )}
               </div>
 
-
               <div className={cardClasses}>
-  <h3 className="text-lg font-semibold text-gray-800 mb-4">
-    Product Barcode
-  </h3>
+                <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                  Product Barcode
+                </h3>
 
-  {/* EDIT MODE */}
-  {!isViewMode && (
-    <ImageUploader
-      onUpload={(files) => handleBarcodeUpload(files[0])}
-      onRemove={() =>
-        setProduct((p) => ({ ...p, barcode: null }))
-      }
-      images={product.barcode ? [product.barcode] : []}
-      uploaderId="barcode-uploader"
-      isUploading={isMainUploading}
-    />
-  )}
+                {/* EDIT MODE */}
+                {!isViewMode && (
+                  <ImageUploader
+                    onUpload={(files) => handleBarcodeUpload(files[0])}
+                    onRemove={() =>
+                      setProduct((p) => ({ ...p, barcode: null }))
+                    }
+                    images={product.barcode ? [product.barcode] : []}
+                    uploaderId="barcode-uploader"
+                    isUploading={isMainUploading}
+                  />
+                )}
 
-  {/* VIEW MODE */}
-  {isViewMode && product.barcode && (
-    <div className="mt-4">
-      <Image
-        src={product.barcode}
-        alt="Product Barcode"
-        width={200}
-        height={200}
-        onClick={() => setPreviewImage(product.barcode)}
-        className="w-40 h-40 object-contain border rounded cursor-pointer"
-      />
-    </div>
-  )}
-</div>
-
+                {/* VIEW MODE */}
+                {isViewMode && product.barcode && (
+                  <div className="mt-4">
+                    <Image
+                      src={product.barcode}
+                      alt="Product Barcode"
+                      width={200}
+                      height={200}
+                      onClick={() => setPreviewImage(product.barcode)}
+                      className="w-40 h-40 object-contain border rounded cursor-pointer"
+                    />
+                  </div>
+                )}
+              </div>
 
               <div className={cardClasses}>
                 <h3 className="text-lg font-semibold text-gray-800 mb-4">
@@ -793,6 +827,82 @@ const handleBarcodeUpload = useCallback(async (file) => {
                         />
                       </div>
                     </div>
+                    {/* <select> */}
+                    <div className="relative">
+                      <div
+                        className={`${inputClasses} cursor-pointer flex items-center justify-between`}
+                        onClick={() => setShowImg(!showImg)}
+                      >
+                        {" "}
+                        <p>Select Images</p>{" "}
+                        <GrFormDown
+                          className={` ${
+                            showImg ? "rotate-180" : "rotate-0"
+                          } duration-500`}
+                        />{" "}
+                      </div>
+                      {showImg && (
+                        <div className="grid grid-cols-5 top-full w-full left-0 gap-5 absolute bg-white p-4  z-50">
+                          {product.images.map((img, idx) => (
+                            <div className="relative">
+                              {variant.images.includes(img) && (
+                                <FaCheckCircle className="absolute top-3 right-3 text-red-600 font-bold text-xl shadow bg-white p-0 rounded-full" />
+                              )}
+                              <img
+                                key={idx}
+                                alt={`Product image ${idx + 1}`}
+                                src={img}
+                                width={300}
+                                height={300}
+                                onClick={() => {
+                                  variant.images.includes(img)
+                                    ? setVariant({
+                                        ...variant,
+                                        images: variant.images.filter(
+                                          (item) => item !== img
+                                        ),
+                                      })
+                                    : setVariant({
+                                        ...variant,
+                                        images: [...variant.images, img],
+                                      });
+                                }}
+                                className="w-40 h-40 object-cover rounded cursor-pointer"
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                    {/* </select> */}
+
+                    <div className="grid grid-cols-5 gap-3">
+                      {variant.images.map((item, index) => {
+                        return (
+                          <div key={index} className="relative">
+                            <X
+                              onClick={() =>
+                                setVariant({
+                                  ...variant,
+                                  images: variant.images.filter(
+                                    (item2) => item2 !== item
+                                  ),
+                                })
+                              }
+                              className="absolute top-3 right-3 text-red-600 font-bold text-xl shadow bg-white p-0 rounded-full cursor-pointer"
+                            />
+                            <img
+                              src={item}
+                              alt={`Product image ${index + 1}`}
+                              width={300}
+                              height={300}
+                              className="w-40 h-40 object-cover rounded cursor-pointer"
+                            />
+                          </div>
+                        );
+                      })}
+                    </div>
+
                     <button
                       type="button"
                       onClick={handleAddVariant}
@@ -811,14 +921,18 @@ const handleBarcodeUpload = useCallback(async (file) => {
                       {product.colorVariants.map((v, i) => (
                         <div
                           key={i}
-                          className="bg-gray-100 rounded-lg p-2 flex items-center justify-between text-sm w-full"
+                         className="bg-gray-100 rounded-lg p-2  text-sm w-full" 
                         >
+<div className="bg-gray-100 rounded-lg p-2 flex items-center justify-between text-sm w-full">
+                       
                           <div className="flex items-center gap-2">
                             <span className="font-semibold">{v.colorName}</span>
                             <span className="text-gray-500">
                               (Qty: {v?.quantity})
                             </span>
                           </div>
+                            
+
                           {!isViewMode && (
                             <button
                               type="button"
@@ -828,6 +942,18 @@ const handleBarcodeUpload = useCallback(async (file) => {
                               <X className="w-4 h-4" />
                             </button>
                           )}
+</div>
+                           <div className="grid grid-cols-5 gap-6">
+                          
+                            {
+                             v.images?.map((sor,index) => {
+                              return(
+                               <img src={sor} key={index} alt={index}   width={300}
+                              height={300}
+                              className="w-40 h-40 object-cover rounded cursor-pointer" />
+                              )
+                              })}
+                          </div>
                         </div>
                       ))}
                     </div>
@@ -879,8 +1005,18 @@ const handleBarcodeUpload = useCallback(async (file) => {
                     Final Price (<FaRupeeSign className="w-3 h-3 " />)
                   </label>
                   <div className="p-2 mt-1 rounded-md bg-gray-100 font-semibold text-gray-700 flex items-center">
-                    <FaRupeeSign className="w-3 h-3" />
-                    {finalPrice}
+               
+                <input
+                    disabled={isViewMode}
+                    id="finalPrice"
+                    name="finalPrice"
+                    type="number"
+                    value={finalPrice ?? 0}
+                    onChange={(e)=>setFinalPrice(e.target.value)}
+                    placeholder="0"
+                    className={inputClasses}
+                  />
+                  
                   </div>
                 </div>
               </div>
@@ -913,53 +1049,51 @@ const handleBarcodeUpload = useCallback(async (file) => {
                 </label>
               </div>
 
-           {offers.length > 0 && (
-  <div>
-    <label htmlFor="offers" className={labelClasses}>
-      Offers
-    </label>
+              {offers.length > 0 && (
+                <div>
+                  <label htmlFor="offers" className={labelClasses}>
+                    Offers
+                  </label>
 
-    <div className={cardClasses + " space-y-3"}>
-      {offers.map((offer) => {
-        const offerId = String(offer._id);
+                  <div className={cardClasses + " space-y-3"}>
+                    {offers.map((offer) => {
+                      const offerId = String(offer._id);
 
-        // selected offers (handle both object & string)
-        const selectedOffers = Array.isArray(product.offer)
-          ? product.offer.map((o) => (typeof o === "object" ? o._id : o))
-          : [];
+                      // selected offers (handle both object & string)
+                      const selectedOffers = Array.isArray(product.offer)
+                        ? product.offer.map((o) =>
+                            typeof o === "object" ? o._id : o
+                          )
+                        : [];
 
-        return (
-          <label
-            key={offerId}
-            className="flex items-center space-x-3 cursor-pointer"
-          >
-            <input
-              type="radio"
-              name="Offers"
-              value={offerId}
-              disabled={isViewMode}
-              checked={product.offer==offer._id}
-              onChange={(e) => {
-                const checked = e.target.checked;
+                      return (
+                        <label
+                          key={offerId}
+                          className="flex items-center space-x-3 cursor-pointer"
+                        >
+                          <input
+                            type="radio"
+                            name="Offers"
+                            value={offerId}
+                            disabled={isViewMode}
+                            checked={product.offer == offer._id}
+                            onChange={(e) => {
+                              const checked = e.target.checked;
 
- setProduct((prev) => ({
-    ...prev,
-    offer: checked ? offer._id : ""
-  }));                  
-                 
-
-              }}
-              className="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-            />
-            <span>{offer.title}</span>
-          </label>
-        );
-      })}
-    </div>
-  </div>
-)}
-
-
+                              setProduct((prev) => ({
+                                ...prev,
+                                offer: checked ? offer._id : "",
+                              }));
+                            }}
+                            className="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                          />
+                          <span>{offer.title}</span>
+                        </label>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
 
               {tags.length > 0 && (
                 <div>
@@ -1017,8 +1151,10 @@ const handleBarcodeUpload = useCallback(async (file) => {
         </form>
         {/* ))} */}
       </div>
-      <ImagePreviewModal src={previewImage} onClose={() => setPreviewImage(null)} />
-      
+      <ImagePreviewModal
+        src={previewImage}
+        onClose={() => setPreviewImage(null)}
+      />
     </div>
   );
 }
