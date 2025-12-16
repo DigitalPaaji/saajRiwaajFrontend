@@ -172,7 +172,7 @@ if (data.user.role.includes("admin")) {
           </div>
           <p className={`text-right text-sm text-[#B67032] cursor-pointer hover:underline
           ${
-                timer > 0 ? "text-gray-500" : "text-blue-600 cursor-pointer"
+                timer > 0 ? "text-gray-500" : "text-[#99571d] cursor-pointer"
               }`}
               onClick={handleForgotPassword}
           >

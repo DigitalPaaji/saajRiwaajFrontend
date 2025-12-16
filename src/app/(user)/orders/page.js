@@ -236,7 +236,7 @@ const cancelReasonOptions = [
                         : order.orderStatus === "cancelled"
                         ? "bg-red-100 text-red-600"
                         : order.orderStatus === "shipped"
-                        ? "bg-blue-100 text-blue-600"
+                        ? "bg-blue-100 text-[#99571d]"
                         : "bg-yellow-100 text-yellow-600"
                     }`}
                   >

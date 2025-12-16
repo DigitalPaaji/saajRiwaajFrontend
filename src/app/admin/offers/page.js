@@ -199,7 +199,7 @@ export default function OffersPage() {
           <label htmlFor="offerUpload" className="cursor-pointer">
             <UploadCloud className="mx-auto h-10 w-10 text-gray-400" />
             <p className="mt-2 text-sm">
-              <span className="text-blue-600 font-medium">Click to upload</span>{" "}
+              <span className="text-[#99571d] font-medium">Click to upload</span>{" "}
               or drag image here
             </p>
           </label>

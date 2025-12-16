@@ -88,7 +88,7 @@ const ImageUploader = ({
         <label htmlFor={uploaderId} className="cursor-pointer">
           <UploadCloud className="mx-auto h-12 w-12 text-gray-400" />
           <p className="mt-2 text-sm text-gray-600">
-            <span className="font-semibold text-blue-600">Click to upload</span>{" "}
+            <span className="font-semibold text-[#99571d]">Click to upload</span>{" "}
             or drag and drop
           </p>
           <p className="text-xs text-gray-500 mt-1">PNG, JPG, GIF up to 10MB</p>
@@ -959,7 +959,7 @@ export default function AddProductPage() {
                     name="isFeatured"
                     checked={product.isFeatured}
                     onChange={handleInputChange}
-                    className="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    className="h-5 w-5 rounded border-gray-300 text-[#99571d] focus:ring-blue-500"
                   />
                   <span>Featured Product</span>
                 </label>
@@ -969,7 +969,7 @@ export default function AddProductPage() {
                     name="isNewArrival"
                     checked={product.isNewArrival}
                     onChange={handleInputChange}
-                    className="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    className="h-5 w-5 rounded border-gray-300 text-[#99571d] focus:ring-blue-500"
                   />
                   <span>New Arrival</span>
                 </label>
@@ -1000,7 +1000,7 @@ export default function AddProductPage() {
                                 : prev.offer.filter((id) => id !== offerId),
                             }));
                           }}
-                          className="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                          className="h-5 w-5 rounded border-gray-300 text-[#99571d] focus:ring-blue-500"
                         />
                         <span>{offer.title}</span>
                       </label>
@@ -1034,7 +1034,7 @@ export default function AddProductPage() {
                                 : prev.tags.filter((id) => id !== tagId),
                             }));
                           }}
-                          className="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                          className="h-5 w-5 rounded border-gray-300 text-[#99571d] focus:ring-blue-500"
                         />
                         <span>{tag.name}</span>
                       </label>

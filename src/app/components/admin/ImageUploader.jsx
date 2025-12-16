@@ -90,7 +90,7 @@ export default function ImageUploader({ onUploadComplete, uploadedImages, onRemo
                 <label htmlFor={uploaderId} className="cursor-pointer">
                     <UploadCloud className="mx-auto h-12 w-12 text-gray-400" />
                     <p className="mt-2 text-sm text-gray-600">
-                        <span className="font-semibold text-blue-600">Click to upload</span> or drag and drop
+                        <span className="font-semibold text-[#99571d]">Click to upload</span> or drag and drop
                     </p>
                     <p className="text-xs text-gray-500 mt-1">PNG, JPG, GIF up to 10MB</p>
                 </label>

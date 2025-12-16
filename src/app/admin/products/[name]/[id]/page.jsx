@@ -21,7 +21,7 @@ const inputClasses =
 const labelClasses = "block mb-1 text-sm font-medium text-gray-700";
 const buttonClasses = {
   primary:
-    "px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-sm hover:bg-blue-700 focus:outline-none  transition-colors duration-200 disabled:bg-blue-300 disabled:cursor-not-allowed flex items-center justify-center",
+    "px-4 py-2 bg-[#99571d] text-white font-semibold rounded-lg shadow-sm hover:bg-blue-700 focus:outline-none  transition-colors duration-200 disabled:bg-blue-300 disabled:cursor-not-allowed flex items-center justify-center",
   destructive:
     "h-6 w-6 rounded-full bg-red-600 text-white flex items-center justify-center hover:bg-red-700 transition-opacity",
 };
@@ -87,7 +87,7 @@ const ImageUploader = ({
         <label htmlFor={uploaderId} className="cursor-pointer">
           <UploadCloud className="mx-auto h-12 w-12 text-gray-400" />
           <p className="mt-2 text-sm text-gray-600">
-            <span className="font-semibold text-blue-600">Click to upload</span>{" "}
+            <span className="font-semibold text-[#99571d]">Click to upload</span>{" "}
             or drag and drop
           </p>
           <p className="text-xs text-gray-500 mt-1">PNG, JPG, GIF up to 10MB</p>
@@ -608,7 +608,7 @@ setProduct({...product,discount:discountPercent.toFixed(2)})
                     {!isViewMode && (
                       <button
                         type="button"
-                        className="text-sm text-blue-600 mt-1"
+                        className="text-sm text-[#99571d] mt-1"
                         onClick={() =>
                           setProduct((prev) => ({
                             ...prev,
@@ -675,7 +675,7 @@ setProduct({...product,discount:discountPercent.toFixed(2)})
                     {!isViewMode && (
                       <button
                         type="button"
-                        className="text-sm text-blue-600"
+                        className="text-sm text-[#99571d]"
                         onClick={() =>
                           setProduct((prev) => ({
                             ...prev,
@@ -841,42 +841,103 @@ setProduct({...product,discount:discountPercent.toFixed(2)})
                           } duration-500`}
                         />{" "}
                       </div>
-                      {showImg && (
-                        <div className="grid grid-cols-5 top-full w-full left-0 gap-5 absolute bg-white p-4  z-50">
-                          {product.images.map((img, idx) => (
-                            <div className="relative">
-                              {variant.images.includes(img) && (
-                                <FaCheckCircle className="absolute top-3 right-3 text-red-600 font-bold text-xl shadow bg-white p-0 rounded-full" />
-                              )}
-                              <img
-                                key={idx}
-                                alt={`Product image ${idx + 1}`}
-                                src={img}
-                                width={300}
-                                height={300}
-                                onClick={() => {
-                                  variant.images.includes(img)
-                                    ? setVariant({
-                                        ...variant,
-                                        images: variant.images.filter(
-                                          (item) => item !== img
-                                        ),
-                                      })
-                                    : setVariant({
-                                        ...variant,
-                                        images: [...variant.images, img],
-                                      });
-                                }}
-                                className="w-40 h-40 object-cover rounded cursor-pointer"
-                              />
-                            </div>
-                          ))}
-                        </div>
-                      )}
+{showImg && (
+  <>
+    {/* BACKDROP */}
+    <div
+      className="fixed inset-0 bg-black/50 z-40"
+      onClick={() => setShowImg(false)}
+    />
+
+    {/* POPUP CONTAINER */}
+    <div className="fixed inset-0 z-50 flex items-center justify-center px-3 sm:px-6">
+      <div className="
+        bg-white rounded-xl shadow-2xl relative
+        w-full max-w-5xl
+        max-h-[85vh] overflow-y-auto
+        p-4 sm:p-6
+      ">
+        
+        {/* CLOSE BUTTON */}
+        <button
+          onClick={() => setShowImg(false)}
+          className="
+            absolute top-1 right-1 
+            bg-white shadow-md rounded-full
+            w-8 h-8 flex items-center justify-center
+            text-red-700 text-lg
+            hover:bg-red-50 transition
+          "
+        >
+          ✕
+        </button>
+
+        {/* TITLE (optional but helps UX) */}
+        <h3 className="text-lg font-semibold text-gray-700 mb-4 text-center sm:text-left">
+          Select Images
+        </h3>
+
+        {/* IMAGE GRID */}
+        <div className="
+          grid gap-3
+          grid-cols-2
+          sm:grid-cols-3
+          md:grid-cols-4
+          lg:grid-cols-5
+        ">
+          {product.images.map((img, idx) => (
+            <div key={img || idx} className="relative">
+              
+              {/* SELECTED CHECK */}
+              {variant.images.includes(img) && (
+                <FaCheckCircle className="
+                  absolute top-2 right-2
+                  text-red-600 text-xl
+                  bg-white rounded-full
+                " />
+              )}
+
+              <img
+                src={img}
+                alt={`Product image ${idx + 1}`}
+                onClick={() => {
+                  variant.images.includes(img)
+                    ? setVariant({
+                        ...variant,
+                        images: variant.images.filter(
+                          (item) => item !== img
+                        ),
+                      })
+                    : setVariant({
+                        ...variant,
+                        images: [...variant.images, img],
+                      });
+                }}
+                className="
+                  w-full
+                  aspect-square
+                  object-cover
+                  rounded-lg
+                  cursor-pointer
+                  border
+                  hover:border-red-500
+                  transition
+                  active:scale-95
+                "
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </>
+)}
+
+
                     </div>
                     {/* </select> */}
 
-                    <div className="grid grid-cols-5 gap-3">
+                    <div className="grid grid-cols-1 md:grid-cols-3  lg:grid-cols-5 gap-3">
                       {variant.images.map((item, index) => {
                         return (
                           <div key={index} className="relative">
@@ -1032,7 +1093,7 @@ setProduct({...product,discount:discountPercent.toFixed(2)})
                     name="isFeatured"
                     checked={product.isFeatured}
                     onChange={handleInputChange}
-                    className="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    className="h-5 w-5 rounded border-gray-300 text-[#99571d] focus:ring-blue-500"
                   />
                   <span>Featured Product</span>
                 </label>
@@ -1043,7 +1104,7 @@ setProduct({...product,discount:discountPercent.toFixed(2)})
                     name="isNewArrival"
                     checked={product.isNewArrival}
                     onChange={handleInputChange}
-                    className="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    className="h-5 w-5 rounded border-gray-300 text-[#99571d] focus:ring-blue-500"
                   />
                   <span>New Arrival</span>
                 </label>
@@ -1085,7 +1146,7 @@ setProduct({...product,discount:discountPercent.toFixed(2)})
                                 offer: checked ? offer._id : "",
                               }));
                             }}
-                            className="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                            className="h-5 w-5 rounded border-gray-300 text-[#99571d] focus:ring-blue-500"
                           />
                           <span>{offer.title}</span>
                         </label>
@@ -1137,7 +1198,7 @@ setProduct({...product,discount:discountPercent.toFixed(2)})
                                 };
                               });
                             }}
-                            className="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                            className="h-5 w-5 rounded border-gray-300 text-[#99571d] focus:ring-blue-500"
                           />
                           <span>{tag.name}</span>
                         </label>

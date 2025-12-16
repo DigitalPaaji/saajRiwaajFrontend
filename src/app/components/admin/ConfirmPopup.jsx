@@ -17,7 +17,7 @@ const PopupModal = ({
       case 'warning':
         return 'bg-yellow-500 hover:bg-yellow-600';
       case 'info':
-        return 'bg-blue-500 hover:bg-blue-600';
+        return 'bg-blue-500 hover:bg-[#99571d]';
       default:
         return 'bg-green-500 hover:bg-green-600';
     }

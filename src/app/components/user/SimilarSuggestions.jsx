@@ -51,26 +51,36 @@ export default function EarringsMarquee({ categoryId, categoryName }) {
 
   return (
     <section className="py-16 px-4 sm:px-8 lg:px-16">
-      <div className="flex items-center justify-between gap-4 xl:gap-0 flex-wrap xl:flex-nowrap mb-8">
-        <div className="max-w-xl">
+      <div className="grid grid-cols-3 gap-4 xl:gap-0 flex-wrap xl:flex-nowrap mb-8">
+        <div className="">
           <h2 className="text-xl md:text-2xl font-mosetta  font-semibold text-[#99571d]  capitalize">
             You will also love these!
           </h2>
         </div>
-        <ul className="flex gap-4  flex-wrap text-md font-medium">
+       <div className="col-span-2">
+          <Swiper
+          modules={[Autoplay]}
+          slidesPerView="auto"
+          spaceBetween={16}
+          autoplay={{
+            delay: 2500, // scroll every 2.5 sec
+            disableOnInteraction: false,
+          }}
+          speed={800}
+          loop
+          className="mt-4 xl:mt-0"
+        >
           {subCategories.map((sub) => (
-            <Link
-              key={sub._id}
-              href={`/category/${categoryName}/${categoryId}`}
-            >
-              <li>
-                <div className="hover:bg-[#B67032] hover:text-white rounded-xl p-2 transition-all duration-300 text-[#B67032]">
+            <SwiperSlide key={sub._id} className="!w-auto">
+              <Link href={`/category/neckwear/${sub._id}`}>
+                <div className="hover:bg-[#B67032] text-nowrap hover:text-white rounded-xl px-4 py-2 transition-all duration-300 text-[#B67032] text-sm lg:text-md font-medium cursor-pointer">
                   {sub.name.toUpperCase()}
                 </div>
-              </li>
-            </Link>
+              </Link>
+            </SwiperSlide>
           ))}
-        </ul>
+        </Swiper>
+       </div>
       </div>
 
       <div className="overflow-x-auto scrollbar-hide">

@@ -112,11 +112,8 @@ setnewPRoduct(newdata)
 
                 <th className="px-4 py-3">NAME</th>
                 <th className="px-4 py-3">CATEGORY</th>
-                <th className="px-4 py-3">SUB CATEGORY</th>
                 <th className="px-4 py-3">Barcode</th>
-                {/* <th className="px-4 py-3">Featured</th> */}
-                {/* <th className="px-4 py-3">New Arrival</th> */}
-                {/* <th className="px-4 py-3">Color Variants</th> */}
+              
                 <th className="px-4 py-3">ACTIONS</th>
               </tr>
             </thead>
@@ -137,28 +134,13 @@ setnewPRoduct(newdata)
                   <td className="px-4 py-3">{product.name}</td>
                   <td className="px-4 py-3 capitalize">{product?.category?.name}</td>
                   
-                  <td className="px-4 py-3 capitalize">
-                    {/* {Array.isArray(product.tags) && product.tags.length > 0
-  ? product.tags.map(tag => tag.name).join(', ')
-  : '—'} */}
+                  {/* <td className="px-4 py-3 capitalize">
+              
 {newProduct.subcategory?.name || null}
-                  </td>
-                                    <td className="px-4 py-3"><Image alt='' width={220} height={220}  src={product?.barcode} className="w-16 h-16 object-cover"/></td>
-
-                  {/* <td className="px-4 py-3">
-                    {product.tags?.length > 0
-                      ? product.tags.join(', ')
-                      : '—'}
-                  </td>
-                  <td className="px-4 py-3">
-                    {product.isFeatured ? 'Yes' : 'No'}
-                  </td>
-                  <td className="px-4 py-3">
-                    {product.isNewArrival ? 'Yes' : 'No'}
-                  </td>
-                  <td className="px-4 py-3 text-center">
-                    {product.colorVariants?.length || 0}
                   </td> */}
+                                    <td className="px-4 py-3 "><Image alt='' width={220} height={220}  src={product?.barcode} className="w-full h-12 object-cover"/></td>
+
+                  
                   <td className="px-4 py-3">
                     <div className="flex gap-2">
                        <Link href={`/admin/products/view/${product._id}`}

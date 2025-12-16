@@ -90,7 +90,7 @@ const OrdersList = () => {
                               : order.orderStatus === "pending"
                               ? "bg-yellow-100 text-yellow-600"
                               : order.orderStatus === "placed"
-                              ? "bg-blue-100 text-blue-600"
+                              ? "bg-blue-100 text-[#99571d]"
                               : "bg-gray-100 text-gray-600"
                           }`}
                       >

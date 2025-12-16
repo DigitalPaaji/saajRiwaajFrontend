@@ -58,6 +58,7 @@ export default function ProductDetail() {
 
   const [flipped, setFlipped] = useState([false, false, false]);
   const [selectedColor, setSelectedColor] = useState(null);
+  const [newImg,setnewImg]= useState()
   const [selectedQty, setSelectedQty] = useState(1);
 
   useEffect(() => {
@@ -66,6 +67,10 @@ export default function ProductDetail() {
       setSelectedQty(1);
     }
   }, [product]);
+useEffect(()=>{
+  setSelectedImage(newImg?.[0])
+},[newImg])
+
 
   const toggleFlip = (index) => {
     setFlipped((prev) => prev.map((f, i) => (i === index ? !f : f)));
@@ -212,7 +217,7 @@ export default function ProductDetail() {
 
             {/* Thumbnails */}
             <div className="flex   md:flex-col gap-4 max-h-[600px] overflow-y-auto pr-1 custom-scrollbar">
-              {product.images.map((img, idx) => (
+              {(newImg || product.images).map((img, idx) => (
                 <Image
                   key={idx}
                   src={img}
@@ -393,6 +398,7 @@ export default function ProductDetail() {
     <button
       key={i}
       onClick={() => {
+        v.images.length &&  setnewImg(v.images)
         setSelectedColor(v);
         setSelectedQty(1);
        setAddedToCart(false)
@@ -410,7 +416,7 @@ export default function ProductDetail() {
 
 
               {/* Stock Info */}
-              <p className="text-sm text-stone-600">
+              {/* <p className="text-sm text-stone-600">
                 {selectedColor?.quantity > 0 ? (
                   <>
                     Only{" "}
@@ -424,12 +430,12 @@ export default function ProductDetail() {
                     Out of Stock
                   </span>
                 )}
-              </p>
+              </p> */}
             </div>
           )}
 
 {/* CTA Buttons */}
-<div className="flex flex-col md:flex-row gap-4">
+<div className="flex flex-col md:flex-row gap-4 mt-4">
   {addedtoCart ? (
     
     <button
@@ -522,7 +528,7 @@ onClick={()=>handelAddtocart()}
 
               {/* Bullet Points */}
               {product.description?.bulletPoints?.length > 0 && (
-                <div className="list-disc ml-6 lg:text-md text-stone-800 marker:text-[#B67032]  space-y-2">
+                <div className=" lg:text-md text-stone-800 marker:text-[#B67032]  space-y-2">
                   {product.description.bulletPoints.map((point, idx) => (
                     <h6 key={idx}>{point}</h6>
                   ))}

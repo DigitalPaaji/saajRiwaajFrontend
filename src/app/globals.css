@@ -173,3 +173,21 @@ button{
 .animate-gradientMove {
   animation: gradientMove 3s ease infinite;
 }
+
+/* Custom Scrollbar */
+.styled-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.styled-scrollbar::-webkit-scrollbar-track {
+  background: #e5e7eb; /* light gray */
+  border-radius: 10px;
+}
+
+
+
+/* For Firefox */
+.styled-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #a79e94c0 #e5e7eb;
+}

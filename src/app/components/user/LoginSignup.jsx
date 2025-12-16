@@ -342,7 +342,7 @@ const data = response.data;
           {authTab === "login" && (
             <p
               className={`text-right text-sm ${
-                timer > 0 ? "text-gray-500" : "text-blue-600 cursor-pointer"
+                timer > 0 ? "text-gray-500" : "text-[#99571d] cursor-pointer"
               }`}
               onClick={handleForgotPassword}
             >
