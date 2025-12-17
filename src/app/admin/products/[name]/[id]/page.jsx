@@ -10,6 +10,7 @@ import ImagePreviewModal from "@/app/components/user/ImagePreview";
 import { useGlobalContext } from "../../../../components/context/GlobalContext";
 import { GrFormDown } from "react-icons/gr";
 import { FaCheckCircle } from "react-icons/fa";
+import axios from "axios";
 
 // IMPORTANT: Replace with your Cloudinary details
 const CLOUDINARY_CLOUD_NAME = "dj0z0q0ut";
@@ -152,8 +153,9 @@ export default function AddProductPage() {
     images: [],
     colorVariants: [],
     barcode: null,
+    hidethings:[]
   });
-  console.log(product, "producttt");
+ 
 
   const [finalPrice, setFinalPrice] = useState("0.00");
   const [tagInput, setTagInput] = useState("");
@@ -165,7 +167,6 @@ export default function AddProductPage() {
     quantity: 1,
     images: [],
   });
-  console.log(variant, "sadsaddd");
 
   // Upload-specific state
   const [isMainUploading, setIsMainUploading] = useState(false);
@@ -400,6 +401,19 @@ setProduct({...product,discount:discountPercent.toFixed(2)})
       setIsUpdating(false);
     }
   };
+
+const handelhide = async(e)=>{
+ setProduct({...product,hidethings:[...product.hidethings,e.target.value]})
+}
+
+const handelRemovehidden= async(val)=>{
+  const newArray = [...product.hidethings]
+  
+ newArray.splice(newArray.indexOf(val),1)
+ setProduct({...product,hidethings:newArray})
+ 
+}
+
 
   return (
     <div className="">
@@ -1207,6 +1221,47 @@ setProduct({...product,discount:discountPercent.toFixed(2)})
                   </div>
                 </div>
               )}
+
+
+                
+                <div>
+                  <label htmlFor="tags" className={labelClasses}>
+                    Hide Content
+                  </label>
+
+                  <div className={cardClasses + " space-y-3"}>
+                   
+
+<select         disabled={isViewMode} onChange={(e)=>handelhide(e)}  className="p-2 w-full mb-5  rounded border-gray-300 text-[#99571d] focus:ring-blue-500">
+{Object.keys(product).map((itm,ind)=>{return(
+  
+<option value={itm} className="capitalize" key={ind} disabled={itm==="hidethings" || product.hidethings?.includes(itm) }>{itm}</option>
+)
+})}
+
+</select>
+
+<div className="flex flex-wrap gap-3">
+
+{product.hidethings?.map((ite,ind)=>{return(
+  <p key={ind} className="rounded-xl text-black   border border-[#d89962a2] px-3 py-1  flex gap-2 items-center justify-between"> <span className="capitalize">{ite}</span> <X onClick={()=>{!isViewMode && handelRemovehidden(ite)}} disabled={isViewMode}  className="text-red-700 cursor-pointer" size={17} /> </p>
+)})}
+</div>
+
+
+
+
+
+
+
+
+                  </div>
+
+
+
+
+                </div>
+              
             </div>
           </div>
         </form>

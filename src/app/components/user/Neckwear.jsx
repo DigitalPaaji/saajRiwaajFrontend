@@ -71,7 +71,7 @@ export default function EarringsMarquee() {
         >
           {subCategories.map((sub) => (
             <SwiperSlide key={sub._id} className="!w-auto">
-              <Link href={`/category/neckwear/${sub._id}`}>
+              <Link href={`/category/neckwear/${earringsCategoryId}`}>
                 <div className="hover:bg-[#B67032] text-nowrap hover:text-white rounded-xl px-4 py-2 transition-all duration-300 text-[#B67032] text-sm lg:text-md font-medium cursor-pointer">
                   {sub.name.toUpperCase()}
                 </div>

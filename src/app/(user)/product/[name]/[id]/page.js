@@ -205,7 +205,10 @@ useEffect(()=>{
     }
 
 
+const funshow=(title,incl)=>{
 
+ return product?.hidethings?.includes(incl)? "" :title
+}
 
   return (
     <div>
@@ -213,9 +216,7 @@ useEffect(()=>{
         {/* Left: Sticky Images */}
         <div className="w-full xl:w-1/2 lg:sticky lg:top-24  ">
           <div className="flex flex-col md:flex-row items-center gap-4">
-            {/* Thumbnails */}
-
-            {/* Thumbnails */}
+         
             <div className="flex   md:flex-col gap-4 max-h-[600px] overflow-y-auto pr-1 custom-scrollbar">
               {(newImg || product.images).map((img, idx) => (
                 <Image
@@ -232,14 +233,14 @@ useEffect(()=>{
               ))}
             </div>
 
-            {/* Main Image */}
+            
             <div
-              className="relative w-full h-[400px] xl:h-[700px] overflow-hidden  rounded-md  cursor-zoom-in "
+              className="relative w-full h-[400px]  xl:h-[700px] overflow-hidden  rounded-md  cursor-zoom-in "
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
               style={{
                 backgroundImage: `url(${selectedImage})`,
-                backgroundSize: isZoomed ? "150%" : "contain",
+                backgroundSize: isZoomed ? "150%" : "cover",
                 backgroundRepeat: "no-repeat",
                 backgroundPosition: isZoomed
                   ? `${zoomPos.x}% ${zoomPos.y}%`
@@ -250,7 +251,7 @@ useEffect(()=>{
           </div>
         </div>
 
-        {/* Right: Details */}
+       
 
         <div className="w-full xl:w-1/2 flex flex-col gap-2  ">
           {/* Title */}
@@ -258,7 +259,7 @@ useEffect(()=>{
             {/* LEFT SIDE (name + category) */}
             <div>
               <h1 className="text-2xl md:text-4xl font-serif text-stone-900">
-                {product.name}
+                {funshow(product.name,"name")}
               </h1>
               <p className="lg:text-md text-stone-700 mt-2 capitalize">
                 {product?.category?.name}{" "}
@@ -290,15 +291,15 @@ useEffect(()=>{
             {/* Price Section */}
             <div className="flex items-end gap-2">
               <span className="text-[#B67032] text-2xl font-bold tracking-wide">
-                ₹{product.finalPrice}
+                ₹{ funshow(product.finalPrice,"finalPrice")}
               </span>
               {product.discount > 0 && (
                 <>
                   <span className="line-through text-stone-600 text-lg">
-                    ₹{product.price}
+                    ₹{funshow(product.price,"price")}
                   </span>
                   <span className="text-green-600 text-sm">
-                    ({product.discount}% OFF)
+                     { funshow(`(${product.discount}% OFF})`,"discount")}
                   </span>
                 </>
               )}

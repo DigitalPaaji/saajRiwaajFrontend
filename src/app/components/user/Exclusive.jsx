@@ -94,7 +94,7 @@ export default function ShopByCategory() {
       <p className="text-sm sm:text-base md:text-md text-[#5c3b22] mb-4 leading-normal">
         Unveil our handpicked exclusive jewellery pieces that blend tradition with royalty.
       </p>
-      <Link href={'/category/saaj-riwaaj-exclusive/688321125c75af760aa800e7'} className="bg-[#7a4a26] text-white px-4 sm:px-5 py-2 rounded-xl hover:bg-[#5c3b22] transition duration-300 text-md">
+      <Link href={`/category/saaj-riwaaj-exclusive/${earringsCategoryId}`} className="bg-[#7a4a26] text-white px-4 sm:px-5 py-2 rounded-xl hover:bg-[#5c3b22] transition duration-300 text-md">
         Explore Now
       </Link>
     </div>

@@ -77,14 +77,29 @@ export default function CartSidebar() {
         </>
       )}
     </div>
-
+         <div className="flex flex-wrap gap-2">
+  {item.colorVariants.map((v, i) => (
+    <button
+      key={i}
+      onClick={() => {
+        v.images.length &&  setnewImg(v.images)
+        setSelectedColor(v);
+        setSelectedQty(1);
+       setAddedToCart(false)
+      }}
+      className={`p-1 rounded-md border text-sm transition  ring-[#B67032] border-[#B67032] text-[#B67032] font-medium`}
+    >
+      {v?.colorName}
+    </button>
+  ))}
+</div>
     {/* <span className="lg:text-md text-stone-500">({item.discount}% OFF)</span> */}
   </div>
 
-     <button onClick={() => addToCart(item)} className="lg:opacity-0  duration-300 lg:group-hover:opacity-100 cursor-pointer w-full flex items-center justify-center gap-1 xl:gap-2 bg-[#B67032] text-white px-4 py-2 rounded hover:bg-[#a95c2e] transition text-sm font-medium tracking-wide">
+     {/* <button onClick={() => addToCart(item)} className="lg:opacity-0  duration-300 lg:group-hover:opacity-100 cursor-pointer w-full flex items-center justify-center gap-1 xl:gap-2 bg-[#B67032] text-white px-4 py-2 rounded hover:bg-[#a95c2e] transition text-sm font-medium tracking-wide">
       <ShoppingCart className="w-4 h-4" />
       Add to Cart
-    </button>
+    </button> */}
                 </div>
                 <button onClick={() => removeFromWishlist(item._id)} className="cursor-pointer">
                   
