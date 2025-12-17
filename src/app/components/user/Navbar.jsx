@@ -9,10 +9,7 @@ import {
   X,
   Heart,
   ChevronDown,
-  CalendarHeart,
     Sparkles,
-  Leaf,
-  HeartHandshake,
   Gem,
   Flower,
   HandHeart,
@@ -46,7 +43,7 @@ export default function Navbar() {
   }, [isMobileMenuOpen]);
  
 function formatCategoryPath(name) {
-  return name.trim().toLowerCase().replace(/\s+/g, '-'); // e.g., Saaj Riwaaj Exclusive → saaj-riwaaj-exclusive
+  return name.trim().toLowerCase().replace(/\s+/g, '-');
 }
 
 function formatCategoryLabel(name) {

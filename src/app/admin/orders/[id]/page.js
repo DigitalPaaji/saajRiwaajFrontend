@@ -232,10 +232,12 @@ const OrderDetails = () => {
           <tr className="bg-gray-100 text-left text-sm text-gray-700">
             <th className="p-3 border-b">Image</th>
             <th className="p-3 border-b">Product</th>
+            <th className="p-3 border-b">Color</th>
             <th className="p-3 border-b">Quantity</th>
             <th className="p-3 border-b">Price</th>
             <th className="p-3 border-b">Subtotal</th>
             <th className="p-3 border-b">Payment Status</th>
+            <th className="p-3 border-b">Barcode</th>
           </tr>
         </thead>
         <tbody>
@@ -255,6 +257,11 @@ const OrderDetails = () => {
               <td className="p-3 border-b">
                 {item.product?.name || "Unknown"}
               </td>
+ 
+  
+             <td className="p-3 border-b">{  item?.product?.colorVariants.find(
+      (variant) => variant._id.toString() === item.color.toString()
+    ).colorName}</td>
               <td className="p-3 border-b">{item?.quantity}</td>
               <td className="p-3 border-b">₹{item.price}</td>
               <td className="p-3 border-b">₹{item?.quantity * item.price}</td>
@@ -268,6 +275,16 @@ const OrderDetails = () => {
                 >
                   {order.paymentStatus}
                 </span>
+              </td>
+              <td td className="p-3 border-b">
+                 <Image
+                    alt={item?.product?.barcode || "Product"}
+                    width={220}
+                    height={220}
+                    src={item?.product?.barcode}
+                    className="w-16 h-16 object-cover"
+                  />
+                
               </td>
             </tr>
           ))}

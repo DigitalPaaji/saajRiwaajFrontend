@@ -188,7 +188,13 @@ const cancelReasonOptions = [
   "Other"
 ];
 
-
+const slugify= (name)=>{
+ return name?.toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, "")   
+    .replace(/\s+/g, "-")
+ 
+}
 
 
   return (
@@ -216,12 +222,11 @@ const cancelReasonOptions = [
         </div>
       ) : (
         <div className="space-y-6">
-          {orders.map((order) => {
+          {orders?.filter((itm)=> itm.paymentStatus =="paid").map((order) => {
             return (
-              <div
-                key={order._id}
-                className="bg-white rounded-xl shadow-md border border-gray-100 hover:shadow-lg transition p-5"
-              >
+              <div  key={order._id}
+                className="bg-white rounded-xl shadow-md border border-[#d4af37]/40 hover:shadow-lg transition p-5">
+              
                 <div className="flex justify-between mb-3">
                   <h3 className="font-semibold text-lg text-gray-800">
                     Order ID: {order._id}
@@ -245,16 +250,19 @@ const cancelReasonOptions = [
                   </span>
                 </div>
 
-                <div className="space-y-4 border-t pt-4">
+                <div className="space-y-4 border-t border-[#d4af37]/40 pt-4">
                   {order.items.map((item) => {
                     const product =
-                      allProducts.find((p) => p._id === item.product) || {};
+                      allProducts.find((p) => p._id === item.product ) || {};
 
                     return (
                       <div
                         key={item._id}
-                        className="flex gap-4 items-center border-b pb-3"
+                       
                       >
+                        <Link href={`/orders/${order._id}`}
+                className="flex gap-4 items-center border-b border-[#d4af37]/40 pb-3"
+              >
                         <div className="w-20 h-20 rounded-lg bg-gray-50 overflow-hidden">
                           <Link
                             href={`/product/${product?.name}/${product?._id}`}
@@ -268,20 +276,27 @@ const cancelReasonOptions = [
                             />
                           </Link>
                         </div>
-
+ 
                         <div className="flex-1">
-                          <p className="text-lg font-medium text-gray-700">
+                          <Link href={`/product/${slugify(product?.name)}/${product._id}`} className="text-lg font-medium text-gray-700">
                             {product.name}
-                          </p>
-                          <p className="text-sm text-gray-500">
+                          </Link>
+                          <div className="flex items-center gap-3">
+                          <p className=" text-gray-500">
                             Qty: {item.quantity}
                           </p>
+                          <p className=" text-gray-500 capitalize">
+                            {product?.colorVariants?.find((color)=>color._id.toString() ===item.color ).colorName}
+                          </p>
+                          </div>
                         </div>
 
                         <div className="text-lg font-semibold text-[#99571d]">
                           ₹{item.price}
                         </div>
+                        </Link>
                       </div>
+                      
                     );
                   })}
                 </div>
@@ -317,6 +332,7 @@ const cancelReasonOptions = [
                     Tracking: <b>{order.trackingnumber}</b>
                   </div>
                 )}
+          
               </div>
             );
           })}

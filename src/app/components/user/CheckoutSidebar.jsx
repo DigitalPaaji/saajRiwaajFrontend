@@ -198,6 +198,7 @@ const handlePayOnline = async () => {
         product: c?.product?._id,
         quantity: c?.quantity,
         price: c.price,
+        color:c?.color
       })),
       shippingAddress: address,
       paymentMethod: "ONLINE",
@@ -212,7 +213,7 @@ const handlePayOnline = async () => {
   headers: { "Content-Type": "application/json" },
   credentials: "include",
   body: JSON.stringify({
-    orderId: order.productOrder._id,
+    orderId: order?.productOrder?._id,
     amount,
     userId: order.userId,
   }),
