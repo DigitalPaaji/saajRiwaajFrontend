@@ -46,8 +46,7 @@ const [showoffer,setShowOffer]= useState(true)
   };
  
 
-   let subAmount=   removeamount.filter((item)=>item)
-   .reduce((acc,dec)=>acc+ (dec.multiple*dec.price) - (dec.multiple*dec.offerquentity * dec.subprice),0)
+   let subAmount=   removeamount.filter((item)=>item)?.reduce((acc,dec)=>acc+ (dec.multiple*dec.price) - (dec.multiple*dec.offerquentity * dec.subprice),0)
 
 
 

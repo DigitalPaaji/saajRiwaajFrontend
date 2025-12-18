@@ -54,7 +54,7 @@ function formatCategoryLabel(name) {
     .join(' '); // e.g., saaj riwaaj → Saaj Riwaaj
 }
 
-const cartItemCount = cart.reduce((acc, item) => acc + item?.quantity, 0);
+const cartItemCount = cart?.reduce((acc, item) => acc + item?.quantity, 0);
   return (
     <header
       className="bg-[#faf8eae0]  backdrop-blur-md sticky top-0 z-[99] shadow-sm "
