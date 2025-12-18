@@ -51,7 +51,7 @@ function formatCategoryLabel(name) {
   .trim()
     .split(' ')
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' '); // e.g., saaj riwaaj → Saaj Riwaaj
+    .join(' '); 
 }
 
 const cartItemCount = cart?.reduce((acc, item) => acc + item?.quantity, 0);
@@ -79,7 +79,9 @@ const cartItemCount = cart?.reduce((acc, item) => acc + item?.quantity, 0);
             />
           </Link>
 
-          {/* Desktop Nav */}
+         {
+          console.log(categories,"asdas")
+         }
           <nav className="hidden xl:flex items-center space-x-10">
  {categories.map((cat) => {
     const hasSubCats = subCategoriesMap[cat._id]?.length > 0;
