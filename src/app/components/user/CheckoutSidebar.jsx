@@ -246,7 +246,7 @@ async function openPhonePePayPage(tokenUrl, orderId) {
       tokenUrl,
       type: "IFRAME",
       callback: async function (response) {
-        console.log(response)
+    
         if (response === "USER_CANCEL") {
           alert("Payment cancelled by user");
         } else if (response === "CONCLUDED") {

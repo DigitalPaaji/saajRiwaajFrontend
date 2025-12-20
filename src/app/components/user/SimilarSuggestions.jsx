@@ -51,13 +51,13 @@ export default function EarringsMarquee({ categoryId, categoryName }) {
 
   return (
     <section className="py-16 px-4 sm:px-8 lg:px-16">
-      <div className="grid md:grid-cols-2 lg:grid-cols-3  xl:gap-0 flex-wrap xl:flex-nowrap mb-8">
+      <div className="grid-cols-1 xl:grid-cols-2 gap-6 flex-wrap xl:flex-nowrap mb-8">
        
           <h2 className="text-xl md:text-2xl font-mosetta  font-semibold text-[#99571d]  capitalize">
             You will also love these!
           </h2>
        
-       <div className=" md:col-span-1 lg:col-span-2">
+       <div className=" ">
           <Swiper
           modules={[Autoplay]}
           slidesPerView="auto"

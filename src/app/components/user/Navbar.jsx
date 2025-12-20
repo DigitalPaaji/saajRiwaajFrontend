@@ -79,9 +79,8 @@ const cartItemCount = cart?.reduce((acc, item) => acc + item?.quantity, 0);
             />
           </Link>
 
-         {
-          console.log(categories,"asdas")
-         }
+        
+        
           <nav className="hidden xl:flex items-center space-x-10">
  {categories.map((cat) => {
     const hasSubCats = subCategoriesMap[cat._id]?.length > 0;

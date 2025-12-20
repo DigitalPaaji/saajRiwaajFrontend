@@ -470,7 +470,7 @@ const updateQty = async (productId, qty, color) => {
   const fetchCategories = useCallback(async () => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/category`, { cache: "no-store" });
     const data = await res.json();
-    console.log(data,"datasaaa")
+ 
     setCategories(data.cats || []);
     return data.cats || [];
   }, []);

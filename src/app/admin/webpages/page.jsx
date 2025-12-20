@@ -150,7 +150,7 @@ const Page = () => {
     setDes(data.des)
     setEditId(data._id)
     setActiveTab("add")
-console.log(data)
+
   }
 
   return (
