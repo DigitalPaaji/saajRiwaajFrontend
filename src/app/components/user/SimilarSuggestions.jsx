@@ -51,7 +51,7 @@ export default function EarringsMarquee({ categoryId, categoryName }) {
 
   return (
     <section className="py-16 px-4 sm:px-8 lg:px-16">
-      <div className="grid-cols-1 xl:grid-cols-2 gap-6 flex-wrap xl:flex-nowrap mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 flex-wrap xl:flex-nowrap mb-8">
        
           <h2 className="text-xl md:text-2xl font-mosetta  font-semibold text-[#99571d]  capitalize">
             You will also love these!
