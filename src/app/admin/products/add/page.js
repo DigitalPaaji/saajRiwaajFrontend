@@ -940,7 +940,7 @@ export default function AddProductPage() {
                     id="finalPrice"
                     name="finalPrice"
                     type="number"
-                    value={finalPrice ?? 0}
+                    value={Math.floor(finalPrice) ?? 0}
                     onChange={(e)=>setFinalPrice(e.target.value)}
                     placeholder="0"
                     className={inputClasses}

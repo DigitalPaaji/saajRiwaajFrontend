@@ -291,7 +291,7 @@ const funshow=(title,incl)=>{
             {/* Price Section */}
             <div className="flex items-end gap-2">
               <span className="text-[#B67032] text-2xl font-bold tracking-wide">
-                ₹{ funshow(product.finalPrice,"finalPrice")}
+                ₹{ funshow(Math.floor(product.finalPrice),"finalPrice")}
               </span>
               {product.discount > 0 && (
                 <>
@@ -299,7 +299,7 @@ const funshow=(title,incl)=>{
                     ₹{funshow(product.price,"price")}
                   </span>
                   <span className="text-green-600 text-sm">
-                     { funshow(`(${product.discount}% OFF})`,"discount")}
+                     { funshow(`(${product.discount}% OFF)`,"discount")}
                   </span>
                 </>
               )}
