@@ -60,7 +60,7 @@ transition: Flip,
             <img src="/Images/logoWhite.webp" alt="Saaj Riwaaj" className="h-16 mb-4" />
             <div className="flex space-x-4 mt-4">
               <a href="#" className="text-[#f3ecdf] hover:text-[#B67032] w-3 h-3"><Facebook /></a>
-              <a href="#" className="text-[#f3ecdf] hover:text-[#B67032] w-3 h-3"><Instagram /></a>
+              <a href="https://www.instagram.com/saajriwaaj/" className="text-[#f3ecdf] hover:text-[#B67032] w-3 h-3"><Instagram /></a>
               <a href="#" className="text-[#f3ecdf] hover:text-[#B67032] w-3 h-3"><Twitter /></a>
               <a href="#" className="text-[#f3ecdf] hover:text-[#B67032] w-3 h-3"><Youtube /></a>
             </div>
