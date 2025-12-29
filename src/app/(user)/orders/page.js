@@ -268,6 +268,7 @@ const slugify= (name)=>{
                             href={`/product/${product?.name}/${product?._id}`}
                           >
                             <Image
+                            
                               src={product.images?.[0] || "/Images/img.webp"}
                               width={400}
                               height={400}

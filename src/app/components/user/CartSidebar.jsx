@@ -129,6 +129,7 @@ try {
       >
         <div className="absolute z-10 bottom-0 right-0 opacity-20">
           <Image
+          
             alt=""
             src={"/Images/bg1.png"}
             width={360}
@@ -153,6 +154,7 @@ try {
             <div className="flex flex-col my-24 items-center justify-center">
               <img
                 src="/Images/cart.gif"
+                loading="lazy"
                 alt="Empty Cart"
                 className="w-40 h-40 mb-4 "
               />
@@ -185,6 +187,7 @@ try {
                    onClick={() => setIsCartOpen(false)}
                   >
                     <Image
+                    
                       src={item?.product?.images[0]}
                       alt={item?.product?.name}
                       width={400}

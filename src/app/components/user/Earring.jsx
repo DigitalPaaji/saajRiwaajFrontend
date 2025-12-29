@@ -49,6 +49,7 @@ export default function EarringsMarquee() {
        <div className="absolute z-0 top-0  right-1/2 opacity-40">
         <Image
           alt=""
+          
           src={"/Images/bg1.png"}
           width={220}
           height={220}
@@ -135,6 +136,7 @@ export default function EarringsMarquee() {
                     <div className="w-full h-[300px] relative">
                       <img
                         src={item.images?.[0]}
+                        loading="lazy"
                         alt={item.name}
                         className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                       />

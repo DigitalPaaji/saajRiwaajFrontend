@@ -56,6 +56,7 @@ export default function ResetPasswordPage() {
       {/* Left image */}
       <div className="hidden md:block">
         <Image
+        
           alt=""
           src={"/Images/admin.webp"}
           width={400}
@@ -72,6 +73,7 @@ export default function ResetPasswordPage() {
           <div className="flex justify-center py-8">
             <Link href="/" className="flex-shrink-0 group">
               <Image
+              
                 src="/Images/logo.webp"
                 width={400}
                 height={400}

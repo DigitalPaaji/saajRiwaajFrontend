@@ -28,6 +28,7 @@ export default function ShopByCategory() {
       <div className="absolute -top-32 -right-12 opacity-20 ">
         <Image
           alt=""
+          
           src={"/Images/bg2.png"}
           width={360}
           height={360}
@@ -64,6 +65,7 @@ export default function ShopByCategory() {
                     {/* Hover Image Swap */}
                     <img
                       src={product.images?.[0]}
+                      loading="lazy"
                       alt={product.name}
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     />

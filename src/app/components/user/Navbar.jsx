@@ -74,6 +74,7 @@ const cartItemCount = cart?.reduce((acc, item) => acc + item?.quantity, 0);
           <Link href="/" className="flex-shrink-0 group">
             <img
               src="/Images/logo.webp"
+              loading="lazy"
               alt="Saaj Riwaaj Logo"
               className="h-10 w-auto xl:h-12 "
             />
@@ -210,6 +211,7 @@ const cartItemCount = cart?.reduce((acc, item) => acc + item?.quantity, 0);
             <img
             
               src="/Images/logo.webp"
+              loading="lazy"
               alt="Saaj Riwaaj Logo"
               className="h-10 w-auto xl:h-12 "
             />

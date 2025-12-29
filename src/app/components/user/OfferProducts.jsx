@@ -67,7 +67,7 @@ export default function Collection({ offerId }) {
                       alt={product.name}
                       fill
                       className="object-cover transition-all duration-500 ease-in-out group-hover:scale-105"
-                      unoptimized
+                      
                     />
                   </div>
 

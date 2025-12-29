@@ -26,6 +26,7 @@ export default function CartSidebar() {
     >
             <div className="absolute bottom-0 right-0 opacity-20">
                     <Image
+                    
                       alt=""
                       src={"/Images/bg1.png"}
                       width={360}
@@ -45,6 +46,7 @@ export default function CartSidebar() {
    <div className="flex flex-col my-24 items-center justify-center">
   <img
     src="/Images/cart.gif" 
+    loading="lazy"
     alt="Empty Cart"
     className="w-40 h-40 mb-4 "
   />
@@ -58,6 +60,7 @@ export default function CartSidebar() {
             {wishlist.map((item) => (
               <Link href={`/product/${item.name}/${item._id}`} key={item._id} className="group flex items-start gap-4 text-md">
                 <Image
+                
                   src={item.images[0]}
                   alt={item.name}
                   width={400}

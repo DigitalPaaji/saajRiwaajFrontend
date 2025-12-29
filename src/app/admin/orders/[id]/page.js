@@ -248,6 +248,7 @@ const OrderDetails = () => {
                   <Image
                     alt={item.product?.name || "Product"}
                     width={220}
+                    
                     height={220}
                     src={item.product.images?.[0]}
                     className="w-16 h-16 object-cover"
@@ -278,7 +279,7 @@ const OrderDetails = () => {
               </td>
               <td td className="p-3 border-b">
                  <Image
-                    alt={item?.product?.barcode || "Product"}
+                 
                     width={220}
                     height={220}
                     src={item?.product?.barcode}

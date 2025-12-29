@@ -107,6 +107,7 @@ export default function SearchBar({ products, onClose }) {
       <div className="w-full">
         <img
           src={item.images?.[0]}
+          loading="lazy"
           alt={item.name}
           className="sm:h-40 lg:h-60 w-full object-cover transition-transform duration-300 group-hover:scale-105"
         />

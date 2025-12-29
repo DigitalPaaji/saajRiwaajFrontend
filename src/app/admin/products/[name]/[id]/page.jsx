@@ -111,7 +111,7 @@ const ImageUploader = ({
                 width={300}
                 height={300}
                 className="w-full h-full object-cover rounded-lg shadow-sm"
-                unoptimized // Optional if using external URLs without loader config
+                 
               />
               <button
                 type="button"
@@ -751,6 +751,7 @@ const handelRemovehidden= async(val)=>{
                   <div className="flex gap-2 items-start flex-wrap mt-6">
                     {product.images.map((img, idx) => (
                       <Image
+                      
                         key={idx}
                         alt={`Product image ${idx + 1}`}
                         src={img}
@@ -786,6 +787,7 @@ const handelRemovehidden= async(val)=>{
                 {isViewMode && product.barcode && (
                   <div className="mt-4">
                     <Image
+                    
                       src={product.barcode}
                       alt="Product Barcode"
                       width={200}
@@ -913,6 +915,7 @@ const handelRemovehidden= async(val)=>{
 
               <img
                 src={img}
+                loading="lazy"
                 alt={`Product image ${idx + 1}`}
                 onClick={() => {
                   variant.images.includes(img)
@@ -968,6 +971,7 @@ const handelRemovehidden= async(val)=>{
                             />
                             <img
                               src={item}
+                              loading="lazy"
                               alt={`Product image ${index + 1}`}
                               width={300}
                               height={300}
@@ -1023,7 +1027,7 @@ const handelRemovehidden= async(val)=>{
                             {
                              v.images?.map((sor,index) => {
                               return(
-                               <img src={sor} key={index} alt={index}   width={300}
+                               <img src={sor} key={index} alt={index}   width={300} loading="lazy"
                               height={300}
                               className="w-40 h-40 object-cover rounded cursor-pointer" />
                               )

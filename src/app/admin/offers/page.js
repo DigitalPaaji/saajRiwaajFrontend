@@ -207,7 +207,7 @@ export default function OffersPage() {
 
         {image && (
           <div className="mt-3 relative w-40 h-28 border rounded-lg overflow-hidden shadow-sm">
-            <Image src={image} alt="Offer" fill className="object-cover" />
+            <Image  src={image} alt="Offer" fill className="object-cover" />
           </div>
         )}
 
@@ -247,6 +247,7 @@ export default function OffersPage() {
 
                   <td className="px-4 py-3">
                     <Image
+                    
                       src={offer.image}
                       alt="Offer"
                       width={70}

@@ -110,10 +110,10 @@ if (data.user.role.includes("admin")) {
   return (
     <div className="md:grid grid-cols-2 ">
    <div className="hidden md:block">
-    <Image alt="" src={'/Images/admin.webp'} width={400} height={400} className="w-full h-screen object-cover"/>
-    {/* <Image alt="" src={'/Images/admin.webp'} width={400} height={400} className="w-full h-auto object-cover"/>
-    <Image alt="" src={'/Images/admin.webp'} width={400} height={400} className="w-full h-auto object-cover"/>
-    <Image alt="" src={'/Images/admin.webp'} width={400} height={400} className="w-full h-auto object-cover"/> */}
+    <Image alt=""  src={'/Images/admin.webp'} width={400} height={400} className="w-full h-screen object-cover"/>
+    {/* <Image  alt="" src={'/Images/admin.webp'} width={400} height={400} className="w-full h-auto object-cover"/>
+    <Image  alt="" src={'/Images/admin.webp'} width={400} height={400} className="w-full h-auto object-cover"/>
+    <Image  alt="" src={'/Images/admin.webp'} width={400} height={400} className="w-full h-auto object-cover"/> */}
 
    </div>
 

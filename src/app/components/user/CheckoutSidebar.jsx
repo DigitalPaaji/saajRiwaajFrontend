@@ -329,7 +329,7 @@ location.reload()
           {/* ✅ SUCCESS SCREEN */}
           {success ? (
             <div className="min-h-screen flex flex-col items-center space-y-5  py-20 text-center ">
-              <Image src={'/Images/success.gif'} alt="" width={400} height={400} className="w-full h-40 object-contain"/>
+              <Image  src={'/Images/success.gif'} alt="" width={400} height={400} className="w-full h-40 object-contain"/>
             
               <h3 className="text-green-600 text-xl font-mosetta font-medium text-center">
                 Order placed successfully! 🎉

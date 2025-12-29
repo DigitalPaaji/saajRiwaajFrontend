@@ -66,6 +66,7 @@ export default function ShopByCategory() {
         <div className="absolute -top-24 -right-12 opacity-20">
               <Image
                 alt=""
+                
                 src={"/Images/bg1.png"}
                 width={360}
                 height={360}
@@ -135,6 +136,7 @@ export default function ShopByCategory() {
                         <Image
                          width={400}
                   height={400}
+                  
                           src={
                             hoveredIndex === index && product.images?.[1]
                               ? product.images[1]

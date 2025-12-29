@@ -206,7 +206,7 @@ export default function BannerManager() {
                   alt="Desktop"
                   fill
                   className="object-cover"
-                  unoptimized
+                  
                 />
               </div>
             )}
@@ -251,7 +251,7 @@ export default function BannerManager() {
                   alt="Mobile"
                   fill
                   className="object-cover"
-                  unoptimized
+                  
                 />
               </div>
             )}
@@ -305,7 +305,7 @@ export default function BannerManager() {
                         width={600}
                         height={250}
                         className="object-cover w-full h-auto"
-                        unoptimized
+                        
                       />
                       <p className="text-xs text-center mt-2 text-gray-500">
                         Desktop View
@@ -325,7 +325,7 @@ export default function BannerManager() {
                         width={600}
                         height={250}
                         className="object-cover w-full h-auto"
-                        unoptimized
+                        
                       />
                       <p className="text-xs text-center mt-2 text-gray-500">
                         Mobile View

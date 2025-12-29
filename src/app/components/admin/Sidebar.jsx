@@ -76,6 +76,7 @@ function Sidebar() {
               <Link href="/" className="flex-shrink-0 group">
                 <img
                   src="/Images/logo.webp"
+                  loading="lazy"
                   alt="Logo"
                   className="h-10 w-auto lg:h-12"
                 />

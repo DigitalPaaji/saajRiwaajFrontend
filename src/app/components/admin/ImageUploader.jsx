@@ -106,7 +106,7 @@ export default function ImageUploader({ onUploadComplete, uploadedImages, onRemo
                 <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4">
                     {uploadedImages.map((url, index) => (
                         <div key={index} className="relative aspect-square group">
-                            <img src={url} alt={`Uploaded preview ${index + 1}`} className="w-full h-full object-cover rounded-lg shadow-sm" />
+                            <img loading="lazy" src={url} alt={`Uploaded preview ${index + 1}`} className="w-full h-full object-cover rounded-lg shadow-sm" />
                             <Button
                                 variant="destructive"
                                 size="icon"

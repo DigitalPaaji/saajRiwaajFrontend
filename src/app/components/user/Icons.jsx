@@ -11,7 +11,8 @@ function Icons() {
               href="https://wa.me/9988823422"
               className=" text-white  flex items-center justify-center  "
             >
-              <Image unoptimized
+              <Image 
+              
                 src={"/Images/whatsapp.gif"}
                 // src={"/Images/services/whIcon.webp"}
 

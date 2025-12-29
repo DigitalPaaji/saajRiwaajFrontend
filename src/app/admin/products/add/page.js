@@ -111,7 +111,7 @@ const ImageUploader = ({
                 width={300}
                 height={300}
                 className="w-full h-full object-cover rounded-lg shadow-sm"
-                unoptimized
+                
               />
               <button
                 type="button"
@@ -705,7 +705,7 @@ export default function AddProductPage() {
                       width={200}
                       height={200}
                       className="rounded-lg border"
-                      unoptimized
+                      
                     />
                     <button
                       type="button"
@@ -787,6 +787,7 @@ export default function AddProductPage() {
                                 alt={`Product image ${idx + 1}`}
                                 src={img}
                                 width={300}
+                                loading="lazy"
                                 height={300}
                                 onClick={() => {
                                   variant.images.includes(img)
@@ -827,6 +828,7 @@ export default function AddProductPage() {
                             />
                             <img
                               src={item}
+                              loading="lazy"
                               alt={`Product image ${index + 1}`}
                               width={300}
                               height={300}

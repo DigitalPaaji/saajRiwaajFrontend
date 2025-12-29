@@ -90,6 +90,7 @@ export default function EarringsMarquee() {
                       <div className="w-full h-[300px] relative">
                         <img
                           src={item.images?.[0]}
+                          loading="lazy"
                           alt={item.name}
                           className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                         />

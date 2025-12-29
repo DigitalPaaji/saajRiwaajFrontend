@@ -22,6 +22,7 @@ export default function EditorialSection() {
     >
       <img
         src={item.image}
+        loading="lazy"
         alt={item.title}
         className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
       />

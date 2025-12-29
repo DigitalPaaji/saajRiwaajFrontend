@@ -221,6 +221,7 @@ const funshow=(title,incl)=>{
               {(newImg || product.images).map((img, idx) => (
                 <Image
                   key={idx}
+                  
                   src={img}
                   alt={`Thumbnail ${idx + 1}`}
                   width={100}
@@ -563,6 +564,7 @@ onClick={()=>handelAddtocart()}
                     <div className="absolute inset-0 flex flex-col items-center justify-end  rounded-2xl backface-hidden p-6 text-center text-white">
                       <img
                         src={card.img}
+                        loading="lazy"
                         alt={card.frontTitle}
                         className="w-24 h-auto object-cover mb-4"
                       />
@@ -578,6 +580,7 @@ onClick={()=>handelAddtocart()}
                     <div className="absolute inset-0  rounded-2xl backface-hidden rotate-y-180 p-6 flex flex-col items-center justify-end text-white">
                       {/*            
                  <img
+                 loading="lazy"
               src={card.img}
               alt={card.frontTitle}
               className="w-24 h-auto object-cover mb-4"

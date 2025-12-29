@@ -97,7 +97,7 @@ export default function Collection({ Pid, filters = { subCategories: [], tags: [
         alt={product.name}
         fill
         className="object-cover  transition-all duration-500 ease-in-out group-hover:scale-105"
-        unoptimized
+        
       />
     </div>
   </div>

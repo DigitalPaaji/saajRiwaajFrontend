@@ -29,7 +29,7 @@ export default function ImagePreviewModal({ src, onClose }) {
     alt="Preview"
     fill
     className="object-contain rounded-xl"
-    unoptimized
+    
   />
 </div>
 

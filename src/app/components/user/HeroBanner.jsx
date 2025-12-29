@@ -52,11 +52,13 @@ export default function HeroBanner() {
           <SwiperSlide key={index}>
             <div className="relative w-full h-full">
               <img
+              loading="lazy"
                 src={banner.mobileImage}
                 alt="Mobile Banner"
                 className="block lg:hidden w-full h-full"
               />
               <img
+              loading="lazy"
                 src={banner.desktopImage}
                 alt="Desktop Banner"
                 className="hidden lg:block w-full h-full"

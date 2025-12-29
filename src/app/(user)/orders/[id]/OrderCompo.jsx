@@ -234,6 +234,7 @@ const OrderCompo = ({ id }) => {
                   <div key={item._id} className="flex flex-col sm:flex-row gap-4 pb-6 border-b border-gray-100 last:border-0 last:pb-0">
                     <div className="w-full h-60 md:w-24 md:h-24 flex-shrink-0 ">
                       <img
+                      loading="lazy"
                         src={item.product.images[0]}
                         alt={item.product.name}
                         className="w-full h-full object-contain object-left md:object-cover md:rounded-lg  md:border md:border-[#d4af37]/30"

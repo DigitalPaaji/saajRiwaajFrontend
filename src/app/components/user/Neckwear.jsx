@@ -127,6 +127,7 @@ export default function EarringsMarquee() {
               >
                 <div className="relative h-[300px]">
                   <Image
+                  
                     src={item.images?.[0]}
                     alt={item.name}
                     fill
