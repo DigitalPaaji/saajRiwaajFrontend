@@ -72,11 +72,11 @@ export default function EarringsMarquee({ categoryId, categoryName }) {
         >
           {subCategories.map((sub) => (
             <SwiperSlide key={sub._id} className="!w-auto">
-              <Link href={`/category/neckwear/${sub._id}`}>
+              {/* <Link href={`/category/neckwear/${sub._id}`}> */}
                 <div className="hover:bg-[#B67032] text-nowrap hover:text-white rounded-xl px-4 py-2 transition-all duration-300 text-[#B67032] text-sm lg:text-md font-medium cursor-pointer">
                   {sub.name.toUpperCase()}
                 </div>
-              </Link>
+              {/* </Link> */}
             </SwiperSlide>
           ))}
         </Swiper>
@@ -133,10 +133,10 @@ export default function EarringsMarquee({ categoryId, categoryName }) {
                         alt={item.name}
                         className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                       />
-                      {item.subCategory ||
+                      {/* {item.subCategory ||
                         (item.subcategory?.name && (
                           <div className="absolute top-2 left-2 bg-[#B67032] text-white text-xs px-2 py-1 rounded"></div>
-                        ))}
+                        ))} */}
                     </div>
                     <div className="p-4 flex flex-col justify-between">
                       <h4 className="font-semibold text-stone-800 group-hover:text-[#B67032] transition-colors text-md truncate">
