@@ -15,7 +15,7 @@ function Icons() {
               
                 src={"/Images/whatsapp.gif"}
                 // src={"/Images/services/whIcon.webp"}
-
+unoptimized
                 width={200}
                 height={200}
                 alt="img"
