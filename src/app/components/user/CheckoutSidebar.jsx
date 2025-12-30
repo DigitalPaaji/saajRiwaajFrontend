@@ -254,12 +254,23 @@ async function openPhonePePayPage(tokenUrl, orderId) {
             `${process.env.NEXT_PUBLIC_LOCAL_PORT}/order/phonepe/status/${orderId}`
           );
           if (statusRes.data.success) {
-        Swal.fire({
-  title: data.message,
-  icon: "success",
-  draggable: true
+Swal.fire({
+  title: "Order Placed Successfully!",
+  imageUrl: "/Images/success.gif",
+  imageWidth: 140,
+  imageHeight: 140,
+  imageAlt: "Order Success",
+  showConfirmButton: true,
+  confirmButtonText: "OK",
+}).then((result) => {
+  if (result.isConfirmed) {
+    setTimeout(() => {
+      window.location.href = "/orders";
+    }, 2000);
+  }
 });
-location.reload()
+
+
           } else {
               Swal.fire({
                  title: "Oops...",

@@ -15,6 +15,8 @@ import {
   FiDollarSign,
   FiPercent
 } from 'react-icons/fi';
+import { FaIndianRupeeSign } from "react-icons/fa6";
+
 import { FaRegGem, FaTag } from 'react-icons/fa';
 import { TbPackageImport } from 'react-icons/tb';
 import { MdLocalOffer } from 'react-icons/md';
@@ -292,7 +294,7 @@ const OrderCompo = ({ id }) => {
             {/* Payment Summary */}
             <div className="bg-white rounded-2xl shadow-lg border border-[#d4af37]/40 p-6">
               <h2 className="text-xl font-semibold text-gray-800 mb-6 flex items-center gap-2">
-                <FiDollarSign className="text-[#B67032]" />
+                <FaIndianRupeeSign  className="text-[#B67032]" />
                 Payment Summary
               </h2>
               
