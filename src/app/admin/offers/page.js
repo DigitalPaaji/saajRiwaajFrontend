@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import { FaPlus } from "react-icons/fa";
 import { UploadCloud, Loader2, X } from "lucide-react";
 import Image from "next/image";
@@ -91,11 +91,13 @@ export default function OffersPage() {
         body: JSON.stringify({ title, image ,minquantity,price}),
       });
 
-      if (res.ok) {
+      const data = await res.json()
+      if (data.success) {
         toast.success("Offer added!");
         setTitle("");
         setImage("");
-        fetchOffers();
+        location.reload()
+        // fetchOffers();
       } else {
         toast.error("Failed to add offer.");
       }
@@ -118,7 +120,8 @@ export default function OffersPage() {
 
       if (res.ok) {
         toast.success("Offer deleted!");
-        fetchOffers();
+        location.reload()
+        // fetchOffers();
       } else {
         toast.error("Failed to delete.");
       }
