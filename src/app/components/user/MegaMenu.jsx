@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { useGlobalContext } from '../context/GlobalContext';
+import { getOptimizedImage } from '../utils/cloudinary';
+import Image from 'next/image';
 
 export default function MegaMenu({ onClose, category, subcategories }) {
     if (!category || !subcategories?.length) return null;
@@ -72,14 +74,16 @@ function formatCategoryLabel(name) {
       onClick={onClose}
       className="group flex flex-col items-center bg-stone-50 rounded-lg overflow-hidden hover:shadow-md transition-shadow"
     >
-      <div className="w-full">
-        <img
-          src={item.images?.[0]}
-          loading="lazy"
-          alt={item.name}
-          className="h-60 w-full object-cover transition-transform duration-300 group-hover:scale-105"
-        />
-      </div>
+     <div className="w-full h-60 relative overflow-hidden">
+  <Image
+    src={getOptimizedImage(item.images?.[0], { maxWidth: 600 })}
+    alt={item.name || "Product image"}
+    fill
+    sizes="(max-width: 768px) 100vw, 33vw"
+    loading="lazy"
+    className="object-cover object-center transition-transform duration-300 group-hover:scale-105"
+  />
+</div>
       <div className="p-4 flex-1">
         <h4 className="font-semibold text-stone-800 group-hover:text-[#B67032] transition-colors">
           {item.name}

@@ -4,6 +4,7 @@ import { Heart, ShoppingCart, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { React } from "react";
+import { getOptimizedImage } from "../utils/cloudinary";
 
 export default function CartSidebar() {
   const { isWishlistOpen, setIsWishlistOpen, addToCart, wishlist, removeFromWishlist } = useGlobalContext();
@@ -59,14 +60,16 @@ export default function CartSidebar() {
           <div className=" p-4 space-y-4 overflow-y-auto flex-1">
             {wishlist.map((item) => (
               <Link href={`/product/${item.name}/${item._id}`} key={item._id} className="group flex items-start gap-4 text-md">
-                <Image
-                
-                  src={item.images[0]}
-                  alt={item.name}
-                  width={400}
-                  height={400}
-                  className="w-24 h-24 rounded-md object-cover"
-                />
+             <Image
+  src={getOptimizedImage(item.images?.[0], { maxWidth: 200 })}
+  alt={item.name}
+  width={96}
+  height={96}
+  sizes="96px"
+  loading="lazy"
+  className="rounded-md object-cover"
+/>
+
                 <div className="flex-1 space-y-2">
                   <p className=" ">{item.name}</p>
                  

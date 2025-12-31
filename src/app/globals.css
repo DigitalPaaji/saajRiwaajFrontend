@@ -119,7 +119,7 @@ body {
 
 /* Custom Scrollbar for thumbnails */
 .custom-scrollbar::-webkit-scrollbar {
-  width: 6px;
+  width: 2px;
 }
 .custom-scrollbar::-webkit-scrollbar-track {
   background: transparent;

@@ -8,6 +8,7 @@ import "swiper/css/navigation";
 import { useGlobalContext } from "../context/GlobalContext";
 import { Heart } from "lucide-react";
 import Image from "next/image";
+import { getOptimizedImage } from "../utils/cloudinary";
 
 export default function EarringsMarquee() {
   const { subCategoriesMap, wishlist, refetchProductsByCategory } = useGlobalContext();
@@ -45,16 +46,18 @@ export default function EarringsMarquee() {
 
   const loop = filteredProducts;
   return (
-    <section className="relative z-50 -py-16 px-4 sm:px-8 lg:px-16 ">
+    <section className="relative z-50 py-16 px-4 sm:px-8 lg:px-16">
        <div className="absolute z-0 top-0  right-1/2 opacity-40">
-        <Image
-          alt=""
-          
-          src={"/Images/bg1.png"}
-          width={220}
-          height={220}
-          className="w-full h-auto rotate-x-0 object-cover"
-        />
+      <Image
+  src="/Images/bg1.png"
+  alt=""
+  width={220}
+  height={220}
+  priority={false}
+  sizes="(max-width: 768px) 100vw, 220px"
+  className="w-full h-auto object-cover"
+/>
+
       </div>
       {" "}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 items-center mb-8">
@@ -134,12 +137,14 @@ export default function EarringsMarquee() {
                     className="group flex-shrink-0 w-full rounded-xl overflow-hidden shadow hover:shadow-md transition-shadow"
                   >
                     <div className="w-full h-[300px] relative">
-                      <img
-                        src={item.images?.[0]}
-                        loading="lazy"
-                        alt={item.name}
-                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                      />
+                    <img
+  src={getOptimizedImage(item.images?.[0], { maxWidth: 800 })}
+loading="eager"
+fetchPriority="high"
+  alt={item.name}
+  className="w-full h-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
+/>
+
                       <div className="absolute top-2 left-2 bg-[#B67032] text-white text-xs px-2 py-1 rounded">
                         {item.subCategory ||
                           item.subcategory?.name ||

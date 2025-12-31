@@ -6,6 +6,8 @@ import { Navigation, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import { useGlobalContext } from "../context/GlobalContext";
+import { getOptimizedImage } from "../utils/cloudinary";
+import Image from "next/image";
 
 export default function EarringsMarquee({ categoryId, categoryName }) {
   const {
@@ -126,18 +128,23 @@ export default function EarringsMarquee({ categoryId, categoryName }) {
                     href={`/product/${item.name}/${item._id}`}
                     className="group flex-shrink-0 w-full bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition-shadow"
                   >
-                    <div className="w-full h-[300px] relative">
-                      <img
-                        src={item.images?.[0]}
-                        loading="lazy"
-                        alt={item.name}
-                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                      />
-                      {/* {item.subCategory ||
-                        (item.subcategory?.name && (
-                          <div className="absolute top-2 left-2 bg-[#B67032] text-white text-xs px-2 py-1 rounded"></div>
-                        ))} */}
-                    </div>
+                   <div className="w-full h-[300px] relative overflow-hidden group">
+  <Image
+    src={getOptimizedImage(item.images?.[0], { maxWidth: 800 })}
+    alt={item.name || "Product image"}
+    fill
+    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+    loading="lazy"
+    className="object-cover object-center transition-transform duration-300 group-hover:scale-105"
+  />
+
+  {/* Optional category badge */}
+  {(item.subCategory || item.subcategory?.name) && (
+    <div className="absolute top-2 left-2 bg-[#B67032] text-white text-xs px-2 py-1 rounded">
+      {item.subCategory || item.subcategory?.name}
+    </div>
+  )}
+</div>
                     <div className="p-4 flex flex-col justify-between">
                       <h4 className="font-semibold text-stone-800 group-hover:text-[#B67032] transition-colors text-md truncate">
                         {item.name}
@@ -206,18 +213,16 @@ export default function EarringsMarquee({ categoryId, categoryName }) {
                       href={`/product/${item.name}/${item._id}`}
                       className="group flex-shrink-0 w-full bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition-shadow"
                     >
-                      <div className="w-full h-[300px] relative">
-                        <img
-                          src={item.images?.[0]}
-                          loading="lazy"
-                          alt={item.name}
-                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                        />
-                        {/* {item.subCategory ||
-                          (item.subcategory?.name && (
-                            <div className="absolute top-2 left-2 bg-[#B67032] text-white text-xs px-2 py-1 rounded"></div>
-                          ))} */}
-                      </div>
+                  <div className="w-full h-[300px] relative overflow-hidden">
+  <Image
+    src={getOptimizedImage(item.images?.[0], { maxWidth: 800 })}
+    alt={item.name || "Product image"}
+    fill
+    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+    loading="lazy"
+    className="object-cover object-center transition-transform duration-300 group-hover:scale-105"
+  />
+</div>
                       <div className="p-4 flex flex-col justify-between">
                         <h4 className="font-semibold text-stone-800 group-hover:text-[#B67032] transition-colors text-md truncate">
                           {item.name}

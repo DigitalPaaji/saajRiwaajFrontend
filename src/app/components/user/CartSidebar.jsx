@@ -8,6 +8,7 @@ import CheckoutSidebar from "./CheckoutSidebar";
 import Link from "next/link";
 import Offervalue from "./Offervalue";
 import axios from "axios";
+import { getOptimizedImage } from "../utils/cloudinary";
 axios.defaults.withCredentials=true
 
 export default function CartSidebar() {
@@ -172,14 +173,16 @@ try {
                   <Link href={`/product/${item?.product?.name}/${item?.product?._id}`} 
                    onClick={() => setIsCartOpen(false)}
                   >
-                    <Image
-                    
-                      src={item?.product?.images[0]}
-                      alt={item?.product?.name}
-                      width={400}
-                      height={400}
-                      className="w-24 h-24 rounded-md object-cover"
-                    />
+
+<Image
+  src={getOptimizedImage(item?.product?.images?.[0], { maxWidth: 200 })}
+  alt={item?.product?.name || "Product image"}
+  width={96}
+  height={96}
+  sizes="96px"
+  loading="lazy"
+  className="w-24 h-24 rounded-md object-cover"
+/>
                   </Link>
                   <div className="flex-1 space-y-2">
                     <p className="">{item?.product?.name}</p>

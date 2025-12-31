@@ -7,6 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useGlobalContext } from "../../components/context/GlobalContext";
 import Banner from "../../components/user/InnerBanner";
+import { getOptimizedImage } from "@/app/components/utils/cloudinary";
 
 export default function OrdersPage() {
   const { allProducts, setIsAuthOpen } = useGlobalContext();
@@ -263,20 +264,22 @@ const slugify= (name)=>{
                         <Link href={`/orders/${order._id}`}
                 className="flex gap-4 items-center border-b border-[#d4af37]/40 pb-3"
               >
-                        <div className="w-20 h-20 rounded-lg bg-gray-50 overflow-hidden">
-                          <Link
-                            href={`/product/${product?.name}/${product?._id}`}
-                          >
-                            <Image
-                            
-                              src={product.images?.[0] || "/Images/img.webp"}
-                              width={400}
-                              height={400}
-                              alt="Product"
-                              className="w-full h-full object-cover"
-                            />
-                          </Link>
-                        </div>
+                   <div className="w-20 h-20 rounded-lg bg-gray-50 overflow-hidden">
+  <Link href={`/product/${product?.name}/${product?._id}`}>
+    <Image
+      src={
+        product.images?.[0]
+          ? getOptimizedImage(product.images[0], { maxWidth: 400 })
+          : "/Images/img.webp"
+      }
+      alt={product.name || "Product"}
+      width={80} // matches w-20
+      height={80} // matches h-20
+      className="w-full h-full object-cover"
+      loading="lazy"
+    />
+  </Link>
+</div>
  
                         <div className="flex-1">
                           <Link href={`/product/${slugify(product?.name)}/${product._id}`} className="text-lg font-medium text-gray-700">

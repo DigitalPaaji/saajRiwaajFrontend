@@ -2,6 +2,7 @@
 import React from "react";
 import Image from "next/image";
 import { X } from "lucide-react";
+import { getOptimizedImage } from "../utils/cloudinary";
 
 export default function ImagePreviewModal({ src, onClose }) {
   if (!src) return null;
@@ -22,17 +23,16 @@ export default function ImagePreviewModal({ src, onClose }) {
         >
           <X className="w-5 h-5" />
         </button>
-
-        <div className="relative w-full h-[500px]">
+<div className="relative w-full h-[500px]">
   <Image
-    src={src}
+    src={getOptimizedImage(src, { maxWidth: 1000 })}
     alt="Preview"
     fill
+    sizes="(max-width: 768px) 100vw, 800px"
     className="object-contain rounded-xl"
-    
+    loading="lazy"
   />
 </div>
-
       </div>
     </div>
   );

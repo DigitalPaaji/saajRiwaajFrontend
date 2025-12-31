@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useGlobalContext } from "../context/GlobalContext";
 import { FaRupeeSign } from "react-icons/fa";
 import Image from "next/image";
+import { getOptimizedImage } from "../utils/cloudinary";
 
 export default function ShopByCategory() {
   const { featuredProducts, refetchFeaturedProducts } = useGlobalContext();
@@ -61,15 +62,16 @@ export default function ShopByCategory() {
                   key={product._id}
                   className="group"
                 >
-                  <div className="aspect-square rounded-full overflow-hidden shadow-lg relative">
-                    {/* Hover Image Swap */}
-                    <img
-                      src={product.images?.[0]}
-                      loading="lazy"
-                      alt={product.name}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                    />
-                  </div>
+         <div className="aspect-square rounded-full overflow-hidden shadow-lg relative group">
+  <Image
+    src={getOptimizedImage(product.images?.[0], { maxWidth: 400 })}
+    alt={product.name}
+    fill
+    sizes="(max-width: 768px) 50vw, 200px"
+    className="object-cover object-cover transition-transform duration-500 group-hover:scale-110"
+    loading="lazy"
+  />
+</div>
                   <h3 className="font-serif font-medium mt-4 text-lg text-stone-700 group-hover:text-[#B67032] transition-colors duration-300">
                     {product.name}
                   </h3>

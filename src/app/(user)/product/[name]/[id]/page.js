@@ -22,6 +22,7 @@ import {
 import { FaHeart } from "react-icons/fa";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { getOptimizedImage } from "@/app/components/utils/cloudinary";
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -133,7 +134,7 @@ useEffect(()=>{
 
   if (!product)
     return (
-      <div className="flex flex-col lg:flex-row gap-6 px-4 md:px-12 xl:px-40 py-12 ">
+      <div className="flex flex-col xl:flex-row gap-6 px-4 md:px-12 xl:px-40 py-12 ">
         {/* Left: Image Skeleton */}
         <div className="w-full xl:w-1/2 space-y-4">
           <div className="flex gap-4">
@@ -212,31 +213,30 @@ const funshow=(title,incl)=>{
 
   return (
     <div>
-      <div className="relative flex flex-col items-center lg:flex-row lg:items-start justify-center flex-wrap lg:flex-nowrap gap-6 px-4 md:px-12 xl:px-24 py-12 ">
+      <div className="relative flex flex-col items-center xl:flex-row xl:items-start justify-center flex-wrap xl:flex-nowrap gap-6 px-4 md:px-12 xl:px-24 py-12 ">
         {/* Left: Sticky Images */}
-        <div className="w-full xl:w-1/2 lg:sticky lg:top-24  ">
+        <div className="w-full xl:w-1/2 xl:sticky xl:top-24  ">
           <div className="flex flex-col md:flex-row items-center gap-4">
          
-            <div className="flex   md:flex-col gap-4 max-h-[600px] overflow-y-auto pr-1 custom-scrollbar">
-              {(newImg || product.images).map((img, idx) => (
-                <Image
-                  key={idx}
-                  
-                  src={img}
-                  alt={`Thumbnail ${idx + 1}`}
-                  width={100}
-                  height={100}
-                  className={`w-24 h-24 object-cover rounded-tl-2xl rounded-br-2xl cursor-pointer transition-all duration-200 ${
-                    selectedImage === img ? "border-2 border-[#B67032]" : ""
-                  }`}
-                  onClick={() => setSelectedImage(img)}
-                />
-              ))}
-            </div>
-
+          <div className="flex md:flex-col gap-4 max-h-[600px] overflow-y-auto pr-1 custom-scrollbar">
+  {(newImg || product.images)?.map((img, idx) => (
+    <Image
+      key={idx}
+      src={getOptimizedImage(img, { maxWidth: 200, quality: "auto:eco" })}
+      alt={`Thumbnail ${idx + 1}`}
+      width={100}
+      height={100}
+      className={`w-24 h-24 object-cover object-center rounded-tl-2xl rounded-br-2xl cursor-pointer transition-all duration-200 ${
+        selectedImage === img ? "border-2 border-[#B67032]" : ""
+      }`}
+      onClick={() => setSelectedImage(img)}
+      loading="lazy"
+    />
+  ))}
+</div>
             
             <div
-              className="relative w-full h-[400px]  xl:h-[700px] overflow-hidden  rounded-md  cursor-zoom-in "
+              className="relative w-full h-[400px]  lg:h-[700px] overflow-hidden  rounded-md  cursor-zoom-in"
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
               style={{
@@ -262,7 +262,7 @@ const funshow=(title,incl)=>{
               <h1 className="text-2xl md:text-4xl font-serif text-stone-900">
                 {funshow(product.name,"name")}
               </h1>
-              <p className="lg:text-md text-stone-700 mt-2 capitalize">
+              <p className="xl:text-md text-stone-700 mt-2 capitalize">
                 {product?.category?.name}{" "}
                 {product.subcategory?.name && `→ ${product.subcategory.name}`}
               </p>
@@ -523,14 +523,14 @@ onClick={()=>handelAddtocart()}
 
               {/* Paragraphs */}
               {product.description?.paragraphs?.map((para, idx) => (
-                <p key={idx} className="lg:text-md  text-stone-800 my-4">
+                <p key={idx} className="xl:text-md  text-stone-800 my-4">
                   {para}
                 </p>
               ))}
 
               {/* Bullet Points */}
               {product.description?.bulletPoints?.length > 0 && (
-                <div className=" lg:text-md text-stone-800 marker:text-[#B67032]  space-y-2">
+                <div className=" xl:text-md text-stone-800 marker:text-[#B67032]  space-y-2">
                   {product.description.bulletPoints.map((point, idx) => (
                     <h6 key={idx}>{point}</h6>
                   ))}

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { FaRupeeSign } from 'react-icons/fa';
+import { getOptimizedImage } from '../utils/cloudinary';
 
 export default function Collection({ offerId }) {
 
@@ -54,22 +55,24 @@ export default function Collection({ offerId }) {
                   className="group block border border-stone-200 p-4"
                 >
                   <div
-                    className="group relative aspect-square overflow-hidden hover:shadow-xl transition-all duration-300"
-                    onMouseEnter={() => setHoveredIndex(index)}
-                    onMouseLeave={() => setHoveredIndex(null)}
-                  >
-                    <Image
-                      src={
-                        hoveredIndex === index && product.images?.[1]
-                          ? product.images[1]
-                          : product.images?.[0]
-                      }
-                      alt={product.name}
-                      fill
-                      className="object-cover transition-all duration-500 ease-in-out group-hover:scale-105"
-                      
-                    />
-                  </div>
+  className="group relative aspect-square overflow-hidden hover:shadow-xl transition-all duration-300"
+  onMouseEnter={() => setHoveredIndex(index)}
+  onMouseLeave={() => setHoveredIndex(null)}
+>
+  <Image
+    src={getOptimizedImage(
+      hoveredIndex === index && product.images?.[1]
+        ? product.images[1]
+        : product.images?.[0],
+      { maxWidth: 600 }
+    )}
+    alt={product.name || "Product image"}
+    fill
+    sizes="(max-width: 768px) 50vw, 25vw"
+    className="object-cover transition-all duration-500 ease-in-out group-hover:scale-105"
+    loading="lazy"
+  />
+</div>
 
                   <div className="flex items-center justify-between flex-wrap mt-4 px-1">
                     <h3 className="font-semibold md:text-md text-gray-700 group-hover:text-[#B67032] transition-colors duration-300 truncate max-w-[60%]">
