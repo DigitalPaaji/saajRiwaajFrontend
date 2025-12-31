@@ -7,7 +7,7 @@ export default function Banner({ title = '', image = '/Images/innerbanner.webp' 
     <div
       className="bgBanner relative w-full h-[250px] md:h-[400px] flex items-center justify-center  text-[#B67032]  bg-[#b6703234]"
       style={{
-        backgroundImage: `url(/Images/innerbanner2.webp)`,
+        backgroundImage: `url(/Images/innerBanner3.webp)`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
