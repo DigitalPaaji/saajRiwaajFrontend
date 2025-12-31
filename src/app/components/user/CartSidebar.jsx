@@ -303,13 +303,13 @@ className={` px-2 bg-gray-100 hover:bg-gray-200 ${item.product.colorVariants.fin
         )}
       </div> 
 
-      {/* <CheckoutSidebar
+      <CheckoutSidebar
         isOpen={showCheckout}
         setIsOpen={setShowCheckout}
         cart={cart}
         total={total}
         discountPercent={discountPercent}
-      /> */}
+      />
     </>
   );
 }
