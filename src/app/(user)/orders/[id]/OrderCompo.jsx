@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import {
   FiPackage,
@@ -13,20 +13,23 @@ import {
   FiCreditCard,
   FiCalendar,
   FiDollarSign,
-  FiPercent
+  FiPercent,
+  FiDownload,
+  FiPrinter
 } from 'react-icons/fi';
 import { FaIndianRupeeSign } from "react-icons/fa6";
-
 import { FaRegGem, FaTag } from 'react-icons/fa';
 import { TbPackageImport } from 'react-icons/tb';
 import { MdLocalOffer } from 'react-icons/md';
 import { TbTruckDelivery } from "react-icons/tb";
-
-
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 const OrderCompo = ({ id }) => {
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [generatingInvoice, setGeneratingInvoice] = useState(false);
+  const invoiceRef = useRef(null);
 
   const fetchData = async () => {
     try {
@@ -95,12 +98,14 @@ const OrderCompo = ({ id }) => {
   };
 
   const calculateSavings = (order) => {
+    if (!order || !order.items) return { totalOriginal: 0, totalDiscounted: 0, savings: 0 };
+    
     let totalOriginal = 0;
     let totalDiscounted = 0;
     
     order.items.forEach(item => {
-      totalOriginal += item.product.price * item.quantity;
-      totalDiscounted += item.price * item.quantity;
+      totalOriginal += (item.product?.price || 0) * item.quantity;
+      totalDiscounted += (item.price || 0) * item.quantity;
     });
     
     return {
@@ -108,6 +113,208 @@ const OrderCompo = ({ id }) => {
       totalDiscounted,
       savings: totalOriginal - totalDiscounted
     };
+  };
+
+  const generateInvoice = async () => {
+    if (!order || generatingInvoice) return;
+    
+    setGeneratingInvoice(true);
+    
+    try {
+      const input = invoiceRef.current;
+      
+        
+      const tempElement = document.createElement('div');
+      tempElement.innerHTML = generateInvoiceHTML();
+      document.body.appendChild(tempElement);
+      
+      // Remove any unsupported CSS before capturing
+      const unsupportedStyles = document.querySelectorAll('style');
+      unsupportedStyles.forEach(style => {
+        if (style.textContent.includes('oklch')) {
+          style.remove();
+        }
+      });
+
+      const canvas = await html2canvas(tempElement, {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        backgroundColor: '#ffffff',
+        ignoreElements: (element) => {
+         
+          const style = window.getComputedStyle(element);
+          const bg = style.background || style.backgroundColor;
+          return bg && bg.includes('oklch');
+        }
+      });
+
+      // Remove temporary element
+      document.body.removeChild(tempElement);
+
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4'
+      });
+
+      const imgWidth = 190;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+      pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
+      pdf.save(`Invoice_${order._id}_${new Date().toISOString().split('T')[0]}.pdf`);
+      
+    } catch (error) {
+      console.error('Error generating invoice:', error);
+      
+      // Fallback: Create a simpler PDF
+      try {
+        const pdf = new jsPDF();
+        pdf.text(`Invoice - Order ID: ${order._id}`, 20, 20);
+        pdf.text(`Date: ${formatDate(order.createdAt)}`, 20, 30);
+        pdf.text(`Total: ₹${order.amount.toLocaleString('en-IN')}`, 20, 40);
+        pdf.text('Thank you for your purchase!', 20, 50);
+        pdf.save(`Invoice_${order._id}_simple.pdf`);
+      } catch (fallbackError) {
+        console.error('Fallback invoice failed:', fallbackError);
+        alert('Failed to generate invoice. Please try again or contact support.');
+      }
+    } finally {
+      setGeneratingInvoice(false);
+    }
+  };
+
+  const generateInvoiceHTML = () => {
+    const savings = calculateSavings(order);
+    
+    return `
+      <div style="font-family: 'Arial', sans-serif; padding: 20px; max-width: 800px; margin: 0 auto; background: white;">
+        <!-- Header -->
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid #B67032;">
+          <div>
+            <h1 style="color: #B67032; font-size: 32px; margin: 0 0 10px 0; font-weight: bold;">Saajriwaaj</h1>
+            <p style="color: #666; margin: 0;">Premium Jewelry & Accessories</p>
+            <p style="color: #666; margin: 10px 0 0 0; font-weight: bold;">INVOICE</p>
+          </div>
+          <div style="text-align: right;">
+            <p style="font-size: 24px; font-weight: bold; color: #333; margin: 0 0 10px 0;">Invoice #${order._id}</p>
+            <p style="color: #666; margin: 5px 0;">Date: ${new Date(order.createdAt).toLocaleDateString('en-IN')}</p>
+            <p style="color: #666; margin: 5px 0;">Status: <span style="font-weight: bold; color: ${order.paymentStatus === 'paid' ? '#10B981' : '#EF4444'}">
+              ${order.paymentStatus.toUpperCase()}
+            </span></p>
+          </div>
+        </div>
+
+        <!-- Company and Customer Info -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 30px;">
+          <div>
+            <h3 style="color: #333; font-size: 18px; margin: 0 0 10px 0; font-weight: bold;">Billed From:</h3>
+            <p style="color: #B67032; font-weight: bold; margin: 5px 0;">Saajriwaaj Enterprises</p>
+            <p style="color: #666; margin: 5px 0;">123 Jewel Street, Gem City</p>
+            <p style="color: #666; margin: 5px 0;">Mumbai, Maharashtra 400001</p>
+            <p style="color: #666; margin: 5px 0;">India</p>
+            <p style="color: #666; margin: 10px 0 0 0;">GSTIN: 27ABCDE1234F1Z5</p>
+          </div>
+          <div>
+            <h3 style="color: #333; font-size: 18px; margin: 0 0 10px 0; font-weight: bold;">Billed To:</h3>
+            <p style="color: #333; font-weight: bold; margin: 5px 0;">${order.shippingAddress?.name || 'N/A'}</p>
+            <p style="color: #666; margin: 5px 0;">${order.shippingAddress?.addressLine || 'N/A'}</p>
+            <p style="color: #666; margin: 5px 0;">${order.shippingAddress?.city || 'N/A'}, ${order.shippingAddress?.state || 'N/A'}</p>
+            <p style="color: #666; margin: 5px 0;">${order.shippingAddress?.country || 'N/A'} - ${order.shippingAddress?.pincode || 'N/A'}</p>
+            <p style="color: #666; margin: 10px 0 0 0;">Phone: ${order.shippingAddress?.phone || order.userPhone || 'N/A'}</p>
+            <p style="color: #666; margin: 5px 0;">Email: ${order.userId?.email || 'N/A'}</p>
+          </div>
+        </div>
+
+        <!-- Order Items Table -->
+        <div style="margin-bottom: 30px;">
+          <h3 style="color: #333; font-size: 18px; margin: 0 0 15px 0; font-weight: bold;">Order Items</h3>
+          <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+              <tr style="background-color: #FEF3C7;">
+                <th style="text-align: left; padding: 12px; border: 1px solid #FBBF24; color: #92400E; font-weight: bold;">#</th>
+                <th style="text-align: left; padding: 12px; border: 1px solid #FBBF24; color: #92400E; font-weight: bold;">Item</th>
+                <th style="text-align: left; padding: 12px; border: 1px solid #FBBF24; color: #92400E; font-weight: bold;">Color</th>
+                <th style="text-align: left; padding: 12px; border: 1px solid #FBBF24; color: #92400E; font-weight: bold;">Qty</th>
+                <th style="text-align: left; padding: 12px; border: 1px solid #FBBF24; color: #92400E; font-weight: bold;">Unit Price</th>
+                <th style="text-align: left; padding: 12px; border: 1px solid #FBBF24; color: #92400E; font-weight: bold;">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${order.items?.map((item, index) => `
+                <tr style="${index % 2 === 0 ? 'background-color: #FFF7ED;' : ''}">
+                  <td style="padding: 12px; border: 1px solid #FBBF24; color: #666;">${index + 1}</td>
+                  <td style="padding: 12px; border: 1px solid #FBBF24; color: #333; font-weight: bold;">${item.product?.name || 'N/A'}</td>
+                  <td style="padding: 12px; border: 1px solid #FBBF24; color: #666;">${getColorName(item)}</td>
+                  <td style="padding: 12px; border: 1px solid #FBBF24; color: #666;">${item.quantity}</td>
+                  <td style="padding: 12px; border: 1px solid #FBBF24; color: #666;">₹${(item.product?.price || 0).toLocaleString('en-IN')}</td>
+                  <td style="padding: 12px; border: 1px solid #FBBF24; color: #B67032; font-weight: bold;">₹${((item.price || 0) * item.quantity).toLocaleString('en-IN')}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Summary Section -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+          <div>
+            <h3 style="color: #333; font-size: 18px; margin: 0 0 15px 0; font-weight: bold;">Order Details</h3>
+            <div style="color: #666; line-height: 1.8;">
+              <p><strong>Order ID:</strong> ${order._id}</p>
+              <p><strong>Order Date:</strong> ${formatDate(order.createdAt)}</p>
+              <p><strong>Payment Method:</strong> ${order.paymentMethod}</p>
+              <p><strong>Shipping:</strong> Standard Delivery</p>
+              ${order.trackingnumber ? `<p><strong>Tracking #:</strong> ${order.trackingnumber}</p>` : ''}
+            </div>
+          </div>
+          
+          <div style="background-color: #FEF3C7; padding: 20px; border-radius: 8px;">
+            <h3 style="color: #333; font-size: 18px; margin: 0 0 15px 0; font-weight: bold;">Payment Summary</h3>
+            <div style="color: #666; line-height: 2;">
+              <div style="display: flex; justify-content: space-between;">
+                <span>Subtotal:</span>
+                <span>₹${savings.totalOriginal.toLocaleString('en-IN')}</span>
+              </div>
+              ${savings.savings > 0 ? `
+                <div style="display: flex; justify-content: space-between; color: #10B981;">
+                  <span>Discount:</span>
+                  <span>-₹${savings.savings.toFixed(2)}</span>
+                </div>
+              ` : ''}
+              <div style="display: flex; justify-content: space-between; padding-top: 10px; border-top: 1px solid #FBBF24; margin-top: 10px; font-weight: bold;">
+                <span style="color: #333;">Total Amount:</span>
+                <span style="color: #B67032; font-size: 24px;">₹${order.amount.toLocaleString('en-IN')}</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; padding-top: 10px; border-top: 1px solid #FBBF24; margin-top: 10px;">
+                <span>Payment Status:</span>
+                <span style="font-weight: bold; color: ${order.paymentStatus === 'paid' ? '#10B981' : '#EF4444'}">
+                  ${order.paymentStatus.toUpperCase()}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #FBBF24; text-align: center; color: #666;">
+          <p style="color: #B67032; font-weight: bold; margin-bottom: 10px; font-size: 18px;">Thank you for your business!</p>
+          <p style="margin: 5px 0;">This is a computer-generated invoice and does not require a signature.</p>
+          <p style="margin: 5px 0;">For any queries, contact: support@saajriwaaj.com | +91 9876543210</p>
+          <p style="margin: 20px 0 0 0; font-size: 14px;">Terms & Conditions: All items are subject to availability. Prices are inclusive of GST.</p>
+        </div>
+      </div>
+    `;
+  };
+
+  // Fix for password field warning (if this is a separate issue)
+  // Make sure all password inputs are wrapped in forms
+  const renderPasswordFieldFix = () => {
+    return (
+      <form onSubmit={(e) => e.preventDefault()}>
+        {/* Your password input field */}
+      </form>
+    );
   };
 
   if (loading) {
@@ -143,7 +350,7 @@ const OrderCompo = ({ id }) => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-amber-50/30 to-white py-8 px-4">
       <div className="max-w-6xl mx-auto">
-        {/* Header */}
+        {/* Header with Invoice Button */}
         <div className="mb-8">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
@@ -158,16 +365,53 @@ const OrderCompo = ({ id }) => {
                 </span>
               </div>
             </div>
-            <div className="text-right">
-              <div className="text-sm text-gray-500">Order Date</div>
-              <div className="flex items-center gap-2 text-gray-700 font-medium">
-                <FiCalendar className="text-[#B67032]" />
-                {formatDate(order.createdAt)}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+              <div className="text-right">
+                <div className="text-sm text-gray-500">Order Date</div>
+                <div className="flex items-center gap-2 text-gray-700 font-medium">
+                  <FiCalendar className="text-[#B67032]" />
+                  {formatDate(order.createdAt)}
+                </div>
               </div>
+              <button
+                onClick={generateInvoice}
+                disabled={generatingInvoice}
+                className="flex items-center gap-2 px-4 py-3 bg-gradient-to-r from-[#B67032] to-[#d4af37] text-white rounded-lg hover:from-[#a56129] hover:to-[#c19b2b] transition-all shadow-lg hover:shadow-xl disabled:opacity-70 disabled:cursor-not-allowed"
+              >
+                {generatingInvoice ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                    Generating...
+                  </>
+                ) : (
+                  <>
+                    <FiDownload className="text-lg" />
+                    Download Invoice
+                  </>
+                )}
+              </button>
             </div>
           </div>
         </div>
 
+        {/* Invoice Template (Hidden for PDF generation) */}
+        <div style={{ position: 'absolute', left: '-9999px', top: '-9999px' }}>
+          <div 
+            ref={invoiceRef} 
+            id="invoice-template"
+            style={{ 
+              width: '800px', 
+              padding: '40px',
+              backgroundColor: 'white',
+              color: '#333',
+              fontFamily: 'Arial, sans-serif'
+            }}
+            dangerouslySetInnerHTML={{ __html: generateInvoiceHTML() }}
+          />
+        </div>
+
+        {/* Rest of your UI remains the same */}
+        {/* ... rest of your existing UI code ... */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column - Order Summary */}
           <div className="lg:col-span-2 space-y-8">
@@ -218,9 +462,8 @@ const OrderCompo = ({ id }) => {
                     }}
                     className="shadow-none flex flex-col text-end whitespace-nowrap text-white justify-center bg-gradient-to-r from-[#B67032] to-[#d4af37]"
                   >
-                 
                   </div>
-                    <TbTruckDelivery  className=' font-bold text-[#02861e]  object-cover '/> 
+                  <TbTruckDelivery className='font-bold text-[#02861e] object-cover'/> 
                 </div>
               </div>
             </div>
@@ -229,17 +472,17 @@ const OrderCompo = ({ id }) => {
             <div className="bg-white rounded-2xl shadow-lg border border-[#d4af37]/40 p-6">
               <h2 className="text-xl font-semibold text-gray-800 mb-6 flex items-center gap-2">
                 <FiShoppingBag className="text-[#B67032]" />
-                Order Items ({order.items.length})
+                Order Items ({order.items?.length || 0})
               </h2>
               <div className="space-y-6">
-                {order.items.map((item, index) => (
-                  <div key={item._id} className="flex flex-col sm:flex-row gap-4 pb-6 border-b border-gray-100 last:border-0 last:pb-0">
-                    <div className="w-full h-60 md:w-24 md:h-24 flex-shrink-0 ">
+                {order.items?.map((item, index) => (
+                  <div key={item._id || index} className="flex flex-col sm:flex-row gap-4 pb-6 border-b border-gray-100 last:border-0 last:pb-0">
+                    <div className="w-full h-60 md:w-24 md:h-24 flex-shrink-0">
                       <img
-                      loading="lazy"
-                        src={item.product.images[0]}
-                        alt={item.product.name}
-                        className="w-full h-full object-contain object-left md:object-cover md:rounded-lg  md:border md:border-[#d4af37]/30"
+                        loading="lazy"
+                        src={item.product?.images?.[0] || 'https://via.placeholder.com/100x100/FAF3E0/B67032?text=Jewelry'}
+                        alt={item.product?.name || 'Product'}
+                        className="w-full h-full object-contain object-left md:object-cover md:rounded-lg md:border md:border-[#d4af37]/30"
                         onError={(e) => {
                           e.target.src = 'https://via.placeholder.com/100x100/FAF3E0/B67032?text=Jewelry';
                         }}
@@ -248,7 +491,7 @@ const OrderCompo = ({ id }) => {
                     <div className="flex-1">
                       <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2">
                         <div className="flex-1">
-                          <h3 className="font-semibold text-gray-800 mb-1">{item.product.name}</h3>
+                          <h3 className="font-semibold text-gray-800 mb-1">{item.product?.name || 'Product'}</h3>
                           <div className="flex flex-wrap gap-2 mb-2">
                             <span className="text-xs px-2 py-1 bg-gray-100 rounded-md text-gray-600">
                               Color: {getColorName(item)}
@@ -261,15 +504,15 @@ const OrderCompo = ({ id }) => {
                         <div className="text-right">
                           <div className="flex items-center gap-2">
                             <span className="text-lg font-bold text-[#B67032]">
-                              ₹{item.price.toLocaleString('en-IN')}
+                              ₹{(item.price || 0).toLocaleString('en-IN')}
                             </span>
-                            {item.product.discount > 0 && (
+                            {item.product?.discount > 0 && (
                               <span className="text-sm text-gray-500 line-through">
-                                ₹{item.product.price.toLocaleString('en-IN')}
+                                ₹{(item.product?.price || 0).toLocaleString('en-IN')}
                               </span>
                             )}
                           </div>
-                          {item.product.discount > 0 && (
+                          {item.product?.discount > 0 && (
                             <div className="flex items-center gap-1 text-sm text-green-600 mt-1">
                               <FiPercent className="text-xs" />
                               {item.product.discount}% OFF
@@ -277,7 +520,7 @@ const OrderCompo = ({ id }) => {
                           )}
                         </div>
                       </div>
-                      {item.product.description?.paragraphs && (
+                      {item.product?.description?.paragraphs && (
                         <p className="text-sm text-gray-600 mt-2 line-clamp-2">
                           {item.product.description.paragraphs[0]}
                         </p>
@@ -294,7 +537,7 @@ const OrderCompo = ({ id }) => {
             {/* Payment Summary */}
             <div className="bg-white rounded-2xl shadow-lg border border-[#d4af37]/40 p-6">
               <h2 className="text-xl font-semibold text-gray-800 mb-6 flex items-center gap-2">
-                <FaIndianRupeeSign  className="text-[#B67032]" />
+                <FaIndianRupeeSign className="text-[#B67032]" />
                 Payment Summary
               </h2>
               
@@ -358,19 +601,19 @@ const OrderCompo = ({ id }) => {
                 <div className="flex items-start gap-3">
                   <FiHome className="text-[#B67032] mt-1 flex-shrink-0" />
                   <div>
-                    <p className="font-medium text-gray-800">{order.shippingAddress.name}</p>
-                    <p className="text-gray-600 mt-1">{order.shippingAddress.addressLine}</p>
+                    <p className="font-medium text-gray-800">{order.shippingAddress?.name || 'N/A'}</p>
+                    <p className="text-gray-600 mt-1">{order.shippingAddress?.addressLine || 'N/A'}</p>
                     <p className="text-gray-600">
-                      {order.shippingAddress.city}, {order.shippingAddress.state}
+                      {order.shippingAddress?.city || 'N/A'}, {order.shippingAddress?.state || 'N/A'}
                     </p>
                     <p className="text-gray-600">
-                      {order.shippingAddress.country} - {order.shippingAddress.pincode}
+                      {order.shippingAddress?.country || 'N/A'} - {order.shippingAddress?.pincode || 'N/A'}
                     </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
                   <FiPhone className="text-[#B67032] flex-shrink-0" />
-                  <span className="text-gray-600">{order.shippingAddress.phone}</span>
+                  <span className="text-gray-600">{order.shippingAddress?.phone || order.userPhone || 'N/A'}</span>
                 </div>
               </div>
             </div>
@@ -385,11 +628,11 @@ const OrderCompo = ({ id }) => {
               <div className="space-y-3">
                 <div>
                   <p className="text-sm text-gray-500">Name</p>
-                  <p className="font-medium text-gray-800">{order.userId.name}</p>
+                  <p className="font-medium text-gray-800">{order.userId?.name || 'N/A'}</p>
                 </div>
                 <div>
                   <p className="text-sm text-gray-500">Email</p>
-                  <p className="font-medium text-gray-800">{order.userId.email}</p>
+                  <p className="font-medium text-gray-800">{order.userId?.email || 'N/A'}</p>
                 </div>
                 {order.userPhone && (
                   <div>
@@ -401,24 +644,41 @@ const OrderCompo = ({ id }) => {
             </div>
 
             {/* Order Actions */}
-            {order.orderStatus === 'placed' && (
-              <div className="bg-white rounded-2xl shadow-lg border border-red-200 p-6">
-                <h3 className="text-lg font-semibold text-gray-800 mb-4">Need Help?</h3>
-                <div className="space-y-3">
-                  <button className="w-full px-4 py-2 bg-[#B67032] text-white rounded-lg hover:bg-[#a56129] transition-colors font-medium">
-                    Track Order
-                  </button>
+            <div className="bg-white rounded-2xl shadow-lg border border-red-200 p-6">
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">Order Actions</h3>
+              <div className="space-y-3">
+                <button
+                  onClick={generateInvoice}
+                  disabled={generatingInvoice}
+                  className="w-full px-4 py-3 bg-gradient-to-r from-[#B67032] to-[#d4af37] text-white rounded-lg hover:from-[#a56129] hover:to-[#c19b2b] transition-colors font-medium flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+                >
+                  {generatingInvoice ? (
+                    <>
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                      Generating Invoice...
+                    </>
+                  ) : (
+                    <>
+                      <FiPrinter />
+                      Print Invoice
+                    </>
+                  )}
+                </button>
+                <button className="w-full px-4 py-2 border border-[#B67032] text-[#B67032] rounded-lg hover:bg-amber-50 transition-colors font-medium">
+                  Track Order
+                </button>
+                {order.orderStatus === 'placed' && (
                   <button className="w-full px-4 py-2 border border-red-300 text-red-600 rounded-lg hover:bg-red-50 transition-colors font-medium">
                     Cancel Order
                   </button>
-                </div>
+                )}
               </div>
-            )}
+            </div>
           </div>
         </div>
 
         <div className="mt-8 bg-white rounded-2xl shadow-lg border border-[#d4af37]/40 p-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <div className="text-center">
               <FiClock className="text-2xl text-[#B67032] mx-auto mb-2" />
               <p className="text-sm text-gray-600">Order Placed</p>
@@ -437,6 +697,17 @@ const OrderCompo = ({ id }) => {
               <p className="font-medium text-green-600">
                 ₹{savings.savings.toFixed(2)}
               </p>
+            </div>
+            <div className="text-center">
+              <FiDownload className="text-2xl text-[#B67032] mx-auto mb-2" />
+              <p className="text-sm text-gray-600">Invoice</p>
+              <button
+                onClick={generateInvoice}
+                className="text-[#B67032] font-medium hover:underline"
+                disabled={generatingInvoice}
+              >
+                {generatingInvoice ? 'Generating...' : 'Download PDF'}
+              </button>
             </div>
           </div>
         </div>

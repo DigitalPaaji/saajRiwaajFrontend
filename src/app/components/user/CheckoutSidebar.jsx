@@ -39,6 +39,7 @@ export default function CheckoutSidebar({
   // const [paymentMethod, setPaymentMethod] = useState("COD");
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState(false);
+  const [showPopup,setshowPopUp]=useState(false)
   useEffect(() => {
     // autofill from logged-in user
     if (user) {
@@ -254,22 +255,8 @@ async function openPhonePePayPage(tokenUrl, orderId) {
             `${process.env.NEXT_PUBLIC_LOCAL_PORT}/order/phonepe/status/${orderId}`
           );
           if (statusRes.data.success) {
-Swal.fire({
-  title: "Order Placed Successfully!",
-  imageUrl: "/Images/success.gif",
-  imageWidth: 140,
-  imageHeight: 140,
-  imageAlt: "Order Success",
-  showConfirmButton: true,
-  confirmButtonText: "OK",
-}).then((result) => {
-  if (result.isConfirmed) {
-    setTimeout(() => {
-      window.location.href = "/orders";
-    }, 2000);
-  }
-});
 
+setshowPopUp(true)
 
           } else {
               Swal.fire({
@@ -310,6 +297,29 @@ location.reload()
     handlePayOnline();
     };
 
+
+
+    if(showPopup){
+      return(
+      <div onClick={()=>setshowPopUp(false)} className=" z-[999] bg-black/60 fixed top-0 w-full h-screen flex justify-center items-center  ">
+        <div className="flex flex-col items-center gap-3  text-center bg-[#faf8ea] p-8">
+
+              <Image  src={'/Images/success.gif'} alt="" width={400} height={400} className="w-full h-40 object-contain"/>
+            
+              <h3 className="text-green-600 text-xl font-mosetta font-medium text-center">
+                Order placed successfully! 🎉
+              </h3>
+              <a href={'/orders'}
+          
+          
+          className="px-5 py-3 w-fit bg-[#B67032] text-white rounded-md"
+          >
+                View Order Details
+              </a>
+                </div>
+            </div>
+      )
+    }
   return (
     <>
       {isOpen && (
