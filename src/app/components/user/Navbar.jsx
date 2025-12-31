@@ -14,6 +14,7 @@ import {
   Flower,
   HandHeart,
 
+
 } from "lucide-react";
 const iconOptions = [
     Sparkles,
@@ -24,8 +25,15 @@ const iconOptions = [
 import MegaMenu from "./MegaMenu";
 import { useGlobalContext } from "../context/GlobalContext";
 import SearchBar from "./Searchbar";
+import { IoIosArrowBack } from "react-icons/io";
 
 export default function Navbar() {
+const [openCategoryId, setOpenCategoryId] = useState(null);
+
+const toggleCategory = (id) => {
+  setOpenCategoryId(prev => (prev === id ? null : id));
+};
+
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeMegaMenu, setActiveMegaMenu] = useState(null);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -220,28 +228,94 @@ const cartItemCount = cart?.reduce((acc, item) => acc + item?.quantity, 0);
               <X className="w-6 h-6" />
             </button>
           </div>
-          <nav className="flex-grow  p-4 space-y-2">
-            {categories.map((cat) =>{
-              const Icon = iconOptions[categories.indexOf(cat) % iconOptions.length];
+<nav className="flex-grow p-4 space-y-2 overflow-y-auto">
+  {categories.map((cat) => {
+    const Icon = iconOptions[categories.indexOf(cat) % iconOptions.length];
+    const categoryLabel = formatCategoryLabel(cat.name);
 
-                const categoryPath = `/category/${formatCategoryPath(cat.name)}/${formatCategoryPath(cat._id)}`;
-                const categoryLabel = formatCategoryLabel(cat.name);
-              return(
-              <Link
-               key={cat._id}
-               href={categoryPath}
-                onClick={() => setIsMobileMenuOpen(false)}
-            className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-all`}
-      
+    const categoryPath = `/category/${formatCategoryPath(cat.name)}/${cat._id}`;
+
+    // 🔥 IMPORTANT: get subcategories exactly like MegaMenu
+    const subcategories = subCategoriesMap?.[cat._id] || [];
+    const hasSubcategories = subcategories.length > 0;
+    const isOpen = openCategoryId === cat._id;
+
+    return (
+      <div key={cat._id} className="rounded-xl bg-stone-50">
+
+        {/* CATEGORY ROW */}
+        <div className="flex items-center justify-between px-4 py-3">
+          
+          {/* 👉 Category navigation */}
+          <Link
+            href={categoryPath}
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="flex items-center gap-3 text-sm font-medium"
           >
             <Icon size={18} />
             {categoryLabel}
           </Link>
+
+          {/* 👉 Dropdown toggle ONLY */}
+          {hasSubcategories && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation(); // ⛔ stop navigation
+                toggleCategory(cat._id);
+              }}
+              className="p-2"
+            >
+              <IoIosArrowBack 
+                className={`w-4 h-4 transition-transform ${
+                  isOpen ? "rotate-90" : ""
+                }`}
+              />
+            </button>
         
-            )})}
-          </nav>
+          )}
+        </div>
+
+
+
+
+
+        {/* SUBCATEGORIES */}
+        {hasSubcategories && isOpen && (
+          <div className="pl-12 pb-3 space-y-2">
+            {subcategories.map((sub) => (
+              <Link
+                key={sub._id}
+                href={`/category/${formatCategoryPath(cat.name)}/${cat._id}`}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="block text-sm text-stone-600 hover:text-[#B67032]"
+              >
+                {formatCategoryLabel(sub.name)}
+              </Link>
+            ))}
+
+            {/* VIEW ALL */}
+            <Link
+              href={categoryPath}
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="block text-sm font-semibold text-[#B67032] pt-1"
+            >
+              View All
+            </Link>
+          </div>
+        )}
+      </div>
+    );
+  })}
+</nav>
+
+
+ 
         </div>
       </div>
+
+
+
+
     </header>
   );
 }
