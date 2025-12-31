@@ -121,7 +121,7 @@ try {
         />
       )}
 
-      <div
+    <div
         className={`fixed top-0 right-0 min-h-screen 
          w-[90%] md:w-[40%] xl:w-[25%] bg-white shadow-lg z-[999] transition-transform duration-300 ${
            isCartOpen ? "translate-x-0" : "translate-x-full"
@@ -149,7 +149,7 @@ try {
           </button>
         </div>
 
-        {cart?.length === 0 ? (
+        {cart?.length === 0 || !cart ? (
           <div className="relative z-[999] flex items-center justify-center h-full w-full text-center text-gray-500 px-6">
             <div className="flex flex-col my-24 items-center justify-center">
               <img
@@ -166,21 +166,7 @@ try {
 
 
    {showoffer &&  <Offervalue  cart={cart} setAppliedOffers={setAppliedOffers}  />}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            <div className="p-4 space-y-4 overflow-y-auto flex-1">
+    <div className="p-4 space-y-4 overflow-y-auto flex-1">
              {cart?.map((item) => (
                 <div key={item._id} className="flex items-start gap-4 text-md">
                   <Link href={`/product/${item?.product?.name}/${item?.product?._id}`} 
@@ -253,7 +239,7 @@ className={` px-2 bg-gray-100 hover:bg-gray-200 ${item.product.colorVariants.fin
             </div>
 
             <div className="p-4   space-y-4">
-              {/* Coupon Input */}
+        
               <div className="flex gap-2">
                 <input
                   type="text"
@@ -270,7 +256,7 @@ className={` px-2 bg-gray-100 hover:bg-gray-200 ${item.product.colorVariants.fin
                 </button>
               </div>
 
-              {/* Discount Summary */}
+
               <div className="text-md space-y-1">
                 <div className="flex justify-between">
                   <span>Shipping</span>
@@ -315,15 +301,15 @@ className={` px-2 bg-gray-100 hover:bg-gray-200 ${item.product.colorVariants.fin
             </div>
           </div>
         )}
-      </div>
+      </div> 
 
-      <CheckoutSidebar
+      {/* <CheckoutSidebar
         isOpen={showCheckout}
         setIsOpen={setShowCheckout}
         cart={cart}
         total={total}
         discountPercent={discountPercent}
-      />
+      /> */}
     </>
   );
 }

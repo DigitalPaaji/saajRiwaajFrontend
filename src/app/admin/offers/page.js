@@ -26,8 +26,8 @@ export default function OffersPage() {
   const [deleteOfferId, setDeleteOfferId] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
 
+  
 
-  // Drag/drop handlers
   const handleDrag = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -45,7 +45,6 @@ export default function OffersPage() {
     }
   };
 
-  // Upload image to Cloudinary
   const handleImageUpload = async (file) => {
     if (!file) return;
     setIsUploading(true);
@@ -73,7 +72,6 @@ export default function OffersPage() {
     }
   };
 
-  // Add Offer
   const handleAddOffer = async (e) => {
     e.preventDefault();
 
@@ -97,7 +95,6 @@ export default function OffersPage() {
         setTitle("");
         setImage("");
         location.reload()
-        // fetchOffers();
       } else {
         toast.error("Failed to add offer.");
       }
@@ -108,7 +105,6 @@ export default function OffersPage() {
     }
   };
 
-  // Delete Offer
   const confirmDelete = async () => {
     if (!deleteOfferId) return;
 
@@ -121,7 +117,7 @@ export default function OffersPage() {
       if (res.ok) {
         toast.success("Offer deleted!");
         location.reload()
-        // fetchOffers();
+
       } else {
         toast.error("Failed to delete.");
       }

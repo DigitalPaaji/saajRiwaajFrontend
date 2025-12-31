@@ -138,7 +138,7 @@ setnewPRoduct(newdata)
               
 {newProduct.subcategory?.name || null}
                   </td> */}
-                                    <td className="px-4 py-3 "><Image  alt='' width={220} height={220}  src={product?.barcode} className="w-full h-12 object-cover"/></td>
+                                    <td className="px-4 py-3 text-black "><Image  alt={`barcode`} width={220} height={220}  src={product?.barcode} className="w-full h-12 object-cover "/></td>
 
                   
                   <td className="px-4 py-3">
