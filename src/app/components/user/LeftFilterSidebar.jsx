@@ -60,12 +60,12 @@ export default function LeftFilterSidebar({ Pid, onFilterChange }) {
   return (
   <aside
   className={`
-    lg:min-h-screen px-2 py-4 md:sticky md:top-24
+    px-2 py-4
   `}
 >
-  <div className="flex items-center justify-start gap-12 mb-6">
+  <div className="flex items-center justify-end lg:justify-between lg:mb-6">
    
-      <h2 className="text-lg font-semibold text-gray-700">Filters</h2>
+      <h2 className="hidden lg:block text-lg font-semibold text-gray-700">Filters</h2>
  
 
     <button

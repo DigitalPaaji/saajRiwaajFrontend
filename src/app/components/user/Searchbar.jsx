@@ -3,6 +3,8 @@ import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { X } from "lucide-react";
 import { IoSearch } from "react-icons/io5";
+import { getOptimizedImage } from "../utils/cloudinary";
+import Image from "next/image";
 
 export default function SearchBar({ products, onClose }) {
   const [query, setQuery] = useState("");
@@ -104,14 +106,16 @@ export default function SearchBar({ products, onClose }) {
       onClick={onClose}
       className="flex-shrink-0 sm:w-40 lg:w-60 group flex flex-col items-center bg-stone-50 rounded-lg overflow-hidden hover:shadow-md transition-shadow"
     >
-      <div className="w-full">
-        <img
-          src={item.images?.[0]}
-          loading="lazy"
-          alt={item.name}
-          className="sm:h-40 lg:h-60 w-full object-cover transition-transform duration-300 group-hover:scale-105"
-        />
-      </div>
+<div className="w-full relative sm:h-40 lg:h-60 overflow-hidden">
+  <Image
+    src={getOptimizedImage(item.images?.[0], { maxWidth: 600 })}
+    alt={item.name || "Product image"}
+    fill
+    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+    loading="lazy"
+    className="object-cover object-center transition-transform duration-300 group-hover:scale-105"
+  />
+</div>
       <div className="p-2 flex-1">
         <h4 className="font-semibold text-stone-800 text-sm group-hover:text-[#B67032] transition-colors">
           {item.name}

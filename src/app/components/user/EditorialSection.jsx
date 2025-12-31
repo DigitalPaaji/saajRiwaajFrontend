@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { useGlobalContext } from "../context/GlobalContext";
+import { getOptimizedImage } from "../utils/cloudinary";
 
 export default function EditorialSection() {
     const {  offers } = useGlobalContext();
@@ -12,20 +13,22 @@ export default function EditorialSection() {
 
 
   return (
-    <section className="py-20 ">
-      <div className=" px-4 sm:px-6 lg:px-8">
-   <div className="flex flex-wrap gap-6 justify-center">
+    <section className=" ">
+     
+   <div className="flex flex-wrap gap-6 justify-center  px-4 sm:px-6 lg:px-8">
   {offers.map((item) => (
     <div
       key={item._id}
-      className="relative w-full sm:w-[48%] lg:w-[31%] h-96 rounded-xl overflow-hidden group"
+      className="relative w-full sm:w-[48%]  my-20 lg:w-[31%] h-96 rounded-xl overflow-hidden group"
     >
-      <img
-        src={item.image}
-        loading="lazy"
-        alt={item.title}
-        className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-      />
+<img
+  src={getOptimizedImage(item.image, { maxWidth: 800 })}
+  loading="eager"
+fetchPriority="high"
+  alt={item.title}
+  className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+/>
+
 
       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent z-10"></div>
 
@@ -44,7 +47,7 @@ export default function EditorialSection() {
   ))}
 </div>
 
-      </div>
+    
     </section>
   );
 }

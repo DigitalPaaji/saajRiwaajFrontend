@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useCallback, useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { getOptimizedImage } from "../utils/cloudinary";
 
 export default function CartSidebar() {
   const { isOrderOpen, setIsOrderOpen, allProducts, user } = useGlobalContext();
@@ -146,14 +147,18 @@ const cancelOrder = useCallback(
                       <div className="flex gap-4">
                         <div className="w-24 h-24 flex-shrink-0 rounded-lg overflow-hidden bg-gray-50">
                           <Link href={`/product/${product.name}/${product._id}`}>
-                            <Image
-                            
-                              src={product.images?.[0] || "/Images/1.webp"}
-                              alt={product.name || " "}
-                              width={400}
-                              height={400}
-                              className="w-full h-full object-cover"
-                            />
+                           <Image
+  src={getOptimizedImage(
+    product.images?.[0] || "/Images/1.webp",
+    { maxWidth: 600 }
+  )}
+  alt={product.name || "Product image"}
+  width={400}
+  height={400}
+  sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 400px"
+  loading="lazy"
+  className="w-full h-full object-cover"
+/>
                           </Link>
                         </div>
 

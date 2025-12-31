@@ -1,19 +1,20 @@
-'use client';
-import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Autoplay } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import { useGlobalContext } from '../context/GlobalContext';
-import Image from 'next/image';
+"use client";
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Autoplay } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import { useGlobalContext } from "../context/GlobalContext";
+import Image from "next/image";
+import { getOptimizedImage } from "../utils/cloudinary";
 
 export default function EarringsMarquee() {
   const { subCategoriesMap, refetchProductsByCategory } = useGlobalContext();
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const earringsCategoryId = '693bbd83430ea8120089b2c1';
+  const earringsCategoryId = "693bbd83430ea8120089b2c1";
   const subCategories = subCategoriesMap[earringsCategoryId] || [];
 
   useEffect(() => {
@@ -56,29 +57,29 @@ export default function EarringsMarquee() {
           </p>
         </div>
 
-       <div>
-        <Swiper
-          modules={[Autoplay]}
-          slidesPerView="auto"
-          spaceBetween={16}
-          autoplay={{
-            delay: 2500, // scroll every 2.5 sec
-            disableOnInteraction: false,
-          }}
-          speed={800}
-          loop
-          className="mt-4 xl:mt-0"
-        >
-          {subCategories.map((sub) => (
-            <SwiperSlide key={sub._id} className="!w-auto">
-              <Link href={`/category/neckwear/${earringsCategoryId}`}>
-                <div className="hover:bg-[#B67032] text-nowrap hover:text-white rounded-xl px-4 py-2 transition-all duration-300 text-[#B67032] text-sm lg:text-md font-medium cursor-pointer">
-                  {sub.name.toUpperCase()}
-                </div>
-              </Link>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+        <div>
+          <Swiper
+            modules={[Autoplay]}
+            slidesPerView="auto"
+            spaceBetween={16}
+            autoplay={{
+              delay: 2500, // scroll every 2.5 sec
+              disableOnInteraction: false,
+            }}
+            speed={800}
+            loop
+            className="mt-4 xl:mt-0"
+          >
+            {subCategories.map((sub) => (
+              <SwiperSlide key={sub._id} className="!w-auto">
+                <Link href={`/category/neckwear/${earringsCategoryId}`}>
+                  <div className="hover:bg-[#B67032] text-nowrap hover:text-white rounded-xl px-4 py-2 transition-all duration-300 text-[#B67032] text-sm lg:text-md font-medium cursor-pointer">
+                    {sub.name.toUpperCase()}
+                  </div>
+                </Link>
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
       </div>
 
@@ -102,11 +103,11 @@ export default function EarringsMarquee() {
         <Swiper
           modules={[Navigation, Autoplay]}
           slidesPerView={1}
-          slidesPerGroup={1}   // ⭐ 1-by-1 scroll
+          slidesPerGroup={1} // ⭐ 1-by-1 scroll
           spaceBetween={16}
           loop
           autoplay={{
-            delay: 3000,       // scroll every 3 sec
+            delay: 3000, // scroll every 3 sec
             disableOnInteraction: false,
           }}
           speed={900}
@@ -125,18 +126,21 @@ export default function EarringsMarquee() {
                 href={`/product/${item.name}/${item._id}`}
                 className="group block bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition"
               >
-                <div className="relative h-[300px]">
-                  <Image
-                  
-                    src={item.images?.[0]}
-                    alt={item.name}
-                    fill
-                    className="object-cover group-hover:scale-105 transition"
-                  />
-                  <span className="absolute top-2 left-2 bg-[#B67032] text-white text-xs px-2 py-1 rounded">
-                    {item.subCategory || 'Earring'}
-                  </span>
-                </div>
+          
+<div className="relative h-[300px] overflow-hidden group">
+  <Image
+    src={getOptimizedImage(item.images?.[0], { maxWidth: 600 })}
+    alt={item.name}
+    fill
+    sizes="(max-width: 768px) 100vw, 300px"
+    className="object-cover object-center transition-transform duration-300 group-hover:scale-105"
+    loading="lazy"
+  />
+
+  <span className="absolute top-2 left-2 bg-[#B67032] text-white text-xs px-2 py-1 rounded z-10">
+    {item.subCategory || "Earring"}
+  </span>
+</div>
 
                 <div className="p-4">
                   <h4 className="font-serif text-stone-800 group-hover:text-[#B67032] truncate">
@@ -145,9 +149,9 @@ export default function EarringsMarquee() {
                   {item.description?.paragraphs?.[0] && (
                     <p className="text-sm text-stone-600 mt-1 line-clamp-2">
                       {item.description.paragraphs[0]
-                        .split(' ')
+                        .split(" ")
                         .slice(0, 10)
-                        .join(' ')}
+                        .join(" ")}
                       ...
                     </p>
                   )}

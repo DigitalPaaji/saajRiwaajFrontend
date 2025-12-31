@@ -7,6 +7,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import { ArrowRight } from 'lucide-react';
 import { useGlobalContext } from '../context/GlobalContext';
+import { getOptimizedImage } from '../utils/cloudinary';
 
 export default function CategorySlider({ categoryName, heading, description }) {
   const {
@@ -91,17 +92,20 @@ export default function CategorySlider({ categoryName, heading, description }) {
                   href={`/${productPath}`}
                   className="group flex-shrink-0 w-full bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition-shadow"
                 >
-                  <div className="w-full h-[300px] relative">
-                    <img
-                      src={item.images?.[0]}
-                      loading="lazy"
-                      alt={item.name}
-                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                    />
-                    <div className="absolute top-2 left-2 bg-[#B67032] text-white text-xs px-2 py-1 rounded">
-                      {item.subcategory || item.subcategory?.name || 'Item'}
-                    </div>
-                  </div>
+<div className="w-full h-[300px] relative overflow-hidden">
+  <Image
+    src={getOptimizedImage(item.images?.[0], { maxWidth: 700 })}
+    alt={item.name || "Product image"}
+    fill
+    sizes="(max-width: 768px) 100vw, 33vw"
+    loading="lazy"
+    className="object-cover transition-transform duration-300 group-hover:scale-105"
+  />
+
+  <div className="absolute top-2 left-2 bg-[#B67032] text-white text-xs px-2 py-1 rounded z-10">
+    {item.subcategory?.name || item.subcategory || "Item"}
+  </div>
+</div>
                   <div className="p-4 flex flex-col justify-between">
                     <h4 className="font-semibold text-stone-800 group-hover:text-[#B67032] transition-colors text-lg truncate">
                       {item.name}

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useGlobalContext } from '../context/GlobalContext';
 import Image from 'next/image';
 import { FaRupeeSign } from 'react-icons/fa';
+import { getOptimizedImage } from '../utils/cloudinary';
 
 export default function Collection({ Pid, filters = { subCategories: [], tags: [], prices: [] } }) {
   const { addToCart, refetchProductsByCategory } = useGlobalContext();
@@ -87,19 +88,21 @@ export default function Collection({ Pid, filters = { subCategories: [], tags: [
     onMouseEnter={() => setHoveredIndex(index)}
     onMouseLeave={() => setHoveredIndex(null)}
   >
-    <div className="relative w-full h-full">
-      <Image
-        src={
-          hoveredIndex === index && product.images?.[1]
-            ? product.images[1]
-            : product.images?.[0]
-        }
-        alt={product.name}
-        fill
-        className="object-cover  transition-all duration-500 ease-in-out group-hover:scale-105"
-        
-      />
-    </div>
+    <div className="relative w-full h-full overflow-hidden">
+  <Image
+    src={getOptimizedImage(
+      hoveredIndex === index && product.images?.[1]
+        ? product.images[1]
+        : product.images?.[0],
+      { maxWidth: 600 }
+    )}
+    alt={product.name || "Product image"}
+    fill
+    sizes="(max-width: 768px) 100vw, 25vw"
+    loading="lazy"
+    className="object-cover object-center transition-transform duration-500 ease-in-out group-hover:scale-105"
+  />
+</div>
   </div>
 
   <div className="flex items-center justify-between flex-wrap mt-4 px-1">

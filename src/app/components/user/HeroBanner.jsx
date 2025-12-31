@@ -5,6 +5,7 @@ import { Pagination, Autoplay, EffectFade } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/effect-fade';
+import { getOptimizedImage } from '../utils/cloudinary';
 
 export default function HeroBanner() {
   const [banners, setBanners] = useState([]);
@@ -27,15 +28,14 @@ export default function HeroBanner() {
   }, [fetchBanners]);
 
   if (loading) {
-    // Skeleton placeholder
     return (
-      <div className="relative w-full min-h-[300px] md:h-[700px]  animate-pulse flex items-center justify-center">
+      <div className="relative w-full min-h-[300px] md:min-h-[700px] animate-pulse  flex items-center justify-center">
         <div className=" rounded-lg animate-pulse" />
       </div>
     );
   }
 
-  if (!loading && banners.length === 0) return null; // nothing to render
+  if (!loading && banners.length === 0) return null;
 
   return (
     <section className="relative w-full">
@@ -48,24 +48,30 @@ export default function HeroBanner() {
         loop={true}
         className="w-full relative min-h-[300px]"
       >
-        {banners?.map((banner, index) => (
-          <SwiperSlide key={index}>
-            <div className="relative w-full h-full">
-              <img
-              loading="lazy"
-                src={banner.mobileImage}
-                alt="Mobile Banner"
-                className="block lg:hidden w-full h-full"
-              />
-              <img
-              loading="lazy"
-                src={banner.desktopImage}
-                alt="Desktop Banner"
-                className="hidden lg:block w-full h-full"
-              />
-            </div>
-          </SwiperSlide>
-        ))}
+{banners?.map((banner, index) => (
+  <SwiperSlide key={index}>
+    <div className="relative w-full h-full">
+      {/* Mobile Banner */}
+      <img
+        loading="eager"
+        fetchPriority="high"
+        src={getOptimizedImage(banner.mobileImage, { maxWidth: 768 })}
+        alt="Mobile Banner"
+        className="block lg:hidden w-full h-full object-cover"
+      />
+
+      {/* Desktop Banner */}
+      <img
+        loading="eager"
+        fetchPriority="high"
+        src={getOptimizedImage(banner.desktopImage, { maxWidth: 1600 })}
+        alt="Desktop Banner"
+        className="hidden lg:block w-full h-full object-cover"
+      />
+    </div>
+  </SwiperSlide>
+))}
+
       </Swiper>
     </section>
   );

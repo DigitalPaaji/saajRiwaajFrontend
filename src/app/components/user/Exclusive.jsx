@@ -5,6 +5,7 @@ import { useGlobalContext } from "../context/GlobalContext";
 import { FaRupeeSign } from "react-icons/fa";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
+import { getOptimizedImage } from "../utils/cloudinary";
 
 export default function ShopByCategory() {
   const { refetchProductsByCategory } = useGlobalContext();
@@ -137,13 +138,16 @@ export default function ShopByCategory() {
                          width={400}
                   height={400}
                   
-                          src={
-                            hoveredIndex === index && product.images?.[1]
-                              ? product.images[1]
-                              : product.images?.[0]
-                          }
+                          src={getOptimizedImage(
+    hoveredIndex === index && product.images?.[1]
+      ? product.images[1]
+      : product.images?.[0],
+    { maxWidth: 800 }
+  )}
+  sizes="(max-width: 768px) 100vw, 400px"
                           alt={product.name}
-                          className="w-full h-full object-cover transition-all duration-300"
+                            loading="lazy"
+                          className="w-full h-full object-cover object-center transition-all duration-300"
                         />
                       </div>
                     {/* </div> */}

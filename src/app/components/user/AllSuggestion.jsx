@@ -6,6 +6,7 @@ import { Navigation, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import { useGlobalContext } from "../context/GlobalContext";
+import { getOptimizedImage } from "../utils/cloudinary";
 
 export default function EarringsMarquee() {
   const {
@@ -88,12 +89,13 @@ export default function EarringsMarquee() {
                       className="group flex-shrink-0 w-full bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition-shadow"
                     >
                       <div className="w-full h-[300px] relative">
-                        <img
-                          src={item.images?.[0]}
-                          loading="lazy"
-                          alt={item.name}
-                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                        />
+                     <img
+  src={getOptimizedImage(item.images?.[0], { maxWidth: 600 })}
+  loading="lazy"
+  alt={item.name}
+  className="w-full h-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
+/>
+
                         {/* {item.subCategory ||
                           (item.subcategory?.name && (
                             <div className="absolute top-2 left-2 bg-[#B67032] text-white text-xs px-2 py-1 rounded"></div>
