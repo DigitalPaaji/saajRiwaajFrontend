@@ -110,75 +110,76 @@ export default function EarringsMarquee() {
             ))}
           </div>
         ) : (
-          <Swiper
-            modules={[Navigation, Autoplay]}
-            slidesPerView={1.3}
-            spaceBetween={16}
-            breakpoints={{
-              640: { slidesPerView: 1.3 },
-              768: { slidesPerView: 3 },
-              1024: { slidesPerView: 4 },
-              1280: { slidesPerView: 5 },
-              1536: { slidesPerView: 6 },
-            }}
-            autoplay={{
-              delay: 1,
-              disableOnInteraction: false,
-            }}
-            speed={6000}
-         loop={filteredProducts.length > 6}
-            grabCursor={true}
-          >
-            {loop.map((item, idx) => {
-              return (
-                <SwiperSlide key={idx}>
-                  <Link
-                    href={`/product/${item.name}/${item._id}`}
-                    className="group flex-shrink-0 w-full rounded-xl overflow-hidden shadow hover:shadow-md transition-shadow"
-                  >
-                    <div className="w-full h-[300px] relative">
-                    <img
-  src={getOptimizedImage(item.images?.[0], { maxWidth: 800 })}
-loading="eager"
-fetchPriority="high"
-  alt={item.name}
-  className="w-full h-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
-/>
+          <p>aaaa</p>
+//           <Swiper
+//             modules={[Navigation, Autoplay]}
+//             slidesPerView={1.3}
+//             spaceBetween={16}
+//             breakpoints={{
+//               640: { slidesPerView: 1.3 },
+//               768: { slidesPerView: 3 },
+//               1024: { slidesPerView: 4 },
+//               1280: { slidesPerView: 5 },
+//               1536: { slidesPerView: 6 },
+//             }}
+//             autoplay={{
+//               delay: 1,
+//               disableOnInteraction: false,
+//             }}
+//             speed={6000}
+//          loop={filteredProducts.length > 6}
+//             grabCursor={true}
+//           >
+//             {loop.map((item, idx) => {
+//               return (
+//                 <SwiperSlide key={idx}>
+//                   <Link
+//                     href={`/product/${item.name}/${item._id}`}
+//                     className="group flex-shrink-0 w-full rounded-xl overflow-hidden shadow hover:shadow-md transition-shadow"
+//                   >
+//                     <div className="w-full h-[300px] relative">
+//                     <img
+//   src={getOptimizedImage(item.images?.[0], { maxWidth: 800 })}
+// loading="eager"
+// fetchPriority="high"
+//   alt={item.name}
+//   className="w-full h-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
+// />
 
-                      <div className="absolute top-2 left-2 bg-[#B67032] text-white text-xs px-2 py-1 rounded">
-                        {item.subCategory ||
-                          item.subcategory?.name ||
-                          "Earring"}
-                      </div>
-                    </div>
-                    <div className="p-4 flex flex-col justify-between">
-                     <div className="flex items-center justify-between">
-                        <h4 className="font-serif font-medium text-stone-800 group-hover:text-[#B67032] transition-colors text-md truncate">
-                        {item.name}
-                      </h4>
+//                       <div className="absolute top-2 left-2 bg-[#B67032] text-white text-xs px-2 py-1 rounded">
+//                         {item.subCategory ||
+//                           item.subcategory?.name ||
+//                           "Earring"}
+//                       </div>
+//                     </div>
+//                     <div className="p-4 flex flex-col justify-between">
+//                      <div className="flex items-center justify-between">
+//                         <h4 className="font-serif font-medium text-stone-800 group-hover:text-[#B67032] transition-colors text-md truncate">
+//                         {item.name}
+//                       </h4>
                       
-              <Heart className={`w-5 h-5 ${
-    wishlist?.includes(item._id) ? "text-red-500" : "text-stone-700"
-  }`}
- />
+//               <Heart className={`w-5 h-5 ${
+//     wishlist?.includes(item._id) ? "text-red-500" : "text-stone-700"
+//   }`}
+//  />
 
-                      </div>
+//                       </div>
                      
-                      {item.description?.paragraphs?.[0] && (
-                        <p className="text-sm text-stone-600 mt-1 line-clamp-2">
-                          {item.description.paragraphs[0]
-                            .split(" ")
-                            .slice(0, 10)
-                            .join(" ")}
-                          ...
-                        </p>
-                      )}
-                    </div>
-                  </Link>
-                </SwiperSlide>
-              );
-            })}
-          </Swiper>
+//                       {item.description?.paragraphs?.[0] && (
+//                         <p className="text-sm text-stone-600 mt-1 line-clamp-2">
+//                           {item.description.paragraphs[0]
+//                             .split(" ")
+//                             .slice(0, 10)
+//                             .join(" ")}
+//                           ...
+//                         </p>
+//                       )}
+//                     </div>
+//                   </Link>
+//                 </SwiperSlide>
+//               );
+//             })}
+//           </Swiper>
         )}
       </div>
       <style jsx>{`
