@@ -12,13 +12,13 @@ import { getOptimizedImage } from "../utils/cloudinary";
 axios.defaults.withCredentials=true
 
 export default function CartSidebar() {
-  const { isCartOpen, setIsCartOpen, updateQty,setAllCart } =
+  const { isCartOpen, setIsCartOpen, updateQty,setAllCart ,setShowCheckout ,showCheckout ,setbuytypeCart} =
     useGlobalContext();
     const [cart,setCart]=useState()
   const [coupon, setCoupon] = useState("");
   const [appliedCoupon, setAppliedCoupon] = useState("");
   const [discountPercent, setDiscountPercent] = useState(0);
-  const [showCheckout, setShowCheckout] = useState(false);
+  // const [showCheckout, setShowCheckout] = useState(false);
 const [removeamount,setAppliedOffers]=useState([])
 const [showoffer,setShowOffer]= useState(true)
 
@@ -59,7 +59,7 @@ const fetchCart= async()=>{
       withCredentials:true
     });
     const data = await response.data;
-    setCart(data)
+    setCart(data.filter((item=>item.buytype=="cart")))
     setAllCart(data)
   } catch (error) {
     
@@ -288,6 +288,7 @@ className={` px-2 bg-gray-100 hover:bg-gray-200 ${item.product.colorVariants.fin
                 onClick={() => {
                      setIsCartOpen(false);
                   setShowCheckout(true);
+                  setbuytypeCart(true)
                
                 }}
                 className="w-full bg-[#B67032] text-white py-2 mt-4 rounded-md"

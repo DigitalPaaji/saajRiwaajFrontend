@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { X } from "lucide-react";
+import { CloudCog, X } from "lucide-react";
 import { toast } from "react-toastify";
 import { useGlobalContext } from "../context/GlobalContext";
 import Image from "next/image";
@@ -20,7 +20,7 @@ export default function CheckoutSidebar({
   total,
   discountPercent,
 }) {
-  const { user,cart, setCart, setIsOrderOpen } = useGlobalContext();
+  const { user,cart, setCart, setIsOrderOpen,buytypeCart } = useGlobalContext();
 
 
 
@@ -187,15 +187,20 @@ const handlePayOnline = async () => {
       ? Math.floor(total * (1 - discountPercent / 100))
       : total;
 
-  // 1) Create backend order
+ const buytype = buytypeCart? "cart" :"buy"
+const finalAmount = buytypeCart
+  ? amount
+  : cart
+      .filter(item => item.buytype === buytype)
+      .reduce((acc, item) => acc + item.price * item.quantity, 0);
   const orderRes = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/order`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     credentials: "include",
     body: JSON.stringify({
-      amount,
+      amount:finalAmount,
       type: "ONLINE",
-      items: cart.map((c) => ({
+      items: cart.filter((item)=>item.buytype== buytype).map((c) => ({
         product: c?.product?._id,
         quantity: c?.quantity,
         price: c.price,
@@ -207,20 +212,23 @@ const handlePayOnline = async () => {
   });
 
   const order = await orderRes.json();
-
-  // 2) Start PhonePe payment
+  console.log(order)
+  
+ 
   const ppRes = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/order/phonepe/pay`, {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   credentials: "include",
   body: JSON.stringify({
     orderId: order?.productOrder?._id,
-    amount,
+    amount:finalAmount,
     userId: order.userId,
   }),
 });
 
 const data = await ppRes.json();
+
+console.log(data)
 
 if (data.tokenUrl) {
   openPhonePePayPage(data.tokenUrl,order.productOrder._id)
@@ -252,9 +260,13 @@ async function openPhonePePayPage(tokenUrl, orderId) {
           alert("Payment cancelled by user");
         } else if (response === "CONCLUDED") {
           const statusRes = await axios.post(
-            `${process.env.NEXT_PUBLIC_LOCAL_PORT}/order/phonepe/status/${orderId}`
+            `${process.env.NEXT_PUBLIC_LOCAL_PORT}/order/phonepe/status/${orderId}`,{
+              buytype: buytypeCart? "cart" :"buy"
+            }
           );
-          if (statusRes.data.success) {
+          const newResponse = await statusRes.data;
+          console.log(newResponse,"ffffff")
+          if (newResponse.success) {
 
 setshowPopUp(true)
 
@@ -347,7 +359,7 @@ location.reload()
         </div>
 
         <div className="p-5 overflow-y-auto text-sm">
-          {/* ✅ SUCCESS SCREEN */}
+   
           {success ? (
             <div className="min-h-screen flex flex-col items-center space-y-5  py-20 text-center ">
               <Image  src={'/Images/success.gif'} alt="" width={400} height={400} className="w-full h-40 object-contain"/>
@@ -474,7 +486,7 @@ location.reload()
                 </div>
               </div>
 
-              {/* Amount */}
+             {buytypeCart &&
               <div className="flex justify-between font-semibold text-base mt-3">
                 <span>Total Amount</span>
                 <span>
@@ -484,7 +496,7 @@ location.reload()
                     : total}
                 </span>
               </div>
-
+}
               <button
                 onClick={handlePlaceOrder}
                 className="block w-full bg-[#B67032] hover:bg-[#9c5a2b] text-white py-3 rounded-md text-center mt-2 font-semibold"

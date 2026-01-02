@@ -34,7 +34,7 @@ export default function ProductDetail() {
     addToCart,
     setIsCartOpen,
     updateQty,
-    cart,setAllCart,setIsAuthOpen,setAuthTab
+    cart,setAllCart,setIsAuthOpen,setAuthTab,setShowCheckout,setbuytypeCart
   } = useGlobalContext();
   const [product, setProduct] = useState(null);
   const [selectedImage, setSelectedImage] = useState("");
@@ -178,19 +178,21 @@ useEffect(()=>{
 
 
 
-    const handelAddtocart= async()=>{
+    const handelAddtocart= async(buytype)=>{
       const item = {productid:product._id,price:product.finalPrice,quantity:selectedQty,color:selectedColor._id}
     try {
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/cart/post`,item,{
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/cart/post`,{...item,buytype},{
         withCredentials:true
       })
      
       const data = await response.data;
    
       if(data.success){
-        toast.success(data.message)
-        setAddedToCart(true)
-        setAllCart(data.cart)
+            buytype ==="buy" ? "" :  toast.success(data.message)
+        buytype ==="buy" ? " " :  setAddedToCart(true)
+        buytype ==="buy" ? setbuytypeCart(false)  :  setbuytypeCart(true)
+
+             setAllCart(data.cart)
       }else{
       setAuthTab("login"); 
               setIsAuthOpen(true);
@@ -203,6 +205,8 @@ useEffect(()=>{
            setAddedToCart(false)
 
     }
+  
+
     }
 
 
@@ -451,7 +455,7 @@ const funshow=(title,incl)=>{
     // If not in cart → Add to Cart
     <button
 
-onClick={()=>handelAddtocart()}
+onClick={()=>handelAddtocart("cart")}
 
       // onClick={() => {
       //   addToCart({
@@ -477,14 +481,18 @@ onClick={()=>handelAddtocart()}
             item._id === product._id &&
             item.color === selectedColor?.colorName
         )
-      ) {
-        addToCart({
-          ...product,
-          color: selectedColor?.colorName, // 👈 same name maintain
-          qty: selectedQty,
-        });
-      }
-      setIsCartOpen(true);
+      ) 
+      // {
+      //   addToCart({
+      //     ...product,
+      //     color: selectedColor?.colorName, 
+      //     qty: selectedQty,
+      //   });
+      // }
+
+     
+                {handelAddtocart("buy"),  setShowCheckout(true)}
+          
     }}
     className="w-full flex items-center justify-center gap-2 border border-[#B67032] text-[#B67032] px-4 py-3 rounded hover:bg-[#fff4ed] transition text-sm font-medium tracking-wide"
   >

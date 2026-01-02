@@ -466,7 +466,6 @@ const updateQty = async (productId, qty, color) => {
     }
   }, []);
 
-  // Fetch categories
   const fetchCategories = useCallback(async () => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/category`, { cache: "no-store" });
     const data = await res.json();
@@ -475,7 +474,7 @@ const updateQty = async (productId, qty, color) => {
     return data.cats || [];
   }, []);
 
-  // Fetch Tags
+
   const fetchTags = useCallback(async () => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/tag/`);
     const data = await res.json();
@@ -605,7 +604,11 @@ const updateQty = async (productId, qty, color) => {
     }
   }, []);
 
-  // Initial fetch
+
+    const [showCheckout, setShowCheckout] = useState(false);
+    const [buytypeCart, setbuytypeCart] = useState(true);
+
+
   useEffect(
     () => {
       const savedUser = localStorage.getItem("saajUser");
@@ -693,7 +696,10 @@ const updateQty = async (productId, qty, color) => {
         orderedProduct,
         alluser,
         offers,
-
+setShowCheckout,
+showCheckout,
+setbuytypeCart,
+buytypeCart,
       }}
     >
       {children}

@@ -62,7 +62,7 @@ function formatCategoryLabel(name) {
     .join(' '); 
 }
 
-const cartItemCount = cart?.reduce((acc, item) => acc + item?.quantity, 0);
+const cartItemCount = cart?.filter((item=>item.buytype=="cart")).reduce((acc, item) => acc + item?.quantity, 0);
   return (
     <header
       className="bg-[#faf8eae0]  backdrop-blur-md sticky top-0 z-[99] shadow-sm "
@@ -70,7 +70,6 @@ const cartItemCount = cart?.reduce((acc, item) => acc + item?.quantity, 0);
     >
       <div className=" sm:mx-4 md:mx-12 xl:mx-24  ">
         <div className="flex justify-between items-center h-20">
-          {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMobileMenuOpen(true)}
             className="xl:hidden p-2 text-stone-700 hover:text-[#B67032]"
