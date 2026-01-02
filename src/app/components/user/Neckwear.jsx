@@ -137,9 +137,10 @@ export default function EarringsMarquee() {
     loading="lazy"
   />
 
-  <span className="absolute top-2 left-2 bg-[#B67032] text-white text-xs px-2 py-1 rounded z-10">
-    {item.subCategory || "Earring"}
+  {item?.subCategory && <span className="absolute top-2 left-2 bg-[#B67032] text-white text-xs px-2 py-1 rounded z-10">
+    {item.subCategory }
   </span>
+}
 </div>
 
                 <div className="p-4">

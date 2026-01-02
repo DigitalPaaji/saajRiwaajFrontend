@@ -133,8 +133,48 @@ export default function EarringsMarquee() {
             freeMode={true} // 3. IMPORTANT: Prevents "snapping" calculation which is heavy on iOS
             grabCursor={true}
             style={{ width: '100%', height: '100%' }}
-          >
-            {loop.map((item, idx) => {
+          > 
+           {loop.map((item) => (
+            <SwiperSlide key={item._id}>
+              <Link
+                href={`/product/${item.name}/${item._id}`}
+                className="group block bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition"
+              >
+          
+<div className="relative h-[300px] overflow-hidden group">
+  <Image
+    src={getOptimizedImage(item.images?.[0], { maxWidth: 600 })}
+    alt={item.name}
+    fill
+    sizes="(max-width: 768px) 100vw, 300px"
+    className="object-cover object-center transition-transform duration-300 group-hover:scale-105"
+    loading="lazy"
+  />
+
+  {item?.subCategory && <span className="absolute top-2 left-2 bg-[#B67032] text-white text-xs px-2 py-1 rounded z-10">
+    {item.subCategory }
+  </span>
+}
+</div>
+
+                <div className="p-4">
+                  <h4 className="font-serif text-stone-800 group-hover:text-[#B67032] truncate">
+                    {item.name}
+                  </h4>
+                  {item.description?.paragraphs?.[0] && (
+                    <p className="text-sm text-stone-600 mt-1 line-clamp-2">
+                      {item.description.paragraphs[0]
+                        .split(" ")
+                        .slice(0, 10)
+                        .join(" ")}
+                      ...
+                    </p>
+                  )}
+                </div>
+              </Link>
+            </SwiperSlide>
+          ))}
+            {/* {loop.map((item, idx) => {
               return (
                 <SwiperSlide key={`${item._id}-${idx}`} className="h-auto">
                   <Link
@@ -143,7 +183,7 @@ export default function EarringsMarquee() {
                   >
                     <div className="w-full h-[300px] relative overflow-hidden">
                       
-                      {/* --- FIX IS HERE --- */}
+                   
                       <img
                         // 4. Reduce resolution (400px is enough for thumbnails)
                         src={getOptimizedImage(item.images?.[0], { maxWidth: 400 })}
@@ -155,7 +195,7 @@ export default function EarringsMarquee() {
                         alt={item.name}
                         className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-110"
                       />
-                      {/* ------------------- */}
+                 
 
                       <div className="absolute top-2 left-2 bg-[#B67032] text-white text-[10px] uppercase px-2 py-1 rounded shadow-sm">
                         {item.subCategory || "Earring"}
@@ -173,7 +213,7 @@ export default function EarringsMarquee() {
                   </Link>
                 </SwiperSlide>
               );
-            })}
+            })} */}
           </Swiper>
         )}
       </div>
