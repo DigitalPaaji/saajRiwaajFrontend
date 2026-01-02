@@ -193,6 +193,10 @@ const finalAmount = buytypeCart
   : cart
       .filter(item => item.buytype === buytype)
       .reduce((acc, item) => acc + item.price * item.quantity, 0);
+
+      console.log(finalAmount,buytype,buytypeCart)
+
+
   const orderRes = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/order`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -212,7 +216,7 @@ const finalAmount = buytypeCart
   });
 
   const order = await orderRes.json();
-  console.log(order)
+
   
  
   const ppRes = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/order/phonepe/pay`, {

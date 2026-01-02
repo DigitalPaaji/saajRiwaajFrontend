@@ -178,7 +178,9 @@ useEffect(()=>{
 
 
 
-    const handelAddtocart= async(buytype)=>{
+    const handelAddtocart= async(buytype)=>{  
+            // buytype ==="buy" ?   :  setbuytypeCart(true);
+
       const item = {productid:product._id,price:product.finalPrice,quantity:selectedQty,color:selectedColor._id}
     try {
       const response = await axios.post(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/cart/post`,{...item,buytype},{
@@ -190,7 +192,6 @@ useEffect(()=>{
       if(data.success){
             buytype ==="buy" ? "" :  toast.success(data.message)
         buytype ==="buy" ? " " :  setAddedToCart(true)
-        buytype ==="buy" ? setbuytypeCart(false)  :  setbuytypeCart(true)
         // setbuytypeCart
              setAllCart(data.cart)
       }else{
@@ -455,7 +456,7 @@ const funshow=(title,incl)=>{
     // If not in cart → Add to Cart
     <button
 
-onClick={()=>handelAddtocart("cart")}
+onClick={()=>{handelAddtocart("cart"),setbuytypeCart(true)}}
 
       // onClick={() => {
       //   addToCart({
@@ -491,7 +492,7 @@ onClick={()=>handelAddtocart("cart")}
       // }
 
      
-                {handelAddtocart("buy"),  setShowCheckout(true)}
+                {setbuytypeCart(false) ,handelAddtocart("buy"),  setShowCheckout(true)}
           
     }}
     className="w-full flex items-center justify-center gap-2 border border-[#B67032] text-[#B67032] px-4 py-3 rounded hover:bg-[#fff4ed] transition text-sm font-medium tracking-wide"
