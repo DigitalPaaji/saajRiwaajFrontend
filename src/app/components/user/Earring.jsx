@@ -126,7 +126,7 @@ export default function EarringsMarquee() {
               disableOnInteraction: false,
             }}
             speed={6000}
-            loop={true}
+         loop={filteredProducts.length > 6}
             grabCursor={true}
           >
             {loop.map((item, idx) => {
