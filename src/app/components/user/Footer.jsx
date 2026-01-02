@@ -24,30 +24,30 @@ function formatCategoryLabel(name) {
 
 useEffect(() => {
    window.scrollTo(0, 0);
-  const socket = getSocket();
-  socket.once("connect", () => {
-  });
+  // const socket = getSocket();
+//   socket.once("connect", () => {
+//   });
 
-  const handleBuy = (data) => {
-    toast(`💎 ${data.name} bought a product now!`, { 
-position: "bottom-left",
-autoClose: 2500,
-hideProgressBar: true,
-closeOnClick: true,
-pauseOnHover: false,
-draggable: true,
-progress: undefined,
-theme: "dark",
-transition: Flip,
+//   const handleBuy = (data) => {
+//     toast(`💎 ${data.name} bought a product now!`, { 
+// position: "bottom-left",
+// autoClose: 2500,
+// hideProgressBar: true,
+// closeOnClick: true,
+// pauseOnHover: false,
+// draggable: true,
+// progress: undefined,
+// theme: "dark",
+// transition: Flip,
 
-    });
-  };
+//     });
+//   };
 
-  socket.on("buy", handleBuy);
+//   socket.on("buy", handleBuy);
 
-  return () => {
-    socket.off("buy", handleBuy); 
-  };
+//   return () => {
+//     socket.off("buy", handleBuy); 
+//   };
 }, []);
 
 
