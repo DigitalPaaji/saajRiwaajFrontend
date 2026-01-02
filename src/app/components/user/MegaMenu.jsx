@@ -38,7 +38,13 @@ function formatCategoryLabel(name) {
             return(
               <li key={sub._id} >
                 <Link
-             href={`/category/${category.name.toLowerCase().replace(/\s+/g, '-')}/${category._id}`}
+         href={{
+    pathname: `/category/${category.name.toLowerCase().replace(/\s+/g, '-')}/${category._id}`,
+    query: {
+      subcategory: sub.name.toLowerCase().replace(/\s+/g, '-'),
+    },
+  }}
+         //  href={`/category/${category.name.toLowerCase().replace(/\s+/g, '-')}/${category._id}`}
                   onClick={onClose}
                   className="hover:text-[#B67032] hover:translate-x-1 transition-all duration-200 inline-block"
                 >

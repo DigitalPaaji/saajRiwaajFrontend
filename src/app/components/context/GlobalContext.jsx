@@ -565,7 +565,7 @@ const updateQty = async (productId, qty, color) => {
       setAlluser(data.user || [])
     } catch (err) {
       console.error("Error fetching orders:", err);
-      toast.error("Failed to load orders");
+      // toast.error("Failed to load orders");
     } finally {
       setLoadingOrders(false);
     }
