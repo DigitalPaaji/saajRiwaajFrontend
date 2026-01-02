@@ -13,9 +13,9 @@ export default function Home() {
       {/* <AnnouncementBar /> */}
       {/* <Navbar/> */}
       
-      {/* <HeroBanner />
-      <EditorialSection /> */}
-      <EarringsMarquee />
+      <HeroBanner />
+      <EditorialSection />
+      {/* <EarringsMarquee /> */}
       <Exclusive />
       <Neckwear />
       <BestSellers />
