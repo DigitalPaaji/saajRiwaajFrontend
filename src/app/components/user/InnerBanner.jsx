@@ -1,13 +1,39 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 
 export default function Banner({ title = '', image = '/Images/innerbanner.webp' }) {
+  const [bgImage, setBgImage] = useState('/Images/innerBanner3.webp');
+  const searchParams = useSearchParams();
+
+  // ✅ get subcategory from URL
+  const subcategory = searchParams.get('subcategory');
+
+  useEffect(() => {
+    const updateImage = () => {
+      if (window.innerWidth < 768) {
+        setBgImage('/Images/image.png');
+      } else {
+        setBgImage('/Images/innerBanner3.webp');
+      }
+    };
+
+    updateImage();
+    window.addEventListener('resize', updateImage);
+    return () => window.removeEventListener('resize', updateImage);
+  }, []);
+
+  // helpers
+  const formatText = (str = '') =>
+    str.split('-').join(' ');
+
   return (
     <div
-      className="bgBanner relative w-full h-[250px] md:h-[400px] flex items-center justify-center  text-[#B67032]  bg-[#b6703234]"
+      className="relative w-full h-[250px] md:h-[400px] flex items-center justify-center text-[#B67032]"
       style={{
-        backgroundImage: `url(/Images/innerBanner3.webp)`,
+        backgroundImage: `url(${bgImage})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
@@ -15,11 +41,26 @@ export default function Banner({ title = '', image = '/Images/innerbanner.webp' 
     >
       {/* Text Content */}
       <div className="relative z-10 text-center px-4">
-        <h1 className="text-2xl md:text-4xl font-mosetta font-semibold text-[#99571d]  capitalize">  {title.split('-').join(' ')}</h1>
+        {/* ✅ Title */}
+        <h1 className="text-2xl md:text-4xl font-mosetta font-semibold text-[#99571d] capitalize">
+         {formatText(title)}
+        </h1>
+
+        {/* ✅ Breadcrumb */}
         <div className="mt-2 text-sm md:text-base text-gray-800 space-x-1">
-          <Link href="/" className="hover:underline">Home</Link>
+          <Link href="/" className="hover:underline">
+            Home
+          </Link>
           <span>/</span>
-          <span className="capitalize">{title}</span>
+          <span className="capitalize">{formatText(title)}</span>
+
+          {/* 👉 show subcategory only if exists */}
+          {subcategory && (
+            <>
+              <span>/</span>
+              <span className="capitalize">{formatText(subcategory)}</span>
+            </>
+          )}
         </div>
       </div>
     </div>

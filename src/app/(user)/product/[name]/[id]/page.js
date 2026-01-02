@@ -461,7 +461,7 @@ onClick={()=>handelAddtocart()}
       //   });
       //   setSelectedQty(1);
       // }}
-      className="cursor-pointer w-full flex items-center justify-center gap-2 bg-[#B67032] text-white px-4 py-3 rounded hover:bg-[#a95c2e] transition text-sm font-medium tracking-wide"
+      className="cursor-pointer w-1/2 px-4  flex items-center justify-center gap-2 bg-[#B67032] text-white py-3 rounded hover:bg-[#a95c2e] transition text-sm font-medium tracking-wide"
     >
       <ShoppingCart className="w-4 h-4" />
       Add to Cart
@@ -469,7 +469,7 @@ onClick={()=>handelAddtocart()}
   )}
 
   {/* Buy Now */}
-  <button
+  {/* <button
     onClick={() => {
       if (
         !cart.some(
@@ -490,7 +490,7 @@ onClick={()=>handelAddtocart()}
   >
     <CreditCard className="w-4 h-4" />
     Buy Now
-  </button>
+  </button> */}
 </div>
 
 

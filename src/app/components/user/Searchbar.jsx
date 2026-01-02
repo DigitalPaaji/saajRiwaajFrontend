@@ -62,10 +62,10 @@ export default function SearchBar({ products, onClose }) {
   }, [onClose]);
 
   return (
-    <div className="absolute top-full left-0 w-full bg-[#faf8ea] shadow-lg border-t animate-[fadeIn_0.3s_ease-out] z-50">
+    <div className="absolute top-full left-0 w-full bg-[#faf8ea] shadow-lg border-t animate-[fadeIn_0.3s_ease-out] z-50 ">
       <div
         ref={modalRef}
-        className="max-w-screen-2xl mx-auto px-8 py-6 relative"
+        className="w-full overflow-hidden md:max-w-screen-2xl mx-auto px-4 md:px-8 py-6 relative"
       >
         <div className="mb-4 flex items-center justify-center gap-2 mx-2  relative">
           <input
@@ -74,7 +74,7 @@ export default function SearchBar({ products, onClose }) {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             autoFocus
-            className="w-full border px-4 py-2 rounded-md focus:outline-none text-sm"
+            className="w-full border px-4 py-2 rounded-md focus:outline-none text-base"
           />
           <IoSearch  className="absolute right-14 text-xl" />
           <button
@@ -106,7 +106,7 @@ export default function SearchBar({ products, onClose }) {
       onClick={onClose}
       className="flex-shrink-0 sm:w-40 lg:w-60 group flex flex-col items-center bg-stone-50 rounded-lg overflow-hidden hover:shadow-md transition-shadow"
     >
-<div className="w-full relative sm:h-40 lg:h-60 overflow-hidden">
+<div className="w-full relative h-40 lg:h-60 overflow-hidden">
   <Image
     src={getOptimizedImage(item.images?.[0], { maxWidth: 600 })}
     alt={item.name || "Product image"}
@@ -117,11 +117,11 @@ export default function SearchBar({ products, onClose }) {
   />
 </div>
       <div className="p-2 flex-1">
-        <h4 className="font-semibold text-stone-800 text-sm group-hover:text-[#B67032] transition-colors">
+        <h4 className="font-semibold text-stone-800 text-base group-hover:text-[#B67032] transition-colors">
           {item.name}
         </h4>
         {item.description?.paragraphs?.[0] && (
-          <p className="text-sm text-stone-600">
+          <p className="text-base text-stone-600">
             {item.description.paragraphs[0]
               .split(" ")
               .slice(0, 10)

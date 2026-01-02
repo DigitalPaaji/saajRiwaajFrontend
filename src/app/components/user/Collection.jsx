@@ -7,6 +7,11 @@ import { FaRupeeSign } from 'react-icons/fa';
 import { getOptimizedImage } from '../utils/cloudinary';
 
 export default function Collection({ Pid, filters = { subCategories: [], tags: [], prices: [] } }) {
+  const toSlug = (str = '') =>
+  str.toLowerCase().trim().replace(/\s+/g, '-');
+
+  
+  
   const { addToCart, refetchProductsByCategory } = useGlobalContext();
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -14,47 +19,52 @@ export default function Collection({ Pid, filters = { subCategories: [], tags: [
 
   const skeletons = Array.from({ length: 6 });
 
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
 
       try {
         const result = await refetchProductsByCategory(Pid);
+
+        // ✅ Ensure correct category
         let filtered = Array.isArray(result)
-          ? result.filter(p => p?.category === Pid || p?.category?._id === Pid)
+          ? result.filter(
+              p => p?.category === Pid || p?.category?._id === Pid
+            )
           : [];
 
         const { subCategories = [], tags = [], prices = [] } = filters;
-        const hasFilters = subCategories.length > 0 || tags.length > 0 || prices.length > 0;
 
-        if (hasFilters) {
-          // Subcategory filter
-          if (subCategories.length > 0) {
-            filtered = filtered.filter(p =>
-              subCategories.includes(p.subcategory?.name?.toUpperCase())
-            );
-          }
+        // ================= SUBCATEGORY FILTER =================
+        if (subCategories.length > 0) {
+          filtered = filtered.filter(p => {
+            const productSubSlug = toSlug(p.subcategory?.name);
+            return subCategories.includes(productSubSlug);
+          });
+        }
 
-          // Tag filter (compare tag IDs directly)
-          if (tags.length > 0) {
-            filtered = filtered.filter(p =>
-              p.tags?.some(tagId => tags.includes(tagId))
-            );
-          }
+        // ================= TAG FILTER =================
+        if (tags.length > 0) {
+          filtered = filtered.filter(p =>
+            p.tags?.some(tagId => tags.includes(tagId))
+          );
+        }
 
-          // Price filter
-          if (prices.length > 0) {
-            filtered = filtered.filter(p => {
-              const price = p.finalPrice;
-              return prices.some(range => {
-                if (range === 'Under ₹1000') return price < 1000;
-                if (range === '₹1000 - ₹2500') return price >= 1000 && price <= 2500;
-                if (range === '₹2500 - ₹5000') return price > 2500 && price <= 5000;
-                if (range === 'Above ₹5000') return price > 5000;
-                return false;
-              });
+        // ================= PRICE FILTER =================
+        if (prices.length > 0) {
+          filtered = filtered.filter(p => {
+            const price = p.finalPrice;
+            return prices.some(range => {
+              if (range === 'Under ₹1000') return price < 1000;
+              if (range === '₹1000 - ₹2500')
+                return price >= 1000 && price <= 2500;
+              if (range === '₹2500 - ₹5000')
+                return price > 2500 && price <= 5000;
+              if (range === 'Above ₹5000') return price > 5000;
+              return false;
             });
-          }
+          });
         }
 
         setFilteredProducts(filtered);
@@ -68,6 +78,61 @@ export default function Collection({ Pid, filters = { subCategories: [], tags: [
 
     fetchData();
   }, [Pid, filters]);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     setLoading(true);
+
+  //     try {
+  //       const result = await refetchProductsByCategory(Pid);
+  //       let filtered = Array.isArray(result)
+  //         ? result.filter(p => p?.category === Pid || p?.category?._id === Pid)
+  //         : [];
+
+  //       const { subCategories = [], tags = [], prices = [] } = filters;
+  //       const hasFilters = subCategories.length > 0 || tags.length > 0 || prices.length > 0;
+
+  //       if (hasFilters) {
+  //         // Subcategory filter
+  //         if (subCategories.length > 0) {
+  //           filtered = filtered.filter(p =>
+  //             subCategories.includes(p.subcategory?.name?.toUpperCase())
+  //           );
+  //         }
+
+  //         // Tag filter (compare tag IDs directly)
+  //         if (tags.length > 0) {
+  //           filtered = filtered.filter(p =>
+  //             p.tags?.some(tagId => tags.includes(tagId))
+  //           );
+  //         }
+
+  //         // Price filter
+  //         if (prices.length > 0) {
+  //           filtered = filtered.filter(p => {
+  //             const price = p.finalPrice;
+  //             return prices.some(range => {
+  //               if (range === 'Under ₹1000') return price < 1000;
+  //               if (range === '₹1000 - ₹2500') return price >= 1000 && price <= 2500;
+  //               if (range === '₹2500 - ₹5000') return price > 2500 && price <= 5000;
+  //               if (range === 'Above ₹5000') return price > 5000;
+  //               return false;
+  //             });
+  //           });
+  //         }
+  //       }
+
+  //       setFilteredProducts(filtered);
+  //     } catch (error) {
+  //       console.error('Error fetching products:', error);
+  //       setFilteredProducts([]);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, [Pid, filters]);
 
   return (
     <section>

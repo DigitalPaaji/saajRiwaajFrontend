@@ -280,29 +280,36 @@ const cartItemCount = cart?.reduce((acc, item) => acc + item?.quantity, 0);
 
 
         {/* SUBCATEGORIES */}
-        {hasSubcategories && isOpen && (
-          <div className="pl-12 pb-3 space-y-2">
-            {subcategories.map((sub) => (
-              <Link
-                key={sub._id}
-                href={`/category/${formatCategoryPath(cat.name)}/${cat._id}`}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="block text-sm text-stone-600 hover:text-[#B67032]"
-              >
-                {formatCategoryLabel(sub.name)}
-              </Link>
-            ))}
+    {/* SUBCATEGORIES */}
+{hasSubcategories && isOpen && (
+  <div className="pl-12 pb-3 space-y-2">
+    {subcategories.map((sub) => (
+      <Link
+        key={sub._id}
+        href={{
+          pathname: `/category/${formatCategoryPath(cat.name)}/${cat._id}`,
+          query: {
+            subcategory: sub.name.toLowerCase().replace(/\s+/g, '-'),
+          },
+        }}
+        onClick={() => setIsMobileMenuOpen(false)}
+        className="block text-sm text-stone-600 hover:text-[#B67032]"
+      >
+        {formatCategoryLabel(sub.name)}
+      </Link>
+    ))}
 
-            {/* VIEW ALL */}
-            <Link
-              href={categoryPath}
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="block text-sm font-semibold text-[#B67032] pt-1"
-            >
-              View All
-            </Link>
-          </div>
-        )}
+    {/* VIEW ALL */}
+    <Link
+      href={`/category/${formatCategoryPath(cat.name)}/${cat._id}`}
+      onClick={() => setIsMobileMenuOpen(false)}
+      className="block text-sm font-semibold text-[#B67032] pt-1"
+    >
+      View All
+    </Link>
+  </div>
+)}
+
       </div>
     );
   })}
