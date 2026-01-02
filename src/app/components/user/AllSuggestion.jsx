@@ -74,7 +74,7 @@ export default function EarringsMarquee() {
                 1536: { slidesPerView: 6 },
               }}
                  autoplay={{
-              delay: 0,
+              delay: 1,
               disableOnInteraction: false,
             }}
               speed={6000}

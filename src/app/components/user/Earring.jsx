@@ -94,7 +94,7 @@ export default function EarringsMarquee() {
         </div>
       </div>
       <div className="z-50 overflow-x-auto scrollbar-hide">
-        {/* {loading ? (
+        {loading ? (
           <div className="flex gap-4 overflow-x-auto scrollbar-hide">
             {Array.from({ length: 6 }).map((_, idx) => (
               <div
@@ -122,7 +122,7 @@ export default function EarringsMarquee() {
               1536: { slidesPerView: 6 },
             }}
             autoplay={{
-              delay: 0,
+              delay: 1,
               disableOnInteraction: false,
             }}
             speed={6000}
@@ -179,7 +179,7 @@ fetchPriority="high"
               );
             })}
           </Swiper>
-        )} */}
+        )}
       </div>
       <style jsx>{`
         .scrollbar-hide::-webkit-scrollbar {
