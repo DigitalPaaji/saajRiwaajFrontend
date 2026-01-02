@@ -13,8 +13,8 @@ export default function Home() {
       {/* <AnnouncementBar /> */}
       {/* <Navbar/> */}
       
-      <HeroBanner />
-      <EditorialSection />
+      {/* <HeroBanner />
+      <EditorialSection /> */}
       <EarringsMarquee />
       <Exclusive />
       <Neckwear />
