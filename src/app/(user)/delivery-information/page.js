@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Banner from "../../components/user/InnerBanner";
 import axios from "axios";
 
@@ -87,8 +87,10 @@ export default function PrivacyPage() {
 
   return (
     <div>
+ <Suspense fallback={null}>
 
       <Banner title="Delivery Information" />
+ </Suspense>
 
 
       <div className="px-4 sm:px-8 lg:px-24 xl:px-60 mx-auto my-16">

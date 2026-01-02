@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, Suspense } from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { toast } from "react-toastify";
@@ -200,7 +200,10 @@ const slugify= (name)=>{
 
   return (
   <div>
+     <Suspense fallback={null}>
+
     <Banner title="My Orders" />
+     </Suspense>
 
     <div className="px-4 sm:px-8 lg:px-24 xl:px-60 mx-auto my-16">
       {loading ? (

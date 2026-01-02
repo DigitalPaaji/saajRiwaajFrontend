@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import Banner from "../../components/user/InnerBanner";
 import axios from "axios";
@@ -38,8 +38,10 @@ const [loading,setLoading]=useState(false)
   
   return (
     <div>
-   
+    <Suspense fallback={null}>
+
       <Banner title="Frequently Asked Questions" />
+    </Suspense>
 
     
       <div className="px-4 sm:px-8 lg:px-24 xl:px-60 mx-auto my-16">

@@ -3,7 +3,7 @@
 import LeftFilterSidebar from '../../../../components/user/LeftFilterSidebar';
 import Collection from '../../../../components/user/Collection';
 import InnerBanner from '../../../../components/user/InnerBanner';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { SlidersHorizontal, X } from 'lucide-react';
 
@@ -32,15 +32,12 @@ export default function FilterLayout() {
 
       <div className="relative flex gap-6 px-4 md:px-12 xl:px-24 py-12">
               <aside className="hidden lg:block w-64 sticky top-24 h-fit">
+              <Suspense fallback={null}>
+
           <LeftFilterSidebar Pid={id} onFilterChange={setFilters} />
+                </Suspense>
         </aside>
-               {/* <div className='w-full md:w-64'>
-          <LeftFilterSidebar
-       
-            Pid={id}
-            onFilterChange={setFilters}
-          />
-        </div> */}
+              
     {/* ================= MOBILE FILTER LAYER ================= */}
   <div
   className={`fixed inset-0 z-50 lg:hidden ${
@@ -80,7 +77,10 @@ export default function FilterLayout() {
 
     {/* Content */}
     <div className="overflow-y-auto h-[calc(70vh-56px)] px-2">
+      <Suspense fallback={null}>
+
       <LeftFilterSidebar Pid={id} onFilterChange={setFilters} />
+      </Suspense>
     </div>
   </div>
 </div>
