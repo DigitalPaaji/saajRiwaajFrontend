@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Autoplay } from "swiper/modules";
+import { Navigation, Autoplay, FreeMode } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import { useGlobalContext } from "../context/GlobalContext";
@@ -110,76 +110,71 @@ export default function EarringsMarquee() {
             ))}
           </div>
         ) : (
-          <p>aaaa</p>
-//           <Swiper
-//             modules={[Navigation, Autoplay]}
-//             slidesPerView={1.3}
-//             spaceBetween={16}
-//             breakpoints={{
-//               640: { slidesPerView: 1.3 },
-//               768: { slidesPerView: 3 },
-//               1024: { slidesPerView: 4 },
-//               1280: { slidesPerView: 5 },
-//               1536: { slidesPerView: 6 },
-//             }}
-//             autoplay={{
-//               delay: 1,
-//               disableOnInteraction: false,
-//             }}
-//             speed={6000}
-//          loop={filteredProducts.length > 6}
-//             grabCursor={true}
-//           >
-//             {loop.map((item, idx) => {
-//               return (
-//                 <SwiperSlide key={idx}>
-//                   <Link
-//                     href={`/product/${item.name}/${item._id}`}
-//                     className="group flex-shrink-0 w-full rounded-xl overflow-hidden shadow hover:shadow-md transition-shadow"
-//                   >
-//                     <div className="w-full h-[300px] relative">
-//                     <img
-//   src={getOptimizedImage(item.images?.[0], { maxWidth: 800 })}
-// loading="eager"
-// fetchPriority="high"
-//   alt={item.name}
-//   className="w-full h-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
-// />
-
-//                       <div className="absolute top-2 left-2 bg-[#B67032] text-white text-xs px-2 py-1 rounded">
-//                         {item.subCategory ||
-//                           item.subcategory?.name ||
-//                           "Earring"}
-//                       </div>
-//                     </div>
-//                     <div className="p-4 flex flex-col justify-between">
-//                      <div className="flex items-center justify-between">
-//                         <h4 className="font-serif font-medium text-stone-800 group-hover:text-[#B67032] transition-colors text-md truncate">
-//                         {item.name}
-//                       </h4>
+     
+         <Swiper
+            // 2. Add FreeMode to modules
+            modules={[Navigation, Autoplay, FreeMode]} 
+            slidesPerView={1.3}
+            spaceBetween={16}
+            breakpoints={{
+              640: { slidesPerView: 2.2 },
+              768: { slidesPerView: 3 },
+              1024: { slidesPerView: 4 },
+              1280: { slidesPerView: 5 },
+              1536: { slidesPerView: 6 },
+            }}
+            autoplay={{
+              delay: 0, // Continuous flow
+              disableOnInteraction: false,
+              pauseOnMouseEnter: true, 
+            }}
+            speed={5000} // Adjusted speed for smoothness
+            loop={loop.length > 4} // Only loop if enough items
+            freeMode={true} // 3. IMPORTANT: Prevents "snapping" calculation which is heavy on iOS
+            grabCursor={true}
+            style={{ width: '100%', height: '100%' }}
+          >
+            {loop.map((item, idx) => {
+              return (
+                <SwiperSlide key={`${item._id}-${idx}`} className="h-auto">
+                  <Link
+                    href={`/product/${item.name}/${item._id}`}
+                    className="group flex flex-col h-full bg-white rounded-xl overflow-hidden shadow hover:shadow-lg transition-all duration-300 border border-stone-100"
+                  >
+                    <div className="w-full h-[300px] relative overflow-hidden">
                       
-//               <Heart className={`w-5 h-5 ${
-//     wishlist?.includes(item._id) ? "text-red-500" : "text-stone-700"
-//   }`}
-//  />
+                      {/* --- FIX IS HERE --- */}
+                      <img
+                        // 4. Reduce resolution (400px is enough for thumbnails)
+                        src={getOptimizedImage(item.images?.[0], { maxWidth: 400 })}
+                        
+                        // 5. CRITICAL: Use lazy loading so iPhone doesn't download 50 images at once
+                        loading="lazy" 
+                        
+                        // 6. REMOVED fetchPriority="high"
+                        alt={item.name}
+                        className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-110"
+                      />
+                      {/* ------------------- */}
 
-//                       </div>
-                     
-//                       {item.description?.paragraphs?.[0] && (
-//                         <p className="text-sm text-stone-600 mt-1 line-clamp-2">
-//                           {item.description.paragraphs[0]
-//                             .split(" ")
-//                             .slice(0, 10)
-//                             .join(" ")}
-//                           ...
-//                         </p>
-//                       )}
-//                     </div>
-//                   </Link>
-//                 </SwiperSlide>
-//               );
-//             })}
-//           </Swiper>
+                      <div className="absolute top-2 left-2 bg-[#B67032] text-white text-[10px] uppercase px-2 py-1 rounded shadow-sm">
+                        {item.subCategory || "Earring"}
+                      </div>
+                    </div>
+
+                    <div className="p-4 flex flex-col flex-grow">
+                      <div className="flex items-start justify-between gap-2 mb-2">
+                        <h4 className="font-serif font-medium text-stone-800 text-sm md:text-md line-clamp-1">
+                          {item.name}
+                        </h4>
+                        <Heart className="w-5 h-5 text-stone-400" />
+                      </div>
+                    </div>
+                  </Link>
+                </SwiperSlide>
+              );
+            })}
+          </Swiper>
         )}
       </div>
       <style jsx>{`
