@@ -60,6 +60,7 @@ export default function EarringsMarquee() {
 
       </div>
       {" "}
+      ddd
       {/* <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 items-center mb-8">
         <div className="max-w-xl">
           {" "}
@@ -93,7 +94,7 @@ export default function EarringsMarquee() {
         </Swiper>
         </div>
       </div> */}
-      <div className="z-50 overflow-x-auto scrollbar-hide">
+      {/* <div className="z-50 overflow-x-auto scrollbar-hide">
         {loading ? (
           <div className="flex gap-4 overflow-x-auto scrollbar-hide">
             {Array.from({ length: 6 }).map((_, idx) => (
@@ -185,7 +186,7 @@ fetchPriority="high"
         .scrollbar-hide::-webkit-scrollbar {
           display: none;
         }
-      `}</style>
+      `}</style> */}
     </section>
   );
 }
