@@ -188,9 +188,9 @@ export default function Collection({ Pid, filters = { subCategories: [], tags: [
     <h3 className="flex items-center md:text-md font-semibold text-[#B67032] transition-colors duration-300">
       <span className="line-through mr-3 flex items-center text-gray-700 text-sm">
         <FaRupeeSign size={14} />
-        {product.price}
+        {Math.floor(product.price)}
       </span>
-      <FaRupeeSign size={16} /> {product.finalPrice}
+      <FaRupeeSign size={16} /> {Math.floor(product.finalPrice)}
     </h3>
   </div>
   {/* <button 
