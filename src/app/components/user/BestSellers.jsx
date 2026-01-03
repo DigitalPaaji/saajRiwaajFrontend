@@ -79,10 +79,10 @@ export default function ShopByCategory() {
                   <h3 className="font-semibold  text-md text-[#B67032] transition-colors duration-300 flex items-center justify-center">
                     <span className="line-through mr-4 flex items-center">
                       <FaRupeeSign size={14} />
-                      {product.price}
+                      {Math.floor(product.price)}
                     </span>
                     <FaRupeeSign size={14} />
-                    {product.finalPrice}
+                    {Math.floor(product.finalPrice)}
                   </h3>
                 </Link>
               ))}
