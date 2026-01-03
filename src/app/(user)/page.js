@@ -15,7 +15,7 @@ export default function Home() {
       
       <HeroBanner />
       <EditorialSection />
-      <EarringsMarquee />
+      {/* <EarringsMarquee /> */}
       <Exclusive />
       <Neckwear />
       <BestSellers />

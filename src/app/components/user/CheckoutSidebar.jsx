@@ -194,7 +194,6 @@ const finalAmount = buytypeCart
       .filter(item => item.buytype === buytype)
       .reduce((acc, item) => acc + item.price * item.quantity, 0);
 
-      console.log(finalAmount,buytype,buytypeCart)
 
 
   const orderRes = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/order`, {
