@@ -155,7 +155,7 @@ export default function AddProductPage() {
     barcode: null,
     hidethings:[]
   });
- 
+ console.log(product)
 
   const [finalPrice, setFinalPrice] = useState("0.00");
   const [tagInput, setTagInput] = useState("");

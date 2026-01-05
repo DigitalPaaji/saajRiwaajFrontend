@@ -99,7 +99,7 @@ useEffect(()=>{
       frontSubtitle: "Easy 10-day returns",
       backContent: (
         <div className="list-disc list-inside text-sm space-y-1">
-          <p>We offer 7 days of hassle-free returns & exchanges</p>
+          {/* <p>We offer 7 days of hassle-free returns & exchanges</p> */}
           <p>Shipping Charges are Non-Refundable.</p>
           <p>All items with certificate & box must be returned</p>
         </div>
