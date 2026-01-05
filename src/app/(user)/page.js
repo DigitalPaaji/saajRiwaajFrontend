@@ -15,9 +15,11 @@ export default function Home() {
       
       <HeroBanner />
       <EditorialSection />
-      <EarringsMarquee />
-      <Exclusive />
       <Neckwear />
+
+      <Exclusive />
+      <EarringsMarquee />
+
       <BestSellers />
       {/* <Footer /> */}
     </div>

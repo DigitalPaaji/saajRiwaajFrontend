@@ -58,7 +58,7 @@ export default function ResetPasswordPage() {
         <Image
         
           alt=""
-          src={"/Images/admin.webp"}
+          src={"/Images/admin1.webp"}
           width={400}
           height={400}
           className="w-full h-screen object-cover"
