@@ -82,7 +82,7 @@ useEffect(()=>{
     {
       img: "/Images/shipping.webp",
       frontTitle: "Shipping Policy",
-      frontSubtitle: "Free shipping on orders above ₹499",
+      frontSubtitle: "Free shipping on orders above ₹799",
       backContent: (
         <div className="text-sm space-y-1">
     <div>Estimated Delivery Time: 3–7 business days </div>
@@ -95,13 +95,15 @@ useEffect(()=>{
     },
     {
       img: "/Images/return.webp",
-      frontTitle: "Returns & Refunds",
-      frontSubtitle: "Easy 10-day returns",
+      frontTitle: "Exchange Policy",
+      frontSubtitle: "Easy exchange within 24 hours",
       backContent: (
         <div className="list-disc list-inside text-sm space-y-1">
-          {/* <p>We offer 7 days of hassle-free returns & exchanges</p> */}
-          <p>Shipping Charges are Non-Refundable.</p>
-          <p>All items with certificate & box must be returned</p>
+       <p>Products are eligible for exchange only if received damaged.</p>
+<p>The issue must be reported within 24 hours of delivery with clear video proof.</p>
+<p>Any exchange request raised after 24 hours will be rejected.</p>
+
+
         </div>
       ),
     },
