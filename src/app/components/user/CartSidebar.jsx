@@ -29,7 +29,7 @@ const [showoffer,setShowOffer]= useState(true)
 
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_LOCAL_PORT}/${process.env.NEXT_PUBLIC_LOCAL_PORT}/coupon/${code}`
+        `${process.env.NEXT_PUBLIC_LOCAL_PORT}/coupon/${code}`
       );
       const data = await res.json();
 

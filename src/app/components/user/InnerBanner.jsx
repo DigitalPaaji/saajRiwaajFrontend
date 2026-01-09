@@ -42,7 +42,7 @@ export default function Banner({ title = '', image = '/Images/innerbanner.webp' 
       {/* Text Content */}
       <div className="relative z-10 text-center px-4">
         {/* ✅ Title */}
-        <h1 className="text-2xl md:text-4xl font-mosetta font-semibold text-[#99571d] capitalize">
+        <h1 className="text-2xl md:text-4xl font-mosetta font-semibold text-[#461412] capitalize">
          {formatText(title)}
         </h1>
 
