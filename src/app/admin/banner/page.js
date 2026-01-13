@@ -288,7 +288,7 @@ formData.append("mobileImage",mobileImage)
                       onClick={() => setPreviewImage(b.desktopImage)}
                       className="cursor-pointer rounded-lg overflow-hidden"
                     >
-                      <Image
+                      <img
                         src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${b.desktopImage}`}
                         alt="Desktop"
                         width={600}
@@ -308,7 +308,7 @@ formData.append("mobileImage",mobileImage)
                       onClick={() => setPreviewImage(b.mobileImage)}
                       className="cursor-pointer rounded-lg overflow-hidden"
                     >
-                      <Image
+                      <img
                         src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${b.mobileImage}`}
                         alt="Mobile"
                         width={600}

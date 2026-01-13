@@ -235,7 +235,7 @@ formData.append("price",price)
                   <td className="px-4 py-3 capitalize">{offer.title}</td>
 
                   <td className="px-4 py-3">
-                    <Image
+                    <img
                     
                       src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${offer.image}`}
                       alt="Offer"
