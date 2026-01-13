@@ -14,9 +14,9 @@ export default function ImagePreviewModal({ src, onClose }) {
     >
       <div
         className="relative max-w-4xl w-full max-h-[90vh] rounded-xl overflow-hidden"
-        onClick={(e) => e.stopPropagation()} // Prevent closing when clicking on image
+        onClick={(e) => e.stopPropagation()} 
       >
-        {/* Close Button */}
+
         <button
           onClick={onClose}
           className="absolute top-3 right-3 z-10 bg-white text-black rounded-full p-1 shadow hover:bg-red-100"
@@ -24,8 +24,8 @@ export default function ImagePreviewModal({ src, onClose }) {
           <X className="w-5 h-5" />
         </button>
 <div className="relative w-full h-[500px]">
-  <Image
-    src={getOptimizedImage(src, { maxWidth: 1000 })}
+  <img
+    src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${src}`}
     alt="Preview"
     fill
     sizes="(max-width: 768px) 100vw, 800px"
