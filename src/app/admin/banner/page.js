@@ -28,6 +28,7 @@ export default function BannerManager() {
   const [mobileImage, setMobileImage] = useState("");
   const [dragActiveDesktop, setDragActiveDesktop] = useState(false);
   const [dragActiveMobile, setDragActiveMobile] = useState(false);
+  
 
   const fetchBanners = useCallback(async () => {
     try {
@@ -72,33 +73,16 @@ export default function BannerManager() {
   const handleImageUpload = async (file, target = "desktop") => {
     if (!file) return;
     setIsUploading(true);
+    if(target=="desktop"){
 
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
-
-    try {
-      const res = await fetch(
-        `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
-
-      const data = await res.json();
-      if (data.secure_url) {
-        target === "desktop"
-          ? setDesktopImage(data.secure_url)
-          : setMobileImage(data.secure_url);
-      } else {
-        toast.error("Upload failed.");
-      }
-    } catch {
-      toast.error("Upload error.");
-    } finally {
-      setIsUploading(false);
+      setDesktopImage(file)
+    }else if(target == "mobile"){
+      setMobileImage(file)
     }
+
+
+
+  
   };
 
   const handleAddBanner = async () => {
@@ -108,10 +92,15 @@ export default function BannerManager() {
 
     setIsSubmitting(true);
     try {
+      const formData = new FormData();
+formData.append("desktopImage",desktopImage)
+formData.append("mobileImage",mobileImage)
+      
+
       const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/banner/`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ desktopImage, mobileImage }),
+      
+       method: "POST",
+    body: formData,
       });
 
       if (res.ok) {
@@ -202,7 +191,7 @@ export default function BannerManager() {
             {desktopImage && (
               <div className="mt-3 relative w-52 h-32 border rounded-lg overflow-hidden shadow-sm">
                 <Image
-                  src={desktopImage}
+                  src={URL.createObjectURL(desktopImage)}
                   alt="Desktop"
                   fill
                   className="object-cover"
@@ -247,7 +236,7 @@ export default function BannerManager() {
             {mobileImage && (
               <div className="mt-3 relative w-52 h-32 border rounded-lg overflow-hidden shadow-sm">
                 <Image
-                  src={mobileImage}
+                  src={URL.createObjectURL(mobileImage)}
                   alt="Mobile"
                   fill
                   className="object-cover"
@@ -300,7 +289,7 @@ export default function BannerManager() {
                       className="cursor-pointer rounded-lg overflow-hidden"
                     >
                       <Image
-                        src={b.desktopImage}
+                        src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${b.desktopImage}`}
                         alt="Desktop"
                         width={600}
                         height={250}
@@ -320,7 +309,7 @@ export default function BannerManager() {
                       className="cursor-pointer rounded-lg overflow-hidden"
                     >
                       <Image
-                        src={b.mobileImage}
+                        src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${b.mobileImage}`}
                         alt="Mobile"
                         width={600}
                         height={250}
