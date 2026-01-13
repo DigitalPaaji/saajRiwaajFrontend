@@ -48,28 +48,10 @@ export default function OffersPage() {
   const handleImageUpload = async (file) => {
     if (!file) return;
     setIsUploading(true);
+setImage(file)
 
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
 
-    try {
-      const res = await fetch(
-        `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
-        { method: "POST", body: formData }
-      );
-
-      const data = await res.json();
-      if (data.secure_url) {
-        setImage(data.secure_url);
-      } else {
-        toast.error("Upload failed.");
-      }
-    } catch {
-      toast.error("Upload error.");
-    } finally {
-      setIsUploading(false);
-    }
+   
   };
 
   const handleAddOffer = async (e) => {
@@ -83,10 +65,18 @@ export default function OffersPage() {
     setIsSubmitting(true);
 
     try {
+
+const formData = new FormData()
+
+formData.append("title",title)
+formData.append("image",image)
+formData.append("minquantity",minquantity)
+formData.append("price",price)
+
+
       const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/offer`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, image ,minquantity,price}),
+       body:formData,
       });
 
       const data = await res.json()
@@ -206,7 +196,7 @@ export default function OffersPage() {
 
         {image && (
           <div className="mt-3 relative w-40 h-28 border rounded-lg overflow-hidden shadow-sm">
-            <Image  src={image} alt="Offer" fill className="object-cover" />
+            <Image  src={URL.createObjectURL(image)} alt="Offer" fill className="object-cover" />
           </div>
         )}
 
@@ -247,7 +237,7 @@ export default function OffersPage() {
                   <td className="px-4 py-3">
                     <Image
                     
-                      src={offer.image}
+                      src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${offer.image}`}
                       alt="Offer"
                       width={70}
                       height={70}
