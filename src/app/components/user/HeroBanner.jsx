@@ -55,7 +55,7 @@ export default function HeroBanner() {
       <img
         loading="eager"
         fetchPriority="high"
-        src={getOptimizedImage(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${banner.mobileImage}`, { maxWidth: 768 })}
+        src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${banner.mobileImage}`}
         alt="Mobile Banner"
         className="block lg:hidden w-full h-full object-cover"
       />
@@ -64,7 +64,7 @@ export default function HeroBanner() {
       <img
         loading="eager"
         fetchPriority="high"
-        src={getOptimizedImage(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${banner.desktopImage}`, { maxWidth: 1600 })}
+        src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${banner.desktopImage}`}
         alt="Desktop Banner"
         className="hidden lg:block w-full h-full object-cover"
       />
