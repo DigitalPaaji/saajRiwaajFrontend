@@ -42,7 +42,7 @@ export default function ProductDetail() {
   const [zoomPos, setZoomPos] = useState({ x: 0, y: 0 });
   const [isZoomed, setIsZoomed] = useState(false);
   const [addedtoCart,setAddedToCart] =useState(false)
-
+const [selectedColorImage,setSelectedColorImage]=  useState()
 
   const handleMouseMove = (e) => {
     const { left, top, width, height } =
@@ -122,6 +122,10 @@ useEffect(()=>{
     },
   ];
 
+  useEffect(()=>{
+setSelectedColorImage(product?.images)
+  },[ product])
+
   useEffect(() => {
     if (id) {
       (async () => {
@@ -133,7 +137,10 @@ useEffect(()=>{
       })();
     }
   }, [id, refetchProductById]);
+useEffect(()=>{
+setSelectedImage(selectedColorImage?.[0])
 
+},[selectedColorImage])
   if (!product)
     return (
       <div className="flex flex-col xl:flex-row gap-6 px-4 md:px-12 xl:px-40 py-12 ">
@@ -218,6 +225,18 @@ const funshow=(title,incl)=>{
  return product?.hidethings?.includes(incl)? "" :title
 }
 
+
+
+const handelColorImage=(img)=>{
+  
+  const newimgset = product?.images.filter((item,index)=> img.includes(`${index}`)
+
+  )
+  
+ setSelectedColorImage(newimgset)
+  // setnewImg()
+}
+
   return (
     <div>
       <div className="relative flex flex-col items-center xl:flex-row xl:items-start justify-center flex-wrap xl:flex-nowrap gap-6 px-4 md:px-12 xl:px-24 py-12 ">
@@ -226,10 +245,10 @@ const funshow=(title,incl)=>{
           <div className="flex flex-col md:flex-row items-center gap-4">
          
           <div className="flex md:flex-col gap-4 max-h-[600px] overflow-y-auto pr-1 custom-scrollbar">
-  {(newImg || product.images)?.map((img, idx) => (
-    <Image
+  {(selectedColorImage)?.map((img, idx) => (
+    <img
       key={idx}
-      src={getOptimizedImage(img, { maxWidth: 200, quality: "auto:eco" })}
+      src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${img}`}
       alt={`Thumbnail ${idx + 1}`}
       width={100}
       height={100}
@@ -247,7 +266,7 @@ const funshow=(title,incl)=>{
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
               style={{
-                backgroundImage: `url(${selectedImage})`,
+                backgroundImage: `url(${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${selectedImage})`,
                 backgroundSize: isZoomed ? "150%" : "cover",
                 backgroundRepeat: "no-repeat",
                 backgroundPosition: isZoomed
@@ -407,7 +426,7 @@ const funshow=(title,incl)=>{
     <button
       key={i}
       onClick={() => {
-        v.images.length &&  setnewImg(v.images)
+        v.images.length &&  handelColorImage(v.images) 
         setSelectedColor(v);
         setSelectedQty(1);
        setAddedToCart(false)

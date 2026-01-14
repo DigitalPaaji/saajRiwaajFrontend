@@ -272,7 +272,7 @@ const slugify= (name)=>{
     <Image
       src={
         product.images?.[0]
-          ? getOptimizedImage(product.images[0], { maxWidth: 400 })
+          ? `${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${product.images[0]}`
           : "/Images/img.webp"
       }
       alt={product.name || "Product"}

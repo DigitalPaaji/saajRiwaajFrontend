@@ -61,7 +61,7 @@ export default function CartSidebar() {
             {wishlist.map((item) => (
               <Link href={`/product/${item.name}/${item._id}`} key={item._id} className="group flex items-start gap-4 text-md">
              <Image
-  src={getOptimizedImage(item.images?.[0], { maxWidth: 200 })}
+  src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item.images?.[0]}`}
   alt={item.name}
   width={96}
   height={96}

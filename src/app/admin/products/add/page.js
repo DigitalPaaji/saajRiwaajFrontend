@@ -101,12 +101,12 @@ const ImageUploader = ({
         )}
       </div>
 
-      {images?.length > 0 && (
+      {images?.length > 0   && multiple && (
         <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4">
           {images.map((url, index) => (
             <div key={index} className="relative aspect-square group">
               <Image
-                src={url}
+                src={URL.createObjectURL(url)}
                 alt={`Preview ${index + 1}`}
                 width={300}
                 height={300}
@@ -122,6 +122,30 @@ const ImageUploader = ({
               </button>
             </div>
           ))}
+        </div>
+      )}
+
+       {images?.length > 0   && !multiple && (
+        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4">
+       
+            <div key={index} className="relative aspect-square group">
+              <Image
+                src={URL.createObjectURL(images)}
+                alt={`Preview`}
+                width={300}
+                height={300}
+                className="w-full h-full object-cover rounded-lg shadow-sm"
+                
+              />
+              <button
+                type="button"
+                className={`cursor-pointer absolute top-1 right-1 opacity-0 group-hover:opacity-100 ${buttonClasses.destructive}`}
+                onClick={() => onRemove()}
+              >
+                <X className="h-4 w-4 " />
+              </button>
+            </div>
+    
         </div>
       )}
     </div>
@@ -250,39 +274,26 @@ export default function AddProductPage() {
     }
   };
 
+
   const handleFileUpload = useCallback(async (files, type) => {
     const setIsLoading =
       type === "main" ? setIsMainUploading : setIsVariantUploading;
-    const onComplete = (urls) => {
+   
       if (type === "main") {
-        setProduct((prev) => ({ ...prev, images: [...prev.images, ...urls] }));
+        setProduct((prev) => ({ ...prev, images: [...prev.images,...files] }));
       } else {
-        setVariant((prev) => ({ ...prev, images: [...prev.images, ...urls] }));
+        setVariant((prev) => ({ ...prev, images: [...prev.images, ...files] }));
       }
-    };
+
 
     setIsLoading(true);
-    const uploadPromises = Array.from(files).map((file) => {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
-      return fetch(
-        `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
-        { method: "POST", body: formData }
-      ).then((res) => res.json());
-    });
+  
 
-    try {
-      const results = await Promise.all(uploadPromises);
-      onComplete(results.map((r) => r.secure_url).filter(Boolean));
-    } catch (error) {
-      toast.error(
-        "Image upload failed. Please check credentials and try again."
-      );
-    } finally {
+
       setIsLoading(false);
-    }
+    
   }, []);
+  
 
   const handleFileUploadBarcode = useCallback(async (file, type) => {
     const setIsLoading =
@@ -290,40 +301,16 @@ export default function AddProductPage() {
 
     setIsLoading(true);
 
-    try {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+  
 
-      const res = await fetch(
-        `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
-
-      const data = await res.json();
-
-      if (!data.secure_url) {
-        throw new Error("Upload failed");
-      }
-
-      if (type === "main") {
+    
         setProduct((prev) => ({
           ...prev,
-          barcode: data.secure_url, // single image URL
+          barcode: file, // single image URL
         }));
-      } else {
-        // setVariant((prev) => ({ ...prev, barcode: data.secure_url }));
-      }
-    } catch (error) {
-      toast.error(
-        "Image upload failed. Please check credentials and try again."
-      );
-    } finally {
+
       setIsLoading(false);
-    }
+
   }, []);
 
   const handleAddVariant = () => {
@@ -333,6 +320,7 @@ export default function AddProductPage() {
       colorVariants: [...prev.colorVariants, variant],
     }));
     setVariant({ colorName: "", quantity: 1, images: [] }); // Reset for next variant
+    setShowImg(!showImg)
   };
 
   const removeVariant = (indexToRemove) => {
@@ -342,93 +330,115 @@ export default function AddProductPage() {
     }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+ const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    let formErrors = {
-      images: "",
-      variants: "",
-      price: "",
-      name: "",
-      discount: "",
-    };
-    let hasError = false;
-
-    if (!product.name.trim()) {
-      formErrors.name = "Product name is required.";
-      hasError = true;
-    }
-
-    if (product.images.length === 0) {
-      formErrors.images = "Please upload at least one product image.";
-      hasError = true;
-    }
-
-    if (product.colorVariants.length === 0) {
-      formErrors.variants = "Please add at least one color variant.";
-      hasError = true;
-    }
-
-    if (!product.price || parseFloat(product.price) <= 0) {
-      formErrors.price = "Please enter a valid price greater than 0.";
-      hasError = true;
-    }
-
-    if (product.discount && (product.discount < 0 || product.discount > 90)) {
-      formErrors.discount = "Discount must be between 0 and 90%.";
-      hasError = true;
-    }
-
-    setErrors(formErrors);
-
-    if (hasError) return; // stop submit if errors exist
-
-    // --- Submit API ---
-    const productToSubmit = {
-      ...product,
-      subcategory: subCategories.length > 0 ? product.subcategory : null,
-      finalPrice: parseFloat(finalPrice),
-    };
-
-    setIsSubmitting(true);
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_LOCAL_PORT}/product/add`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(productToSubmit),
-        }
-      );
-
-      const result = await response.json();
-
-      if (!response.ok)
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      toast.success("Product added successfully!");
-
-      // reset product
-      setProduct({
-        name: "",
-        category: "",
-        subcategory: "",
-        description: { paragraphs: [""], bulletPoints: [""] },
-        tags: [],
-        offer: [],
-        isFeatured: false,
-        isNewArrival: false,
-        price: "",
-        discount: "",
-        images: [],
-        colorVariants: [],
-      });
-    } catch (error) {
-      toast.error("Failed to add product. Check console for details.");
-      console.error("Submission Error:", error);
-    } finally {
-      setIsSubmitting(false);
-    }
+  // ---------- Validation ----------
+  let formErrors = {
+    images: "",
+    variants: "",
+    price: "",
+    name: "",
+    discount: "",
   };
+  let hasError = false;
+
+  if (!product.name.trim()) {
+    formErrors.name = "Product name is required.";
+    hasError = true;
+  }
+
+  if (product.images.length === 0) {
+    formErrors.images = "Please upload at least one product image.";
+    hasError = true;
+  }
+
+  if (product.colorVariants.length === 0) {
+    formErrors.variants = "Please add at least one color variant.";
+    hasError = true;
+  }
+
+  if (!product.price || parseFloat(product.price) <= 0) {
+    formErrors.price = "Please enter a valid price greater than 0.";
+    hasError = true;
+  }
+
+  if (product.discount && (product.discount < 0 || product.discount > 90)) {
+    formErrors.discount = "Discount must be between 0 and 90%.";
+    hasError = true;
+  }
+
+  setErrors(formErrors);
+  if (hasError) return;
+
+  // ---------- Prepare Data ----------
+  const productToSubmit = {
+    ...product,
+    subcategory: subCategories.length > 0 ? product.subcategory : null,
+    finalPrice: Number(finalPrice),
+  };
+
+  const formData = new FormData();
+
+  for (let key in productToSubmit) {
+    const value = productToSubmit[key];
+
+    if (value === null || value === undefined) continue;
+
+    // 🔥 Handle images (File[])
+    if (key === "images") {
+      value.forEach((file) => {
+        formData.append("images", file);
+      });
+    }
+    if (key === "barcode") {
+      
+  formData.append("barcode", value);
+    
+    }
+   
+    // 🔥 Objects / Arrays → JSON
+    else if (typeof value === "object") {
+      formData.append(key, JSON.stringify(value));
+    }
+    // 🔥 Primitive values
+    else {
+      formData.append(key, value);
+    }
+  }
+
+  // Debug
+  for (let pair of formData.entries()) {
+    console.log(pair[0], pair[1]);
+  }
+
+  // ---------- API Call ----------
+  setIsSubmitting(true);
+
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_LOCAL_PORT}/product/add`,
+      {
+        method: "POST",
+        body: formData, 
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to submit");
+    }
+
+    toast.success("Product added successfully!");
+    location.reload();
+    
+  } catch (err) {
+    console.error(err);
+    toast.error("Failed to add product");
+  } finally {
+    setIsSubmitting(false);
+  }
+};
+
 
   return (
     <div className="">
@@ -691,7 +701,7 @@ export default function AddProductPage() {
                       barcode: null,
                     }))
                   }
-                  images={product.barcode ? [product.barcode] : []}
+                  // images={product.barcode }
                   uploaderId="barcode-uploader"
                   isUploading={isMainUploading}
                   multiple={false}
@@ -700,7 +710,7 @@ export default function AddProductPage() {
                 {product.barcode && (
                   <div className="mt-4 relative w-40">
                     <Image
-                      src={product.barcode}
+                      src={URL.createObjectURL( product.barcode) }
                       alt="Barcode Preview"
                       width={200}
                       height={200}
@@ -779,27 +789,27 @@ export default function AddProductPage() {
                         <div className="grid grid-cols-5 top-full w-full left-0 gap-5 absolute bg-white p-4  z-50">
                           {product.images.map((img, idx) => (
                             <div className="relative" key={idx}>
-                              {variant.images.includes(img) && (
+                              {variant.images.includes(idx) && (
                                 <FaCheckCircle className="absolute top-3 right-3 text-red-600 font-bold text-xl shadow bg-white p-0 rounded-full" />
                               )}
                               <img
                                 key={idx}
                                 alt={`Product image ${idx + 1}`}
-                                src={img}
+                                src={URL.createObjectURL(img)}
                                 width={300}
                                 loading="lazy"
                                 height={300}
                                 onClick={() => {
-                                  variant.images.includes(img)
+                                  variant.images.includes(idx)
                                     ? setVariant({
                                         ...variant,
                                         images: variant.images.filter(
-                                          (item) => item !== img
+                                          (item) => item !== idx
                                         ),
                                       })
                                     : setVariant({
                                         ...variant,
-                                        images: [...variant.images, img],
+                                        images: [...variant.images,idx],
                                       });
                                 }}
                                 className="w-40 h-40 object-cover rounded cursor-pointer"

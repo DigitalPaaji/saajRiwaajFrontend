@@ -143,10 +143,10 @@ export default function EarringsMarquee() {
               >
           
 <div className="relative h-[300px] overflow-hidden group">
-  <Image
-    src={getOptimizedImage(item.images?.[0], { maxWidth: 600 })}
+  <img
+    src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item.images?.[0]}`}
     alt={item.name}
-    fill
+    
     sizes="(max-width: 768px) 100vw, 300px"
     className="object-cover object-center transition-transform duration-300 group-hover:scale-105"
     loading="lazy"

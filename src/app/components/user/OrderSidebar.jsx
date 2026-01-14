@@ -148,10 +148,8 @@ const cancelOrder = useCallback(
                         <div className="w-24 h-24 flex-shrink-0 rounded-lg overflow-hidden bg-gray-50">
                           <Link href={`/product/${product.name}/${product._id}`}>
                            <Image
-  src={getOptimizedImage(
-    product.images?.[0] || "/Images/1.webp",
-    { maxWidth: 600 }
-  )}
+  src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${
+    product.images?.[0] || "/Images/1.webp"}`}
   alt={product.name || "Product image"}
   width={400}
   height={400}

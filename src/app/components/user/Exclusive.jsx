@@ -138,12 +138,11 @@ export default function ShopByCategory() {
                          width={400}
                   height={400}
                   
-                          src={getOptimizedImage(
+                          src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${
     hoveredIndex === index && product.images?.[1]
       ? product.images[1]
-      : product.images?.[0],
-    { maxWidth: 800 }
-  )}
+      : product.images?.[0]}`
+  }
   sizes="(max-width: 768px) 100vw, 400px"
                           alt={product.name}
                             loading="lazy"

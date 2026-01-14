@@ -129,10 +129,10 @@ export default function EarringsMarquee({ categoryId, categoryName }) {
                     className="group flex-shrink-0 w-full bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition-shadow"
                   >
                    <div className="w-full h-[300px] relative overflow-hidden group">
-  <Image
-    src={getOptimizedImage(item.images?.[0], { maxWidth: 800 })}
+  <img
+    src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item.images?.[0]}`}
     alt={item.name || "Product image"}
-    fill
+
     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
     loading="lazy"
     className="object-cover object-center transition-transform duration-300 group-hover:scale-105"
@@ -214,10 +214,10 @@ export default function EarringsMarquee({ categoryId, categoryName }) {
                       className="group flex-shrink-0 w-full bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition-shadow"
                     >
                   <div className="w-full h-[300px] relative overflow-hidden">
-  <Image
-    src={getOptimizedImage(item.images?.[0], { maxWidth: 800 })}
+  <img
+    src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item.images?.[0]}`}
     alt={item.name || "Product image"}
-    fill
+
     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
     loading="lazy"
     className="object-cover object-center transition-transform duration-300 group-hover:scale-105"

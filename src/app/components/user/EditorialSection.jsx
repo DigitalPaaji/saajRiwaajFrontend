@@ -22,7 +22,7 @@ export default function EditorialSection() {
       className="relative w-full sm:w-[48%]  my-20 lg:w-[31%] h-96 rounded-xl overflow-hidden group"
     >
 <img
-  src={getOptimizedImage(item.image, { maxWidth: 800 })}
+  src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item.image}`}
   loading="eager"
 fetchPriority="high"
   alt={item.title}

@@ -175,7 +175,7 @@ try {
                   >
 
 <Image
-  src={getOptimizedImage(item?.product?.images?.[0], { maxWidth: 200 })}
+  src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item?.product?.images?.[0]}`}
   alt={item?.product?.name || "Product image"}
   width={96}
   height={96}

@@ -94,7 +94,7 @@ export default function CategorySlider({ categoryName, heading, description }) {
                 >
 <div className="w-full h-[300px] relative overflow-hidden">
   <Image
-    src={getOptimizedImage(item.images?.[0], { maxWidth: 700 })}
+    src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item.images?.[0]}`}
     alt={item.name || "Product image"}
     fill
     sizes="(max-width: 768px) 100vw, 33vw"

@@ -60,12 +60,10 @@ export default function Collection({ offerId }) {
   onMouseLeave={() => setHoveredIndex(null)}
 >
   <Image
-    src={getOptimizedImage(
+    src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${
       hoveredIndex === index && product.images?.[1]
         ? product.images[1]
-        : product.images?.[0],
-      { maxWidth: 600 }
-    )}
+        : product.images?.[0]} `}
     alt={product.name || "Product image"}
     fill
     sizes="(max-width: 768px) 50vw, 25vw"
