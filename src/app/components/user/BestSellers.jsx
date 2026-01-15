@@ -63,7 +63,7 @@ export default function ShopByCategory() {
                   className="group"
                 >
          <div className="aspect-square rounded-full overflow-hidden shadow-lg relative group">
-  <Image
+  <img
     src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${product.images?.[0]}`}
     alt={product.name}
 

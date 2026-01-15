@@ -11,6 +11,8 @@ import { useGlobalContext } from "../../../../components/context/GlobalContext";
 import { GrFormDown } from "react-icons/gr";
 import { FaCheckCircle } from "react-icons/fa";
 import axios from "axios";
+import ImagesUploads from "./compomy/ImagesUploads";
+import BarCodeUpload from "./compomy/BarCodeUpload";
 
 // IMPORTANT: Replace with your Cloudinary details
 const CLOUDINARY_CLOUD_NAME = "dj0z0q0ut";
@@ -105,8 +107,8 @@ const ImageUploader = ({
         <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4">
           {images.map((url, index) => (
             <div key={index} className="relative aspect-square group">
-              <Image
-                src={url}
+              <img
+                src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${url}`}
                 alt={`Preview ${index + 1}`}
                 width={300}
                 height={300}
@@ -151,17 +153,24 @@ export default function AddProductPage() {
     price: "",
     discount: "",
     images: [],
+    deleteImage:[],
+    newImages:[],
     colorVariants: [],
+    hidethings:[],
     barcode: null,
-    hidethings:[]
+    deleteBarcode:false,
+    newBarCode:null
   });
- console.log(product)
+
+
+
+
 
   const [finalPrice, setFinalPrice] = useState("0.00");
   const [tagInput, setTagInput] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);
   const [showImg, setShowImg] = useState(false);
-  // Variant-specific state
+
   const [variant, setVariant] = useState({
     colorName: "",
     quantity: 1,
@@ -213,31 +222,14 @@ export default function AddProductPage() {
     fetchCategories();
   }, [fetchTags, fetchCategories]);
 
-  const handleBarcodeUpload = useCallback(async (file) => {
-    setIsMainUploading(true);
+  const handleBarcodeUpload = useCallback(async (files) => {
+ const file = files?.[0];
+  if (!file) return;
 
-    try {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
-
-      const res = await fetch(
-        `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
-        { method: "POST", body: formData }
-      );
-
-      const data = await res.json();
-      if (!data.secure_url) throw new Error("Upload failed");
-
-      setProduct((prev) => ({
-        ...prev,
-        barcode: data.secure_url,
-      }));
-    } catch (err) {
-      toast.error("Barcode upload failed");
-    } finally {
-      setIsMainUploading(false);
-    }
+  setProduct((p) => ({
+    ...p,
+    newBarCode: file,
+  }));
   }, []);
 
   const { name, id } = useParams();
@@ -246,7 +238,7 @@ export default function AddProductPage() {
 
   const fetchProducts = useCallback(async () => {
     try {
-      // const res = await fetch(`${Apiurl}/products`);
+      
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_LOCAL_PORT}/product/id/${id}`
       );
@@ -319,37 +311,21 @@ setProduct({...product,discount:discountPercent.toFixed(2)})
   };
 
   const handleFileUpload = useCallback(async (files, type) => {
-    const setIsLoading =
-      type === "main" ? setIsMainUploading : setIsVariantUploading;
-    const onComplete = (urls) => {
+
+  
       if (type === "main") {
-        setProduct((prev) => ({ ...prev, images: [...prev.images, ...urls] }));
-      } else {
-        setVariant((prev) => ({ ...prev, images: [...prev.images, ...urls] }));
+setProduct((prev) => ({
+  ...prev,
+  newImages: [...(prev.newImages ?? []), ...files],
+}));      } else {
+        setVariant((prev) => ({ ...prev, newImages: [...prev.images, ...urls] }));
       }
-    };
+  
+   
+ 
 
-    setIsLoading(true);
-    const uploadPromises = Array.from(files).map((file) => {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
-      return fetch(
-        `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
-        { method: "POST", body: formData }
-      ).then((res) => res.json());
-    });
 
-    try {
-      const results = await Promise.all(uploadPromises);
-      onComplete(results.map((r) => r.secure_url).filter(Boolean));
-    } catch (error) {
-      toast.error(
-        "Image upload failed. Please check credentials and try again."
-      );
-    } finally {
-      setIsLoading(false);
-    }
+      
   }, []);
 
   const handleAddVariant = () => {
@@ -373,34 +349,68 @@ setProduct({...product,discount:discountPercent.toFixed(2)})
     }));
   };
 
-  const handleUpdate = async (e) => {
-    e.preventDefault();
-    setIsUpdating(true);
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_LOCAL_PORT}/product/id/${id}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            ...product,
-            finalPrice: parseFloat(finalPrice),
-          }),
-        }
-      );
+const handleUpdate = async (e) => {
+  e.preventDefault();
+  setIsUpdating(true);
 
-      if (!response.ok)
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      toast.success("Product updated successfully!");
+  try {
+    const formData = new FormData();
 
-      router.push(`/admin/products/view/${id}`);
-    } catch (error) {
-      toast.error("Failed to update product");
-      console.error("Submission Error:", error);
-    } finally {
-      setIsUpdating(false);
+    // 🔹 Simple fields
+    formData.append("name", product.name);
+    formData.append("category", product.category);
+    formData.append("subcategory", product.subcategory);
+    formData.append("price", product.price);
+    formData.append("discount", product.discount);
+    formData.append("finalPrice", parseFloat(finalPrice));
+    formData.append("isFeatured", product.isFeatured);
+    formData.append("isNewArrival", product.isNewArrival);
+    formData.append("deleteBarcode", product.deleteBarcode);
+
+    // 🔹 Objects / Arrays (stringify)
+    formData.append("description", JSON.stringify(product.description));
+    formData.append("offer", JSON.stringify(product.offer));
+    formData.append("tags", JSON.stringify(product.tags));
+    formData.append("colorVariants", JSON.stringify(product.colorVariants));
+    formData.append("hidethings", JSON.stringify(product.hidethings));
+    formData.append("deleteImage", JSON.stringify(product.deleteImage));
+
+    // 🔹 Existing images (names/paths)
+    formData.append("images", JSON.stringify(product.images));
+
+  if (Array.isArray(product?.newImages)) {
+  product?.newImages.forEach((file) => {
+    formData.append("newImages", file);
+  });
+}
+
+    // 🔹 New barcode (single FILE)
+    if (product.newBarCode) {
+      formData.append("newBarCode", product.newBarCode);
     }
-  };
+console.log(formData)
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_LOCAL_PORT}/product/id/${id}`,
+      {
+        method: "PUT",
+        body: formData, 
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    toast.success("Product updated successfully!");
+    router.push(`/admin/products/view/${id}`);
+
+  } catch (error) {
+    console.error("Submission Error:", error);
+    toast.error("Failed to update product");
+  } finally {
+    setIsUpdating(false);
+  }
+};
 
 const handelhide = async(e)=>{
  setProduct({...product,hidethings:[...product.hidethings,e.target.value]})
@@ -413,7 +423,30 @@ const handelRemovehidden= async(val)=>{
  setProduct({...product,hidethings:newArray})
  
 }
+const handelAllreadyDelete=(idx)=>{
+setProduct((p) => {
+  const removedImage = p.images[idx];
+  if (!removedImage) return p;
 
+  return {
+    ...p,
+    deleteImage: [...(p.deleteImage ?? []), removedImage],
+    images: p.images.filter((_, i) => i !== idx),
+  };
+});
+}
+
+
+const removeNewImages=(indx)=>{
+  setProduct((p) => {
+    return{
+      ...p,newImages:p.newImages.filter((_,index) => index != indx)
+    }
+  })
+}
+
+
+console.log(product)
 
   return (
     <div className="">
@@ -731,38 +764,47 @@ const handelRemovehidden= async(val)=>{
                 </h3>
 
                 {!isViewMode && (
-                  <div className="flex gap-2 items-start flex-wrap">
-                    <ImageUploader
-                      onUpload={(files) => handleFileUpload(files, "main")}
-                      onRemove={(idx) =>
-                        setProduct((p) => ({
-                          ...p,
-                          images: p.images.filter((_, i) => i !== idx),
-                        }))
+                  <div className=" gap-2 items-start flex-wrap">
+                  
+
+           <ImagesUploads
+           onUpload={(files) => handleFileUpload(files, "main")}
+            onRemove={(idx) =>
+                       handelAllreadyDelete(idx)
                       }
-                      images={product.images}
-                      onClick={() => onImageClick?.(img)}
-                      uploaderId="main-uploader"
-                      isUploading={isMainUploading}
-                    />
+                       images={product.images}
+                       onRemovenewImages={(index) => removeNewImages(index)}
+                       newImages={product?.newImages}
+           />
+                    
                   </div>
                 )}
-                {isViewMode && (
-                  <div className="flex gap-2 items-start flex-wrap mt-6">
-                    {product.images.map((img, idx) => (
-                      <Image
-                      
-                        key={idx}
-                        alt={`Product image ${idx + 1}`}
-                        src={img}
-                        width={300}
-                        height={300}
-                        onClick={() => setPreviewImage(img)}
-                        className="w-40 h-40 object-cover rounded"
-                      />
-                    ))}
+              
+
+{isViewMode && (
+                  <div className=" gap-2 items-start flex-wrap">
+                  
+<div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4">
+          { product.images.length > 0 && product.images.map((url, index) => (
+            <div key={index} className="relative aspect-square group">
+              <img
+                src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${url}`}
+                alt={`Preview ${index + 1}`}
+                width={300}
+                height={300}
+                className="w-full h-full object-cover rounded-lg shadow-sm"
+                 
+              />
+         
+            </div>
+          ))}
+
+
+        </div>
+                    
                   </div>
                 )}
+
               </div>
 
               <div className={cardClasses}>
@@ -772,23 +814,49 @@ const handelRemovehidden= async(val)=>{
 
                 {/* EDIT MODE */}
                 {!isViewMode && (
-                  <ImageUploader
-                    onUpload={(files) => handleBarcodeUpload(files[0])}
-                    onRemove={() =>
-                      setProduct((p) => ({ ...p, barcode: null }))
-                    }
-                    images={product.barcode ? [product.barcode] : []}
-                    uploaderId="barcode-uploader"
-                    isUploading={isMainUploading}
-                  />
+      //              <div
+       
+      //   className={`border-2 border-dashed rounded-xl p-6 text-center transition-all duration-300 
+      //     border-gray-300 bg-gray-50
+      // `}
+      // >
+      //   <input
+         
+      //     type="file"
+      //     id={"barcode"}
+      //     multiple
+      //     accept="image/*"
+      //     onChange={(e) => handleBarcodeUpload(e.target.files[0])}
+      //     className="hidden"
+      //   />
+      //   <label htmlFor={"barcode"} className="cursor-pointer">
+      //     <UploadCloud className="mx-auto h-12 w-12 text-gray-400" />
+      //     <p className="mt-2 text-sm text-gray-600">
+      //       <span className="font-semibold text-[#99571d]">Click to upload</span>{" "}
+      //       or drag and drop
+      //     </p>
+      //     <p className="text-xs text-gray-500 mt-1">PNG, JPG, GIF up to 10MB</p>
+      //   </label>
+       
+      // </div>
+                <BarCodeUpload 
+                onUpload={handleBarcodeUpload}
+                  onRemove={()=>setProduct(p=>({...p,barcode:null,deleteBarcode:true}))}
+                  image={product.barcode}
+                newImages={product?.newBarCode}
+                onRemovenewImages={()=>setProduct(p=>({...p,newBarCode:null}))}
+                />
+
+
+
                 )}
 
                 {/* VIEW MODE */}
                 {isViewMode && product.barcode && (
                   <div className="mt-4">
-                    <Image
+                    <img
                     
-                      src={product.barcode}
+                      src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${product.barcode}`}
                       alt="Product Barcode"
                       width={200}
                       height={200}
@@ -797,6 +865,21 @@ const handelRemovehidden= async(val)=>{
                     />
                   </div>
                 )}
+
+ {!isViewMode && product.barcode && (
+                  <div className="mt-4">
+                    <img
+                    
+                      src={`${product?.newBarCode?  URL.createObjectURL(product.newBarCode)  : `${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${product.barcode}`}`}
+                      alt="Product Barcode"
+                      width={200}
+                      height={200}
+                      onClick={() => setPreviewImage(product.barcode)}
+                      className="w-40 h-40 object-contain border rounded cursor-pointer"
+                    />
+                  </div>
+                )}
+
               </div>
 
               <div className={cardClasses}>
@@ -904,8 +987,8 @@ const handelRemovehidden= async(val)=>{
           {product.images.map((img, idx) => (
             <div key={img || idx} className="relative">
               
-              {/* SELECTED CHECK */}
-              {variant.images.includes(img) && (
+      
+              {variant.images.includes(idx) && (
                 <FaCheckCircle className="
                   absolute top-2 right-2
                   text-red-600 text-xl
@@ -918,16 +1001,16 @@ const handelRemovehidden= async(val)=>{
                 loading="lazy"
                 alt={`Product image ${idx + 1}`}
                 onClick={() => {
-                  variant.images.includes(img)
+                  variant.images.includes(idx)
                     ? setVariant({
                         ...variant,
                         images: variant.images.filter(
-                          (item) => item !== img
+                          (item) => item !== idx
                         ),
                       })
                     : setVariant({
                         ...variant,
-                        images: [...variant.images, img],
+                        images: [...variant.images, idx],
                       });
                 }}
                 className="
@@ -944,6 +1027,51 @@ const handelRemovehidden= async(val)=>{
               />
             </div>
           ))}
+
+ {product?.newImages?.map((img, idx) => (
+            <div key={img || idx} className="relative">
+              
+      
+              {variant.images.includes(product.images.length+idx) && (
+                <FaCheckCircle className="
+                  absolute top-2 right-2
+                  text-red-600 text-xl
+                  bg-white rounded-full
+                " />
+              )}
+
+              <img
+                src={URL.createObjectURL(img)}
+                loading="lazy"
+                alt={`Product image ${idx + 1}`}
+                onClick={() => {
+                  variant.images.includes(product.images.length+idx)
+                    ? setVariant({
+                        ...variant,
+                        images: variant.images.filter(
+                          (item) => item !== product.images.length+idx
+                        ),
+                      })
+                    : setVariant({
+                        ...variant,
+                        images: [...variant.images, product.images.length+idx],
+                      });
+                }}
+                className="
+                  w-full
+                  aspect-square
+                  object-cover
+                  rounded-lg
+                  cursor-pointer
+                  border
+                  hover:border-red-500
+                  transition
+                  active:scale-95
+                "
+              />
+            </div>
+          ))}
+
         </div>
       </div>
     </div>
@@ -963,7 +1091,7 @@ const handelRemovehidden= async(val)=>{
                                 setVariant({
                                   ...variant,
                                   images: variant.images.filter(
-                                    (item2) => item2 !== item
+                                    (item2) => item2 !== index
                                   ),
                                 })
                               }
@@ -1027,7 +1155,7 @@ const handelRemovehidden= async(val)=>{
                             {
                              v.images?.map((sor,index) => {
                               return(
-                               <img src={sor} key={index} alt={index}   width={300} loading="lazy"
+                               <img src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${product.images[sor]}`} key={index} alt={index}   width={300} loading="lazy"
                               height={300}
                               className="w-40 h-40 object-cover rounded cursor-pointer" />
                               )

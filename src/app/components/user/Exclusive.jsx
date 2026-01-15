@@ -134,7 +134,7 @@ export default function ShopByCategory() {
                         onMouseEnter={() => setHoveredIndex(index)}
                         onMouseLeave={() => setHoveredIndex(null)}
                       >
-                        <Image
+                        <img
                          width={400}
                   height={400}
                   

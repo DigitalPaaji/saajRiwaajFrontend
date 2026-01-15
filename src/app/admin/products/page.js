@@ -130,7 +130,7 @@ setnewPRoduct(newdata)
   ) :(newProduct.map((product, idx) => (
                 <tr key={product._id} className=" rounded-xl hover:bg-[#f3f2f1]  transition">
                   <td className="px-4 py-3">{idx + 1} </td>
-                  <td className="px-4 py-3"><Image alt=''  width={220} height={220}  src={product.images?.[0]} className="w-16 h-16 object-cover"/></td>
+                  <td className="px-4 py-3"><img alt=''  width={220} height={220}  src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${product.images?.[0]}`} className="w-16 h-16 object-cover"/></td>
                   <td className="px-4 py-3">{product.name}</td>
                   <td className="px-4 py-3 capitalize">{product?.category?.name}</td>
                   
@@ -138,7 +138,7 @@ setnewPRoduct(newdata)
               
 {newProduct.subcategory?.name || null}
                   </td> */}
-                                    <td className="px-4 py-3 text-black "><Image  alt={`barcode`} width={220} height={220}  src={product?.barcode} className="w-full h-12 object-cover "/></td>
+                                    <td className="px-4 py-3 text-black "><img  alt={`barcode`} width={220} height={220}  src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${product?.barcode}`} className="w-full h-12 object-cover "/></td>
 
                   
                   <td className="px-4 py-3">
