@@ -997,7 +997,7 @@ console.log(product)
               )}
 
               <img
-                src={img}
+                src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${img}`}
                 loading="lazy"
                 alt={`Product image ${idx + 1}`}
                 onClick={() => {
@@ -1081,7 +1081,7 @@ console.log(product)
 
                     </div>
                     {/* </select> */}
-
+{/* 
                     <div className="grid grid-cols-1 md:grid-cols-3  lg:grid-cols-5 gap-3">
                       {variant.images.map((item, index) => {
                         return (
@@ -1098,7 +1098,7 @@ console.log(product)
                               className="absolute top-3 right-3 text-red-600 font-bold text-xl shadow bg-white p-0 rounded-full cursor-pointer"
                             />
                             <img
-                              src={item}
+                              src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item}`}
                               loading="lazy"
                               alt={`Product image ${index + 1}`}
                               width={300}
@@ -1108,7 +1108,7 @@ console.log(product)
                           </div>
                         );
                       })}
-                    </div>
+                    </div> */}
 
                     <button
                       type="button"
@@ -1155,7 +1155,7 @@ console.log(product)
                             {
                              v.images?.map((sor,index) => {
                               return(
-                               <img src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${product.images[sor]}`} key={index} alt={index}   width={300} loading="lazy"
+                               <img src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${product.images[sor]}  `} key={index} alt={index}   width={300} loading="lazy"
                               height={300}
                               className="w-40 h-40 object-cover rounded cursor-pointer" />
                               )
