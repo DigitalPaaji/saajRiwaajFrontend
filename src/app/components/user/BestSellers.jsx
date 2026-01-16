@@ -22,7 +22,7 @@ export default function ShopByCategory() {
 
   const skeletons = Array.from({ length: 6 });
 
-  if (!loading && featuredProducts.length === 0) return null; // hide section if no data
+  if (!loading && featuredProducts.length === 0) return null; 
 
   return (
     <section className="relative py-12 px-4 sm:px-6 lg:px-8">
