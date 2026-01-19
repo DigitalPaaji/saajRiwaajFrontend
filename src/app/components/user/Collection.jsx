@@ -155,32 +155,34 @@ export default function Collection({
                     onMouseEnter={() => setHoveredIndex(index)}
                     onMouseLeave={() => setHoveredIndex(null)}
                   >
-                    <div className="relative w-full h-full overflow-hidden">
-                      {/* <Image
+              <div className="relative w-full h-full overflow-hidden">
+  <img
+    src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${
+      hoveredIndex === index && product.images?.[1]
+        ? product.images[1]
+        : product.images?.[0]
+    }`}
+    alt={product.name || "Product image"}
+    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+    loading="lazy"
+  />
+</div>
+
+              
+                    {/* <div className="relative w-full h-full overflow-hidden">
+                     <Image
                         src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${hoveredIndex === index && product.images?.[1]?product.images[1]:product.images?.[0]}`}
                         alt={product.name || "Product image"}
                         fill
                         sizes="(max-width: 768px) 100vw, 25vw"
                         loading="lazy"
                         className="object-cover object-center transition-transform duration-500 ease-in-out group-hover:scale-105"
-                      /> */}
-<img
-  src={
-    hoveredIndex === index && product.images?.[1]?.url
-      ? `${process.env.NEXT_PUBLIC_LOCAL_PORT}${product.images[1].url.trim()}`
-      : product.images?.[0]?.url
-      ? `${process.env.NEXT_PUBLIC_LOCAL_PORT}${product.images[0].url.trim()}`
-      : "/placeholder.webp"
-  }
-  alt={product.name || "Product image"}
-  loading="lazy"
-  className="w-full h-full object-cover object-center transition-transform duration-500 ease-in-out group-hover:scale-105"
-/>
+                      /> 
 
 
 
 
-                    </div>
+                    </div> */}
                   </div>
 
                   <div className="flex items-center justify-between flex-wrap mt-4 px-1">
