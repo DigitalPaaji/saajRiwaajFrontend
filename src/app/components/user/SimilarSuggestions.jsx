@@ -9,7 +9,7 @@ import { useGlobalContext } from "../context/GlobalContext";
 import { getOptimizedImage } from "../utils/cloudinary";
 import Image from "next/image";
 
-export default function EarringsMarquee({ categoryId, categoryName }) {
+export default function EarringsMarquee({ categoryId }) {
   const {
     allProducts,
     refetchAllProducts,
@@ -17,37 +17,100 @@ export default function EarringsMarquee({ categoryId, categoryName }) {
     refetchProductsByCategory,
   } = useGlobalContext();
   const [filteredProducts, setFilteredProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [similarLoading, setSimilarLoading] = useState(true);
+const [allLoading, setAllLoading] = useState(true);
+
+  // const [loading, setLoading] = useState(true);
 
   const subCategories = subCategoriesMap[categoryId] || [];
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const result = await refetchProductsByCategory(categoryId);
+//   useEffect(() => {
+//     console.log("categoryId:", categoryId);
+// console.log("filteredProducts:", filteredProducts);
+//     const fetchData = async () => {
+//       setLoading(true);
+//       try {
+//         const result = await refetchProductsByCategory(categoryId);
 
-        if (Array.isArray(result)) {
-          const filtered = result.filter(
-            (p) => p?.category === categoryId || p?.category?._id === categoryId
-          );
-          setFilteredProducts(filtered);
-        } else {
-          setFilteredProducts([]);
-        }
-      } catch (err) {
-        console.error("Error fetching earrings:", err);
-      } finally {
-        setLoading(false);
+//         if (Array.isArray(result)) {
+//           const filtered = result.filter(
+//             (p) => p?.category === categoryId || p?.category?._id === categoryId
+//           );
+//           setFilteredProducts(filtered);
+//         } else {
+//           setFilteredProducts([]);
+//         }
+//       } catch (err) {
+//         console.error("Error fetching earrings:", err);
+//       } finally {
+//         setLoading(false);
+//       }
+//     };
+
+//     fetchData();
+//   }, []);
+
+useEffect(() => {
+  if (!categoryId) return;
+
+  let mounted = true;
+
+  const fetchData = async () => {
+    setSimilarLoading(true);
+    try {
+      const result = await refetchProductsByCategory(categoryId);
+
+      if (mounted && Array.isArray(result)) {
+        setFilteredProducts((prev) =>
+          prev.length === result.length ? prev : result
+        );
       }
-    };
+    } catch (err) {
+      console.error("Error fetching similar products:", err);
+      if (mounted) setFilteredProducts([]);
+    } finally {
+      if (mounted) setSimilarLoading(false);
+    }
+  };
 
-    fetchData();
-  }, []);
+  fetchData();
 
-  useEffect(() => {
-    refetchAllProducts();
-  }, [refetchAllProducts]);
+  return () => {
+    mounted = false;
+  };
+}, [categoryId]); 
+useEffect(() => {
+  let mounted = true;
+
+  const fetchAll = async () => {
+    setAllLoading(true);
+    await refetchAllProducts();
+    if (mounted) setAllLoading(false);
+  };
+
+  fetchAll();
+
+  return () => {
+    mounted = false;
+  };
+}, []);
+
+
+//useEffect(() => {
+//   const fetchAll = async () => {
+//     setAllLoading(true);
+//     await refetchAllProducts();
+//     setAllLoading(false);
+//   };
+
+//   fetchAll();
+// }, [refetchAllProducts]);
+
+
+
+  // useEffect(() => {
+  //   refetchAllProducts();
+  // }, [refetchAllProducts]);
 
 
 
@@ -86,7 +149,7 @@ export default function EarringsMarquee({ categoryId, categoryName }) {
       </div>
 
       <div className="overflow-x-auto scrollbar-hide">
-        {loading ? (
+        {similarLoading  ? (
           <div className="flex gap-4 overflow-x-auto scrollbar-hide">
             {Array.from({ length: 6 }).map((_, idx) => (
               <div
@@ -174,7 +237,7 @@ export default function EarringsMarquee({ categoryId, categoryName }) {
         </h2>
 
         <div className="overflow-x-auto scrollbar-hide">
-          {loading ? (
+          {allLoading  ? (
             <div className="flex gap-4 overflow-x-auto scrollbar-hide">
               {Array.from({ length: 6 }).map((_, idx) => (
                 <div

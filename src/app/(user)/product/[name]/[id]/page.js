@@ -632,8 +632,7 @@ onClick={()=>{handelAddtocart("cart"),setbuytypeCart(true)}}
 
       {product?.category && (
         <Similar
-          categoryId={product?.category._id}
-          categoryName={product?.category.name}
+          categoryId={product?.category}
         />
       )}
     </div>

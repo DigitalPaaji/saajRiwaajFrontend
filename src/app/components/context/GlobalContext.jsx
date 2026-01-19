@@ -571,7 +571,7 @@ const updateQty = async (productId, qty, color) => {
     }
   }, []);
 
-  const fetchProductsByCategory = async (categoryId) => {
+  const fetchProductsByCategory = useCallback(async (categoryId) => {
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_LOCAL_PORT}/product/category/${categoryId}`
@@ -587,7 +587,7 @@ const updateQty = async (productId, qty, color) => {
       console.error("Error fetching products by category:", err);
       return []; // ✅ return safe empty array on error
     }
-  };
+ }, []);
 
   const fetchProductById = useCallback(async (id) => {
     try {
