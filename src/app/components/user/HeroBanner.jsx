@@ -53,7 +53,7 @@ export default function HeroBanner() {
 
           return (
             <SwiperSlide key={index}>
-              <div className="relative w-full h-[600px]">
+              <div className="relative w-full h-[450px] md:h-[600px]">
                 <div className="absolute inset-0 w-screen block lg:hidden">
                   <Image
                     src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${banner.mobileImage}`}
