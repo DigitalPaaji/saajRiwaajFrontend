@@ -577,10 +577,10 @@ const updateQty = async (productId, qty, color) => {
         `${process.env.NEXT_PUBLIC_LOCAL_PORT}/product/category/${categoryId}/${page}`
       );
       const data = await res.json();
-      // const shuffled = Array.isArray(data)
-      //   ? [...data].sort(() => 0.5 - Math.random())
-      //   : [];
-const shuffled = data
+      const shuffled = Array.isArray(data)
+        ? [...data.products].sort(() => 0.5 - Math.random())
+        : [];
+// const shuffled = data.products
       setProductsByCategory(shuffled);
       return shuffled;
     } catch (err) {
