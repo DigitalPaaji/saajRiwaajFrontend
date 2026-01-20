@@ -53,13 +53,23 @@ export default function HeroBanner() {
   <SwiperSlide key={index}>
     <div className="relative w-full h-full">
       {/* Mobile Banner */}
-      <img
+      {/* <img
         loading="eager"
         fetchPriority="high"
         src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${banner.mobileImage}`}
         alt="Mobile Banner"
         className="block lg:hidden w-full h-full object-cover"
-      />
+      /> */}
+      <div className='relative block lg:hidden w-full h-[600px]'>
+<Image
+    src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${banner.mobileImage}`}
+    alt="Mobile Banner"
+    fill
+    priority
+    sizes="100vw"
+    className="object-cover"
+  />
+      </div>
 
    
      {/* <Image
@@ -70,7 +80,7 @@ export default function HeroBanner() {
   sizes="(min-width: 1024px) 100vw"
   className="hidden lg:block object-cover"
 /> */}
-<div className="relative hidden lg:block w-full h-[300px]">
+<div className="relative hidden lg:block w-full h-[600px]">
   <Image
     src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${banner.desktopImage}`}
     alt="Desktop Banner"
