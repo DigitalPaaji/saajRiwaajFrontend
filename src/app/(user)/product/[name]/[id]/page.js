@@ -248,7 +248,7 @@ const handelColorImage=(img)=>{
   {(selectedColorImage)?.map((img, idx) => (
    <div key={idx} className="relative w-24 h-24 cursor-pointer">
     <Image
-      src={`https://api.saajriwaaj.com/uploads/${img}`}
+      src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${img}`}
       alt={`Thumbnail ${idx + 1}`}
       fill
       className={`object-cover object-center rounded-tl-2xl rounded-br-2xl transition-all duration-200 ${
@@ -594,7 +594,7 @@ onClick={()=>{handelAddtocart("cart"),setbuytypeCart(true)}}
                <div className="absolute inset-0 flex flex-col items-center justify-end rounded-2xl backface-hidden p-6 text-center text-white">
   <div className="relative w-24 h-24 mb-4">
     <Image
-      src={`https://api.saajriwaaj.com/uploads/${card.img}`}
+      src={`${card.img}`}
       alt={card.frontTitle || "Card Image"}
       fill
       className="object-cover rounded"
@@ -611,13 +611,7 @@ onClick={()=>{handelAddtocart("cart"),setbuytypeCart(true)}}
 
                     {/* Back */}
                     <div className="absolute inset-0  rounded-2xl backface-hidden rotate-y-180 p-6 flex flex-col items-center justify-end text-white">
-                      {/*            
-                 <img
-                 loading="lazy"
-              src={card.img}
-              alt={card.frontTitle}
-              className="w-24 h-auto object-cover mb-4"
-            /> */}
+                
                       <h3 className="text-lg  font-mosetta text-black tracking-wide">
                         {card.frontTitle}
                       </h3>

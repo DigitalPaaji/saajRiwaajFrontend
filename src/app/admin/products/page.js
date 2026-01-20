@@ -132,7 +132,7 @@ setnewPRoduct(newdata)
                   <td className="px-4 py-3">{idx + 1} </td>
 <td className="px-4 py-3">
   <Image
-    src={`https://api.saajriwaaj.com/uploads/${product.images?.[0]}`}
+    src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${product.images?.[0]}`}
     alt={product.name || "Product Image"}
     width={64}   // Tailwind w-16 = 64px
     height={64}  // Tailwind h-16 = 64px
@@ -147,7 +147,7 @@ setnewPRoduct(newdata)
                   </td> */}
 <td className="px-4 py-3 text-black">
   <Image
-    src={`https://api.saajriwaaj.com/uploads/${product?.barcode}`}
+    src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${product?.barcode}`}
     alt="Barcode"
     width={220}   // original image width
     height={48}   // Tailwind h-12 = 48px

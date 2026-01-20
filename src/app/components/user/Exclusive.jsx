@@ -135,7 +135,7 @@ export default function ShopByCategory() {
   onMouseLeave={() => setHoveredIndex(null)}
 >
   <Image
-    src={`https://api.saajriwaaj.com/uploads/${
+    src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${
       hoveredIndex === index && product.images?.[1]
         ? product.images[1]
         : product.images?.[0]

@@ -82,7 +82,7 @@ function formatCategoryLabel(name) {
     >
    <div className="relative w-full h-60 overflow-hidden group">
   <Image
-    src={`https://api.saajriwaaj.com/uploads/${item.images?.[0]}`}
+    src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item.images?.[0]}`}
     alt={item.name || "Product image"}
     fill
     sizes="(max-width: 768px) 100vw, 33vw"

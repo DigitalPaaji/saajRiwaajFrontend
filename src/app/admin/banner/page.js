@@ -289,7 +289,7 @@ formData.append("mobileImage",mobileImage)
                       className="cursor-pointer rounded-lg overflow-hidden"
                     >
                      <Image
-  src={`https://api.saajriwaaj.com/uploads/${b.desktopImage}`}
+  src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${b.desktopImage}`}
   alt="Desktop Banner"
   width={600}         // approximate width
   height={250}        // approximate height
@@ -309,7 +309,7 @@ formData.append("mobileImage",mobileImage)
                       className="cursor-pointer rounded-lg overflow-hidden"
                     >
                      <Image
-  src={`https://api.saajriwaaj.com/uploads/${b.mobileImage}`}
+  src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${b.mobileImage}`}
   alt="Mobile Banner"
   width={600}       // approximate width
   height={250}      // approximate height

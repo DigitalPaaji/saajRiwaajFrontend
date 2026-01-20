@@ -1157,7 +1157,7 @@ console.log(product)
                               return(
                             <div key={index} className="relative w-40 h-40 cursor-pointer">
     <Image
-      src={`https://api.saajriwaaj.com/uploads/${product.images[sor]}`}
+      src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${product.images[sor]}`}
       alt={`Product ${index + 1}`}
       fill
       className="object-cover rounded"

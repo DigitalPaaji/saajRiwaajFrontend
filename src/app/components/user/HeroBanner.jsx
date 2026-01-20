@@ -59,7 +59,7 @@ export default function HeroBanner() {
 
         <div className="absolute inset-0 block lg:hidden">
           <Image
-            src={`https://api.saajriwaaj.com/uploads/${banner.mobileImage}`}
+            src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${banner.mobileImage}`}
             alt="Mobile Banner"
             fill
             priority={isFirstSlide}
@@ -71,7 +71,7 @@ export default function HeroBanner() {
    
         <div className="absolute inset-0 hidden lg:block">
           <Image
-            src={`https://api.saajriwaaj.com/uploads/${banner.desktopImage}`}
+            src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${banner.desktopImage}`}
             alt="Desktop Banner"
             fill
             priority={isFirstSlide}

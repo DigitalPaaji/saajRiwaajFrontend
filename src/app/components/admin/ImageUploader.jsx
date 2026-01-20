@@ -108,7 +108,7 @@ export default function ImageUploader({ onUploadComplete, uploadedImages, onRemo
                    {uploadedImages.map((url, index) => (
   <div key={index} className="relative aspect-square group">
     <Image
-      src={`https://api.saajriwaaj.com/uploads/${url}`}
+      src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${url}`}
       alt={`Uploaded preview ${index + 1}`}
       fill
       className="object-cover rounded-lg shadow-sm"

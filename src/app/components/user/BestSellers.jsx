@@ -64,7 +64,7 @@ export default function ShopByCategory() {
                 >
     <div className="aspect-square rounded-full overflow-hidden shadow-lg relative group">
   <Image
-    src={`https://api.saajriwaaj.com/uploads/${product.images?.[0]}`}
+    src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${product.images?.[0]}`}
     alt={product.name}
     fill
     sizes="(max-width: 768px) 50vw, 200px"

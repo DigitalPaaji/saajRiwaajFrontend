@@ -194,7 +194,7 @@ useEffect(() => {
 
 <div className="relative w-full h-[300px] overflow-hidden group">
   <Image
-    src={`https://api.saajriwaaj.com/uploads/${item.images?.[0]}`}
+    src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item.images?.[0]}`}
     alt={item.name || "Product image"}
     fill
     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -279,7 +279,7 @@ useEffect(() => {
                     >
 <div className="relative w-full h-[300px] overflow-hidden group">
   <Image
-    src={`https://api.saajriwaaj.com/uploads/${item.images?.[0]}`}
+    src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item.images?.[0]}`}
     alt={item.name || "Product image"}
     fill
     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"

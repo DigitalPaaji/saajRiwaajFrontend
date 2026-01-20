@@ -24,7 +24,7 @@ export default function EditorialSection() {
 >
   {/* Banner Image */}
   <Image
-    src={`https://api.saajriwaaj.com/uploads/${item.image}`}
+    src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item.image}`}
     alt={item.title}
     fill
     priority

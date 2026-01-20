@@ -240,7 +240,7 @@ formData.append("price",price)
     onClick={() => setPreviewImage(offer.image)}
   >
     <Image
-      src={`https://api.saajriwaaj.com/uploads/${offer.image}`}
+      src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${offer.image}`}
       alt="Offer"
       width={70}
       height={70}

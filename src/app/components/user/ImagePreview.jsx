@@ -25,7 +25,7 @@ export default function ImagePreviewModal({ src, onClose }) {
         </button>
 <div className="relative w-full h-[500px]">
   <Image
-    src={`https://api.saajriwaaj.com/uploads/${src}`}
+    src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${src}`}
     alt="Preview"
     fill
     sizes="(max-width: 768px) 100vw, 800px"

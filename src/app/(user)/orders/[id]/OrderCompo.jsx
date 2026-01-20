@@ -481,7 +481,7 @@ const OrderCompo = ({ id }) => {
   <Image
     src={
       item.product?.images?.[0]
-        ? `https://api.saajriwaaj.com/uploads/${item.product.images[0]}`
+        ? `${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item.product.images[0]}`
         : "https://via.placeholder.com/100x100/FAF3E0/B67032?text=Jewelry"
     }
     alt={item.product?.name || "Product"}
