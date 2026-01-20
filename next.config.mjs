@@ -4,7 +4,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "api.saajriwaaj.com",
+        hostname: "https://api.saajriwaaj.com",
         pathname: "/uploads/**",
       },
     ],
