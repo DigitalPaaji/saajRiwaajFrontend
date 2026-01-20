@@ -18,7 +18,7 @@ export default function ShopByCategory() {
           `${process.env.NEXT_PUBLIC_LOCAL_PORT}/product/category/${categoryId}?page=${page}`
         );
         const data = await res.json();
-        const shuffled = Array.isArray(data)
+        const shuffled = Array.isArray(data.products)
           ? [...data.products].sort(() => 0.5 - Math.random())
           : [];
   // const shuffled = data.products
