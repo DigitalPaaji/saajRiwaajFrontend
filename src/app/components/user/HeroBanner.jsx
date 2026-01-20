@@ -5,7 +5,6 @@ import { Pagination, Autoplay, EffectFade } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/effect-fade';
-import { getOptimizedImage } from '../utils/cloudinary';
 import Image from 'next/image';
 
 export default function HeroBanner() {

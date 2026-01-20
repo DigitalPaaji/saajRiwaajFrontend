@@ -10,32 +10,55 @@ import Image from "next/image";
 import { getOptimizedImage } from "../utils/cloudinary";
 
 export default function EarringsMarquee() {
-  const { subCategoriesMap, refetchProductsByCategory } = useGlobalContext();
-  const [filteredProducts, setFilteredProducts] = useState([]);
+  const { subCategoriesMap } = useGlobalContext();
+    const [productsByCategory, setProductsByCategory] = useState([]);
+  
   const [loading, setLoading] = useState(true);
 
   const earringsCategoryId = "693bbd83430ea8120089b2c1";
   const subCategories = subCategoriesMap[earringsCategoryId] || [];
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const result = await refetchProductsByCategory(earringsCategoryId);
-        if (Array.isArray(result)) {
-          const filtered = result.filter(
-            (p) =>
-              p?.category === earringsCategoryId ||
-              p?.category?._id === earringsCategoryId
-          );
-          setFilteredProducts(filtered);
-        }
+
+   const fetchProductsByCategory = useCallback(async (categoryId,page=1) => {
+      try {setLoading(true)
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_LOCAL_PORT}/product/category/${categoryId}?page=${page}`
+        );
+        const data = await res.json();
+        // const shuffled = Array.isArray(data)
+        //   ? [...data.products].sort(() => 0.5 - Math.random())
+        //   : [];
+
+        setProductsByCategory(data.products);
       } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
+        console.error("Error fetching products by category:", err);
+       
+      }finally{
+        setLoading(false)
       }
-    };
+   }, []);
+
+  useEffect(() => {
+    // const fetchData = async () => {
+    //   setLoading(true);
+    //   try {
+    //     const result = await refetchProductsByCategory(earringsCategoryId);
+    //     if (Array.isArray(result)) {
+    //       const filtered = result.filter(
+    //         (p) =>
+    //           p?.category === earringsCategoryId ||
+    //           p?.category?._id === earringsCategoryId
+    //       );
+    //       setFilteredProducts(filtered);
+    //     }
+    //   } catch (err) {
+    //     console.error(err);
+    //   } finally {
+    //     setLoading(false);
+    //   }
+    // };
+
+    fetchProductsByCategory(earringsCategoryId)
     fetchData();
   }, []);
 
@@ -120,7 +143,7 @@ export default function EarringsMarquee() {
             1536: { slidesPerView: 6 },
           }}
         >
-          {filteredProducts.map((item) => (
+          {productsByCategory.map((item) => (
             <SwiperSlide key={item._id}>
               <Link
                 href={`/product/${item.name}/${item._id}`}

@@ -7,10 +7,21 @@ import { getOptimizedImage } from "../utils/cloudinary";
 import Image from "next/image";
 
 export default function EditorialSection() {
-    const {  offers } = useGlobalContext();
-  
+   const [offers, setOffers] = useState([]);
+   
+      const fetchOffers = useCallback(async () => {
+        try {
+          const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/offer`);
+          const data = await res.json();
+          setOffers(data);
+        } catch (err) {
+          console.error("Error fetching offers:", err);
+        }
+      }, []);
 
-
+useEffect(()=>{
+  fetchOffers()
+},[])
 
 
   return (

@@ -703,7 +703,7 @@ buytypeCart,
       }}
     >
       {children}
-    </GlobalContext.Provider>
+    </GlobalContext.Provider> 
   );
 };
  
