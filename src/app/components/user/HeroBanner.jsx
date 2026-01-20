@@ -58,10 +58,10 @@ export default function HeroBanner() {
                   <Image
                     src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${banner.mobileImage}`}
                     alt="Mobile Banner"
-                    fill
+                    
                     priority={isFirstSlide}
                     sizes="100vw"
-                    className="object-cover"
+                    className="object-"
                   />
                 </div>
 

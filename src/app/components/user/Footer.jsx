@@ -61,7 +61,7 @@ useEffect(() => {
 <Image
   src="/Images/logoWhite.webp"
   alt="Saaj Riwaaj"
-  width={100}      // approximate width for h-16
+  width={150}      // approximate width for h-16
   height={64}     // approximate height for h-16
   className="h-16 mb-4"
   loading="lazy"  // optional; use priority if above the fold
