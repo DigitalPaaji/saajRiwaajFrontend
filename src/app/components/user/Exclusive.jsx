@@ -56,26 +56,7 @@ fetchProductsByCategory(earringsCategoryId)
     // fetchData();
   }, []);
   const [hoveredIndex, setHoveredIndex] = useState(null);
-  const editorialItems = [
-    {
-      title: "The Wedding Edit",
-      description: "Find the perfect jewels for your special day.",
-      link: "Wedding",
-      imageUrl:
-        "https://www.tanishq.co.in/on/demandware.static/-/Library-Sites-TanishqSharedLibrary/default/dw1eded5b5/homepage/tanishq-collections/dailywear-chains.jpg",
-    },
-    // {
-    //   title: 'Everyday Diamonds',
-    //   description: 'Subtle sparkle for your daily life.',
-    //   link: 'Diamonds',
-    //   imageUrl: 'https://www.tanishq.co.in/dw/image/v2/BKCK_PRD/on/demandware.static/-/Library-Sites-TanishqSharedLibrary/default/dw08083f53/homepage/new-arrivals/new-arrivals-background.jpg',
-    // },
-    // {
-    //   title: 'Gifts of Love',
-    //    link: 'Gifts',
-    //   imageUrl: 'https://www.tanishq.co.in/on/demandware.static/-/Library-Sites-TanishqSharedLibrary/default/dwfba22b76/homepage/tanishq-collections/stunning-every-ear.jpg',
-    // },
-  ];
+
 
   return (
     <section className="py-12 z-50 relative">
