@@ -6,6 +6,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/effect-fade';
 import { getOptimizedImage } from '../utils/cloudinary';
+import Image from 'next/image';
 
 export default function HeroBanner() {
   const [banners, setBanners] = useState([]);
@@ -60,14 +61,15 @@ export default function HeroBanner() {
         className="block lg:hidden w-full h-full object-cover"
       />
 
-      {/* Desktop Banner */}
-      <img
-        loading="eager"
-        fetchPriority="high"
-        src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${banner.desktopImage}`}
-        alt="Desktop Banner"
-        className="hidden lg:block w-full h-full object-cover"
-      />
+   
+     <Image
+  src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${banner.desktopImage}`}
+  alt="Desktop Banner"
+  fill
+  priority
+  sizes="(min-width: 1024px) 100vw"
+  className="hidden lg:block object-cover"
+/>
     </div>
   </SwiperSlide>
 ))}
