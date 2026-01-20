@@ -579,7 +579,7 @@ const updateQty = async (productId, qty, color) => {
       const data = await res.json();
       console.log(data,"data")
 
-      const shuffled = Array.isArray(data)
+      const shuffled = Array.isArray(data.products)
         ? [...data.products].sort(() => 0.5 - Math.random())
         : [];
 console.log(shuffled,"shift")
