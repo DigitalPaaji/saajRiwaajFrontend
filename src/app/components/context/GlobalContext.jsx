@@ -571,21 +571,21 @@ const updateQty = async (productId, qty, color) => {
     }
   }, []);
 
-  const fetchProductsByCategory = useCallback(async (categoryId) => {
+  const fetchProductsByCategory = useCallback(async (categoryId,page=1) => {
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_LOCAL_PORT}/product/category/${categoryId}`
+        `${process.env.NEXT_PUBLIC_LOCAL_PORT}/product/category/${categoryId}/${page}`
       );
       const data = await res.json();
-      const shuffled = Array.isArray(data)
-        ? [...data].sort(() => 0.5 - Math.random())
-        : [];
-
+      // const shuffled = Array.isArray(data)
+      //   ? [...data].sort(() => 0.5 - Math.random())
+      //   : [];
+const shuffled = data
       setProductsByCategory(shuffled);
       return shuffled;
     } catch (err) {
       console.error("Error fetching products by category:", err);
-      return []; // ✅ return safe empty array on error
+      return []; 
     }
  }, []);
 
