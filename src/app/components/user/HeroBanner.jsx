@@ -49,51 +49,42 @@ export default function HeroBanner() {
         loop={true}
         className="w-full relative min-h-[300px]"
       >
-{banners?.map((banner, index) => (
-  <SwiperSlide key={index}>
-    <div className="relative w-full h-full">
-      {/* Mobile Banner */}
-      {/* <img
-        loading="eager"
-        fetchPriority="high"
-        src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${banner.mobileImage}`}
-        alt="Mobile Banner"
-        className="block lg:hidden w-full h-full object-cover"
-      /> */}
-      <div className='relative block lg:hidden w-full h-[600px]'>
-<Image
-    src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${banner.mobileImage}`}
-    alt="Mobile Banner"
-    fill
-    priority
-    sizes="100vw"
-    className="object-cover"
-  />
-      </div>
+{banners?.map((banner, index) => {
+  const isFirstSlide = index === 0;
+
+  return (
+    <SwiperSlide key={index}>
+      <div className="relative w-full h-[600px]">
+
+
+        <div className="absolute inset-0 block lg:hidden">
+          <Image
+            src={`https://api.saajriwaaj.com/uploads/${banner.mobileImage}`}
+            alt="Mobile Banner"
+            fill
+            priority={isFirstSlide}
+            sizes="100vw"
+            className="object-cover"
+          />
+        </div>
 
    
-     {/* <Image
-  src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${banner.desktopImage}`}
-  alt="Desktop Banner"
-  
-  priority
-  sizes="(min-width: 1024px) 100vw"
-  className="hidden lg:block object-cover"
-/> */}
-<div className="relative hidden lg:block w-full h-[600px]">
-  <Image
-    src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${banner.desktopImage}`}
-    alt="Desktop Banner"
-    fill
-    priority
-    sizes="100vw"
-    className="object-cover"
-  />
-</div>
+        <div className="absolute inset-0 hidden lg:block">
+          <Image
+            src={`https://api.saajriwaaj.com/uploads/${banner.desktopImage}`}
+            alt="Desktop Banner"
+            fill
+            priority={isFirstSlide}
+            sizes="100vw"
+            className="object-cover"
+          />
+        </div>
 
-    </div>
-  </SwiperSlide>
-))}
+      </div>
+    </SwiperSlide>
+  );
+})}
+
 
       </Swiper>
     </section>

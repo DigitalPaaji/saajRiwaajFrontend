@@ -62,14 +62,14 @@ export default function ShopByCategory() {
                   key={product._id}
                   className="group"
                 >
-         <div className="aspect-square rounded-full overflow-hidden shadow-lg relative group">
-  <img
-    src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${product.images?.[0]}`}
+    <div className="aspect-square rounded-full overflow-hidden shadow-lg relative group">
+  <Image
+    src={`https://api.saajriwaaj.com/uploads/${product.images?.[0]}`}
     alt={product.name}
-
+    fill
     sizes="(max-width: 768px) 50vw, 200px"
-    className="object-cover object-cover transition-transform duration-500 group-hover:scale-110"
     loading="lazy"
+    className="object-cover transition-transform duration-500 group-hover:scale-110"
   />
 </div>
                   <h3 className="font-serif font-medium mt-4 text-lg text-stone-700 group-hover:text-[#B67032] transition-colors duration-300">

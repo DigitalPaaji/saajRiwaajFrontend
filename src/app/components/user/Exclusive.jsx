@@ -129,26 +129,24 @@ export default function ShopByCategory() {
               : exclusiveProducts.slice(0, 3).map((product, index) => (
                   <Link href={`/product/${product.name}/${product._id}`} key={product._id} className="group">
                     {/* <div className="flex items-center justify-center gap-4"> */}
-                      <div
-                        className="group relative aspect-square overflow-hidden shadow-lg rounded-lg"
-                        onMouseEnter={() => setHoveredIndex(index)}
-                        onMouseLeave={() => setHoveredIndex(null)}
-                      >
-                        <img
-                         width={400}
-                  height={400}
-                  
-                          src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${
-    hoveredIndex === index && product.images?.[1]
-      ? product.images[1]
-      : product.images?.[0]}`
-  }
-  sizes="(max-width: 768px) 100vw, 400px"
-                          alt={product.name}
-                            loading="lazy"
-                          className="w-full h-full object-cover object-center transition-all duration-300"
-                        />
-                      </div>
+                    <div
+  className="group relative aspect-square overflow-hidden shadow-lg rounded-lg"
+  onMouseEnter={() => setHoveredIndex(index)}
+  onMouseLeave={() => setHoveredIndex(null)}
+>
+  <Image
+    src={`https://api.saajriwaaj.com/uploads/${
+      hoveredIndex === index && product.images?.[1]
+        ? product.images[1]
+        : product.images?.[0]
+    }`}
+    alt={product.name}
+    fill
+    sizes="(max-width: 768px) 100vw, 400px"
+    loading="lazy"
+    className="object-cover object-center transition-all duration-300"
+  />
+</div>
                     {/* </div> */}
                     <h3 className="mt-4 font-serif font-medium text-lg text-stone-700 group-hover:text-[#B67032] transition-colors duration-300">
                       {product.name}
