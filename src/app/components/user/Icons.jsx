@@ -16,8 +16,8 @@ function Icons() {
                 src={"/Images/icons8-whatsapp-96.png"}
                 // src={"/Images/services/whIcon.webp"}
 unoptimized
-                width={200}
-                height={200}
+                width={150}
+                height={150}
                 alt="img"
                 className="w-16 h-w-16"
 
