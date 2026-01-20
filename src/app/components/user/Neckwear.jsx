@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
@@ -7,7 +7,6 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { useGlobalContext } from "../context/GlobalContext";
 import Image from "next/image";
-import { getOptimizedImage } from "../utils/cloudinary";
 
 export default function EarringsMarquee() {
   const { subCategoriesMap } = useGlobalContext();
@@ -59,7 +58,7 @@ export default function EarringsMarquee() {
     // };
 
     fetchProductsByCategory(earringsCategoryId)
-    fetchData();
+ 
   }, []);
 
   return (
