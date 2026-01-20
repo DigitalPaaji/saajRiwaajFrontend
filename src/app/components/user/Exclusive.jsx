@@ -1,43 +1,59 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import { useGlobalContext } from "../context/GlobalContext";
-import { FaRupeeSign } from "react-icons/fa";
-import { ArrowRight } from "lucide-react";
+
 import Image from "next/image";
-import { getOptimizedImage } from "../utils/cloudinary";
 
 export default function ShopByCategory() {
-  const { refetchProductsByCategory } = useGlobalContext();
   const [exclusiveProducts, setExclusiveProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const skeletons = Array.from({ length: 6 });
   const earringsCategoryId = "693bbf62430ea8120089b320"; 
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const result = await refetchProductsByCategory(earringsCategoryId);
 
-        const filtered = Array.isArray(result)
-          ? result.filter(
-              (p) =>
-                p?.category === earringsCategoryId ||
-                p?.category?._id === earringsCategoryId
-            )
+    const fetchProductsByCategory = useCallback(async (categoryId,page=1) => {
+      try {setLoading(true)
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_LOCAL_PORT}/product/category/${categoryId}?page=${page}`
+        );
+        const data = await res.json();
+        const shuffled = Array.isArray(data)
+          ? [...data.products].sort(() => 0.5 - Math.random())
           : [];
-
-        setExclusiveProducts(filtered);
+  // const shuffled = data.products
+        setExclusiveProducts(shuffled);
       } catch (err) {
-        console.error(" Error fetching category-exclusive products:", err);
-      } finally {
-        setLoading(false);
+        console.error("Error fetching products by category:", err);
+        return []; 
+      }finally{
+        setLoading(false)
       }
-    };
+   }, []);
 
-    fetchData();
+  useEffect(() => {
+    // const fetchData = async () => {
+    //   setLoading(true);
+    //   try {
+    //     const result = await refetchProductsByCategory(earringsCategoryId);
+
+    //     const filtered = Array.isArray(result)
+    //       ? result.filter(
+    //           (p) =>
+    //             p?.category === earringsCategoryId ||
+    //             p?.category?._id === earringsCategoryId
+    //         )
+    //       : [];
+
+    //     setExclusiveProducts(filtered);
+    //   } catch (err) {
+    //     console.error(" Error fetching category-exclusive products:", err);
+    //   } finally {
+    //     setLoading(false);
+    //   }
+    // };
+fetchProductsByCategory(earringsCategoryId)
+    // fetchData();
   }, []);
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const editorialItems = [

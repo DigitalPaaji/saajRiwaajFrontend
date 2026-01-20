@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
@@ -10,33 +10,36 @@ import Image from "next/image";
 import { getOptimizedImage } from "../utils/cloudinary";
 
 export default function EaringNew() {
-  const { subCategoriesMap, refetchProductsByCategory } = useGlobalContext();
+  const { subCategoriesMap,  } = useGlobalContext();
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
  const earringsCategoryId = "693bbd1b430ea8120089b2ab";
   const subCategories = subCategoriesMap[earringsCategoryId] || [];
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const result = await refetchProductsByCategory(earringsCategoryId);
-        if (Array.isArray(result)) {
-          const filtered = result.filter(
-            (p) =>
-              p?.category === earringsCategoryId ||
-              p?.category?._id === earringsCategoryId
+
+   const fetchProductsByCategory = useCallback(async (categoryId,page=1) => {
+        try {setLoading(true)
+          const res = await fetch(
+            `${process.env.NEXT_PUBLIC_LOCAL_PORT}/product/category/${categoryId}?page=${page}`
           );
-          setFilteredProducts(filtered);
+          const data = await res.json();
+          // const shuffled = Array.isArray(data)
+          //   ? [...data.products].sort(() => 0.5 - Math.random())
+          //   : [];
+  
+          setFilteredProducts(data.products);
+        } catch (err) {
+          console.error("Error fetching products by category:", err);
+         
+        }finally{
+          setLoading(false)
         }
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
+     }, []);
+
+  useEffect(() => {
+       fetchProductsByCategory(earringsCategoryId)
+
   }, []);
 
   return (
