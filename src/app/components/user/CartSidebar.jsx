@@ -152,15 +152,17 @@ try {
 
         {cart?.length === 0 || !cart ? (
           <div className="relative z-[999] flex items-center justify-center h-full w-full text-center text-gray-500 px-6">
-            <div className="flex flex-col my-24 items-center justify-center">
-              <img
-                src="/Images/cart.gif"
-                loading="lazy"
-                alt="Empty Cart"
-                className="w-40 h-40 mb-4 "
-              />
-              <p className="text-md">Your Cart Is Empty</p>
-            </div>
+           <div className="flex flex-col my-24 items-center justify-center">
+  <Image
+    src="/Images/cart.gif"
+    alt="Empty Cart"
+    width={160}     // Tailwind w-40 = 160px
+    height={160}    // Tailwind h-40 = 160px
+    className="w-40 h-40 mb-4"
+    loading="lazy"  // optional; GIFs can be lazy-loaded
+  />
+  <p className="text-md">Your Cart Is Empty</p>
+</div>
           </div>
         ) : (
           <div className="relative z-[999] flex flex-col justify-between h-full">

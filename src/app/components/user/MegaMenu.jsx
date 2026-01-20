@@ -80,11 +80,11 @@ function formatCategoryLabel(name) {
       onClick={onClose}
       className="group flex flex-col items-center bg-stone-50 rounded-lg overflow-hidden hover:shadow-md transition-shadow"
     >
-     <div className="w-full h-60 relative overflow-hidden">
-  <img
-    src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item.images?.[0]}`}
+   <div className="relative w-full h-60 overflow-hidden group">
+  <Image
+    src={`https://api.saajriwaaj.com/uploads/${item.images?.[0]}`}
     alt={item.name || "Product image"}
-    
+    fill
     sizes="(max-width: 768px) 100vw, 33vw"
     loading="lazy"
     className="object-cover object-center transition-transform duration-300 group-hover:scale-105"

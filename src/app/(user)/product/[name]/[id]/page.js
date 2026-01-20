@@ -246,18 +246,18 @@ const handelColorImage=(img)=>{
          
           <div className="flex md:flex-col gap-4 max-h-[600px] overflow-y-auto pr-1 custom-scrollbar">
   {(selectedColorImage)?.map((img, idx) => (
-    <img
-      key={idx}
-      src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${img}`}
+   <div key={idx} className="relative w-24 h-24 cursor-pointer">
+    <Image
+      src={`https://api.saajriwaaj.com/uploads/${img}`}
       alt={`Thumbnail ${idx + 1}`}
-      width={100}
-      height={100}
-      className={`w-24 h-24 object-cover object-center rounded-tl-2xl rounded-br-2xl cursor-pointer transition-all duration-200 ${
+      fill
+      className={`object-cover object-center rounded-tl-2xl rounded-br-2xl transition-all duration-200 ${
         selectedImage === img ? "border-2 border-[#B67032]" : ""
       }`}
       onClick={() => setSelectedImage(img)}
       loading="lazy"
     />
+  </div>
   ))}
 </div>
             
@@ -591,20 +591,23 @@ onClick={()=>{handelAddtocart("cart"),setbuytypeCart(true)}}
                     } md:group-hover:rotate-y-180`}
                   >
                     {/* Front */}
-                    <div className="absolute inset-0 flex flex-col items-center justify-end  rounded-2xl backface-hidden p-6 text-center text-white">
-                      <img
-                        src={card.img}
-                        loading="lazy"
-                        alt={card.frontTitle}
-                        className="w-24 h-auto object-cover mb-4"
-                      />
-                      <h3 className="text-md md:text-lg  font-mosetta text-black tracking-wide">
-                        {card.frontTitle}
-                      </h3>
-                      <p className="mt-2 text-sm text-gray-800">
-                        {card.frontSubtitle}
-                      </p>
-                    </div>
+               <div className="absolute inset-0 flex flex-col items-center justify-end rounded-2xl backface-hidden p-6 text-center text-white">
+  <div className="relative w-24 h-24 mb-4">
+    <Image
+      src={`https://api.saajriwaaj.com/uploads/${card.img}`}
+      alt={card.frontTitle || "Card Image"}
+      fill
+      className="object-cover rounded"
+      loading="lazy"
+    />
+  </div>
+  <h3 className="text-md md:text-lg font-mosetta text-black tracking-wide">
+    {card.frontTitle}
+  </h3>
+  <p className="mt-2 text-sm text-gray-800">
+    {card.frontSubtitle}
+  </p>
+</div>
 
                     {/* Back */}
                     <div className="absolute inset-0  rounded-2xl backface-hidden rotate-y-180 p-6 flex flex-col items-center justify-end text-white">

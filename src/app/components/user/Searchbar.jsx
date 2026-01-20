@@ -106,11 +106,11 @@ export default function SearchBar({ products, onClose }) {
       onClick={onClose}
       className="flex-shrink-0 sm:w-40 lg:w-60 group flex flex-col items-center bg-stone-50 rounded-lg overflow-hidden hover:shadow-md transition-shadow"
     >
-<div className="w-full relative h-40 lg:h-60 overflow-hidden">
-  <img
-    src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item.images?.[0]}`}
+<div className="relative w-full h-40 lg:h-60 overflow-hidden group">
+  <Image
+    src={`https://api.saajriwaaj.com/uploads/${item.images?.[0]}`}
     alt={item.name || "Product image"}
-    
+    fill
     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
     loading="lazy"
     className="object-cover object-center transition-transform duration-300 group-hover:scale-105"

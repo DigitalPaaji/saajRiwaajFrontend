@@ -288,14 +288,14 @@ formData.append("mobileImage",mobileImage)
                       onClick={() => setPreviewImage(b.desktopImage)}
                       className="cursor-pointer rounded-lg overflow-hidden"
                     >
-                      <img
-                        src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${b.desktopImage}`}
-                        alt="Desktop"
-                        width={600}
-                        height={250}
-                        className="object-cover w-full h-auto"
-                        
-                      />
+                     <Image
+  src={`https://api.saajriwaaj.com/uploads/${b.desktopImage}`}
+  alt="Desktop Banner"
+  width={600}         // approximate width
+  height={250}        // approximate height
+  className="w-full h-auto object-cover"
+  loading="lazy"
+/>
                       <p className="text-xs text-center mt-2 text-gray-500">
                         Desktop View
                       </p>
@@ -308,14 +308,14 @@ formData.append("mobileImage",mobileImage)
                       onClick={() => setPreviewImage(b.mobileImage)}
                       className="cursor-pointer rounded-lg overflow-hidden"
                     >
-                      <img
-                        src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${b.mobileImage}`}
-                        alt="Mobile"
-                        width={600}
-                        height={250}
-                        className="object-cover w-full h-auto"
-                        
-                      />
+                     <Image
+  src={`https://api.saajriwaaj.com/uploads/${b.mobileImage}`}
+  alt="Mobile Banner"
+  width={600}       // approximate width
+  height={250}      // approximate height
+  className="w-full h-auto object-cover"
+  loading="lazy"
+/>
                       <p className="text-xs text-center mt-2 text-gray-500">
                         Mobile View
                       </p>

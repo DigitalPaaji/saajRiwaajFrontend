@@ -45,12 +45,14 @@ export default function CartSidebar() {
       {wishlist.length === 0 ? (
        <div className="flex items-center justify-center h-full w-full text-center text-gray-500 px-6">
    <div className="flex flex-col my-24 items-center justify-center">
-  <img
-    src="/Images/cart.gif" 
-    loading="lazy"
-    alt="Empty Cart"
-    className="w-40 h-40 mb-4 "
-  />
+<Image
+  src="/Images/cart.gif"
+  alt="Empty Cart"
+  width={160}
+  height={160}
+  loading="lazy"
+  className="w-40 h-40 mb-4"
+/>
   <p className="text-md">Your Wishlist Is Empty</p>
   </div>
 </div>

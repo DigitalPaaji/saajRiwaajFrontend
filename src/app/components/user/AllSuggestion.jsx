@@ -7,6 +7,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { useGlobalContext } from "../context/GlobalContext";
 import { getOptimizedImage } from "../utils/cloudinary";
+import Image from "next/image";
 
 export default function EarringsMarquee() {
   const {
@@ -88,19 +89,23 @@ export default function EarringsMarquee() {
                       href={`/product/${item.name}/${item._id}`}
                       className="group flex-shrink-0 w-full bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition-shadow"
                     >
-                      <div className="w-full h-[300px] relative">
-                     <img
-  src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item.images?.[0]}`}
-  loading="lazy"
-  alt={item.name}
-  className="w-full h-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
-/>
+                    <div className="relative w-full h-[300px] group">
+  <Image
+    src={`https://api.saajriwaaj.com/uploads/${item.images?.[0]}`}
+    alt={item.name || "Product Image"}
+    fill
+    sizes="(max-width: 768px) 100vw, 300px"
+    loading="lazy"
+    className="object-cover object-center transition-transform duration-300 group-hover:scale-105"
+  />
 
-                        {/* {item.subCategory ||
-                          (item.subcategory?.name && (
-                            <div className="absolute top-2 left-2 bg-[#B67032] text-white text-xs px-2 py-1 rounded"></div>
-                          ))} */}
-                      </div>
+  {/* Optional subCategory badge */}
+  {item.subCategory || item.subcategory?.name ? (
+    <div className="absolute top-2 left-2 bg-[#B67032] text-white text-xs px-2 py-1 rounded">
+      {item.subCategory || item.subcategory?.name}
+    </div>
+  ) : null}
+</div>
                       <div className="p-4 flex flex-col justify-between">
                         <h4 className="font-semibold text-stone-800 group-hover:text-[#B67032] transition-colors text-md truncate">
                           {item.name}

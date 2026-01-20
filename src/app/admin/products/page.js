@@ -130,16 +130,30 @@ setnewPRoduct(newdata)
   ) :(newProduct.map((product, idx) => (
                 <tr key={product._id} className=" rounded-xl hover:bg-[#f3f2f1]  transition">
                   <td className="px-4 py-3">{idx + 1} </td>
-                  <td className="px-4 py-3"><img alt=''  width={220} height={220}  src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${product.images?.[0]}`} className="w-16 h-16 object-cover"/></td>
-                  <td className="px-4 py-3">{product.name}</td>
+<td className="px-4 py-3">
+  <Image
+    src={`https://api.saajriwaaj.com/uploads/${product.images?.[0]}`}
+    alt={product.name || "Product Image"}
+    width={64}   // Tailwind w-16 = 64px
+    height={64}  // Tailwind h-16 = 64px
+    className="object-cover w-16 h-16"
+  />
+</td>                  <td className="px-4 py-3">{product.name}</td>
                   <td className="px-4 py-3 capitalize">{product?.category?.name}</td>
                   
                   {/* <td className="px-4 py-3 capitalize">
               
 {newProduct.subcategory?.name || null}
                   </td> */}
-                                    <td className="px-4 py-3 text-black "><img  alt={`barcode`} width={220} height={220}  src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${product?.barcode}`} className="w-full h-12 object-cover "/></td>
-
+<td className="px-4 py-3 text-black">
+  <Image
+    src={`https://api.saajriwaaj.com/uploads/${product?.barcode}`}
+    alt="Barcode"
+    width={220}   // original image width
+    height={48}   // Tailwind h-12 = 48px
+    className="object-cover w-full h-12"
+  />
+</td>
                   
                   <td className="px-4 py-3">
                     <div className="flex gap-2">

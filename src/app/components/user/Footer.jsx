@@ -5,6 +5,7 @@ import { Facebook, Instagram, Twitter, Youtube } from 'lucide-react';
 import { useGlobalContext } from "../context/GlobalContext";
 import { getSocket } from '../socket';
 import { Flip, Slide, toast } from 'react-toastify';
+import Image from 'next/image';
 
 export default function Footer() {
     const { categories, subCategoriesMap } = useGlobalContext();
@@ -57,8 +58,14 @@ useEffect(() => {
       <div className=" mx-4 md:mx-12 xl:mx-24 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div className="">
-            <img src="/Images/logoWhite.webp" loading="lazy" alt="Saaj Riwaaj" className="h-16 mb-4" />
-            <div className="flex space-x-4 mt-4">
+<Image
+  src="/Images/logoWhite.webp"
+  alt="Saaj Riwaaj"
+  width={64}      // approximate width for h-16
+  height={64}     // approximate height for h-16
+  className="h-16 mb-4"
+  loading="lazy"  // optional; use priority if above the fold
+/>            <div className="flex space-x-4 mt-4">
               <a href="#" className="text-[#f3ecdf] hover:text-[#B67032] w-3 h-3"><Facebook /></a>
               <a href="https://www.instagram.com/saajriwaaj/" className="text-[#f3ecdf] hover:text-[#B67032] w-3 h-3"><Instagram /></a>
               <a href="#" className="text-[#f3ecdf] hover:text-[#B67032] w-3 h-3"><Twitter /></a>

@@ -3,6 +3,7 @@ import React, { useState, useCallback, useRef } from 'react';
 import { UploadCloud, X, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'react-toastify';
+import Image from 'next/image';
 
 // IMPORTANT: Replace with your Cloudinary details
 const CLOUDINARY_CLOUD_NAME = "your_cloud_name";
@@ -104,19 +105,26 @@ export default function ImageUploader({ onUploadComplete, uploadedImages, onRemo
            
             {uploadedImages.length > 0 && (
                 <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4">
-                    {uploadedImages.map((url, index) => (
-                        <div key={index} className="relative aspect-square group">
-                            <img loading="lazy" src={url} alt={`Uploaded preview ${index + 1}`} className="w-full h-full object-cover rounded-lg shadow-sm" />
-                            <Button
-                                variant="destructive"
-                                size="icon"
-                                className="absolute top-1 right-1 h-6 w-6 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-                                onClick={() => onRemoveImage(index)}
-                            >
-                                <X className="h-4 w-4" />
-                            </Button>
-                        </div>
-                    ))}
+                   {uploadedImages.map((url, index) => (
+  <div key={index} className="relative aspect-square group">
+    <Image
+      src={`https://api.saajriwaaj.com/uploads/${url}`}
+      alt={`Uploaded preview ${index + 1}`}
+      fill
+      className="object-cover rounded-lg shadow-sm"
+      loading="lazy"
+    />
+
+    <Button
+      variant="destructive"
+      size="icon"
+      className="absolute top-1 right-1 h-6 w-6 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+      onClick={() => onRemoveImage(index)}
+    >
+      <X className="h-4 w-4" />
+    </Button>
+  </div>
+))}
                 </div>
             )}
         </div>

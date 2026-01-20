@@ -191,11 +191,12 @@ useEffect(() => {
                     href={`/product/${item.name}/${item._id}`}
                     className="group flex-shrink-0 w-full bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition-shadow"
                   >
-                   <div className="w-full h-[300px] relative overflow-hidden group">
-  <img
-    src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item.images?.[0]}`}
-    alt={item.name || "Product image"}
 
+<div className="relative w-full h-[300px] overflow-hidden group">
+  <Image
+    src={`https://api.saajriwaaj.com/uploads/${item.images?.[0]}`}
+    alt={item.name || "Product image"}
+    fill
     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
     loading="lazy"
     className="object-cover object-center transition-transform duration-300 group-hover:scale-105"
@@ -276,11 +277,11 @@ useEffect(() => {
                       href={`/product/${item.name}/${item._id}`}
                       className="group flex-shrink-0 w-full bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition-shadow"
                     >
-                  <div className="w-full h-[300px] relative overflow-hidden">
-  <img
-    src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item.images?.[0]}`}
+<div className="relative w-full h-[300px] overflow-hidden group">
+  <Image
+    src={`https://api.saajriwaaj.com/uploads/${item.images?.[0]}`}
     alt={item.name || "Product image"}
-
+    fill
     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
     loading="lazy"
     className="object-cover object-center transition-transform duration-300 group-hover:scale-105"

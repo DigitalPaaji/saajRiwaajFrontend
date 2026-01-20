@@ -477,17 +477,19 @@ const OrderCompo = ({ id }) => {
               <div className="space-y-6">
                 {order.items?.map((item, index) => (
                   <div key={item._id || index} className="flex flex-col sm:flex-row gap-4 pb-6 border-b border-gray-100 last:border-0 last:pb-0">
-                    <div className="w-full h-60 md:w-24 md:h-24 flex-shrink-0">
-                      <img
-                        loading="lazy"
-                        src={item.product?.images?.[0] || 'https://via.placeholder.com/100x100/FAF3E0/B67032?text=Jewelry'}
-                        alt={item.product?.name || 'Product'}
-                        className="w-full h-full object-contain object-left md:object-cover md:rounded-lg md:border md:border-[#d4af37]/30"
-                        onError={(e) => {
-                          e.target.src = 'https://via.placeholder.com/100x100/FAF3E0/B67032?text=Jewelry';
-                        }}
-                      />
-                    </div>
+                   <div className="relative w-full h-60 md:w-24 md:h-24 flex-shrink-0">
+  <Image
+    src={
+      item.product?.images?.[0]
+        ? `https://api.saajriwaaj.com/uploads/${item.product.images[0]}`
+        : "https://via.placeholder.com/100x100/FAF3E0/B67032?text=Jewelry"
+    }
+    alt={item.product?.name || "Product"}
+    fill
+    sizes="(max-width: 768px) 100vw, 96px"
+    className="object-contain object-left md:object-cover md:rounded-lg md:border md:border-[#d4af37]/30"
+  />
+</div>
                     <div className="flex-1">
                       <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2">
                         <div className="flex-1">

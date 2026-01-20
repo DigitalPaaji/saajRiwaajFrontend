@@ -155,15 +155,17 @@ export default function Collection({
                     onMouseEnter={() => setHoveredIndex(index)}
                     onMouseLeave={() => setHoveredIndex(null)}
                   >
-              <div className="relative w-full h-full overflow-hidden">
-  <img
-    src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${
+  <div className="relative w-full h-full overflow-hidden group">
+  <Image
+    src={`https://api.saajriwaaj.com/uploads/${
       hoveredIndex === index && product.images?.[1]
         ? product.images[1]
         : product.images?.[0]
     }`}
     alt={product.name || "Product image"}
-    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+    fill
+    className="object-cover transition-transform duration-500 group-hover:scale-105"
+    sizes="100vw"
     loading="lazy"
   />
 </div>

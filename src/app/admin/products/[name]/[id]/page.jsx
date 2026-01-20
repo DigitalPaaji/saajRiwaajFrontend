@@ -1155,9 +1155,15 @@ console.log(product)
                             {
                              v.images?.map((sor,index) => {
                               return(
-                               <img src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${product.images[sor]}  `} key={index} alt={index}   width={300} loading="lazy"
-                              height={300}
-                              className="w-40 h-40 object-cover rounded cursor-pointer" />
+                            <div key={index} className="relative w-40 h-40 cursor-pointer">
+    <Image
+      src={`https://api.saajriwaaj.com/uploads/${product.images[sor]}`}
+      alt={`Product ${index + 1}`}
+      fill
+      className="object-cover rounded"
+      loading="lazy"
+    />
+  </div>
                               )
                               })}
                           </div>

@@ -792,28 +792,25 @@ export default function AddProductPage() {
                               {variant.images.includes(idx) && (
                                 <FaCheckCircle className="absolute top-3 right-3 text-red-600 font-bold text-xl shadow bg-white p-0 rounded-full" />
                               )}
-                              <img
-                                key={idx}
-                                alt={`Product image ${idx + 1}`}
-                                src={URL.createObjectURL(img)}
-                                width={300}
-                                loading="lazy"
-                                height={300}
-                                onClick={() => {
-                                  variant.images.includes(idx)
-                                    ? setVariant({
-                                        ...variant,
-                                        images: variant.images.filter(
-                                          (item) => item !== idx
-                                        ),
-                                      })
-                                    : setVariant({
-                                        ...variant,
-                                        images: [...variant.images,idx],
-                                      });
-                                }}
-                                className="w-40 h-40 object-cover rounded cursor-pointer"
-                              />
+                               <div key={idx} className="relative w-40 h-40 cursor-pointer">
+    <Image
+      src={URL.createObjectURL(img)}
+      alt={`Product image ${idx + 1}`}
+      fill
+      className="object-cover rounded"
+      onClick={() => {
+        variant.images.includes(idx)
+          ? setVariant({
+              ...variant,
+              images: variant.images.filter((item) => item !== idx),
+            })
+          : setVariant({
+              ...variant,
+              images: [...variant.images, idx],
+            });
+      }}
+    />
+  </div>
                             </div>
                           ))}
                         </div>
@@ -836,14 +833,15 @@ export default function AddProductPage() {
                               }
                               className="absolute top-3 right-3 text-red-600 font-bold text-xl shadow bg-white p-0 rounded-full cursor-pointer"
                             />
-                            <img
-                              src={item}
-                              loading="lazy"
-                              alt={`Product image ${index + 1}`}
-                              width={300}
-                              height={300}
-                              className="w-40 h-40 object-cover rounded cursor-pointer"
-                            />
+                         
+<Image
+  src={item}
+  alt={`Product image ${index + 1}`}
+  width={160}      // Tailwind w-40 = 160px
+  height={160}     // Tailwind h-40 = 160px
+  className="w-40 h-40 object-cover rounded cursor-pointer"
+  loading="lazy"
+/>
                           </div>
                         );
                       })}

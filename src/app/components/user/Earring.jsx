@@ -143,19 +143,20 @@ export default function EarringsMarquee() {
               >
           
 <div className="relative h-[300px] overflow-hidden group">
-  <img
-    src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item.images?.[0]}`}
-    alt={item.name}
-    
+  <Image
+    src={`https://api.saajriwaaj.com/uploads/${item.images?.[0]}`}
+    alt={item.name || "Product image"}
+    fill
     sizes="(max-width: 768px) 100vw, 300px"
     className="object-cover object-center transition-transform duration-300 group-hover:scale-105"
     loading="lazy"
   />
 
-  {item?.subCategory && <span className="absolute top-2 left-2 bg-[#B67032] text-white text-xs px-2 py-1 rounded z-10">
-    {item.subCategory }
-  </span>
-}
+  {item?.subCategory && (
+    <span className="absolute top-2 left-2 bg-[#B67032] text-white text-xs px-2 py-1 rounded z-10">
+      {item.subCategory}
+    </span>
+  )}
 </div>
 
                 <div className="p-4">

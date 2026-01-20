@@ -26,6 +26,7 @@ import MegaMenu from "./MegaMenu";
 import { useGlobalContext } from "../context/GlobalContext";
 import SearchBar from "./Searchbar";
 import { IoIosArrowBack } from "react-icons/io";
+import Image from "next/image";
 
 export default function Navbar() {
 const [openCategoryId, setOpenCategoryId] = useState(null);
@@ -78,14 +79,16 @@ const cartItemCount = cart?.filter((item=>item.buytype=="cart")).reduce((acc, it
           </button>
 
           {/* Logo */}
-          <Link href="/" className="flex-shrink-0 group">
-            <img
-              src="/Images/logo.webp"
-              loading="lazy"
-              alt="Saaj Riwaaj Logo"
-              className="h-10 w-auto xl:h-12 "
-            />
-          </Link>
+         <Link href="/" className="flex-shrink-0 group">
+  <Image
+    src="/Images/logo.webp"
+    alt="Saaj Riwaaj Logo"
+    width={120}       // approximate width for h-10
+    height={40}       // approximate height for h-10
+    className="h-10 w-auto xl:h-12"
+    loading="lazy"    // lazy loading; use priority if above the fold
+  />
+</Link>
 
         
         
@@ -214,15 +217,16 @@ const cartItemCount = cart?.filter((item=>item.buytype=="cart")).reduce((acc, it
         ></div>
         <div className="relative w-4/5 max-w-sm h-screen bg-white shadow-xl flex flex-col">
           <div className="flex justify-between items-center p-4 border-b">
-              <Link href="/" className="flex-shrink-0 group">
-            <img
-            
-              src="/Images/logo.webp"
-              loading="lazy"
-              alt="Saaj Riwaaj Logo"
-              className="h-10 w-auto xl:h-12 "
-            />
-          </Link>
+             <Link href="/" className="flex-shrink-0 group">
+  <Image
+    src="/Images/logo.webp"
+    alt="Saaj Riwaaj Logo"
+    width={120}      // approximate width
+    height={48}      // approximate height for h-10
+    className="h-10 w-auto xl:h-12"
+    loading="lazy"
+  />
+</Link>
             <button onClick={() => setIsMobileMenuOpen(false)} className="cursor-pointer p-2">
               <X className="w-6 h-6" />
             </button>

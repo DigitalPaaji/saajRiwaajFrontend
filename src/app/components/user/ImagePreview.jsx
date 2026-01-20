@@ -24,13 +24,13 @@ export default function ImagePreviewModal({ src, onClose }) {
           <X className="w-5 h-5" />
         </button>
 <div className="relative w-full h-[500px]">
-  <img
-    src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${src}`}
+  <Image
+    src={`https://api.saajriwaaj.com/uploads/${src}`}
     alt="Preview"
     fill
     sizes="(max-width: 768px) 100vw, 800px"
-    className="object-contain rounded-xl"
     loading="lazy"
+    className="object-contain rounded-xl"
   />
 </div>
       </div>

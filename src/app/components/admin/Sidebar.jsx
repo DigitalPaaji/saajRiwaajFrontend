@@ -73,14 +73,16 @@ function Sidebar() {
         <div>
           <div className="flex items-start justify-between mb-6">
             {!collapsed && (
-              <Link href="/" className="flex-shrink-0 group">
-                <img
-                  src="/Images/logo.webp"
-                  loading="lazy"
-                  alt="Logo"
-                  className="h-10 w-auto lg:h-12"
-                />
-              </Link>
+             <Link href="/" className="flex-shrink-0 group">
+  <Image
+    src="/Images/logo.webp"
+    alt="Logo"
+    width={120}      // approximate width for h-10
+    height={40}      // approximate height for h-10
+    className="h-10 w-auto lg:h-12"
+    loading="lazy"   // use priority if this logo is above the fold
+  />
+</Link>
             )}
 <button
   onClick={() => setCollapsed(!collapsed)}

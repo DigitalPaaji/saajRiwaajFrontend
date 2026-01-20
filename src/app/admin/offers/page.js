@@ -234,17 +234,20 @@ formData.append("price",price)
                   <td className="px-4 py-3">{index + 1}</td>
                   <td className="px-4 py-3 capitalize">{offer.title}</td>
 
-                  <td className="px-4 py-3">
-                    <img
-                    
-                      src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${offer.image}`}
-                      alt="Offer"
-                      width={70}
-                      height={70}
-                      className="rounded cursor-pointer"
-                      onClick={() => setPreviewImage(offer.image)}
-                    />
-                  </td>
+                 <td className="px-4 py-3">
+  <div
+    className="w-[70px] h-[70px] rounded overflow-hidden cursor-pointer"
+    onClick={() => setPreviewImage(offer.image)}
+  >
+    <Image
+      src={`https://api.saajriwaaj.com/uploads/${offer.image}`}
+      alt="Offer"
+      width={70}
+      height={70}
+      className="object-cover"
+    />
+  </div>
+</td>
 
                   <td className="px-4 py-3">
                     <button
