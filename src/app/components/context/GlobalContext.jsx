@@ -574,7 +574,7 @@ const updateQty = async (productId, qty, color) => {
   const fetchProductsByCategory = useCallback(async (categoryId,page=1) => {
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_LOCAL_PORT}/product/category/${categoryId}/${page}`
+        `${process.env.NEXT_PUBLIC_LOCAL_PORT}/product/category/${categoryId}?page=${page}`
       );
       const data = await res.json();
       const shuffled = Array.isArray(data)
