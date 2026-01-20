@@ -13,6 +13,7 @@ export default function FilterLayout() {
     subCategories: [],
     tags: [],
     prices: [],
+    page:1
   });
   const { collection, id } = useParams();
   const [isFilterOpen, setIsFilterOpen] = useState(false);

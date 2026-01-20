@@ -8,7 +8,7 @@ import { getOptimizedImage } from "../utils/cloudinary";
 
 export default function Collection({
   Pid,
-  filters = { subCategories: [], tags: [], prices: [] },
+  filters = { subCategories: [], tags: [], prices: [] ,page:1 },
 }) {
   const toSlug = (str = "") => str.toLowerCase().trim().replace(/\s+/g, "-");
 
