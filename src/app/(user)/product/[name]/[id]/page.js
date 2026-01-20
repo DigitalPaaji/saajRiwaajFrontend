@@ -244,7 +244,7 @@ const handelColorImage=(img)=>{
         <div className="w-full xl:w-1/2 xl:sticky xl:top-24  ">
           <div className="flex flex-col md:flex-row items-center gap-4">
          
-          <div className="flex md:flex-col gap-4 max-h-[600px] overflow-y-auto pr-1 custom-scrollbar">
+          <div className="flex md:flex-col gap-4 max-h-[600px] max-w-screen overflow-auto pr-1 custom-scrollbar">
   {(selectedColorImage)?.map((img, idx) => (
    <div key={idx} className="relative w-24 h-24 cursor-pointer">
     <Image

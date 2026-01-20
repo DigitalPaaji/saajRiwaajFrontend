@@ -1,11 +1,11 @@
-'use client';
-import React, { useEffect, useState, useCallback } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination, Autoplay, EffectFade } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/pagination';
-import 'swiper/css/effect-fade';
-import Image from 'next/image';
+"use client";
+import React, { useEffect, useState, useCallback } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination, Autoplay, EffectFade } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/effect-fade";
+import Image from "next/image";
 
 export default function HeroBanner() {
   const [banners, setBanners] = useState([]);
@@ -48,43 +48,37 @@ export default function HeroBanner() {
         loop={true}
         className="w-full relative min-h-[300px]"
       >
-{banners?.map((banner, index) => {
-  const isFirstSlide = index === 0;
+        {banners?.map((banner, index) => {
+          const isFirstSlide = index === 0;
 
-  return (
-    <SwiperSlide key={index}>
-      <div className="relative w-full h-[600px]">
+          return (
+            <SwiperSlide key={index}>
+              <div className="relative w-full h-[600px]">
+                <div className="absolute inset-0 w-screen block lg:hidden">
+                  <Image
+                    src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${banner.mobileImage}`}
+                    alt="Mobile Banner"
+                    fill
+                    priority={isFirstSlide}
+                    sizes="100vw"
+                    className="object-cover"
+                  />
+                </div>
 
-
-        <div className="absolute inset-0 block lg:hidden">
-          <Image
-            src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${banner.mobileImage}`}
-            alt="Mobile Banner"
-            fill
-            priority={isFirstSlide}
-            sizes="100vw"
-            className="object-cover"
-          />
-        </div>
-
-   
-        <div className="absolute inset-0 hidden lg:block">
-          <Image
-            src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${banner.desktopImage}`}
-            alt="Desktop Banner"
-            fill
-            priority={isFirstSlide}
-            sizes="100vw"
-            className="object-cover"
-          />
-        </div>
-
-      </div>
-    </SwiperSlide>
-  );
-})}
-
-
+                <div className="absolute inset-0 hidden lg:block">
+                  <Image
+                    src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${banner.desktopImage}`}
+                    alt="Desktop Banner"
+                    fill
+                    priority={isFirstSlide}
+                    sizes="100vw"
+                    className="object-cover"
+                  />
+                </div>
+              </div>
+            </SwiperSlide>
+          );
+        })}
       </Swiper>
     </section>
   );
