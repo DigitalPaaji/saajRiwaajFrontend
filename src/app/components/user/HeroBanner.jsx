@@ -62,14 +62,25 @@ export default function HeroBanner() {
       />
 
    
-     <Image
+     {/* <Image
   src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${banner.desktopImage}`}
   alt="Desktop Banner"
   
   priority
   sizes="(min-width: 1024px) 100vw"
   className="hidden lg:block object-cover"
-/>
+/> */}
+<div className="relative hidden lg:block w-full h-[300px]">
+  <Image
+    src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${banner.desktopImage}`}
+    alt="Desktop Banner"
+    fill
+    priority
+    sizes="100vw"
+    className="object-cover"
+  />
+</div>
+
     </div>
   </SwiperSlide>
 ))}
