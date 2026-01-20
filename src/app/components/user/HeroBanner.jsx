@@ -65,7 +65,7 @@ export default function HeroBanner() {
      <Image
   src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${banner.desktopImage}`}
   alt="Desktop Banner"
-  fill
+  
   priority
   sizes="(min-width: 1024px) 100vw"
   className="hidden lg:block object-cover"
