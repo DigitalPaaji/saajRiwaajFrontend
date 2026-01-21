@@ -16,7 +16,7 @@ export default function LeftFilterSidebar({ Pid, onFilterChange }) {
   const [selectedSubCategories, setSelectedSubCategories] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
   const [selectedPrices, setSelectedPrices] = useState([]);
-  const [selectedpage, setSelectedpage] = useState(1);
+  
 
   useEffect(() => {
     const sub = searchParams.getAll('subcategory');
@@ -26,7 +26,7 @@ export default function LeftFilterSidebar({ Pid, onFilterChange }) {
     setSelectedSubCategories(sub);
     setSelectedTags(tag);
     setSelectedPrices(price);
-setSelectedpage(page)
+
     onFilterChange({
       subCategories: sub,
       tags: tag,

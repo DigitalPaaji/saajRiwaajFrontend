@@ -37,7 +37,7 @@ export const GlobalProvider = ({ children }) => {
   const [loadingOrders, setLoadingOrders] = useState(true);
   const [allUsers, setAllUsers] = useState([]);
   const [offers, setOffers] = useState([]);
-
+const[pages,setPages]=useState({})
 
 
     const fetchOffers = useCallback(async () => {
@@ -571,10 +571,10 @@ const updateQty = async (productId, qty, color) => {
     }
   }, []);
 
-  const fetchProductsByCategory = useCallback(async (categoryId) => {
+  const fetchProductsByCategory = useCallback(async (categoryId,page=1) => {
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_LOCAL_PORT}/product/category/${categoryId}`
+        `${process.env.NEXT_PUBLIC_LOCAL_PORT}/product/category/${categoryId}?page=${page}`
       );
       const data = await res.json();
     
@@ -584,10 +584,11 @@ const updateQty = async (productId, qty, color) => {
         : [];
 
       setProductsByCategory(shuffled);
+      setPages(data.pagination)
       return shuffled;
     } catch (err) {
       console.error("Error fetching products by category:", err);
-      return []; // ✅ return safe empty array on error
+      return []; 
     }
  }, []);
 
@@ -702,6 +703,7 @@ setShowCheckout,
 showCheckout,
 setbuytypeCart,
 buytypeCart,
+pages
       }}
     >
       {children}

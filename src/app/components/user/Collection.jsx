@@ -5,27 +5,28 @@ import { useGlobalContext } from "../context/GlobalContext";
 import Image from "next/image";
 import { FaRupeeSign } from "react-icons/fa";
 import { getOptimizedImage } from "../utils/cloudinary";
+import { useRouter, useSearchParams } from "next/navigation";
+import Pagination from "./Pagination";
 
 export default function Collection({
   Pid,
   filters = { subCategories: [], tags: [], prices: []  },
 }) {
   const toSlug = (str = "") => str.toLowerCase().trim().replace(/\s+/g, "-");
-
-  const { addToCart, refetchProductsByCategory } = useGlobalContext();
+const route = useRouter()
+  const { refetchProductsByCategory,pages } = useGlobalContext();
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [hoveredIndex, setHoveredIndex] = useState(null);
+  const searchParams = useSearchParams();
     const page = searchParams.getAll('page') || 1;
 
   const skeletons = Array.from({ length: 6 });
-
-  useEffect(() => {
-    const fetchData = async () => {
+  const fetchData = async (page) => {
       setLoading(true);
 
       try {
-        const result = await refetchProductsByCategory(Pid);
+        const result = await refetchProductsByCategory(Pid,page);
 
         // ✅ Ensure correct category
         let filtered = Array.isArray(result)
@@ -76,7 +77,9 @@ export default function Collection({
       }
     };
 
-    fetchData();
+  useEffect(() => {
+  
+    fetchData(page);
   }, [Pid, filters]);
 
   // useEffect(() => {
@@ -133,6 +136,14 @@ export default function Collection({
 
   //   fetchData();
   // }, [Pid, filters]);
+
+
+console.log(pages)
+
+const onPageChange=(pagenumber)=>{
+    fetchData(pagenumber);
+route.push(`?page=${pagenumber}`)
+}
 
   return (
     <section>
@@ -223,6 +234,7 @@ export default function Collection({
                 </Link>
               ))}
         </div>
+        <Pagination page={pages.page} pages={pages.pages} onPageChange={onPageChange} />
       </div>
 
       <style jsx>{`
