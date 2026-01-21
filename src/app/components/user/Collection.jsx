@@ -25,7 +25,7 @@ export default function Collection({
       setLoading(true);
 
       try {
-        const result = await refetchProductsByCategory(Pid,page);
+        const result = await refetchProductsByCategory(Pid);
 
         // ✅ Ensure correct category
         let filtered = Array.isArray(result)

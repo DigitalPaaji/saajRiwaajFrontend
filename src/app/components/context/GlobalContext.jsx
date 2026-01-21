@@ -571,13 +571,13 @@ const updateQty = async (productId, qty, color) => {
     }
   }, []);
 
-  const fetchProductsByCategory = useCallback(async (categoryId,page=1) => {
+  const fetchProductsByCategory = useCallback(async (categoryId) => {
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_LOCAL_PORT}/product/category/${categoryId}?page=${page}`
+        `${process.env.NEXT_PUBLIC_LOCAL_PORT}/product/category/${categoryId}`
       );
       const data = await res.json();
-    console.log(data)
+    
 
       const shuffled = Array.isArray(data.products)
         ? [...data.products].sort(() => 0.5 - Math.random())
