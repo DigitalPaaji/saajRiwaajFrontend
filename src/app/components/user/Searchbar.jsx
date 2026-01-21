@@ -5,50 +5,43 @@ import { X } from "lucide-react";
 import { IoSearch } from "react-icons/io5";
 import { getOptimizedImage } from "../utils/cloudinary";
 import Image from "next/image";
+import axios from "axios";
 
-export default function SearchBar({ products, onClose }) {
+export default function SearchBar({ onClose }) {
   const [query, setQuery] = useState("");
   const [filtered, setFiltered] = useState([]);
   const [placeholder, setPlaceholder] = useState("Search products...");
   const modalRef = useRef(null);
 
-  // Debounce search results
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      if (query.trim() === "") {
-          
-                const randomProducts = [...products]
-          .sort(() => 0.5 - Math.random())
-          .slice(0, 10);
-        setFiltered(randomProducts);
-      } else {
-      
-        const matches = products.filter((p) =>
-          p.name?.toLowerCase().includes(query.toLowerCase()) || p.category?.name?.toLowerCase().includes(query.toLowerCase())
-        );
 
-        if (matches.length > 0) {
-          setFiltered(matches);
-        } else {
-          
-          setFiltered([]);
-        }
-      }
-    }, 300);
 
-    return () => clearTimeout(handler);
-  }, [query, products]);
 
- 
-  useEffect(() => {
-    if (!products?.length) return;
-    let idx = 0;
-    const interval = setInterval(() => {
-      setPlaceholder(products[idx % products.length]?.name || "Search...");
-      idx++;
-    }, 3000);
-    return () => clearInterval(interval);
-  }, [products]);
+const fetchSearch = async(text)=>{
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/product/search/${text}`)
+    const data = await response.json();
+    console.log(data)
+    if(data.success){
+    setFiltered(data.data)  
+    }
+  } catch (error) {
+    
+  }
+}
+
+
+ useEffect(() => {
+  if (query.trim().length < 2) return;
+
+  const handler = setTimeout(() => {
+    fetchSearch(query);
+  }, 300);
+
+  return () => clearTimeout(handler);
+}, [query]);
+
+
+
 
   
   useEffect(() => {
