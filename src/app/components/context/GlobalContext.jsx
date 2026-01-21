@@ -630,7 +630,7 @@ const updateQty = async (productId, qty, color) => {
       (async () => {
         const cats = await fetchCategories();
         if (cats?.length) await fetchSubCategories(cats);
-        await fetchAllProducts();
+        // await fetchAllProducts();
         await fetchFeaturedProducts();
         await fetchTags();
         await fetchOffers();
