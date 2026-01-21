@@ -22,7 +22,6 @@ export default function LeftFilterSidebar({ Pid, onFilterChange }) {
     const sub = searchParams.getAll('subcategory');
     const tag = searchParams.getAll('tag');
     const price = searchParams.getAll('price');
-    const page = searchParams.getAll('page');
 
     setSelectedSubCategories(sub);
     setSelectedTags(tag);

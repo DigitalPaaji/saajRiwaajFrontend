@@ -8,7 +8,7 @@ import { getOptimizedImage } from "../utils/cloudinary";
 
 export default function Collection({
   Pid,
-  filters = { subCategories: [], tags: [], prices: [] ,page:1 },
+  filters = { subCategories: [], tags: [], prices: []  },
 }) {
   const toSlug = (str = "") => str.toLowerCase().trim().replace(/\s+/g, "-");
 
@@ -16,6 +16,7 @@ export default function Collection({
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [hoveredIndex, setHoveredIndex] = useState(null);
+    const page = searchParams.getAll('page') || 1;
 
   const skeletons = Array.from({ length: 6 });
 
@@ -24,7 +25,7 @@ export default function Collection({
       setLoading(true);
 
       try {
-        const result = await refetchProductsByCategory(Pid);
+        const result = await refetchProductsByCategory(Pid,page);
 
         // ✅ Ensure correct category
         let filtered = Array.isArray(result)
