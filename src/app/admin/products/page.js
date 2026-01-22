@@ -123,14 +123,14 @@ useEffect(()=>{
   if(searchVal.length < 3){
     const handler = setTimeout(() => {
     fetchAllProducts(`page=${page}`);
-  }, 300);
+  }, 400);
 
    return () => clearTimeout(handler);
 
   }
  const handler = setTimeout(() => {
     fetchAllProducts(`search=${searchVal}`);
-  }, 300);
+  }, 400);
 
   return () => clearTimeout(handler);
 
