@@ -10,9 +10,9 @@ import { getOptimizedImage } from "../utils/cloudinary";
 import Image from "next/image";
 
 export default function EarringsMarquee({ categoryId }) {
-  const {
+  const { 
     allProducts,
-    refetchAllProducts,
+    refetchAllProducts, 
     subCategoriesMap,
     refetchProductsByCategory,
   } = useGlobalContext();
