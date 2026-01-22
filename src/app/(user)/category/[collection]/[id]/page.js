@@ -99,7 +99,7 @@ const handleFilter = (filterData = {}, options = { resetPage: true }) => {
 
 return (
     <div>
-      <InnerBanner title={collection} image="/Images/banner.webp" />
+      <InnerBanner title={collection} idc={id} image="/Images/banner.webp" />
      
      
       {/* Floating filter button (mobile only) */}

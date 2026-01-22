@@ -41,7 +41,7 @@ function formatCategoryLabel(name) {
          href={{
     pathname: `/category/${category.name.toLowerCase().replace(/\s+/g, '-')}/${category._id}`,
     query: {
-      subcategory: sub.name.toLowerCase().replace(/\s+/g, '-'),
+      subcategory: sub._id,
     },
   }}
          //  href={`/category/${category.name.toLowerCase().replace(/\s+/g, '-')}/${category._id}`}

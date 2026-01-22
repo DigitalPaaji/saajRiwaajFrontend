@@ -3,6 +3,9 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useGlobalContext } from '../context/GlobalContext';
+import { FaDotCircle ,FaRegCheckSquare } from "react-icons/fa";
+import { FaRegSquare } from "react-icons/fa6";
+import { FaTag } from "react-icons/fa";
 
 const priceRanges = [
   { label: "Under ₹1000", min: 0, max: 1000 },
@@ -15,7 +18,6 @@ export default function LeftFilterSidebar({minPrice,maxPrice,Pid,subcategory,han
   const { subCategoriesMap, tags } = useGlobalContext();
   const subCategories = subCategoriesMap[Pid] || [];
   const router = useRouter();
-
 
 
 
@@ -36,7 +38,6 @@ const   handelSubcatge=(subcategory)=>{
 
 }
 const handelTages=(tag)=>{
-
  if(tag==currentTags){
  handleFilter(
     { tags: null },
@@ -55,6 +56,7 @@ const handelTages=(tag)=>{
 
   const handleClear = () => {
  router.push("?")
+
   };
 
   return (
@@ -73,14 +75,18 @@ const handelTages=(tag)=>{
       <ul className="space-y-2">
         {priceRanges.map(item => (
           <li key={item.label}>
-            <label className="flex items-center gap-2 text-sm cursor-pointer">
-              <input
+            <label className="flex items-center gap-2 text-sm cursor-pointer"  onClick={() => handelChangePrice(item.min,item.max)}>
+              {/* <input
                 type="radio"
               name ={"price"}
               checked={item.min==minPrice && item.max==maxPrice}
                 onChange={() => handelChangePrice(item.min,item.max)}
-              />
-              {item.label }
+              /> */}
+
+{item.min==minPrice && item.max==maxPrice ? <div className='flex items-center gap-2 text-[#88460c]'>
+   <FaRegCheckSquare />  {item.label }
+</div>:<> <FaRegSquare />  {item.label }</>}
+           
             </label>
           </li>
         ))}
@@ -97,16 +103,26 @@ const handelTages=(tag)=>{
       <h3 className="text-sm font-medium text-gray-600 mb-2">Subcategories</h3>
       <ul className="space-y-2">
         {subCategories?.map(item => (
-          <li key={item._id}>
-            <label className="flex items-center gap-2 text-sm cursor-pointer">
-              <input
+          <li key={item._id} >
+            <div className="flex items-center  gap-2 text-sm cursor-pointer" onClick={() => handelSubcatge(item._id)}>
+              {/* <input
                 type="radio"
               name ={"subcate"}
-                checked={item._id==subcategory}
-                onChange={() => handelSubcatge(item._id)}
-              />
-              {item.name}
-            </label>
+                checked={item._id===subcat}
+                onChange={() =>{setSubcat(item._id), handelSubcatge(item._id)}}
+              /> */}
+
+              {subcategory==item._id ? <div className='flex items-center gap-2  text-[#88460c]'>
+                <div className='opacity-0 w-2'></div>
+              <FaDotCircle className='text-[10px]' />
+          <p>   {item.name} </p> </div> :
+              <>
+              <FaDotCircle className='text-[10px]' />
+          <p>   {item.name} </p> 
+              </>
+              }
+
+            </div>
           </li>
         ))}
       </ul>
@@ -122,15 +138,21 @@ const handelTages=(tag)=>{
       <ul className="space-y-2">
         {tags.map(item => (
           <li key={item._id}>
-            <label className="flex items-center gap-2 text-sm cursor-pointer">
-              <input
+            <label className="flex items-center gap-2 text-sm cursor-pointer" onClick={() => handelTages(item._id)}>
+              {/* <input
                 type="radio"
               name ={"tags"}
-              value={item._id                                                                                                                          }
+              value={item._id}
               checked={item._id==currentTags}
                 onChange={() => handelTages(item._id)}
-              />
-              {item.name }
+              /> */}
+{item._id==currentTags[0] ? <div className='flex items-center gap-2 text-[#88460c]  ' >
+    <div className='opacity-0 w-2'></div>
+             <FaTag className='text-[10px] ' /> {item.name }
+
+
+</div> :<><FaTag className='text-[10px] ' /> {item.name }
+</> }
             </label>
           </li>
         ))}

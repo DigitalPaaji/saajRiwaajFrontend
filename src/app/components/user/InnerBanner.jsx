@@ -3,12 +3,14 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+import { useGlobalContext } from '../context/GlobalContext';
 
-export default function Banner({ title = '', image = '/Images/innerbanner.webp' }) {
+export default function Banner({ title = '', image = '/Images/innerbanner.webp',idc="" }) {
   const [bgImage, setBgImage] = useState('/Images/innerBanner3.webp');
   const searchParams = useSearchParams();
+const {subCategoriesMap} = useGlobalContext()
+const [subName,setSubname]=useState()
 
-  // ✅ get subcategory from URL
   const subcategory = searchParams.get('subcategory');
 
   useEffect(() => {
@@ -24,7 +26,18 @@ export default function Banner({ title = '', image = '/Images/innerbanner.webp' 
     window.addEventListener('resize', updateImage);
     return () => window.removeEventListener('resize', updateImage);
   }, []);
+useEffect(()=>{
+  if (!subCategoriesMap || !idc || !subcategory) {
+    setSubname(null);
+    return;
+  }
 
+ const cat = subCategoriesMap[idc]?.find(
+    (item) => item._id === subcategory
+  );
+
+  setSubname(cat || null);
+},[subCategoriesMap, idc, subcategory])
   // helpers
   const formatText = (str = '') =>
     str.split('-').join(' ');
@@ -58,7 +71,7 @@ export default function Banner({ title = '', image = '/Images/innerbanner.webp' 
           {subcategory && (
             <>
               <span>/</span>
-              <span className="capitalize">{formatText(subcategory)}</span>
+              <span className="capitalize">{subName?.name}</span>
             </>
           )}
         </div>
