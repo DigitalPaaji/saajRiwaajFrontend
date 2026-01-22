@@ -33,6 +33,7 @@ const searchParams = useSearchParams();
     const fetchAllProducts = useCallback(async () => {
       try {
         // const res = await fetch(`${Apiurl}/products`);
+        setLoading(true)
         const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/product?page=${page}`);
         const data = await res.json();
   
@@ -44,11 +45,13 @@ const searchParams = useSearchParams();
       } catch (err) {
         console.error("Error fetching products:", err);
         setnewPRoduct([]);
+      }finally{
+        setLoading(false)
       }
     }, []);
 
     useEffect(()=>{fetchAllProducts()},[])
-
+    useEffect(()=>{fetchAllProducts()},[ page])
   // useEffect(()=>{setnewPRoduct(allProducts)},[allProducts])
 
 
@@ -104,7 +107,7 @@ const searchParams = useSearchParams();
 // },[searchVal])
 
 const onPageChange=(item)=>{
-  console.log(item)
+ router.push(`?page=${item}`)
 }
 
   return (
