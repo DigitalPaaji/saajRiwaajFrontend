@@ -292,7 +292,7 @@ const cartItemCount = cart?.filter((item=>item.buytype=="cart")).reduce((acc, it
         href={{
           pathname: `/category/${formatCategoryPath(cat.name)}/${cat._id}`,
           query: {
-            subcategory: sub.name.toLowerCase().replace(/\s+/g, '-'),
+            subcategory: sub._id,
           },
         }}
         onClick={() => setIsMobileMenuOpen(false)}
