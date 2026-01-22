@@ -41,7 +41,7 @@ const searchParams = useSearchParams();
         // Check if data is array
        
           setnewPRoduct(data.products);
-      setPAges(data.pages)
+      setPAges(data.pagination)
       } catch (err) {
         console.error("Error fetching products:", err);
         setnewPRoduct([]);
