@@ -30,11 +30,14 @@ const searchParams = useSearchParams();
 
 const page = Number(searchParams.get("page")) || 1;
 
-    const fetchAllProducts = useCallback(async () => {
+
+
+
+    const fetchAllProducts = async (filter) => {
       try {
         // const res = await fetch(`${Apiurl}/products`);
         setLoading(true)
-        const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/product?page=${page}`);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/product?${filter}`);
         const data = await res.json();
   
   
@@ -48,11 +51,15 @@ const page = Number(searchParams.get("page")) || 1;
       }finally{
         setLoading(false)
       }
-    }, [page]);
+    };
 
    useEffect(() => {
   fetchAllProducts();
-}, [fetchAllProducts])
+}, [ ])
+useEffect(()=>{
+  fetchAllProducts(`page=${page}`);
+
+},[page])
     
   // useEffect(()=>{setnewPRoduct(allProducts)},[allProducts])
 
@@ -111,6 +118,17 @@ const page = Number(searchParams.get("page")) || 1;
 const onPageChange=(pageNumber)=>{
   router.push(`?page=${pageNumber}`, { scroll: false });
 }
+
+useEffect(()=>{
+  if(searchVal.length < 3) return
+ const handler = setTimeout(() => {
+    fetchAllProducts(`search=${searchVal}`);
+  }, 300);
+
+  return () => clearTimeout(handler);
+
+
+},[searchVal])
 
   return (
    <div className=" w-full">
