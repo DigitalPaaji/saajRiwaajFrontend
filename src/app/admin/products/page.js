@@ -120,7 +120,14 @@ const onPageChange=(pageNumber)=>{
 }
 
 useEffect(()=>{
-  if(searchVal.length < 3) return
+  if(searchVal.length < 3){
+    const handler = setTimeout(() => {
+    fetchAllProducts(`page=${page}`);
+  }, 300);
+
+   return () => clearTimeout(handler);
+
+  }
  const handler = setTimeout(() => {
     fetchAllProducts(`search=${searchVal}`);
   }, 300);
