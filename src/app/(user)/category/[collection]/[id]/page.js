@@ -10,6 +10,7 @@ import { SlidersHorizontal, X } from 'lucide-react';
 export default function FilterLayout() {
 const [product,setProducts] =useState([])
 const [pages,setPages] =useState({})
+const [isFilterOpen,setIsFilterOpen]=useState(false)
  const { collection, id } = useParams();
 const [loading,setLoading]=useState(true)
 const searchParams = useSearchParams();
@@ -92,6 +93,7 @@ const handleFilter = (filterData = {}, options = { resetPage: true }) => {
  
 
   route.push(`?${params.toString()}`);
+  setIsFilterOpen(false)
 };
 
 
@@ -118,7 +120,7 @@ return (
         </aside>
               
     {/* ================= MOBILE FILTER LAYER ================= */}
-  {/* <div
+  <div
   className={`fixed inset-0 z-50 lg:hidden ${
     isFilterOpen ? 'visible' : 'invisible'
   }`}
@@ -158,11 +160,11 @@ return (
     <div className="overflow-y-auto h-[calc(70vh-56px)] px-2">
        <Suspense fallback={null}>
 
-      <LeftFilterSidebar product={product}  />
+      <LeftFilterSidebar subcategory={subcategory} Pid={id} currentTags={tags} minPrice={minPrice} maxPrice={maxPrice} handleFilter={handleFilter}  />
       </Suspense> 
     </div>
   </div>
-</div> */}
+</div>
 
      <main className="flex-1 w-full">
           <Collection product={product} pages={pages} loading={loading} fetchProducts={handleFilter} />
