@@ -126,7 +126,7 @@ const handelTages=(tag)=>{
               <input
                 type="radio"
               name ={"tags"}
-              value={item._id}
+              value={item._id                                                                                                                          }
               checked={item._id==currentTags}
                 onChange={() => handelTages(item._id)}
               />

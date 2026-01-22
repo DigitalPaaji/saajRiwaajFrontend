@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { FaPlus } from "react-icons/fa";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { toast, ToastContainer } from "react-toastify";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -11,32 +11,57 @@ import PopupModal from "../../components/admin/ConfirmPopup";
 import Image from "next/image";
 import { useGlobalContext } from "../../components/context/GlobalContext";
 import { FaSearch } from "react-icons/fa";
+import Pagination from "@/app/components/user/Pagination";
 
 
 
 const ProductsList = () => {
-  const [products, setProducts] = useState([]);
+  // const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showDeletePopup , setShowDeletePopup] = useState(false)
   const [productToDelete, setProductToDelete] = useState("")
   const [IdToDelete, setIdToDelete] = useState("")
   const router = useRouter();
-  const { allProducts, refetchAllProducts } = useGlobalContext();
+  // const { allProducts, refetchAllProducts } = useGlobalContext();
   const [searchVal,setSearchval]= useState("")
   const [newProduct,setnewPRoduct]=useState()
-  useEffect(()=>{setnewPRoduct(allProducts)},[allProducts])
+const [pages,setPAges]=useState({})
+const searchParams = useSearchParams();
+
+  const page = searchParams.get('page') || 1;
+
+    const fetchAllProducts = useCallback(async () => {
+      try {
+        // const res = await fetch(`${Apiurl}/products`);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/product?page=${page}`);
+        const data = await res.json();
+  
+  
+        // Check if data is array
+       
+          setnewPRoduct(data.products);
+      setPAges(data.pages)
+      } catch (err) {
+        console.error("Error fetching products:", err);
+        setnewPRoduct([]);
+      }
+    }, []);
+
+    useEffect(()=>{fetchAllProducts()},[])
+
+  // useEffect(()=>{setnewPRoduct(allProducts)},[allProducts])
 
 
-  useEffect(() => {
-    // Trigger refetch on page load
-    const loadData = async () => {
-      setLoading(true);
-      await refetchAllProducts();
-      setLoading(false);
-    };
+  // useEffect(() => {
+  //   // Trigger refetch on page load
+  //   const loadData = async () => {
+  //     setLoading(true);
+  //     await refetchAllProducts();
+  //     setLoading(false);
+  //   };
 
-    loadData();
-  }, [refetchAllProducts]);
+  //   loadData();
+  // }, [refetchAllProducts]);
 
     const handleDelete = (product)=>{
       setShowDeletePopup(true)
@@ -52,7 +77,7 @@ const ProductsList = () => {
       })
       if(res.ok){
         toast.success('Product Deleted Successfully!');
-      await refetchAllProducts()
+      await fetchAllProducts()
       }else{
         const data = await res.json();
      
@@ -66,19 +91,21 @@ const ProductsList = () => {
     setShowDeletePopup(false)
  
   }
-,[refetchAllProducts, IdToDelete])
+,[ IdToDelete])
 
-useEffect(()=>{
-if(!searchVal) setnewPRoduct(allProducts);
+// useEffect(()=>{
+// if(!searchVal) setnewPRoduct(allProducts);
 
-const newdata = allProducts?.filter((item)=> item.name.toLowerCase().includes(searchVal.toLowerCase()))
+// const newdata = allProducts?.filter((item)=> item.name.toLowerCase().includes(searchVal.toLowerCase()))
 
-setnewPRoduct(newdata)
-
-
-},[searchVal])
+// setnewPRoduct(newdata)
 
 
+// },[searchVal])
+
+const onPageChange=(item)=>{
+  console.log(item)
+}
 
   return (
    <div className=" w-full">
@@ -180,6 +207,11 @@ setnewPRoduct(newdata)
             </tbody>
           </table>
         )}
+
+
+        <Pagination page={pages?.page} pages={pages?.pages} onPageChange={onPageChange} />
+
+
       </div>
 
       {
