@@ -388,7 +388,7 @@ const handleUpdate = async (e) => {
     if (product.newBarCode) {
       formData.append("newBarCode", product.newBarCode);
     }
-console.log(formData)
+
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_LOCAL_PORT}/product/id/${id}`,
       {
@@ -446,7 +446,7 @@ const removeNewImages=(indx)=>{
 }
 
 
-console.log(product)
+
 
   return (
     <div className="">

@@ -231,7 +231,7 @@ const finalAmount = buytypeCart
 
 const data = await ppRes.json();
 
-console.log(data)
+
 
 if (data.tokenUrl) {
   openPhonePePayPage(data.tokenUrl,order.productOrder._id)
@@ -268,7 +268,7 @@ async function openPhonePePayPage(tokenUrl, orderId) {
             }
           );
           const newResponse = await statusRes.data;
-          console.log(newResponse,"ffffff")
+       
           if (newResponse.success) {
 
 setshowPopUp(true)

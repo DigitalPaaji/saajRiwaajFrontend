@@ -36,7 +36,7 @@ const   handelSubcatge=(subcategory)=>{
 
 }
 const handelTages=(tag)=>{
-  console.log(tag==currentTags,tag,currentTags)
+
  if(tag==currentTags){
  handleFilter(
     { tags: null },

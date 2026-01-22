@@ -407,11 +407,7 @@ export default function AddProductPage() {
     }
   }
 
-  // Debug
-  for (let pair of formData.entries()) {
-    console.log(pair[0], pair[1]);
-  }
-
+ 
   // ---------- API Call ----------
   setIsSubmitting(true);
 

@@ -25,8 +25,7 @@ const [allLoading, setAllLoading] = useState(true);
   const subCategories = subCategoriesMap[categoryId] || [];
 
 //   useEffect(() => {
-//     console.log("categoryId:", categoryId);
-// console.log("filteredProducts:", filteredProducts);
+
 //     const fetchData = async () => {
 //       setLoading(true);
 //       try {
