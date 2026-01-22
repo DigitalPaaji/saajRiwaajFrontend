@@ -28,7 +28,7 @@ const ProductsList = () => {
 const [pages,setPAges]=useState({})
 const searchParams = useSearchParams();
 
-  const page = searchParams.get('page') || 1;
+const page = Number(searchParams.get("page")) || 1;
 
     const fetchAllProducts = useCallback(async () => {
       try {
@@ -48,10 +48,12 @@ const searchParams = useSearchParams();
       }finally{
         setLoading(false)
       }
-    }, []);
+    }, [page]);
 
-    useEffect(()=>{fetchAllProducts()},[])
-    useEffect(()=>{fetchAllProducts()},[ page])
+   useEffect(() => {
+  fetchAllProducts();
+}, [fetchAllProducts])
+    
   // useEffect(()=>{setnewPRoduct(allProducts)},[allProducts])
 
 
@@ -106,8 +108,8 @@ const searchParams = useSearchParams();
 
 // },[searchVal])
 
-const onPageChange=(item)=>{
- router.push(`?page=${item}`)
+const onPageChange=(pageNumber)=>{
+  router.push(`?page=${pageNumber}`, { scroll: false });
 }
 
   return (
