@@ -1,6 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,7 +23,20 @@ export default function RootLayout({ children }) {
     <html lang="en">
  <head>
  <link rel="icon" href="/favicon.png" sizes="any" />
-       
+        <Script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-M6SNB3B89F"
+          strategy="afterInteractive"
+        />
+
+        <Script id="gtag-init" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-M6SNB3B89F');
+          `}
+        </Script>
       </head>
 
       <body
