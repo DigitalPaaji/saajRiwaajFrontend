@@ -11,8 +11,8 @@ import Image from "next/image";
 
 export default function EarringsMarquee({ categoryId }) {
   const { 
-    allProducts2,
-    refetchAllProducts2, 
+    allProducts,
+    refetchAllProducts, 
     subCategoriesMap,
     refetchProductsByCategory,
   } = useGlobalContext();
@@ -83,7 +83,7 @@ useEffect(() => {
 
   const fetchAll = async () => {
     setAllLoading(true);
-    await refetchAllProducts2();
+    await refetchAllProducts();
     if (mounted) setAllLoading(false);
   };
 
@@ -269,7 +269,7 @@ useEffect(() => {
               loop={true}
               grabCursor={true}
             >
-              {allProducts2.map((item, idx) => {
+              {allProducts.map((item, idx) => {
                 return (
                   <SwiperSlide key={idx}>
                     <Link
