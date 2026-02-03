@@ -19,6 +19,7 @@ export const GlobalProvider = ({ children }) => {
   const [subCategoriesMap, setSubCategoriesMap] = useState({});
   const [allProducts, setAllProducts] = useState([]);
   const [productsByCategory, setProductsByCategory] = useState([]);
+  const [productsByCategory2, setProductsByCategory2] = useState([]);
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isOrderOpen, setIsOrderOpen] = useState(false);
@@ -592,6 +593,26 @@ const updateQty = async (productId, qty, color) => {
     }
  }, []);
 
+   const fetchProductsByCategory2 = useCallback(async (categoryId) => {
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_LOCAL_PORT}/product/random/${categoryId}`
+      );
+      const data = await res.json();
+    
+
+      const shuffled = Array.isArray(data.products)
+        ? [...data.products].sort(() => 0.5 - Math.random())
+        : [];
+
+      setProductsByCategory2(shuffled);
+      return shuffled;
+    } catch (err) {
+      console.error("Error fetching products by category:", err);
+      return []; 
+    }
+ }, []);
+
   const fetchProductById = useCallback(async (id) => {
     try {
       const res = await fetch(
@@ -655,6 +676,7 @@ const updateQty = async (productId, qty, color) => {
         subCategoriesMap,
         allProducts,
         featuredProducts,
+        productsByCategory2,
         productsByCategory,
         tags,
         cart,
@@ -685,6 +707,7 @@ const updateQty = async (productId, qty, color) => {
         forgotPassword,
         resetPassword,
         refetchProductsByCategory: fetchProductsByCategory,
+        refetchProductsByCategory2: fetchProductsByCategory2,
         refetchAllProducts: fetchAllProducts,
         refetchProductById: fetchProductById,
         refetchFeaturedProducts: fetchFeaturedProducts,
