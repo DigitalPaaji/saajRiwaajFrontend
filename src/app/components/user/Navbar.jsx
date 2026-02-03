@@ -78,7 +78,8 @@ const cartItemCount = cart?.filter((item=>item.buytype=="cart")).reduce((acc, it
             <Menu className="w-6 h-6" />
           </button>
 
-          {/* Logo */}
+
+
          <Link href="/" className="flex-shrink-0 group">
   <Image
     src="/Images/logo.webp"
