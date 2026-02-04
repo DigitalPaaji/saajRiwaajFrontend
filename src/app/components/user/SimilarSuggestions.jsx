@@ -6,7 +6,6 @@ import { Navigation, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import { useGlobalContext } from "../context/GlobalContext";
-import { getOptimizedImage } from "../utils/cloudinary";
 import Image from "next/image";
 
 export default function EarringsMarquee({ categoryId }) {
