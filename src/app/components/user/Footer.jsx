@@ -105,7 +105,7 @@ Delivery Information</Link></li>
         
         </div>
         <div className="border-t mt-12 pt-8 text-center text-md text-[#f3ecdf]">
-          <p>&copy; {new Date().getFullYear()} Saaj Riwaaj. Developed and Designed By <a href="https://digitalpaaji.com" target='_blank' className='text-[#c09167] '>Digital Paaji</a>. All Rights Reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Saaj Riwaaj. Developed and Designed By <a href="https://digitalpaaji.com" target='_blank' className='text-[#c09167] '>Digital Paaji</a>.</p>
         </div>
       </div>
     </footer>
