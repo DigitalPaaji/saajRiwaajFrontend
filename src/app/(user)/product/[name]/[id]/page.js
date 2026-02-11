@@ -22,7 +22,6 @@ import {
 import { FaHeart } from "react-icons/fa";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { getOptimizedImage } from "@/app/components/utils/cloudinary";
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -244,8 +243,8 @@ const handelColorImage=(img)=>{
         <div className="w-full xl:w-1/2 xl:sticky xl:top-24  ">
           <div className="flex flex-col md:flex-row items-center gap-4">
          
-         <div className="max-h-[600px] max-w-screen  overflow-auto custom-scrollbar">
-          <div className="flex   md:flex-col gap-4  pr-1 w-fit">
+         <div className="max-h-[600px] max-w-screen  overflow-y-auto custom-scrollbar">
+          <div className="flex md:flex-col gap-4 pr-1 w-fit">
   {(selectedColorImage)?.map((img, idx) => (
    <div key={idx} className="relative w-24 h-24 cursor-pointer">
     <Image
@@ -587,7 +586,7 @@ onClick={()=>{handelAddtocart("cart"),setbuytypeCart(true)}}
                   onClick={() => toggleFlip(i)}
                 >
                   <div
-                    className={`relative w-full h-52  lg:h-64 xl:h-52  transition-transform duration-700 preserve-3d ${
+                    className={`relative w-full h-52  lg:h-72 2xl:h-52  transition-transform duration-700 preserve-3d ${
                       flipped[i] ? "rotate-y-180" : ""
                     } md:group-hover:rotate-y-180`}
                   >

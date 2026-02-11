@@ -2,18 +2,27 @@ import React, { useEffect } from 'react';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { useGlobalContext } from '../context/GlobalContext';
-import { getOptimizedImage } from '../utils/cloudinary';
 import Image from 'next/image';
 
 export default function MegaMenu({ onClose, category, subcategories }) {
     if (!category || !subcategories?.length) return null;
   
-      const { productsByCategory2, refetchProductsByCategory2 } = useGlobalContext();
+      // const { productsByCategory2, refetchProductsByCategory2 } = useGlobalContext();
+const { productsByCategory2, refetchProductsByCategory2 } = useGlobalContext();
+
+const products = productsByCategory2[category._id] || [];
 
       
-    useEffect(()=>{
-  refetchProductsByCategory2(category._id)
-},[])
+//     useEffect(()=>{
+//   refetchProductsByCategory2(category._id)
+// },[])
+
+useEffect(() => {
+  if (!products.length) {
+    refetchProductsByCategory2(category._id);
+  }
+}, [category._id, products.length]);
+
 
 
 
@@ -70,7 +79,8 @@ function formatCategoryLabel(name) {
         <div className="col-span-3">
           <h3 className="text-sm font-semibold uppercase text-stone-500 mb-4">Featured</h3>
           <div className="grid grid-cols-5 gap-8">
-          {productsByCategory2.slice(0, 5).map((item, idx) => {
+          {/* {productsByCategory2.slice(0, 5).map((item, idx) => { */}
+          {products.slice(0, 5).map((item, idx) => {
   // const categoryPath = item?.category?.name?.toLowerCase().replace(/\s+/g, '-') || 'category';
   // const subcategoryPath = item.subcategory?.name?.toLowerCase().replace(/\s+/g, '-') || 'subcategory';
   // const productPath = `${categoryPath}/${subcategoryPath}`;

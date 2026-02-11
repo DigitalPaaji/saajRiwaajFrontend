@@ -19,7 +19,7 @@ export const GlobalProvider = ({ children }) => {
   const [subCategoriesMap, setSubCategoriesMap] = useState({});
   const [allProducts, setAllProducts] = useState([]);
   const [productsByCategory, setProductsByCategory] = useState([]);
-  const [productsByCategory2, setProductsByCategory2] = useState([]);
+  const [productsByCategory2, setProductsByCategory2] = useState({});
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isOrderOpen, setIsOrderOpen] = useState(false);
@@ -593,27 +593,53 @@ const updateQty = async (productId, qty, color) => {
     }
  }, []);
 
-   const fetchProductsByCategory2 = useCallback(async (categoryId) => {
-    try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_LOCAL_PORT}/product/random/${categoryId}`
-      );
-      const data = await res.json();
+//    const fetchProductsByCategory2 = useCallback(async (categoryId) => {
+//     try {
+//       const res = await fetch(
+//         `${process.env.NEXT_PUBLIC_LOCAL_PORT}/product/random/${categoryId}`
+//       );
+//       const data = await res.json();
     
 
-      const shuffled = Array.isArray(data.products)
-        ? [...data.products].sort(() => 0.5 - Math.random())
-        : [];
+//       const shuffled = Array.isArray(data.products)
+//         ? [...data.products].sort(() => 0.5 - Math.random())
+//         : [];
 
-      setProductsByCategory2(shuffled);
-      return shuffled;
-    } catch (err) {
-      console.error("Error fetching products by category:", err);
-      return []; 
-    }
- }, []);
+//       setProductsByCategory2(shuffled);
+//       return shuffled;
+//     } catch (err) {
+//       console.error("Error fetching products by category:", err);
+//       return []; 
+//     }
+//  }, []);
 
-  const fetchProductById = useCallback(async (id) => {
+
+const fetchProductsByCategory2 = useCallback(async (categoryId) => {
+  try {
+   
+    if (productsByCategory2[categoryId]) return;
+
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_LOCAL_PORT}/product/random/${categoryId}`
+    );
+
+    const data = await res.json();
+
+    setProductsByCategory2(prev => ({
+      ...prev,
+      [categoryId]: data.products || []
+    }));
+
+  } catch (err) {
+    console.error("Error fetching products:", err);
+  }
+}, [productsByCategory2]);
+
+
+
+
+
+const fetchProductById = useCallback(async (id) => {
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_LOCAL_PORT}/product/id/${id}`

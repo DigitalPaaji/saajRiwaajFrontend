@@ -1,164 +1,301 @@
 "use client";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
-
 import Image from "next/image";
+import { useGlobalContext } from "../context/GlobalContext";
 
 export default function ShopByCategory() {
-  const [exclusiveProducts, setExclusiveProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const {
+    productsByCategory2,
+    refetchProductsByCategory2,
+  } = useGlobalContext();
 
-  const skeletons = Array.from({ length: 6 });
-  const earringsCategoryId = "693bbf62430ea8120089b320"; 
+  const exclusiveCategoryId = "693bbf62430ea8120089b320";
 
-
-    const fetchProductsByCategory = useCallback(async (categoryId,page=1) => {
-      try {setLoading(true)
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_LOCAL_PORT}/product/category/${categoryId}?page=${page}`
-        );
-        const data = await res.json();
-        const shuffled = Array.isArray(data.products)
-          ? [...data.products].sort(() => 0.5 - Math.random())
-          : [];
-  // const shuffled = data.products
-        setExclusiveProducts(shuffled);
-      } catch (err) {
-        console.error("Error fetching products by category:", err);
-        return []; 
-      }finally{
-        setLoading(false)
-      }
-   }, []);
-
-  useEffect(() => {
-    // const fetchData = async () => {
-    //   setLoading(true);
-    //   try {
-    //     const result = await refetchProductsByCategory(earringsCategoryId);
-
-    //     const filtered = Array.isArray(result)
-    //       ? result.filter(
-    //           (p) =>
-    //             p?.category === earringsCategoryId ||
-    //             p?.category?._id === earringsCategoryId
-    //         )
-    //       : [];
-
-    //     setExclusiveProducts(filtered);
-    //   } catch (err) {
-    //     console.error(" Error fetching category-exclusive products:", err);
-    //   } finally {
-    //     setLoading(false);
-    //   }
-    // };
-fetchProductsByCategory(earringsCategoryId)
-    // fetchData();
-  }, []);
   const [hoveredIndex, setHoveredIndex] = useState(null);
+  // const [randomProducts, setRandomProducts] = useState([]);
+
+  // ✅ Get cached products
+  const products = productsByCategory2[exclusiveCategoryId] || [];
+
+ // ✅ Fetch ONLY IF NOT IN CACHE
+useEffect(() => {
+  if (!products.length) {
+    refetchProductsByCategory2(exclusiveCategoryId);
+  }
+}, [exclusiveCategoryId, products.length, refetchProductsByCategory2]);
+
+
+const loading = products.length === 0;
 
 
   return (
     <section className="py-12 z-50 relative">
-
-        <div className="absolute -top-24 -right-12 opacity-20">
-              <Image
-                alt=""
-                
-                src={"/Images/bg1.png"}
-                width={360}
-                height={360}
-                className="w-full h-auto rotate-[300deg] object-cover"
-              />
-            </div>
+      <div className="absolute -top-24 -right-12 opacity-20">
+        <Image
+          alt=""
+          src={"/Images/bg1.png"}
+          width={360}
+          height={360}
+          className="w-full h-auto rotate-[300deg] object-cover"
+        />
+      </div>
 
       <div className="px-4 sm:px-6 lg:px-8 z-50">
-        {/* <div>
-          <h2 className="text-3xl md:text-4xl font-serif text-center">Saaj Riwaaj Exclusive</h2>
-          <p className="text-md md:text-xl text-stone-500 font-serif text-center mt-4">
-            Crafted with passion, worn with pride. Explore our signature exclusives.
-          </p>
-        </div> */}
-
         <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 ">
-<div className="col-span-1 xl:col-span-4">
-  <div
-    className="relative h-[400px] md:h-[600px] w-full bg-contain bg-no-repeat bg-center flex items-center justify-center text-center overflow-hidden"
-    style={{ backgroundImage: "url('/Images/exclusive2.webp')" }}
-  >
-    <div className="relative z-10 px-4 sm:px-6 max-w-full sm:max-w-md w-full">
-      <h3 className="text-xl sm:text-2xl md:text-3xl font-mosetta  font-medium text-[#B67032] mb-3 leading-snug">
-        Discover Timeless Elegance with Saaj Riwaaj
-      </h3>
-      <p className="text-sm sm:text-base md:text-md text-[#5c3b22] mb-4 leading-normal">
-        Unveil our handpicked exclusive jewellery pieces that blend tradition with royalty.
-      </p>
-      <Link href={`/category/saaj-riwaaj-exclusive/${earringsCategoryId}`} className="bg-[#7a4a26] text-white px-4 sm:px-5 py-2 rounded-xl hover:bg-[#5c3b22] transition duration-300 text-md">
-        Explore Now
-      </Link>
-    </div>
-  </div>
-</div>
-
-
-
-
-
-
-
-          <div
-            className={`col-span-1 xl:col-span-8 flex flex-col justify-center `}
-          >
-                {/* <div>
-          <h2 className="text-3xl md:text-4xl font-serif ">Saaj Riwaaj Exclusive</h2>
-          <p className="text-md md:text-xl text-stone-500 font-serif  mt-4">
-            Crafted with passion, worn with pride. Explore our signature exclusives.
-          </p>
-        </div> */}
-        <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mt-8">
-            {loading
-              ? skeletons.map((_, idx) => (
-                  <div
-                    key={idx}
-                    className="shadow-lg rounded-lg bg-gray-200 animate-pulse "
-                  ></div>
-                ))
-              : exclusiveProducts.slice(0, 3).map((product, index) => (
-                  <Link href={`/product/${product.name}/${product._id}`} key={product._id} className="group">
-                    {/* <div className="flex items-center justify-center gap-4"> */}
-                    <div
-  className="group relative aspect-square overflow-hidden shadow-lg rounded-lg"
-  onMouseEnter={() => setHoveredIndex(index)}
-  onMouseLeave={() => setHoveredIndex(null)}
->
-  <Image
-    src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${
-      hoveredIndex === index && product.images?.[1]
-        ? product.images[1]
-        : product.images?.[0]
-    }`}
-    alt={product.name}
-    fill
-    sizes="(max-width: 768px) 100vw, 400px"
-    loading="lazy"
-    className="object-cover object-center transition-all duration-300"
-  />
-</div>
-                    {/* </div> */}
-                    <h3 className="mt-4 font-serif font-medium text-lg text-stone-700 group-hover:text-[#B67032] transition-colors duration-300">
-                      {product.name}
-                    </h3>
-                   {product.description?.paragraphs?.[0] && (
-                      <h3 className="font-semibold text-md text-stone-700 group-hover:text-[#B67032] transition-colors duration-300">
-                        {product.description.paragraphs[0].split(" ").slice(0, 10).join(" ")}...
-                      </h3>
-                    )}
-                  </Link>
-                ))}
-                </div>
+          
+          {/* LEFT BANNER */}
+          <div className="col-span-1 xl:col-span-4">
+            <div
+              className="relative h-[400px] md:h-[600px] w-full bg-contain bg-no-repeat bg-center flex items-center justify-center text-center overflow-hidden"
+              style={{ backgroundImage: "url('/Images/exclusive2.webp')" }}
+            >
+              <div className="relative z-10 px-4 sm:px-6 max-w-full sm:max-w-md w-full">
+                <h3 className="text-xl sm:text-2xl md:text-3xl font-mosetta font-medium text-[#B67032] mb-3 leading-snug">
+                  Discover Timeless Elegance with Saaj Riwaaj
+                </h3>
+                <p className="text-sm sm:text-base md:text-md text-[#5c3b22] mb-4 leading-normal">
+                  Unveil our handpicked exclusive jewellery pieces that blend tradition with royalty.
+                </p>
+                <Link
+                  href={`/category/saaj-riwaaj-exclusive/${exclusiveCategoryId}`}
+                  className="bg-[#7a4a26] text-white px-4 sm:px-5 py-2 rounded-xl hover:bg-[#5c3b22] transition duration-300 text-md"
+                >
+                  Explore Now
+                </Link>
+              </div>
+            </div>
           </div>
+
+          {/* PRODUCTS */}
+          <div className="col-span-1 xl:col-span-8 flex flex-col justify-center">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mt-8">
+
+             {loading
+      ? Array.from({ length: 3 }).map((_, idx) => (
+          <div key={idx} className="group">
+            {/* IMAGE SKELETON */}
+            <div className=" aspect-square overflow-hidden shadow-lg rounded-lg bg-gray-200 animate-pulse" />
+
+            {/* TITLE SKELETON */}
+            <div className="mt-4 h-5 w-3/4 bg-gray-200 rounded animate-pulse" />
+
+            {/* DESC SKELETON */}
+            <div className="mt-2 h-4 w-full bg-gray-200 rounded animate-pulse" />
+          </div>
+        ))
+
+                : products.slice(0, 3).map((product, index) => (
+                    <Link
+                      href={`/product/${product.name}/${product._id}`}
+                      key={product._id}
+                      className="group"
+                    >
+                      <div
+                        className="group relative aspect-square overflow-hidden shadow-lg rounded-lg"
+                        onMouseEnter={() => setHoveredIndex(index)}
+                        onMouseLeave={() => setHoveredIndex(null)}
+                      >
+                        <Image
+                          src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${
+                            hoveredIndex === index && product.images?.[1]
+                              ? product.images[1]
+                              : product.images?.[0]
+                          }`}
+                          alt={product.name}
+                          fill
+                          sizes="(max-width: 768px) 100vw, 400px"
+                          className="object-cover object-center transition-all duration-300"
+                        />
+                      </div>
+
+                      <h3 className="mt-4 font-serif font-medium text-lg text-stone-700 group-hover:text-[#B67032] transition-colors duration-300">
+                        {product.name}
+                      </h3>
+
+                      {product.description?.paragraphs?.[0] && (
+                        <h3 className="font-semibold text-md text-stone-700 group-hover:text-[#B67032] transition-colors duration-300">
+                          {product.description.paragraphs[0]
+                            .split(" ")
+                            .slice(0, 10)
+                            .join(" ")}
+                          ...
+                        </h3>
+                      )}
+                    </Link>
+                  ))}
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
   );
 }
+
+
+
+// "use client";
+// import React, { useCallback, useEffect, useState } from "react";
+// import Link from "next/link";
+
+// import Image from "next/image";
+
+// export default function ShopByCategory() {
+//   const [exclusiveProducts, setExclusiveProducts] = useState([]);
+//   const [loading, setLoading] = useState(true);
+
+//   const skeletons = Array.from({ length: 6 });
+//   const exclusiveCategoryId = "693bbf62430ea8120089b320"; 
+
+
+//     const fetchProductsByCategory = useCallback(async (categoryId,page=1) => {
+//       try {setLoading(true)
+//         const res = await fetch(
+//           `${process.env.NEXT_PUBLIC_LOCAL_PORT}/product/category/${categoryId}?page=${page}`
+//         );
+//         const data = await res.json();
+//         const shuffled = Array.isArray(data.products)
+//           ? [...data.products].sort(() => 0.5 - Math.random())
+//           : [];
+//   // const shuffled = data.products
+//         setExclusiveProducts(shuffled);
+//       } catch (err) {
+//         console.error("Error fetching products by category:", err);
+//         return []; 
+//       }finally{
+//         setLoading(false)
+//       }
+//    }, []);
+
+//   useEffect(() => {
+//     // const fetchData = async () => {
+//     //   setLoading(true);
+//     //   try {
+//     //     const result = await refetchProductsByCategory(exclusiveCategoryId);
+
+//     //     const filtered = Array.isArray(result)
+//     //       ? result.filter(
+//     //           (p) =>
+//     //             p?.category === exclusiveCategoryId ||
+//     //             p?.category?._id === exclusiveCategoryId
+//     //         )
+//     //       : [];
+
+//     //     setExclusiveProducts(filtered);
+//     //   } catch (err) {
+//     //     console.error(" Error fetching category-exclusive products:", err);
+//     //   } finally {
+//     //     setLoading(false);
+//     //   }
+//     // };
+// fetchProductsByCategory(exclusiveCategoryId)
+//     // fetchData();
+//   }, []);
+//   const [hoveredIndex, setHoveredIndex] = useState(null);
+
+
+//   return (
+//     <section className="py-12 z-50 relative">
+
+//         <div className="absolute -top-24 -right-12 opacity-20">
+//               <Image
+//                 alt=""
+                
+//                 src={"/Images/bg1.png"}
+//                 width={360}
+//                 height={360}
+//                 className="w-full h-auto rotate-[300deg] object-cover"
+//               />
+//             </div>
+
+//       <div className="px-4 sm:px-6 lg:px-8 z-50">
+//         {/* <div>
+//           <h2 className="text-3xl md:text-4xl font-serif text-center">Saaj Riwaaj Exclusive</h2>
+//           <p className="text-md md:text-xl text-stone-500 font-serif text-center mt-4">
+//             Crafted with passion, worn with pride. Explore our signature exclusives.
+//           </p>
+//         </div> */}
+
+//         <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 ">
+// <div className="col-span-1 xl:col-span-4">
+//   <div
+//     className="relative h-[400px] md:h-[600px] w-full bg-contain bg-no-repeat bg-center flex items-center justify-center text-center overflow-hidden"
+//     style={{ backgroundImage: "url('/Images/exclusive2.webp')" }}
+//   >
+//     <div className="relative z-10 px-4 sm:px-6 max-w-full sm:max-w-md w-full">
+//       <h3 className="text-xl sm:text-2xl md:text-3xl font-mosetta  font-medium text-[#B67032] mb-3 leading-snug">
+//         Discover Timeless Elegance with Saaj Riwaaj
+//       </h3>
+//       <p className="text-sm sm:text-base md:text-md text-[#5c3b22] mb-4 leading-normal">
+//         Unveil our handpicked exclusive jewellery pieces that blend tradition with royalty.
+//       </p>
+//       <Link href={`/category/saaj-riwaaj-exclusive/${exclusiveCategoryId}`} className="bg-[#7a4a26] text-white px-4 sm:px-5 py-2 rounded-xl hover:bg-[#5c3b22] transition duration-300 text-md">
+//         Explore Now
+//       </Link>
+//     </div>
+//   </div>
+// </div>
+
+
+
+
+
+
+
+//           <div
+//             className={`col-span-1 xl:col-span-8 flex flex-col justify-center `}
+//           >
+//                 {/* <div>
+//           <h2 className="text-3xl md:text-4xl font-serif ">Saaj Riwaaj Exclusive</h2>
+//           <p className="text-md md:text-xl text-stone-500 font-serif  mt-4">
+//             Crafted with passion, worn with pride. Explore our signature exclusives.
+//           </p>
+//         </div> */}
+//         <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mt-8">
+//             {loading
+//               ? skeletons.map((_, idx) => (
+//                   <div
+//                     key={idx}
+//                     className="shadow-lg rounded-lg bg-gray-200 animate-pulse "
+//                   ></div>
+//                 ))
+//               : exclusiveProducts.slice(0, 3).map((product, index) => (
+//                   <Link href={`/product/${product.name}/${product._id}`} key={product._id} className="group">
+//                     {/* <div className="flex items-center justify-center gap-4"> */}
+//                     <div
+//   className="group relative aspect-square overflow-hidden shadow-lg rounded-lg"
+//   onMouseEnter={() => setHoveredIndex(index)}
+//   onMouseLeave={() => setHoveredIndex(null)}
+// >
+//   <Image
+//     src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${
+//       hoveredIndex === index && product.images?.[1]
+//         ? product.images[1]
+//         : product.images?.[0]
+//     }`}
+//     alt={product.name}
+//     fill
+//     sizes="(max-width: 768px) 100vw, 400px"
+//     loading="lazy"
+//     className="object-cover object-center transition-all duration-300"
+//   />
+// </div>
+//                     {/* </div> */}
+//                     <h3 className="mt-4 font-serif font-medium text-lg text-stone-700 group-hover:text-[#B67032] transition-colors duration-300">
+//                       {product.name}
+//                     </h3>
+//                    {product.description?.paragraphs?.[0] && (
+//                       <h3 className="font-semibold text-md text-stone-700 group-hover:text-[#B67032] transition-colors duration-300">
+//                         {product.description.paragraphs[0].split(" ").slice(0, 10).join(" ")}...
+//                       </h3>
+//                     )}
+//                   </Link>
+//                 ))}
+//                 </div>
+//           </div>
+//         </div>
+//       </div>
+//     </section>
+//   );
+// }
