@@ -249,7 +249,7 @@ const handelColorImage=(img)=>{
    <div key={idx} className="relative w-24 h-24 cursor-pointer">
     <Image
       src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${img}`}
-      alt={`Thumbnail ${idx + 1}`}
+      alt={' '}
       fill
       className={`object-cover object-center rounded-tl-2xl rounded-br-2xl transition-all duration-200 ${
         selectedImage === img ? "border-2 border-[#B67032]" : ""

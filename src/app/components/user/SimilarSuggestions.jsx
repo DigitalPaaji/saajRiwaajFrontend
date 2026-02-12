@@ -241,7 +241,7 @@ useEffect(() => {
               {Array.from({ length: 6 }).map((_, idx) => (
                 <div
                   key={idx}
-                  className="w-[400px] bg-white rounded-xl overflow-hidden shadow-md animate-pulse flex-shrink-0"
+                  className="w-[400px] overflow-hidden shadow-md animate-pulse flex-shrink-0"
                 >
                   <div className="w-full h-[300px] bg-stone-200" />
                   <div className="p-4 space-y-2">
