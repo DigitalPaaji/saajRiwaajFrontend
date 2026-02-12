@@ -4,7 +4,6 @@ import { useGlobalContext } from "../context/GlobalContext";
 import { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import Account from "./Account";
-import Image from "next/image";
 import { GoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 
@@ -285,6 +284,7 @@ const data = response.data;
               <input
                 type="text"
                 placeholder="Full Name"
+                autoComplete="name"
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
                 className="w-full border border-gray-400 p-2 rounded"
@@ -299,6 +299,7 @@ const data = response.data;
             <input
               type="email"
               placeholder="Email"
+              autoComplete="email"
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
               className="w-full border border-gray-400 p-2 rounded"
@@ -311,6 +312,7 @@ const data = response.data;
             <input
               type="password"
               placeholder="Password"
+              autoComplete={authTab === "signup" ? "new-password" : "current-password"}
               value={form.password}
               onChange={(e) => setForm({ ...form, password: e.target.value })}
               className="w-full border border-gray-400 p-2 rounded"
@@ -324,6 +326,7 @@ const data = response.data;
               <input
                 type="password"
                 placeholder="Confirm Password"
+                autoComplete="new-password"
                 value={form.confirmPassword}
                 onChange={(e) =>
                   setForm({ ...form, confirmPassword: e.target.value })

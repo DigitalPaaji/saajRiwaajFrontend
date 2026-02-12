@@ -54,7 +54,8 @@ useEffect(() => {
           spaceBetween={16}
           autoplay={{ delay: 2500, disableOnInteraction: false }}
           speed={800}
-          loop
+          loop={subCategories.length > 3}
+
         >
           {subCategories.map((sub) => (
             <SwiperSlide key={sub._id} className="!w-auto">

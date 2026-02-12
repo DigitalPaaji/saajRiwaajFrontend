@@ -78,7 +78,7 @@ export default function EarringsMarquee() {
             disableOnInteraction: false,
           }}
           speed={800}
-          loop
+          loop={subCategories.length > 3}
           className="mt-4 xl:mt-0"
         >
           {subCategories?.map((sub) => (

@@ -45,7 +45,7 @@ export default function HeroBanner() {
         fadeEffect={{ crossFade: true }}
         pagination={{ clickable: true }}
         autoplay={{ delay: 5000, disableOnInteraction: false }}
-        loop={true}
+        loop={banners?.length > 1}
         className="w-full relative min-h-[300px]"
       >
         {banners?.map((banner, index) => {
