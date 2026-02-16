@@ -109,7 +109,7 @@ const loading = products.length === 0;
                         />
                       </div>
 
-                      <h3 className="mt-4 font-serif font-medium text-lg text-stone-700 group-hover:text-[#B67032] transition-colors duration-300">
+                      <h3 className="mt-4 font-serif font-medium text-lg text-stone-700 group-hover:text-[#B67032] transition-colors duration-300 capitalize">
                         {product.name}
                       </h3>
 

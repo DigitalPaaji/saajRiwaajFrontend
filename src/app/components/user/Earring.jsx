@@ -160,7 +160,7 @@ export default function EarringsMarquee() {
 </div>
 
                 <div className="p-4">
-                  <h4 className="font-serif text-stone-800 group-hover:text-[#B67032] truncate">
+                  <h4 className="capitalize font-serif text-stone-800 group-hover:text-[#B67032] truncate">
                     {item?.name}
                   </h4>
                   {item.description?.paragraphs?.[0] && (

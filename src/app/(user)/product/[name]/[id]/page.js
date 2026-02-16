@@ -285,7 +285,7 @@ const handelColorImage=(img)=>{
           <div className="flex justify-between items-start">
             {/* LEFT SIDE (name + category) */}
             <div>
-              <h1 className="text-2xl md:text-4xl font-serif text-stone-900">
+              <h1 className="text-2xl md:text-4xl font-serif text-stone-900 capitalize">
                 {funshow(product.name,"name")}
               </h1>
               <p className="xl:text-md text-stone-700 mt-2 capitalize">

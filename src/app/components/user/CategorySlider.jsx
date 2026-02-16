@@ -107,7 +107,7 @@ export default function CategorySlider({ categoryName, heading, description }) {
   </div>
 </div>
                   <div className="p-4 flex flex-col justify-between">
-                    <h4 className="font-semibold text-stone-800 group-hover:text-[#B67032] transition-colors text-lg truncate">
+                    <h4 className="font-semibold text-stone-800 group-hover:text-[#B67032] transition-colors text-lg truncate capitalize">
                       {item.name}
                     </h4>
                     <p className="text-sm text-stone-600 mt-1 line-clamp-2"> typeof item.description === 'string'

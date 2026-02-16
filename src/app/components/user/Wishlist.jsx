@@ -73,7 +73,7 @@ export default function CartSidebar() {
 />
 
                 <div className="flex-1 space-y-2">
-                  <p className=" ">{item.name}</p>
+                  <p className="capitalize">{item.name}</p>
                  
                  
                 <div className="flex flex-col gap-1">

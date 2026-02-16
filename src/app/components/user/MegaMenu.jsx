@@ -103,7 +103,7 @@ function formatCategoryLabel(name) {
   />
 </div>
       <div className="p-4 flex-1">
-        <h4 className="font-semibold text-stone-800 group-hover:text-[#B67032] transition-colors">
+        <h4 className="font-semibold text-stone-800 group-hover:text-[#B67032] transition-colors capitalize">
           {item.name}
         </h4>
         {item.description?.paragraphs?.[0] && (

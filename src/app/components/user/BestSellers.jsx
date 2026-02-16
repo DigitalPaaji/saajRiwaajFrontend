@@ -72,7 +72,7 @@ export default function ShopByCategory() {
     className="object-cover transition-transform duration-500 group-hover:scale-110"
   />
 </div>
-                  <h3 className="font-serif font-medium mt-4 text-lg text-stone-700 group-hover:text-[#B67032] transition-colors duration-300">
+                  <h3 className="font-serif font-medium mt-4 text-lg text-stone-700 group-hover:text-[#B67032] transition-colors duration-300 capitalize" >
                     {product.name}
                   </h3>
 

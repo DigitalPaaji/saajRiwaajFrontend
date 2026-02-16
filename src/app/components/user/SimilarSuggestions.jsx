@@ -202,13 +202,13 @@ useEffect(() => {
 
   {/* Optional category badge */}
   {(item.subCategory || item.subcategory?.name) && (
-    <div className="absolute top-2 left-2 bg-[#B67032] text-white text-xs px-2 py-1 rounded">
+    <div className="absolute top-2 left-2 bg-[#B67032] text-white text-xs px-2 py-1 rounded capitalize">
       {item.subCategory || item.subcategory?.name}
     </div>
   )}
 </div>
                     <div className="p-4 flex flex-col justify-between">
-                      <h4 className="font-semibold text-stone-800 group-hover:text-[#B67032] transition-colors text-md truncate">
+                      <h4 className="font-semibold text-stone-800 group-hover:text-[#B67032] transition-colors text-md truncate capitalize">
                         {item.name}
                       </h4>
                       {item.description?.paragraphs?.[0] && (
@@ -286,7 +286,7 @@ useEffect(() => {
   />
 </div>
                       <div className="p-4 flex flex-col justify-between">
-                        <h4 className="font-semibold text-stone-800 group-hover:text-[#B67032] transition-colors text-md truncate">
+                        <h4 className="font-semibold text-stone-800 group-hover:text-[#B67032] transition-colors text-md truncate capitalize">
                           {item.name}
                         </h4>
                         {item.description?.paragraphs?.[0] && (
