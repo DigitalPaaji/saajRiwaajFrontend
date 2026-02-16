@@ -270,7 +270,13 @@ async function openPhonePePayPage(tokenUrl, orderId) {
           const newResponse = await statusRes.data;
        
           if (newResponse.success) {
-
+if (typeof window !== "undefined" && window.fbq) {
+    window.fbq('track', 'Purchase', {
+      value: finalAmount,
+      currency: 'INR',
+      content_type: 'product'
+    });
+  }
 setshowPopUp(true)
 
           } else {

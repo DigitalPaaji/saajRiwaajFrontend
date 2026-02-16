@@ -144,9 +144,9 @@ setSelectedImage(selectedColorImage?.[0])
     return (
       <div className="flex flex-col xl:flex-row gap-6 px-4 md:px-12 xl:px-40 py-12 ">
         {/* Left: Image Skeleton */}
-        <div className="w-full xl:w-1/2 space-y-4">
-          <div className="flex gap-4">
-            <div className="flex flex-col gap-4">
+        <div className="w-full xl:w-1/2 space-y-4 overflow-hidden">
+          <div className="flex flex-wrap md:flex-row gap-4">
+            <div className="flex md:flex-col gap-4">
               {[1, 2, 3, 4].map((i) => (
                 <div
                   key={i}
@@ -189,7 +189,7 @@ setSelectedImage(selectedColorImage?.[0])
     const handelAddtocart= async(buytype)=>{  
             // buytype ==="buy" ?   :  setbuytypeCart(true);
 
-      const item = {productid:product._id,price:product.finalPrice,quantity:selectedQty,color:selectedColor._id}
+      const item = {productid:product._id,price:product.finalPrice,quantity:selectedQty,color:selectedColor?._id}
     try {
       const response = await axios.post(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/cart/post`,{...item,buytype},{
         withCredentials:true
@@ -197,12 +197,48 @@ setSelectedImage(selectedColorImage?.[0])
      
       const data = await response.data;
    
-      if(data.success){
-            buytype ==="buy" ? "" :  toast.success(data.message)
-        buytype ==="buy" ? " " :  setAddedToCart(true)
-        // setbuytypeCart
-             setAllCart(data.cart)
-      }else{
+   if (data.success) {
+
+  if (typeof window !== "undefined" && window.fbq) {
+
+    if (buytype === "cart") {
+      // ✅ Add to Cart Event
+      window.fbq('track', 'AddToCart', {
+        content_ids: [product._id],
+        content_name: product.name,
+        value: product.finalPrice,
+        currency: 'INR'
+      });
+    }
+
+    if (buytype === "buy") {
+      // ✅ Buy Now Event
+      window.fbq('track', 'InitiateCheckout', {
+        content_ids: [product._id],
+        content_name: product.name,
+        value: product.finalPrice,
+        currency: 'INR'
+      });
+    }
+
+  }
+
+  buytype === "buy" ? "" : toast.success(data.message);
+  buytype === "buy" ? "" : setAddedToCart(true);
+  setAllCart(data.cart);
+
+}
+
+// if(data.success){
+        
+      //       buytype ==="buy" ? "" :  toast.success(data.message)
+      //   buytype ==="buy" ? " " :  setAddedToCart(true)
+      //   // setbuytypeCart
+      //        setAllCart(data.cart)
+      // }
+      
+      
+      else{
       setAuthTab("login"); 
               setIsAuthOpen(true);
                 setAddedToCart(false)
@@ -243,12 +279,13 @@ const handelColorImage=(img)=>{
         <div className="w-full xl:w-1/2 xl:sticky xl:top-24  ">
           <div className="flex flex-col md:flex-row items-center gap-4">
          
-         <div className="max-h-[600px] max-w-screen  overflow-y-auto custom-scrollbar">
+         <div className="max-h-[600px] w-full  overflow-y-auto no-scrollbar">
           <div className="flex md:flex-col gap-4 pr-1 w-fit">
   {(selectedColorImage)?.map((img, idx) => (
    <div key={idx} className="relative w-24 h-24 cursor-pointer">
     <Image
       src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${img}`}
+      // src={'/Images/3.webp'}
       alt={' '}
       fill
       className={`object-cover object-center rounded-tl-2xl rounded-br-2xl transition-all duration-200 ${
@@ -262,7 +299,7 @@ const handelColorImage=(img)=>{
 </div>
         </div>    
             <div
-              className="relative w-full h-[400px]  lg:h-[700px] overflow-hidden  rounded-md  cursor-zoom-in"
+              className="relative w-full h-[400px] md:h-[600px] lg:h-[700px] overflow-hidden  rounded-md  cursor-zoom-in"
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
               style={{

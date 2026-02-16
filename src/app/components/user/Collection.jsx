@@ -42,7 +42,7 @@ const onPageChange = (pageNumber) => {
             ? skeletons.map((_, idx) => (
                 <div
                   key={idx}
-                  className="shadow-lg rounded-lg bg-gray-200 animate-pulse h-[400px]"
+                  className="shadow-lg rounded-lg bg-gray-200 animate-pulse h-[200px] "
                 ></div>
               ))
             : product?.map((product, index) => (

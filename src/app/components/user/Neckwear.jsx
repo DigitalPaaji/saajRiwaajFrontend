@@ -70,17 +70,21 @@ useEffect(() => {
 
       {/* PRODUCTS */}
       {loading ? (
-        <div className="flex gap-4 overflow-x-auto">
-          {Array.from({ length: 6 }).map((_, idx) => (
-            <div key={idx} className="w-full  rounded shadow animate-pulse">
-             
-               <div className="relative aspect-square overflow-hidden shadow-lg rounded-lg bg-gray-200 animate-pulse" />
-                <div className="mt-4 h-5 w-3/4 bg-gray-200 rounded animate-pulse" />
-                <div className="mt-4 h-5 w-full bg-gray-200 rounded animate-pulse" />
-              </div>
-      
-          ))}
-        </div>
+<div className="flex gap-4 overflow-x-auto no-scrollbar pb-2">
+  {Array.from({ length: 6 }).map((_, idx) => (
+    <div
+      key={idx}
+      className="flex-shrink-0 w-[70%] sm:w-[45%] md:w-[30%] lg:w-[22%] xl:w-[18%] rounded shadow animate-pulse"
+    >
+      <div className="relative aspect-square overflow-hidden shadow-lg rounded-lg bg-gray-200" />
+
+      <div className="mt-4 h-5 w-3/4 bg-gray-200 rounded" />
+      <div className="mt-3 h-5 w-full bg-gray-200 rounded" />
+    </div>
+  ))}
+</div>
+
+
       ) : (
         <Swiper
           modules={[Navigation, Autoplay]}
