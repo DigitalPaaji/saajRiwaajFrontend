@@ -29,7 +29,7 @@ export default function HeroBanner() {
 
   if (loading) {
     return (
-      <div className="relative w-full min-h-[300px] md:min-h-[700px] animate-pulse  flex items-center justify-center">
+      <div className="relative w-full h-[400px] md:h-[720px] lg:h-[540px] xl:h-[680px] animate-pulse  flex items-center justify-center">
         <div className=" rounded-lg animate-pulse" />
       </div>
     );
@@ -46,16 +46,17 @@ export default function HeroBanner() {
         pagination={{ clickable: true }}
         autoplay={{ delay: 5000, disableOnInteraction: false }}
         loop={true}
-        className="w-full relative min-h-[300px]"
+        className="w-full relative h-[400px] md:h-[720px] lg:h-[540px] xl:h-[680px]"
       >
         {banners?.map((banner, index) => {
           const isFirstSlide = index === 0;
 
           return (
             <SwiperSlide key={index}>
-              <div className="relative w-full h-[450px] md:h-[600px] lg:h-[700px]">
+              <div className="relative w-full h-[400px] md:h-[720px] lg:h-[540px] xl:h-[680px]">
                 <div className="absolute inset-0 w-screen block lg:hidden">
                   <Image
+                  // src={'/Images/banner1.webp'}
                     src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${banner.mobileImage}`}
                     alt="Mobile Banner"
                     fill
@@ -67,6 +68,7 @@ export default function HeroBanner() {
 
                 <div className="absolute inset-0 hidden lg:block">
                   <Image
+                  //  src={'/Images/banner2.webp'}
                     src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${banner.desktopImage}`}
                     alt="Desktop Banner"
                     fill
