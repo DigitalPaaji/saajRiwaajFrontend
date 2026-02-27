@@ -29,7 +29,7 @@ const navItems = [
   { name: 'Tags', href: '/admin/tags', icon: Tag },
   { name: 'Offers', href: '/admin/offers', icon: TicketPercent },
   { name: 'Categories', href: '/admin/categories', icon: Layers },
-  { name: 'Banner', href: '/admin/banner', icon: Image },
+  // { name: 'Banner', href: '/admin/banner', icon: Image },
   { name: 'Users', href: '/admin/users', icon: Users },
   { name: 'Account', href: '/admin/account', icon: User },
   { name: 'Coupon', href: '/admin/coupon', icon: TicketPercent },
