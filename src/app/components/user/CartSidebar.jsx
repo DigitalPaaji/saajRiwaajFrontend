@@ -21,7 +21,7 @@ export default function CartSidebar() {
   // const [showCheckout, setShowCheckout] = useState(false);
 const [removeamount,setAppliedOffers]=useState([])
 const [showoffer,setShowOffer]= useState(true)
-
+const [firsttime,setFirstTime]=useState(true)
 
   const handleApplyCoupon = async () => {
     const code = coupon.trim();
@@ -68,7 +68,16 @@ const fetchCart= async()=>{
 
 
 useEffect(()=>{
-  fetchCart()
+  if(firsttime){
+    setTimeout(() => {
+       fetchCart()
+       setFirstTime(false)
+    }, 1000);
+  }
+  else{
+     fetchCart()
+  }
+ 
 },[isCartOpen])
 
 
