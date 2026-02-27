@@ -8,37 +8,50 @@ import "swiper/css/effect-fade";
 import Image from "next/image";
 
 export default function HeroBanner() {
-  const [banners, setBanners] = useState([]);
-  const [loading, setLoading] = useState(true);
+  // const [banners, setBanners] = useState([]);
+  // const [loading, setLoading] = useState(true);
 
-  const fetchBanners = useCallback(async () => {
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/banner`);
-      const data = await res.json();
-      setBanners(data);
-    } catch (err) {
-      console.error("Error fetching banners:", err);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+const desktopBanner= [
+"banner1.webp",
+"banner2.webp",
+]
 
-  useEffect(() => {
-    fetchBanners();
-  }, [fetchBanners]);
+const mobileBanner= [
+"banner1.webp",
+"banner2.webp",
+]
 
-  if (loading) {
-    return (
-      <div className="relative w-full h-[400px] md:h-[720px] lg:h-[540px] xl:h-[680px] animate-pulse  flex items-center justify-center">
-        <div className=" rounded-lg animate-pulse" />
-      </div>
-    );
-  }
 
-  if (!loading && banners.length === 0) return null;
+
+  // const fetchBanners = useCallback(async () => {
+  //   try {
+  //     const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/banner`);
+  //     const data = await res.json();
+  //     setBanners(data);
+  //   } catch (err) {
+  //     console.error("Error fetching banners:", err);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // }, []);
+
+  // useEffect(() => {
+  //   fetchBanners();
+  // }, [fetchBanners]);
+
+  // if (loading) {
+  //   return (
+  //     <div className="relative w-full h-[400px] md:h-[720px] lg:h-[540px] xl:h-[680px] animate-pulse  flex items-center justify-center">
+  //       <div className=" rounded-lg animate-pulse" />
+  //     </div>
+  //   );
+  // }
+
+  // if (!loading && banners.length === 0) return null;
 
   return (
     <section className="relative w-full">
+      <div className="hidden md:block">
       <Swiper
         modules={[Pagination, Autoplay, EffectFade]}
         effect="fade"
@@ -48,28 +61,17 @@ export default function HeroBanner() {
         loop={true}
         className="w-full relative h-[400px] md:h-[720px] lg:h-[540px] xl:h-[680px]"
       >
-        {banners?.map((banner, index) => {
+        {desktopBanner?.map((banner, index) => {
           const isFirstSlide = index === 0;
 
           return (
             <SwiperSlide key={index}>
               <div className="relative w-full h-[400px] md:h-[720px] lg:h-[540px] xl:h-[680px]">
-                <div className="absolute inset-0 w-screen block lg:hidden">
-                  <Image
-                  // src={'/Images/banner1.webp'}
-                    src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${banner.mobileImage}`}
-                    alt="Mobile Banner"
-                    fill
-                    priority={isFirstSlide}
-                    sizes="100vw"
-                    className=""
-                  />
-                </div>
+              
 
                 <div className="absolute inset-0 hidden lg:block">
                   <Image
-                  //  src={'/Images/banner2.webp'}
-                    src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${banner.desktopImage}`}
+                   src={`/banner/desktop/${banner}`}
                     alt="Desktop Banner"
                     fill
                     priority={isFirstSlide}
@@ -81,7 +83,51 @@ export default function HeroBanner() {
             </SwiperSlide>
           );
         })}
+
+
+
+        
       </Swiper>
+</div>
+
+<div className=" block md:hidden">
+        <Swiper
+        modules={[Pagination, Autoplay, EffectFade]}
+        effect="fade"
+        fadeEffect={{ crossFade: true }}
+        pagination={{ clickable: true }}
+        autoplay={{ delay: 5000, disableOnInteraction: false }}
+        loop={true}
+        className="w-full relative h-[400px] md:h-[720px] lg:h-[540px] xl:h-[680px]"
+      >
+        {mobileBanner?.map((banner, index) => {
+          const isFirstSlide = index === 0;
+
+          return (
+            <SwiperSlide key={index}>
+              <div className="relative w-full h-[400px] md:h-[720px] lg:h-[540px] xl:h-[680px]">
+                <div className="absolute inset-0 w-screen block lg:hidden">
+                  <Image
+                  src={`/banner/mobile/${banner}`}
+                    alt="Mobile Banner"
+                    fill
+                    priority={isFirstSlide}
+                    sizes="100vw"
+                    className=""
+                  />
+                </div>
+
+             
+              </div>
+            </SwiperSlide>
+          );
+        })}
+
+
+
+        
+      </Swiper>
+      </div>
     </section>
   );
 }

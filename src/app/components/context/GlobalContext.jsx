@@ -8,7 +8,7 @@ import React, {
 } from "react";
 import { useRouter } from "next/navigation";
 import { ToastContainer, toast } from "react-toastify";
-import Link from "next/link";
+
 
 const GlobalContext = createContext();
 
@@ -124,6 +124,8 @@ const[pages,setPages]=useState({})
   };
 
   const fetchUser = useCallback(async () => {
+
+
     try {
       // hit your backend
       const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/user`, {
