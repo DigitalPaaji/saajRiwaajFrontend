@@ -41,9 +41,9 @@ const toggleCategory = (id) => {
   const { allProducts , user, refetchUser, isLoggedIn, products, wishlist, setAuthTab, setIsWishlistOpen, setIsAuthOpen, categories, subCategoriesMap, cart, setIsCartOpen } = useGlobalContext();
   useEffect(() => {
       window.scrollTo(0, 0);
-setTimeout(() => {
+
       refetchUser();
-}, 1000);
+
 
   }, []);
   useEffect(() => {

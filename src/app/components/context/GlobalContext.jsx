@@ -670,7 +670,10 @@ const fetchProductById = useCallback(async (id) => {
       if (savedAdmin) setAdmin(JSON.parse(savedAdmin));
 
       if (savedUser) {
-        fetchUser();
+        setTimeout(() => {
+           fetchUser();
+        }, 1000);
+       
       }
 
       if (window.location.pathname.startsWith("/admin") && savedAdmin) {
