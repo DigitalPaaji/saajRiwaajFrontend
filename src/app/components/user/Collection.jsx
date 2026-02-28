@@ -6,13 +6,14 @@ import { FaRupeeSign } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import Pagination from "./Pagination";
 import { FiShoppingBag } from 'react-icons/fi';
+import { ShoppingBag } from "lucide-react";
 export default function Collection({
  product,pages,loading,fetchProducts
 }) {
   
-const route = useRouter()
+const router = useRouter()
 
- 
+
   
 
   const skeletons = Array.from({ length: 6 });
@@ -32,20 +33,63 @@ const onPageChange = (pageNumber) => {
 
 
 
+const handleClear = () => {
+ router.push("?")
 
+  };
 
   return (
     <section>
-      <div className=" col-span-1 xl:col-span-8 flex flex-col justify-center">
-        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-          {loading
-            ? skeletons.map((_, idx) => (
+      <div className=" col-span-1 xl:col-span-8 flex flex-col justify-center ">
+<div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+{loading
+            && skeletons.map((_, idx) => (
                 <div
                   key={idx}
                   className="shadow-lg rounded-lg bg-gray-200 animate-pulse h-[200px] "
                 ></div>
-              ))
-            : product?.map((product, index) => (
+              ))}
+
+</div>
+        <div className="">
+          { !loading &&  (!product || product.length === 0)
+            ? <div className="flex items-center justify-center  p-6 ">
+      <div className="text-center max-w-md">
+        
+     
+        <div className="flex justify-center mb-6">
+          <div className="w-24 h-24 flex items-center justify-center rounded-full ">
+            {/* <ShoppingBag className="w-12 h-12 text-gray-600" /> */}
+            <img src="/Images/shopping.png" alt="" />
+          </div>
+        </div>
+
+        {/* Heading */}
+        <h2 className="text-2xl font-semibold text-gray-800 mb-2">
+          No Products Found
+        </h2>
+
+        {/* Description */}
+        <p className="text-gray-500 mb-6">
+          We couldn&apos;t find any items matching your filters.  
+          Try adjusting your search or explore all products.
+        </p>
+
+  
+        <button
+        onClick={handleClear}
+          className="inline-block px-6 py-3 rounded-lg border  border-black font-medium "
+        >
+          Browse All Products
+        </button>
+
+      </div>
+    </div>
+            :
+            
+            
+          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">  
+          {  product?.map((product, index) => (
                 <Link
                   href={`/product/${product.name}/${product._id}`}
                   key={product._id}
@@ -85,36 +129,18 @@ const onPageChange = (pageNumber) => {
                   </div>
                
                 </Link>
-              ))}
+              ))
+            } 
+            </div>  
+              }
 
-{(!product || product.length === 0) && (
-  <div className="flex flex-col items-center justify-center py-24 px-6 text-center border border-dashed border-gray-300 rounded-2xl bg-gray-50/50 my-12 max-w-3xl mx-auto transition-all duration-500">
-    
-    {/* Icon Container */}
-    <div className="bg-white p-6 rounded-full shadow-sm mb-6 border border-gray-100">
-      <FiShoppingBag size={40} className="text-gray-300" strokeWidth={1} />
-    </div>
-    
-    {/* Heading */}
-    <h3 className="text-2xl md:text-3xl font-light text-gray-800 mb-4 tracking-wide">
-      Currently Unavailable
-    </h3>
-    
-    {/* Subtext */}
-    <p className="text-gray-500 max-w-md mx-auto mb-10 text-sm leading-relaxed">
-      It looks like we don't have any products matching your current selection. Try adjusting your filters or explore our other collections.
-    </p>
-    
-  <Link href={"/"}>
-  Go Home
-  </Link>
-  </div>
-)}
+
 
 
         </div>
-        <Pagination page={pages?.page} pages={pages?.pages} onPageChange={onPageChange} />
-      </div>
+   {product.length > 0 &&     <Pagination page={pages?.page} pages={pages?.pages} onPageChange={onPageChange} />
+      
+            }</div>
 
       <style jsx>{`
         .scrollbar-hide::-webkit-scrollbar {
