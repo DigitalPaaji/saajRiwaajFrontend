@@ -5,7 +5,7 @@ import Image from "next/image";
 import { FaRupeeSign } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import Pagination from "./Pagination";
-
+import { FiShoppingBag } from 'react-icons/fi';
 export default function Collection({
  product,pages,loading,fetchProducts
 }) {
@@ -86,6 +86,32 @@ const onPageChange = (pageNumber) => {
                
                 </Link>
               ))}
+
+{(!product || product.length === 0) && (
+  <div className="flex flex-col items-center justify-center py-24 px-6 text-center border border-dashed border-gray-300 rounded-2xl bg-gray-50/50 my-12 max-w-3xl mx-auto transition-all duration-500">
+    
+    {/* Icon Container */}
+    <div className="bg-white p-6 rounded-full shadow-sm mb-6 border border-gray-100">
+      <FiShoppingBag size={40} className="text-gray-300" strokeWidth={1} />
+    </div>
+    
+    {/* Heading */}
+    <h3 className="text-2xl md:text-3xl font-light text-gray-800 mb-4 tracking-wide">
+      Currently Unavailable
+    </h3>
+    
+    {/* Subtext */}
+    <p className="text-gray-500 max-w-md mx-auto mb-10 text-sm leading-relaxed">
+      It looks like we don't have any products matching your current selection. Try adjusting your filters or explore our other collections.
+    </p>
+    
+  <Link href={"/"}>
+  Go Home
+  </Link>
+  </div>
+)}
+
+
         </div>
         <Pagination page={pages?.page} pages={pages?.pages} onPageChange={onPageChange} />
       </div>

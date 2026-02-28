@@ -21,7 +21,7 @@ export default function EarringsMarquee() {
    const fetchProductsByCategory = useCallback(async (categoryId,page=1) => {
       try {setLoading(true)
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_LOCAL_PORT}/product/category/${categoryId}?page=${page}`
+          `${process.env.NEXT_PUBLIC_LOCAL_PORT}/product/random/${categoryId}?page=${page}`
         );
         const data = await res.json();
         // const shuffled = Array.isArray(data)

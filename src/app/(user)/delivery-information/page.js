@@ -80,7 +80,7 @@ export default function PrivacyPage() {
     };
   
     useEffect(()=>{
-      fetchPages()
+      fetchPages()  
     },[])
   
 
