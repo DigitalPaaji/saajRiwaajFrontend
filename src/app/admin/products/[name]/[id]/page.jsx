@@ -383,6 +383,7 @@ const handleUpdate = async (e) => {
     formData.append("isFeatured", product.isFeatured);
     formData.append("isNewArrival", product.isNewArrival);
     formData.append("deleteBarcode", product.deleteBarcode);
+    formData.append("deletethumbnail", product.deletethumbnail)
 
     // 🔹 Objects / Arrays (stringify)
     formData.append("description", JSON.stringify(product.description));
@@ -404,6 +405,9 @@ const handleUpdate = async (e) => {
     // 🔹 New barcode (single FILE)
     if (product.newBarCode) {
       formData.append("newBarCode", product.newBarCode);
+    }
+    if (product.newthumbnail) {
+      formData.append("newthumbnail", product.newthumbnail);
     }
 
     const response = await fetch(
