@@ -159,7 +159,11 @@ export default function AddProductPage() {
     hidethings:[],
     barcode: null,
     deleteBarcode:false,
-    newBarCode:null
+    newBarCode:null,
+       thumbnail: null,
+    deletethumbnail:false,
+    newthumbnail:null
+
   });
 
 
@@ -229,6 +233,18 @@ export default function AddProductPage() {
   setProduct((p) => ({
     ...p,
     newBarCode: file,
+  }));
+  }, []);
+
+
+
+  const handleThumbnailUpload = useCallback(async (files) => {
+ const file = files?.[0];
+  if (!file) return;
+
+  setProduct((p) => ({
+    ...p,
+    newthumbnail: file,
   }));
   }, []);
 
@@ -741,6 +757,14 @@ const removeNewImages=(indx)=>{
                     )}
                   </div>
 
+
+ <ThumbnailUpload 
+                onUpload={handleThumbnailUpload}
+                  onRemove={()=>setProduct(p=>({...p,thumbnail:null,deletethumbnail:true}))}
+                  image={product.thumbnail}
+                newImages={product?.newthumbnail}
+                onRemovenewImages={()=>setProduct(p=>({...p,newthumbnail:null}))}
+                />
                   {/* <div>
                     <label htmlFor="description" className={labelClasses}>
                       Description

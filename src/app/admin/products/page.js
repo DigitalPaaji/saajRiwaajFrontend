@@ -189,10 +189,10 @@ useEffect(()=>{
                   <td className="px-4 py-3">{idx + 1} </td>
 <td className="px-4 py-3">
   <Image
-    src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${product.images?.[0]}`}
+    src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${product.thumbnail ? product.thumbnail :  product.images?.[0]}`}
     alt={product.name || "Product Image"}
-    width={64}   // Tailwind w-16 = 64px
-    height={64}  // Tailwind h-16 = 64px
+    width={64}   
+    height={64}  
     className="object-cover w-16 h-16"
   />
 </td>                  <td className="px-4 py-3">{product.name}</td>

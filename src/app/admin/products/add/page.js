@@ -225,6 +225,7 @@ export default function AddProductPage() {
     images: [],
     colorVariants: [],
     barcode: null,
+    thumbnail:null,
   });
 
   const [finalPrice, setFinalPrice] = useState("0.00");
@@ -239,11 +240,11 @@ export default function AddProductPage() {
     images: [],
   });
 
-  // Upload-specific state
+
   const [isMainUploading, setIsMainUploading] = useState(false);
   const [isVariantUploading, setIsVariantUploading] = useState(false);
 
-  // --- Effects ---
+
   useEffect(() => {
     const price = parseFloat(product.price) || 0;
     const discount = parseFloat(product.discount) || 0;
@@ -258,7 +259,7 @@ export default function AddProductPage() {
   
   },[finalPrice])
 
-  // --- Handlers ---
+ 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
     const newValue = type === "checkbox" ? checked : value;
@@ -295,6 +296,23 @@ export default function AddProductPage() {
   }, []);
   
 
+  const handleFileUploadthumbnail = useCallback(async (file, type) => {
+    const setIsLoading =
+      type === "main" ? setIsMainUploading : setIsVariantUploading;
+
+    setIsLoading(true);
+
+  
+
+    
+        setProduct((prev) => ({
+          ...prev,
+          thumbnail: file, // single image URL
+        }));
+
+      setIsLoading(false);
+
+  }, []);
   const handleFileUploadBarcode = useCallback(async (file, type) => {
     const setIsLoading =
       type === "main" ? setIsMainUploading : setIsVariantUploading;
@@ -391,9 +409,16 @@ export default function AddProductPage() {
         formData.append("images", file);
       });
     }
+
+
     if (key === "barcode") {
       
   formData.append("barcode", value);
+    
+    }
+    if (key === "thumbnail") {
+      
+  formData.append("thumbnail", value);
     
     }
    
@@ -661,6 +686,49 @@ export default function AddProductPage() {
                   </div>
                 </div>
               </div>
+
+   <div className={cardClasses}>
+                <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                  Product Thumbnail
+                </h3>
+
+                <ImageUploader
+                  onUpload={(file) => handleFileUploadthumbnail(file, "main")}
+                  onRemove={() =>
+                    setProduct((p) => ({
+                      ...p,
+                      thumbnail: null,
+                    }))
+                  }
+                  // images={product.barcode }
+                  uploaderId="thumbnail-uploader"
+                  isUploading={isMainUploading}
+                  multiple={false}
+                />
+
+                {product.thumbnail && (
+                  <div className="mt-4 relative w-40">
+                    <Image
+                      src={URL.createObjectURL( product.thumbnail) }
+                      alt="Barcode Preview"
+                      width={200}
+                      height={200}
+                      className="rounded-lg border"
+                      
+                    />
+                    <button
+                      type="button"
+                      className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full p-1"
+                      onClick={() =>
+                        setProduct((p) => ({ ...p, thumbnail: null }))
+                      }
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                )}
+              </div>
+
 
               <div className={cardClasses}>
                 <h3 className="text-lg font-semibold text-gray-800 mb-4">
