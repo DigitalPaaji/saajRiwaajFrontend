@@ -13,6 +13,7 @@ import { FaCheckCircle } from "react-icons/fa";
 import axios from "axios";
 import ImagesUploads from "./compomy/ImagesUploads";
 import BarCodeUpload from "./compomy/BarCodeUpload";
+import ThumbnailUpload from "./compomy/ThumbnailUpload";
 
 // IMPORTANT: Replace with your Cloudinary details
 const CLOUDINARY_CLOUD_NAME = "dj0z0q0ut";

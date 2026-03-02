@@ -18,7 +18,7 @@ const cardClasses = "bg-white p-6 rounded-xl shadow-sm border border-gray-200";
 
 
 
-const BarCodeUpload = ({
+const ThumbnailUpload = ({
   onUpload,
   onRemove,
   image,
@@ -131,4 +131,4 @@ const BarCodeUpload = ({
   );
 };
 
-export default BarCodeUpload
+export default ThumbnailUpload
