@@ -241,7 +241,7 @@ const OrderDetails = () => {
           </tr>
         </thead>
         <tbody>
-          {order.items.map((item, i) => (
+          { order.items.length > 0 && order.items.map((item, i) => (
             <tr key={i} className="text-sm hover:bg-gray-50">
               <td className="p-3 border-b">
                 <Link href={`/admin/products/view/${item.product?._id}`}>
