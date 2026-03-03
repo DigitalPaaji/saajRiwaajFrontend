@@ -262,7 +262,7 @@ const OrderDetails = () => {
   
              <td className="p-3 border-b">{  item?.product?.colorVariants.find(
       (variant) => variant?._id.toString() === item.color.toString()
-    ).colorName}</td>
+    )?.colorName}</td>
               <td className="p-3 border-b">{item?.quantity}</td>
               <td className="p-3 border-b">₹{item.price}</td>
               <td className="p-3 border-b">₹{item?.quantity * item.price}</td>
