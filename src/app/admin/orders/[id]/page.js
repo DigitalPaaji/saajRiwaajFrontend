@@ -112,7 +112,7 @@ const OrderDetails = () => {
       {/* Order Summary */}
       <div className="mb-6 space-y-1">
         <p>
-          <strong>Order ID:</strong> {order._id}
+          <strong>Order ID:</strong> {order?._id}
         </p>
         <p>
           <strong>Customer:</strong> {order.shippingAddress?.name || "N/A"}
@@ -244,7 +244,7 @@ const OrderDetails = () => {
           {order.items.map((item, i) => (
             <tr key={i} className="text-sm hover:bg-gray-50">
               <td className="p-3 border-b">
-                <Link href={`/admin/products/view/${item.product._id}`}>
+                <Link href={`/admin/products/view/${item.product?._id}`}>
                   <Image
                     alt={item.product?.name || "Product"}
                     width={220}
@@ -261,7 +261,7 @@ const OrderDetails = () => {
  
   
              <td className="p-3 border-b">{  item?.product?.colorVariants.find(
-      (variant) => variant._id.toString() === item.color.toString()
+      (variant) => variant?._id.toString() === item.color.toString()
     ).colorName}</td>
               <td className="p-3 border-b">{item?.quantity}</td>
               <td className="p-3 border-b">₹{item.price}</td>
