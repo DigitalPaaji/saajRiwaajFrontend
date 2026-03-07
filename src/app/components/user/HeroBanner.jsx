@@ -52,7 +52,7 @@ const mobileBanner= [
 
   return (
     <section className="relative w-full">
-      <div className="hidden md:block">
+      <div className="hidden lg:block">
       <Swiper
         modules={[Pagination, Autoplay, EffectFade]}
         effect="fade"
@@ -91,7 +91,7 @@ const mobileBanner= [
       </Swiper>
 </div>
 
-<div className=" block md:hidden">
+<div className=" block lg:hidden">
         <Swiper
         modules={[Pagination, Autoplay, EffectFade]}
         effect="fade"
