@@ -127,7 +127,7 @@ Order:item[1]
           <SummaryCard
             icon={<DollarSign className="w-6 h-6 text-[#99571d]" />}
             title="Total Sales"
-            value={`₹${totalSales}`}
+            value={`₹${totalSales.toFixed(2)}`}
           />
         </div>
 
