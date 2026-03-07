@@ -23,8 +23,7 @@ export default function AnnouncementBar() {
           {Array.from({ length: 20 }).map((_, i) => (
             <span key={i} className="flex items-center gap-1 text-lg font-medium px-4">
               <Gift className="w-4 h-4" />
-Celebrate Our Grand Launch! Enjoy an Exclusive 25% OFF on Your First Purchase with Free Shipping on All Orders | Use Code: WELCOME25 ✨ Discover Timeless Jewellery That Defines Your Style
-          </span>
+Shop Elegant Jewellery with Special Offers and Free Shipping on Every Order ✨ Timeless Designs for Every Occasion          </span>
           ))}
         </div>
       </div>

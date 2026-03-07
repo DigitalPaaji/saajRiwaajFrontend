@@ -18,6 +18,7 @@ const desktopBanner= [
 ]
 
 const mobileBanner= [
+    "banner.webp",
 "banner1.webp",
 "banner2.webp",
 ]
@@ -52,7 +53,7 @@ const mobileBanner= [
 
   return (
     <section className="relative w-full">
-      <div className="hidden lg:block">
+      <div className="hidden md:block">
       <Swiper
         modules={[Pagination, Autoplay, EffectFade]}
         effect="fade"
@@ -60,17 +61,17 @@ const mobileBanner= [
         pagination={{ clickable: true }}
         autoplay={{ delay: 5000, disableOnInteraction: false }}
         loop={true}
-        className="w-full relative h-[400px] md:h-[720px] lg:h-[540px] xl:h-[680px]"
+        className="w-full relative  md:h-[720px] lg:h-[540px] xl:h-[680px]"
       >
         {desktopBanner?.map((banner, index) => {
           const isFirstSlide = index === 0;
 
           return (
             <SwiperSlide key={index}>
-              <div className="relative w-full h-[400px] md:h-[720px] lg:h-[540px] xl:h-[680px]">
+              <div className="relative w-full  md:h-[720px] lg:h-[540px] xl:h-[680px]">
               
 
-                <div className="absolute inset-0 hidden lg:block">
+                <div className="absolute inset-0 hidden md:block">
                   <Image
                    src={`/banner/desktop/${banner}`}
                     alt="Desktop Banner"
@@ -91,7 +92,7 @@ const mobileBanner= [
       </Swiper>
 </div>
 
-<div className=" block lg:hidden">
+<div className=" block md:hidden">
         <Swiper
         modules={[Pagination, Autoplay, EffectFade]}
         effect="fade"
@@ -99,15 +100,15 @@ const mobileBanner= [
         pagination={{ clickable: true }}
         autoplay={{ delay: 5000, disableOnInteraction: false }}
         loop={true}
-        className="w-full relative h-[400px] md:h-[720px] lg:h-[540px] xl:h-[680px]"
+        className="w-full relative h-[400px] "
       >
         {mobileBanner?.map((banner, index) => {
           const isFirstSlide = index === 0;
 
           return (
             <SwiperSlide key={index}>
-              <div className="relative w-full h-[400px] md:h-[720px] lg:h-[540px] xl:h-[680px]">
-                <div className="absolute inset-0 w-screen block lg:hidden">
+              <div className="relative w-full h-[400px] ">
+                <div className="absolute inset-0 w-screen block md:hidden">
                   <Image
                   src={`/banner/mobile/${banner}`}
                     alt="Mobile Banner"
