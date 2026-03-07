@@ -250,7 +250,7 @@ const OrderDetails = () => {
                     width={220}
                     
                     height={220}
-                    src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item.product.images?.[0]}`}
+                    src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item.product?.images?.[0]}`}
                     className="w-16 h-16 object-cover"
                   />
                 </Link>
