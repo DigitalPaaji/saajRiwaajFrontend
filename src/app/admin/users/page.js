@@ -7,7 +7,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useGlobalContext } from "@/app/components/context/GlobalContext";
 export default function UsersList() {
-  const { allUsers } = useGlobalContext()
+  const { allUser } = useGlobalContext()
   // const [users, setUsers] = useState([]);
   // const [loading, setLoading] = useState(true);
 
@@ -63,14 +63,14 @@ export default function UsersList() {
             </thead>
 
             <tbody className="text-sm font-medium">
-              {allUsers.length === 0 ? (
+              {allUser.length === 0 ? (
                 <tr>
                   <td colSpan={5} className="text-center py-6 text-gray-500">
                     No users found.
                   </td>
                 </tr>
               ) : (
-                allUsers.map((user, idx) => (
+                allUser.map((user, idx) => (
                   <tr
                     key={user._id}
                     className="hover:bg-[#f3f2f1] transition"

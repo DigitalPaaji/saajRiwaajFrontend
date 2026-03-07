@@ -58,7 +58,10 @@ export default function AdminDashboard() {
       acc[cat].count += 1;
       return acc;
     }, {}) || {}
-  );
+    );
+
+
+
 
 const COLORS = ["#99571d", "#d88c51", "#f3c29b", "#c97a40", "#7a4b23"];
   const monthlyOrders = (() => {
