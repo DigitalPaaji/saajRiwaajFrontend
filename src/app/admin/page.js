@@ -48,9 +48,9 @@ export default function AdminDashboard() {
   const totalUsers = alluser?.length || 0;
   const totalOrders = orders?.length || 0;
   const totalSales =
-    orders?.reduce((sum, o) => sum + (o.amount || 0), 0) || 0;
+    orders.filter((item)=>item.paymentStatus =="paid")?.reduce((sum, o) => sum + (o.amount || 0), 0) || 0;
 
-  // ⭐ Product Category Chart Data
+ 
   const categoryChartData = Object.values(
     allProducts?.reduce((acc, product) => {
       const cat = product?.category?.name || "Unknown";
