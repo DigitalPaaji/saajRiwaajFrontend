@@ -38,24 +38,7 @@ export default function EarringsMarquee() {
    }, []);
 
   useEffect(() => {
-    // const fetchData = async () => {
-    //   setLoading(true);
-    //   try {
-    //     const result = await refetchProductsByCategory(earringsCategoryId);
-    //     if (Array.isArray(result)) {
-    //       const filtered = result.filter(
-    //         (p) =>
-    //           p?.category === earringsCategoryId ||
-    //           p?.category?._id === earringsCategoryId
-    //       );
-    //       setFilteredProducts(filtered);
-    //     }
-    //   } catch (err) {
-    //     console.error(err);
-    //   } finally {
-    //     setLoading(false);
-    //   }
-    // };
+
 
     fetchProductsByCategory(earringsCategoryId)
  

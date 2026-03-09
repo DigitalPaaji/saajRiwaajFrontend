@@ -284,7 +284,7 @@ Order:item[1]
                           className={`px-2 py-1 rounded-full text-xs ${
                             order.orderStatus === "placed"
                               ? "bg-yellow-100 text-yellow-600"
-                              : order.orderStatus === "completed"
+                              : order.orderStatus === "confirmed "
                               ? "bg-green-100 text-green-600"
                               : "bg-gray-100 text-gray-600"
                           }`}

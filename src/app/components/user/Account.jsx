@@ -102,7 +102,7 @@ const handleSave = async () => {
     >
       
 
-      {/* Header */}
+ 
            <div className="flex justify-between items-center px-4 py-6 border-b-[1px] border-[#99571d]">
         <h2 className="text-xl font-mosetta font-medium text-[#99571d]">My Profile</h2>
         <button onClick={() => setIsAuthOpen(false)}>
@@ -110,14 +110,13 @@ const handleSave = async () => {
         </button>
       </div>
 
-      {/* Scrollable content */}
+  
       <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
         <div className="space-y-3">
-          {/* Always read-only */}
+          
           <InfoRow icon={<User className="text-[#99571db7]"/>} label="Full Name" value={user?.name} />
           <InfoRow icon={<Mail className="text-[#99571db7]"/>} label="Email" value={user?.email} />
 
-          {/* Editable rows */}
           {!isEditing ? (
             <>
               <InfoRow icon={<Phone className="text-[#99571db7]"/>} label="Phone" value={user?.phone} />
@@ -231,7 +230,7 @@ const handleSave = async () => {
         </div>
       </div>
 
-      {/* Footer with logout */}
+
       <div className="border-t px-4 py-3">
         <button
           className="flex items-center gap-2 w-full justify-center bg-red-500 text-white py-2 rounded text-sm"
@@ -260,7 +259,6 @@ const handleSave = async () => {
   );
 }
 
-/* 🔹 Sub-components */
 const InfoRow = ({ icon, label, value }) => (
   <div className="flex items-start gap-2 text-md lg:text-lg">
     <div className="text-gray-500 mt-1">{icon}</div>

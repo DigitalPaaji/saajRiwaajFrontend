@@ -9,7 +9,6 @@ export default function AnnouncementBar() {
 
   return (
     <div className="relative bg-amber-50 text-amber-800 py-3 overflow-hidden">
-      {/* Close Button */}
       <button 
         onClick={() => setIsVisible(false)}
         className="absolute right-4 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-amber-100 transition-colors z-10"
@@ -17,7 +16,7 @@ export default function AnnouncementBar() {
         <X className="w-4 h-4" />
       </button>
 
-      {/* Marquee Content */}
+      
       <div className="flex items-center gap-2">
         <div className="whitespace-nowrap animate-marquee flex items-center gap-4">
           {Array.from({ length: 20 }).map((_, i) => (

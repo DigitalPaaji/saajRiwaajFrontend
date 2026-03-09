@@ -88,5 +88,6 @@ export default function ShopByCategory() {
               ))}
       </div>
     </section>
+    
   );
 }

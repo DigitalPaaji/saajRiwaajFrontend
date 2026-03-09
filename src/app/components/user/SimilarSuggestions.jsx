@@ -12,41 +12,16 @@ export default function EarringsMarquee({ categoryId }) {
   const { 
     allProducts,
     refetchAllProducts, 
-    subCategoriesMap,
+    subCategoriesMap, 
     refetchProductsByCategory,
   } = useGlobalContext();
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [similarLoading, setSimilarLoading] = useState(true);
 const [allLoading, setAllLoading] = useState(true);
-
-  // const [loading, setLoading] = useState(true);
+    const [productsByCategory, setProductsByCategory] = useState([]);
 
   const subCategories = subCategoriesMap[categoryId] || [];
 
-//   useEffect(() => {
-
-//     const fetchData = async () => {
-//       setLoading(true);
-//       try {
-//         const result = await refetchProductsByCategory(categoryId);
-
-//         if (Array.isArray(result)) {
-//           const filtered = result.filter(
-//             (p) => p?.category === categoryId || p?.category?._id === categoryId
-//           );
-//           setFilteredProducts(filtered);
-//         } else {
-//           setFilteredProducts([]);
-//         }
-//       } catch (err) {
-//         console.error("Error fetching earrings:", err);
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-
-//     fetchData();
-//   }, []);
 
 useEffect(() => {
   if (!categoryId) return;
@@ -94,21 +69,29 @@ useEffect(() => {
 }, []);
 
 
-//useEffect(() => {
-//   const fetchAll = async () => {
-//     setAllLoading(true);
-//     await refetchAllProducts();
-//     setAllLoading(false);
-//   };
+   const fetchProductsByCategory = useCallback(async (categoryId,page=1) => {
+      try {setSimilarLoading(true)
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_LOCAL_PORT}/product/random/${categoryId}?page=${page}`
+        );
+        const data = await res.json();
+     
+        
+        setProductsByCategory(data.products);
+      } catch (err) {
+        console.error("Error fetching products by category:", err);
+       
+      }finally{
+        setSimilarLoading(false)
+      }
+   }, []);
 
-//   fetchAll();
-// }, [refetchAllProducts]);
+  useEffect(() => {
 
 
-
-  // useEffect(() => {
-  //   refetchAllProducts();
-  // }, [refetchAllProducts]);
+    fetchProductsByCategory(categoryId)
+ 
+  }, []);
 
 
 
@@ -182,7 +165,7 @@ useEffect(() => {
             loop={true}
             grabCursor={true}
           >
-            {filteredProducts.map((item, idx) => {
+            {productsByCategory.map((item, idx) => {
               return (
                 <SwiperSlide key={idx}>
                   <Link
