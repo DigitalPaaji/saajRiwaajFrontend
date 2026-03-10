@@ -18,35 +18,31 @@ export default function EarringsMarquee({ categoryId }) {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [similarLoading, setSimilarLoading] = useState(true);
 const [allLoading, setAllLoading] = useState(true);
-
-  // const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
+    const [productsByCategory, setProductsByCategory] = useState([]);
 
   const subCategories = subCategoriesMap[categoryId] || [];
 
-//   useEffect(() => {
+console.log(productsByCategory,"asdasddddddddd")
 
-//     const fetchData = async () => {
-//       setLoading(true);
-//       try {
-//         const result = await refetchProductsByCategory(categoryId);
+  
+     const fetchProductsByCategory = useCallback(async (categoryId,page=1) => {
+        try {setLoading(true)
+          const res = await fetch(
+            `${process.env.NEXT_PUBLIC_LOCAL_PORT}/product/random/${categoryId}?page=${page}`
+          );
+          const data = await res.json();
+     
+  
+          setProductsByCategory(data.products);
+        } catch (err) {
+          console.error("Error fetching products by category:", err);
+         
+        }finally{
+          setLoading(false)
+        }
+     }, []);
 
-//         if (Array.isArray(result)) {
-//           const filtered = result.filter(
-//             (p) => p?.category === categoryId || p?.category?._id === categoryId
-//           );
-//           setFilteredProducts(filtered);
-//         } else {
-//           setFilteredProducts([]);
-//         }
-//       } catch (err) {
-//         console.error("Error fetching earrings:", err);
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-
-//     fetchData();
-//   }, []);
 
 useEffect(() => {
   if (!categoryId) return;
@@ -72,7 +68,7 @@ useEffect(() => {
   };
 
   fetchData();
-
+fetchProductsByCategory(categoryId)
   return () => {
     mounted = false;
   };
@@ -94,21 +90,7 @@ useEffect(() => {
 }, []);
 
 
-//useEffect(() => {
-//   const fetchAll = async () => {
-//     setAllLoading(true);
-//     await refetchAllProducts();
-//     setAllLoading(false);
-//   };
 
-//   fetchAll();
-// }, [refetchAllProducts]);
-
-
-
-  // useEffect(() => {
-  //   refetchAllProducts();
-  // }, [refetchAllProducts]);
 
 
 
