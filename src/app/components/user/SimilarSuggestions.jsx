@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
@@ -129,7 +129,7 @@ useEffect(() => {
       </div>
 
       <div className="overflow-x-auto scrollbar-hide">
-        {similarLoading  ? (
+        {loading  ? (
           <div className="flex gap-4 overflow-x-auto scrollbar-hide">
             {Array.from({ length: 6 }).map((_, idx) => (
               <div
@@ -164,7 +164,7 @@ useEffect(() => {
             loop={true}
             grabCursor={true}
           >
-            {filteredProducts.map((item, idx) => {
+            {productsByCategory.length>0 && productsByCategory?.map((item, idx) => {
               return (
                 <SwiperSlide key={idx}>
                   <Link
