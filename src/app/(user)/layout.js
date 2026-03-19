@@ -12,6 +12,7 @@ import "react-toastify/dist/ReactToastify.css";
 import OrderSidebar from '../components/user/OrderSidebar'
 import Icon from "../components/user/Icons";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import Popup from "../components/user/Popup";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -49,9 +50,10 @@ export default function RootLayout({ children }) {
                       <LoginSignup/>
                       <Wishlist/>
                       <OrderSidebar/>
-                             
+<Popup />                             
         {children}
 <Icon/>
+
               <Footer />
         </GlobalProvider>
         <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
