@@ -14,8 +14,8 @@ const Popup = () => {
 
   useEffect(() => {
     
-    // const hasSeenPopup = localStorage.getItem('hasSeenDiscountPopup');
-const hasSeenPopup = false
+    const hasSeenPopup = localStorage.getItem('hasSeenDiscountPopup');
+
     if (!hasSeenPopup) {
       const timer = setTimeout(() => {
         setIsOpen(true);
