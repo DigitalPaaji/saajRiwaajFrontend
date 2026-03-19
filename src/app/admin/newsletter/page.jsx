@@ -3,7 +3,7 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { FiMail, FiTrash2 } from 'react-icons/fi'
 import { toast } from 'react-toastify'
-
+axios.defaults.withCredentials = true
 const page = () => {
   const [allNewsLetter, setAllNewsLetter] = useState([])
   const [isLoading, setIsLoading] = useState(true);
