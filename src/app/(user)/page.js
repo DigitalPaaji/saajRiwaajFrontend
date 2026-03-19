@@ -7,6 +7,7 @@ import Exclusive from "../components/user/Exclusive";
 // import EarringsMarquee from "../components/user/Earring";
 import Neckwear from "../components/user/Neckwear";
 import EaringNew from "../components/user/EaringNew";
+import TrustSection from "../components/user/TrustSection";
 
 export default function Home() {
   return (
@@ -23,7 +24,7 @@ export default function Home() {
       {/* <EarringsMarquee /> */}
 
       <BestSellers />
-      
+      <TrustSection />
     </div>
   );
 }
