@@ -46,8 +46,8 @@ const TrustSection = () => {
   ];
 
   return (
-    <section className="py-16 bg-stone-50 border-y border-stone-200 font-sans">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-16  border-y border-stone-200 font-sans">
+      <div className="container mx-auto px-4 ">
         
         {/* --- PART 1: SOCIAL PROOF (Avatars, Stars, Orders) --- */}
         <div className="flex flex-col items-center justify-center text-center mb-16">
