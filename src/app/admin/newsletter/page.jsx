@@ -1,6 +1,7 @@
 "use client"
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
+import { FiMail, FiTrash2 } from 'react-icons/fi'
 import { toast } from 'react-toastify'
 
 const page = () => {
