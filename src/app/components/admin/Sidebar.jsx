@@ -21,6 +21,7 @@ import {
 } from 'lucide-react'
 import PopupModal from './ConfirmPopup'
 import { RiPagesLine } from "react-icons/ri";
+import { MdAlternateEmail } from 'react-icons/md'
 // Updated nav items with correct icons
 const navItems = [
   { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
@@ -35,6 +36,7 @@ const navItems = [
   { name: 'Coupon', href: '/admin/coupon', icon: TicketPercent },
   { name: 'Orders', href: '/admin/orders', icon: ShoppingCart },
   { name: 'Pages', href: '/admin/webpages', icon: RiPagesLine  },
+  { name: 'Newsletter', href: '/admin/newsletter', icon: MdAlternateEmail   },
 ]
 
 function Sidebar() {
