@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { FaPlus } from "react-icons/fa";
+import { FaEdit, FaPlus, FaTimes } from "react-icons/fa";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { MdOutlineDeleteForever } from "react-icons/md";
+import { MdModeEditOutline, MdOutlineDeleteForever } from "react-icons/md";
 import PopupModal from "../../components/admin/ConfirmPopup";
 import Subcategories from "../../components/admin/Subcategory";
 
@@ -14,6 +14,9 @@ const TagsPage = () => {
   const [loading, setLoading] = useState(true);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
   const [tagToDelete, setTagToDelete] = useState(null);
+  
+  // New state to track the category being edited
+  const [editingTag, setEditingTag] = useState(null);
 
   const fetchTags = useCallback(async () => {
     try {
@@ -31,28 +34,67 @@ const TagsPage = () => {
     fetchTags();
   }, [fetchTags]);
 
-  const handleAddTag = async (e) => {
+  // Combined Add/Edit Submit Handler
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!newTag.trim()) return toast.warn("Please enter a category name.");
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/category/`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: newTag }),
-      });
 
-      const data = await res.json();
-      if (res.ok) {
-        toast.success("Category added successfully!");
-        setNewTag("");
-        fetchTags();
-      } else {
-        toast.error(data.message || "Failed to add category.");
+    if (editingTag) {
+      // EDIT MODE
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/category/${editingTag._id}`, {
+          method: "PUT", // Adjust to "PATCH" if your backend requires it
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name: newTag }),
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+          toast.success("Category updated successfully!");
+          setNewTag("");
+          setEditingTag(null);
+          fetchTags();
+        } else {
+          toast.error(data.message || "Failed to update category.");
+        }
+      } catch (err) {
+        console.error(err);
+        toast.error("Error updating category.");
       }
-    } catch (err) {
-      console.error(err);
-      toast.error("Error adding category.");
+    } else {
+      // ADD MODE
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/category/`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name: newTag }),
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+          toast.success("Category added successfully!");
+          setNewTag("");
+          fetchTags();
+        } else {
+          toast.error(data.message || "Failed to add category.");
+        }
+      } catch (err) {
+        console.error(err);
+        toast.error("Error adding category.");
+      }
     }
+  };
+
+  const handleEditClick = (tag) => {
+    setEditingTag(tag);
+    setNewTag(tag.name);
+    // Scroll to top if the form is far up the page
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const cancelEdit = () => {
+    setEditingTag(null);
+    setNewTag("");
   };
 
   const confirmDeleteTag = async () => {
@@ -64,6 +106,10 @@ const TagsPage = () => {
 
       if (res.ok) {
         toast.success("Category deleted successfully!");
+        // If the deleted tag was being edited, clear the form
+        if (editingTag && editingTag._id === tagToDelete._id) {
+          cancelEdit();
+        }
         fetchTags();
       } else {
         toast.error("Failed to delete category.");
@@ -77,7 +123,7 @@ const TagsPage = () => {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 p-4 lg:p-6">
-      {/* Categories Section */}
+  
       <section className="w-full">
         <ToastContainer className="z-[9999]" />
 
@@ -85,29 +131,47 @@ const TagsPage = () => {
           Manage Categories
         </h2>
 
-        {/* Add Category */}
+        
         <div className="mb-6">
           <form
-            onSubmit={handleAddTag}
-            className="flex gap-3 justify-between flex-wrap"
+            onSubmit={handleSubmit}
+            className="flex gap-3 justify-between flex-wrap items-center"
           >
             <input
               type="text"
               value={newTag}
               onChange={(e) => setNewTag(e.target.value)}
               placeholder="Enter category name"
-              className="border border-gray-300 focus:ring-2 focus:ring-[#99571d] px-4 py-2 w-full rounded-xl text-sm transition"
+              className="border border-gray-300 focus:ring-2 focus:ring-[#99571d] px-4 py-2 w-full flex-1 rounded-xl text-sm transition"
             />
-            <button
-              type="submit"
-              className="bg-[#4d4c4b] hover:bg-[#272625] text-white px-4 py-2 rounded-xl shadow flex items-center text-sm transition"
-            >
-              <FaPlus className="mr-2" /> Add
-            </button>
+            <div className="flex gap-2">
+              <button
+                type="submit"
+                className="bg-[#4d4c4b] hover:bg-[#272625] text-white px-4 py-2 rounded-xl shadow flex items-center text-sm transition min-w-[100px] justify-center"
+              >
+                {editingTag ? (
+                  <>
+                    <FaEdit className="mr-2" /> Update
+                  </>
+                ) : (
+                  <>
+                    <FaPlus className="mr-2" /> Add
+                  </>
+                )}
+              </button>
+              
+              {editingTag && (
+                <button
+                  type="button"
+                  onClick={cancelEdit}
+                  className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-xl shadow flex items-center text-sm transition"
+                >
+                  <FaTimes className="mr-2" /> Cancel
+                </button>
+              )}
+            </div>
           </form>
         </div>
-
-        {/* Categories Table */}
         <div className="overflow-x-auto rounded-xl border border-gray-200 shadow-sm">
           <table className="min-w-full text-left text-sm ">
             <thead className="font-mosetta bg-[#4d4c4b] text-white text-sm font-medium">
@@ -131,17 +195,25 @@ const TagsPage = () => {
                 tags.map((tag, index) => (
                   <tr
                     key={tag._id}
-                    className="hover:bg-[#f3f2f1] transition border-b"
+                    className={`hover:bg-[#f3f2f1] transition border-b ${editingTag?._id === tag._id ? 'bg-[#fcf8f2]' : ''}`}
                   >
                     <td className="px-4 py-3">{index + 1}</td>
                     <td className="px-4 py-3 capitalize">{tag.name}</td>
-                    <td className="px-4 py-3 text-center">
+                    <td className="px-4 py-3 text-center flex justify-center gap-2">
+                      <button
+                        onClick={() => handleEditClick(tag)}
+                        className="text-[#47dd4ee7] hover:text-green-700 cursor-pointer transition"
+                        title="Edit"
+                      >
+                        <MdModeEditOutline className="w-6 h-6" />
+                      </button>
                       <button
                         onClick={() => {
                           setShowDeletePopup(true);
                           setTagToDelete(tag);
                         }}
                         className="text-[#dd4747e7] hover:text-red-700 cursor-pointer transition"
+                        title="Delete"
                       >
                         <MdOutlineDeleteForever className="w-6 h-6" />
                       </button>

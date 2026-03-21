@@ -50,7 +50,7 @@ export default function RootLayout({ children }) {
                       <LoginSignup/>
                       <Wishlist/>
                       <OrderSidebar/>
-<Popup />                             
+{/* <Popup />                              */}
         {children}
 <Icon/>
 

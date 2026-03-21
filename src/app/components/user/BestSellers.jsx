@@ -38,7 +38,7 @@ export default function ShopByCategory() {
       </div>
       <div>
         <h2 className="text-3xl md:text-4xl font-mosetta text-center font-medium text-[#99571d]">
-          Best Sellers 
+          Most loved by our customers
         </h2>
         <p className="text-md md:text-xl text-stone-500 font-serif text-center mt-4">
           The favorites everyone's talking about. Timeless picks loved by all.
