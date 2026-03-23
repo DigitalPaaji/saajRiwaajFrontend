@@ -12,13 +12,13 @@ export default function HeroBanner() {
   // const [loading, setLoading] = useState(true);
 
 const desktopBanner= [
-  "banner.webp",
+  // "banner.webp",
 "banner1.webp",
 "banner2.webp",
 ]
 
 const mobileBanner= [
-    "banner.webp",
+    // "banner.webp",
 "banner1.webp",
 "banner2.webp",
 ]
