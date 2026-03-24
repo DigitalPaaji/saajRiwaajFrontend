@@ -26,7 +26,7 @@ export default function ShopByCategory() {
 
   return (
     <section className="relative py-12 px-4 sm:px-6 lg:px-8">
-      <div className="absolute -top-32 -right-12 opacity-20 ">
+      <div className="absolute -top-32 -right-12 opacity-10 ">
         <Image
           alt=""
           
@@ -72,9 +72,11 @@ export default function ShopByCategory() {
     className="object-cover transition-transform duration-500 group-hover:scale-110"
   />
 </div>
-                  <h3 className="font-serif font-medium mt-4 text-lg text-stone-700 group-hover:text-[#B67032] transition-colors duration-300 capitalize" >
-                    {product.name}
-                  </h3>
+                 <h3 className="font-serif font-medium text-stone-700 group-hover:text-[#B67032] transition-colors duration-300 capitalize mt-4">
+  {product.name
+    .toLowerCase()
+    .replace(/\b\w/g, (char) => char.toUpperCase())}
+</h3>
 
                   <h3 className="font-semibold  text-md text-[#B67032] transition-colors duration-300 flex items-center justify-center">
                     <span className="line-through mr-4 flex items-center">

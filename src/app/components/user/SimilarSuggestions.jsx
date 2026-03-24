@@ -7,6 +7,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { useGlobalContext } from "../context/GlobalContext";
 import Image from "next/image";
+import { FaRupeeSign } from "react-icons/fa";
 
 export default function EarringsMarquee({ categoryId }) {
   const { 
@@ -128,7 +129,11 @@ useEffect(() => {
        </div>
       </div>
 
-      <div className="overflow-x-auto scrollbar-hide">
+     
+     
+
+     
+     <div className="overflow-x-auto scrollbar-hide">
         {loading  ? (
           <div className="flex gap-4 overflow-x-auto scrollbar-hide">
             {Array.from({ length: 6 }).map((_, idx) => (
@@ -169,10 +174,10 @@ useEffect(() => {
                 <SwiperSlide key={idx}>
                   <Link
                     href={`/product/${item.name}/${item._id}`}
-                    className="group flex-shrink-0 w-full bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition-shadow"
+                    className="group flex-shrink-0 w-full  rounded-xl overflow-hidden "
                   >
 
-<div className="relative w-full h-[300px] overflow-hidden group">
+<div className="relative w-full h-[300px] overflow-hidden group rounded-xl shadow-lg">
   <Image
     src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item.images?.[0]}`}
     alt={item.name || "Product image"}
@@ -182,34 +187,37 @@ useEffect(() => {
     className="object-cover object-center transition-transform duration-300 group-hover:scale-105"
   />
 
-  {/* Optional category badge */}
+
   {(item.subCategory || item.subcategory?.name) && (
     <div className="absolute top-2 left-2 bg-[#B67032] text-white text-xs px-2 py-1 rounded capitalize">
       {item.subCategory || item.subcategory?.name}
     </div>
   )}
 </div>
-                    <div className="p-4 flex flex-col justify-between">
-                      <h4 className="font-semibold text-stone-800 group-hover:text-[#B67032] transition-colors text-md truncate capitalize">
-                        {item.name}
-                      </h4>
-                      {item.description?.paragraphs?.[0] && (
-                        <p className="text-sm text-stone-600 mt-1 line-clamp-2">
-                          {item.description.paragraphs[0]
-                            .split(" ")
-                            .slice(0, 10)
-                            .join(" ")}
-                          ...
-                        </p>
-                      )}
-                    </div>
+                    <div className="flex items-center lg:items-start lg:gap-2 flex-row justify-between py-4 px-2">
+                  <h3 className="font-serif font-medium text-stone-700 group-hover:text-[#B67032] transition-colors duration-300 capitalize">
+  {item.name
+    .toLowerCase()
+    .replace(/\b\w/g, (char) => char.toUpperCase())}
+</h3>
+                        <h3 className="font-semibold  text-md text-[#B67032] transition-colors duration-300 flex items-center ">
+                                                        <span className="line-through mr-4 flex items-center">
+                                                          <FaRupeeSign size={14} />
+                                                          {Math.floor(item.price)}
+                                                        </span>
+                                                        <FaRupeeSign size={14} />
+                                                        {Math.floor(item.finalPrice)}
+                                                      </h3>
+               
+               </div>
+              
                   </Link>
                 </SwiperSlide>
               );
             })}
           </Swiper>
         )}
-      </div>
+      </div> 
 
       {/* ------------------------- ALL PRODUCTS GRID ------------------------- */}
       <div className="mt-20">
@@ -255,9 +263,9 @@ useEffect(() => {
                   <SwiperSlide key={idx}>
                     <Link
                       href={`/product/${item.name}/${item._id}`}
-                      className="group flex-shrink-0 w-full bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition-shadow"
+                      className="group flex-shrink-0 w-full  overflow-hidden"
                     >
-<div className="relative w-full h-[300px] overflow-hidden group">
+<div className="relative w-full h-[300px] overflow-hidden group rounded-xl shadow-lg">
   <Image
     src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item.images?.[0]}`}
     alt={item.name || "Product image"}
@@ -267,7 +275,23 @@ useEffect(() => {
     className="object-cover object-center transition-transform duration-300 group-hover:scale-105"
   />
 </div>
-                      <div className="p-4 flex flex-col justify-between">
+                  <div className="flex items-center lg:items-start lg:gap-2 flex-row justify-between py-4 px-2">
+                  <h3 className="font-serif font-medium text-stone-700 group-hover:text-[#B67032] transition-colors duration-300 capitalize">
+  {item.name
+    .toLowerCase()
+    .replace(/\b\w/g, (char) => char.toUpperCase())}
+</h3>
+                        <h3 className="font-semibold  text-md text-[#B67032] transition-colors duration-300 flex items-center ">
+                                                        <span className="line-through mr-4 flex items-center">
+                                                          <FaRupeeSign size={14} />
+                                                          {Math.floor(item.price)}
+                                                        </span>
+                                                        <FaRupeeSign size={14} />
+                                                        {Math.floor(item.finalPrice)}
+                                                      </h3>
+               
+               </div>
+                      {/* <div className="p-4 flex flex-col justify-between">
                         <h4 className="font-semibold text-stone-800 group-hover:text-[#B67032] transition-colors text-md truncate capitalize">
                           {item.name}
                         </h4>
@@ -280,7 +304,7 @@ useEffect(() => {
                             ...
                           </p>
                         )}
-                      </div>
+                      </div> */}
                     </Link>
                   </SwiperSlide>
                 );

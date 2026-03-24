@@ -7,6 +7,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { useGlobalContext } from "../context/GlobalContext";
 import Image from "next/image";
+import { FaRupeeSign } from "react-icons/fa";
 
 export default function EarringsMarquee() {
   const { subCategoriesMap } = useGlobalContext();
@@ -90,20 +91,19 @@ export default function EarringsMarquee() {
 
       {/* PRODUCTS */}
       {loading ? (
-        <div className="flex gap-4 overflow-x-auto">
-          {Array.from({ length: 6 }).map((_, idx) => (
-            <div
-              key={idx}
-              className="min-w-[220px] bg-white rounded-xl shadow animate-pulse"
-            >
-              <div className="h-[300px] bg-stone-200" />
-              <div className="p-4 space-y-2">
-                <div className="h-4 bg-stone-300 rounded w-3/4" />
-                <div className="h-3 bg-stone-200 rounded w-full" />
-              </div>
-            </div>
-          ))}
-        </div>
+          <div className="flex gap-4 overflow-x-auto no-scrollbar pb-2">
+  {Array.from({ length: 6 }).map((_, idx) => (
+    <div
+      key={idx}
+      className="flex-shrink-0 w-[70%] sm:w-[45%] md:w-[30%] lg:w-[22%] xl:w-[18%] rounded  animate-pulse"
+    >
+      <div className="relative aspect-square overflow-hidden shadow-lg rounded-lg bg-gray-200" />
+
+      <div className="mt-4 h-5 w-3/4 bg-gray-200 rounded" />
+      <div className="mt-3 h-5 w-full bg-gray-200 rounded" />
+    </div>
+  ))}
+</div>
       ) : (
         <Swiper
           modules={[Navigation, Autoplay]}
@@ -129,10 +129,10 @@ export default function EarringsMarquee() {
             <SwiperSlide key={item._id}>
               <Link
                 href={`/product/${item.name}/${item._id}`}
-                className="group block bg-white rounded-xl overflow-hidden shadow hover:shadow-md transition"
+                className="group block rounded-xl overflow-hidden transition"
               >
           
-<div className="relative h-[300px] overflow-hidden group">
+<div className="relative h-[300px] overflow-hidden group shadow-lg  rounded-xl">
     <Image
       src={ `${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item.images?.[0]}`}
     alt={item.name}
@@ -149,7 +149,23 @@ export default function EarringsMarquee() {
 }
 </div>
 
-                <div className="p-4">
+             <div className="flex items-center lg:items-start lg:gap-2 flex-row justify-between py-4 px-2">
+      <h3 className="font-serif font-medium text-stone-700 group-hover:text-[#B67032] transition-colors duration-300 capitalize">
+  {item.name
+    .toLowerCase()
+    .replace(/\b\w/g, (char) => char.toUpperCase())}
+</h3>
+                        <h3 className="font-semibold  text-md text-[#B67032] transition-colors duration-300 flex items-center ">
+                                                        <span className="line-through mr-4 flex items-center">
+                                                          <FaRupeeSign size={14} />
+                                                          {Math.floor(item.price)}
+                                                        </span>
+                                                        <FaRupeeSign size={14} />
+                                                        {Math.floor(item.finalPrice)}
+                                                      </h3>
+               
+               </div>
+                {/* <div className="p-4">
                   <h4 className="font-serif text-stone-800 group-hover:text-[#B67032] truncate">
                     {item.name}
                   </h4>
@@ -162,7 +178,7 @@ export default function EarringsMarquee() {
                       ...
                     </p>
                   )}
-                </div>
+                </div> */}
               </Link>
             </SwiperSlide>
           ))}

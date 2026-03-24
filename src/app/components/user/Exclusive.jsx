@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useGlobalContext } from "../context/GlobalContext";
+import { FaRupeeSign } from "react-icons/fa";
 
 export default function ShopByCategory() {
   const {
@@ -50,11 +51,11 @@ const loading = products.length === 0;
               className="relative h-[400px] md:h-[600px] w-full bg-contain bg-no-repeat bg-center flex items-center justify-center text-center overflow-hidden"
               style={{ backgroundImage: "url('/Images/exclusive2.webp')" }}
             >
-              <div className="relative z-10 px-4 sm:px-6 max-w-full sm:max-w-md w-full">
+              <div className="relative z-10 px-4 sm:px-6 max-w-full xs:max-w-md w-full">
                 <h3 className="text-xl sm:text-2xl md:text-3xl font-mosetta font-medium text-[#B67032] mb-3 leading-snug">
-                  Discover Timeless Elegance with Saaj Riwaaj
+                  Discover Timeless Elegance <br /> with  <br />Saaj Riwaaj
                 </h3>
-                <p className="text-sm sm:text-base md:text-md text-[#5c3b22] mb-4 leading-normal">
+                <p className="text-sm sm:text-base md:text-md text-[#5c3b22] mb-4 leading-normal max-w-sm lg:max-w-md mx-auto">
                   Unveil our handpicked exclusive jewellery pieces that blend tradition with royalty.
                 </p>
                 <Link
@@ -108,12 +109,26 @@ const loading = products.length === 0;
                           className="object-cover object-center transition-all duration-300"
                         />
                       </div>
+     <div className="flex items-center lg:items-start lg:gap-2 flex-row justify-between py-4 px-2">
+                   <h3 className="font-serif font-medium text-stone-700 group-hover:text-[#B67032] transition-colors duration-300 capitalize">
+  {product.name
+    .toLowerCase()
+    .replace(/\b\w/g, (char) => char.toUpperCase())}
+</h3>
+                        <h3 className="font-semibold  text-md text-[#B67032] transition-colors duration-300 flex items-center ">
+                                                        <span className="line-through mr-4 flex items-center">
+                                                          <FaRupeeSign size={14} />
+                                                          {Math.floor(product.price)}
+                                                        </span>
+                                                        <FaRupeeSign size={14} />
+                                                        {Math.floor(product.finalPrice)}
+                                                      </h3>
+               
+               </div>
+             
 
-                      <h3 className="mt-4 font-serif font-medium text-lg text-stone-700 group-hover:text-[#B67032] transition-colors duration-300 capitalize">
-                        {product.name}
-                      </h3>
-
-                      {product.description?.paragraphs?.[0] && (
+                   
+                                        {/* {product.description?.paragraphs?.[0] && (
                         <h3 className="font-semibold text-md text-stone-700 group-hover:text-[#B67032] transition-colors duration-300">
                           {product.description.paragraphs[0]
                             .split(" ")
@@ -121,7 +136,7 @@ const loading = products.length === 0;
                             .join(" ")}
                           ...
                         </h3>
-                      )}
+                      )} */}
                     </Link>
                   ))}
             </div>

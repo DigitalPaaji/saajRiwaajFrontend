@@ -7,6 +7,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { useGlobalContext } from "../context/GlobalContext";
 import Image from "next/image";
+import { FaRupeeSign } from "react-icons/fa";
 
 export default function EarringsMarquee() {
   const {
@@ -75,7 +76,7 @@ useEffect(() => {
   {Array.from({ length: 6 }).map((_, idx) => (
     <div
       key={idx}
-      className="flex-shrink-0 w-[70%] sm:w-[45%] md:w-[30%] lg:w-[22%] xl:w-[18%] rounded shadow animate-pulse"
+      className="flex-shrink-0 w-[70%] sm:w-[45%] md:w-[30%] lg:w-[22%] xl:w-[18%] rounded  animate-pulse"
     >
       <div className="relative aspect-square overflow-hidden shadow-lg rounded-lg bg-gray-200" />
 
@@ -104,22 +105,39 @@ useEffect(() => {
             <SwiperSlide key={item._id}>
               <Link
                 href={`/product/${item.name}/${item._id}`}
-                className="group block bg-white rounded-xl overflow-hidden shadow hover:shadow-md"
+                className="group block  rounded-xl overflow-hidden "
               >
-                <div className="relative h-[300px] overflow-hidden">
+                <div className="relative shadow-lg rounded-xl  h-[300px] overflow-hidden">
                   <Image
                     src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item.images?.[0]}`}
                     alt={item.name}
                     fill
-                    className="object-cover group-hover:scale-105 transition"
+                    className="object-cover group-hover:scale-105 transition duration-200"
                   />
                 </div>
 
-                <div className="p-4">
+               
+               <div className="flex items-center lg:items-start lg:gap-2 flex-row justify-between py-4 px-2">
+                  <h3 className="font-serif font-medium text-stone-700 group-hover:text-[#B67032] transition-colors duration-300 capitalize">
+  {item.name
+    .toLowerCase()
+    .replace(/\b\w/g, (char) => char.toUpperCase())}
+</h3>
+                        <h3 className="font-semibold  text-md text-[#B67032] transition-colors duration-300 flex items-center ">
+                                                        <span className="line-through mr-4 flex items-center">
+                                                          <FaRupeeSign size={14} />
+                                                          {Math.floor(item.price)}
+                                                        </span>
+                                                        <FaRupeeSign size={14} />
+                                                        {Math.floor(item.finalPrice)}
+                                                      </h3>
+               
+               </div>
+                {/* <div className="p-4">
                   <h4 className="font-serif text-stone-800 group-hover:text-[#B67032] truncate capitalize">
                     {item.name}
                   </h4>
-                   {item.description?.paragraphs?.[0] && (
+                  {item.description?.paragraphs?.[0] && (
                     <p className="text-sm text-stone-600 mt-1 line-clamp-2">
                       {item.description.paragraphs[0]
                         .split(" ")
@@ -127,8 +145,8 @@ useEffect(() => {
                         .join(" ")}
                       ...
                     </p>
-                  )}
-                </div>
+                  )} 
+                </div> */}
               </Link>
             </SwiperSlide>
           ))}

@@ -115,10 +115,10 @@ const handelTages=(tag)=>{
               {subcategory==item._id ? <div className='flex items-center gap-2  text-[#88460c]'>
                 <div className='opacity-0 w-2'></div>
               <FaDotCircle className='text-[10px]' />
-          <p>   {item.name} </p> </div> :
+          <p className='capitalize'>   {item.name} </p> </div> :
               <>
               <FaDotCircle className='text-[10px]' />
-          <p>   {item.name} </p> 
+          <p className='capitalize'>   {item.name} </p> 
               </>
               }
 
@@ -138,7 +138,7 @@ const handelTages=(tag)=>{
       <ul className="space-y-2">
         {tags.map(item => (
           <li key={item._id}>
-            <label className="flex items-center gap-2 text-sm cursor-pointer" onClick={() => handelTages(item._id)}>
+            <label className="capitalize flex items-center gap-2 text-sm cursor-pointer" onClick={() => handelTages(item._id)}>
               {/* <input
                 type="radio"
               name ={"tags"}
@@ -146,12 +146,12 @@ const handelTages=(tag)=>{
               checked={item._id==currentTags}
                 onChange={() => handelTages(item._id)}
               /> */}
-{item._id==currentTags[0] ? <div className='flex items-center gap-2 text-[#88460c]  ' >
+{item._id==currentTags[0] ? <div className='capitalize flex items-center gap-2 text-[#88460c]  ' >
     <div className='opacity-0 w-2'></div>
-             <FaTag className='text-[10px] ' /> {item.name }
+             <FaTag className='text-[10px]  ' /> {item.name }
 
 
-</div> :<><FaTag className='text-[10px] ' /> {item.name }
+</div> :<><FaTag className='text-[10px]' /> {item.name }
 </> }
             </label>
           </li>

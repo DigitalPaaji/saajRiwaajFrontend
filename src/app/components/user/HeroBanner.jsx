@@ -61,14 +61,14 @@ const mobileBanner= [
         pagination={{ clickable: true }}
         autoplay={{ delay: 5000, disableOnInteraction: false }}
         loop={true}
-        className="w-full relative  md:h-[720px] lg:h-[540px] xl:h-[680px]"
+        className="w-full relative  md:h-[480px] lg:h-[540px] xl:h-[680px]"
       >
         {desktopBanner?.map((banner, index) => {
           const isFirstSlide = index === 0;
 
           return (
             <SwiperSlide key={index}>
-              <div className="relative w-full  md:h-[720px] lg:h-[540px] xl:h-[680px]">
+              <div className="relative w-full  md:h-[480px] lg:h-[540px] xl:h-[680px]">
               
 
                 <div className="absolute inset-0 hidden md:block">
