@@ -9,7 +9,7 @@ import LoginSignup from "../components/user/LoginSignup";
 import Wishlist from '../components/user/Wishlist'
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import OrderSidebar from '../components/user/OrderSidebar'
+// import OrderSidebar from '../components/user/OrderSidebar'
 import Icon from "../components/user/Icons";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import Popup from "../components/user/Popup";
@@ -49,7 +49,7 @@ export default function RootLayout({ children }) {
                       <CartSidebar/>
                       <LoginSignup/>
                       <Wishlist/>
-                      <OrderSidebar/>
+                      {/* <OrderSidebar/> */}
 {/* <Popup />                              */}
         {children}
 <Icon/>

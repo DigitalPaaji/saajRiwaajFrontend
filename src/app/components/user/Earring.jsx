@@ -63,7 +63,7 @@ export default function EarringsMarquee() {
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 items-center mb-8">
         <div className="max-w-xl">
           {" "}
-          <h2 className="text-3xl md:text-4xl font-mosetta font-medium text-[#99571d]">Shop Earrings</h2>
+          <h2 className="text-2xl md:text-3xl font-mosetta font-medium text-[#99571d]">Shop Earrings</h2>
           <p className="text-md md:text-xl text-stone-500 font-serif mt-4">
             From timeless studs to graceful chandbalis, find your perfect pair.
           </p>

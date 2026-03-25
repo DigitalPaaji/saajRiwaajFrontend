@@ -10,7 +10,7 @@ import axios from "axios";
 export default function SearchBar({ onClose }) {
   const [query, setQuery] = useState("");
   const [filtered, setFiltered] = useState([]);
-  const [placeholder, setPlaceholder] = useState("Search products...");
+  const [placeholder, setPlaceholder] = useState("Search products names...");
   const modalRef = useRef(null);
 
 
@@ -55,7 +55,7 @@ const fetchSearch = async(text)=>{
   }, [onClose]);
 
   return (
-    <div className="absolute top-full left-0 w-full bg-[#faf8ea] shadow-lg border-t animate-[fadeIn_0.3s_ease-out] z-50 ">
+    <div className="absolute top-full left-0 w-full bg-[#faf8ea] shadow-lg animate-[fadeIn_0.3s_ease-out] z-50 ">
       <div
         ref={modalRef}
         className="w-full overflow-hidden md:max-w-screen-2xl mx-auto px-4 md:px-8 py-6 relative"
@@ -63,11 +63,11 @@ const fetchSearch = async(text)=>{
         <div className="mb-4 flex items-center justify-center gap-2 mx-2  relative">
           <input
             type="text"
-            placeholder={`Search for '${placeholder}'`}
+            placeholder={`${placeholder}`}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             autoFocus
-            className="w-full border px-4 py-2 rounded-md focus:outline-none text-base"
+            className="w-full border border-black/20 px-4 py-2 rounded-md focus:outline-none text-base"
           />
           <IoSearch  className="absolute right-14 text-xl" />
           <button
@@ -97,7 +97,7 @@ const fetchSearch = async(text)=>{
         ?.toLowerCase()
         .replace(/\s+/g, "-")}/${item._id}`}
       onClick={onClose}
-      className="flex-shrink-0 sm:w-40 lg:w-60 group flex flex-col items-center bg-stone-50 rounded-lg overflow-hidden hover:shadow-md transition-shadow"
+      className="flex-shrink-0 sm:w-40 lg:w-60 group flex flex-col items-center overflow-hidden hover:shadow-md transition-shadow"
     >
 <div className="relative w-full h-40 lg:h-60 overflow-hidden group">
   <Image
@@ -109,20 +109,22 @@ const fetchSearch = async(text)=>{
     className="object-cover object-center transition-transform duration-300 group-hover:scale-105"
   />
 </div>
-      <div className="p-2 flex-1">
-        <h4 className="font-semibold text-stone-800 text-base group-hover:text-[#B67032] transition-colors capitalize">
-          {item.name}
-        </h4>
-        {item.description?.paragraphs?.[0] && (
-          <p className="text-base text-stone-600">
-            {item.description.paragraphs[0]
-              .split(" ")
-              .slice(0, 10)
-              .join(" ")}
-            ...
-          </p>
-        )}
-      </div>
+          <div className="flex items-start justify-start py-4 px-2">
+            <h3 className="montserrat  font-medium text-stone-700 group-hover:text-[#B67032] transition-colors duration-300 capitalize">
+        {item.name
+          .toLowerCase()
+          .replace(/\b\w/g, (char) => char.toUpperCase())}
+      </h3>
+                              {/* <h3 className="font-semibold  text-md text-[#B67032] transition-colors duration-300 flex items-center ">
+                                                              <span className="line-through mr-4 flex items-center">
+                                                                <FaRupeeSign size={14} />
+                                                                {Math.floor(item.price)}
+                                                              </span>
+                                                              <FaRupeeSign size={14} />
+                                                              {Math.floor(item.finalPrice)}
+                                </h3> */}
+                     
+                     </div>
     </Link>
   ))}
 </div>

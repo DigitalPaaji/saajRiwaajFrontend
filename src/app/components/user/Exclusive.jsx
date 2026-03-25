@@ -32,12 +32,13 @@ const loading = products.length === 0;
 
   return (
     <section className="py-12 z-50 relative">
-      <div className="absolute -top-24 -right-12 opacity-20">
+      <div className="absolute -top-24 -right-12 opacity-20  z-[10] pointer-events-none select-none">
         <Image
           alt=""
           src={"/Images/bg1.png"}
           width={360}
           height={360}
+           draggable={false}
           className="w-full h-auto rotate-[300deg] object-cover"
         />
       </div>
@@ -55,13 +56,14 @@ const loading = products.length === 0;
                 <h3 className="text-xl sm:text-2xl md:text-3xl font-mosetta font-medium text-[#B67032] mb-3 leading-snug">
                   Discover Timeless Elegance <br /> with  <br />Saaj Riwaaj
                 </h3>
-                <p className="text-sm sm:text-base md:text-md text-[#5c3b22] mb-4 leading-normal max-w-sm lg:max-w-md mx-auto">
-                  Unveil our handpicked exclusive jewellery pieces that blend tradition with royalty.
+                <p className="text-sm sm:text-base md:text-md text-[#5c3b22] mb-4 leading-normal max-w-sm lg:max-w-md mx-auto montserrat capitalize">
+                A modern collection of lightweight pieces crafted with care and detail.
                 </p>
                 <Link
                   href={`/category/saaj-riwaaj-exclusive/${exclusiveCategoryId}`}
-                  className="bg-[#7a4a26] text-white px-4 sm:px-5 py-2 rounded-xl hover:bg-[#5c3b22] transition duration-300 text-md"
-                >
+                
+  className="px-5 py-2.5 bg-[#8b5424e0] text-white font-medium 
+             hover:bg-[#a05f29] transition-all duration-300 shadow-sm" >
                   Explore Now
                 </Link>
               </div>
@@ -93,7 +95,7 @@ const loading = products.length === 0;
                       className="group"
                     >
                       <div
-                        className="group relative aspect-square overflow-hidden shadow-lg rounded-lg"
+                        className="group relative aspect-square overflow-hidden shadow-lg"
                         onMouseEnter={() => setHoveredIndex(index)}
                         onMouseLeave={() => setHoveredIndex(null)}
                       >
@@ -110,7 +112,7 @@ const loading = products.length === 0;
                         />
                       </div>
      <div className="flex items-center lg:items-start lg:gap-2 flex-row justify-between py-4 px-2">
-                   <h3 className="font-serif font-medium text-stone-700 group-hover:text-[#B67032] transition-colors duration-300 capitalize">
+                   <h3 className="montserrat text-stone-700 group-hover:text-[#B67032] transition-colors duration-300 capitalize">
   {product.name
     .toLowerCase()
     .replace(/\b\w/g, (char) => char.toUpperCase())}

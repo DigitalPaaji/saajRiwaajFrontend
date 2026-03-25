@@ -48,19 +48,25 @@ export default function EarringsMarquee() {
   return (
     <section className="relative py-16 px-4 sm:px-8 lg:px-16">
       {/* Background */}
-      <div className="absolute -top-32 left-0 opacity-20">
-        <Image src="/Images/bg1.png" alt="" width={360} height={360} />
-      </div>
+    <div className="absolute -top-32 left-0 opacity-20 z-[10] pointer-events-none select-none">
+      <Image
+        src="/Images/bg1.png"
+        alt=""
+        width={360}
+        height={360}
+        draggable={false}
+      />
+    </div>
 
       {/* Heading + Subcategories */}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 items-center mb-8">
         <div className="max-w-xl">
-          <h2 className="text-3xl md:text-4xl font-mosetta text-[#99571d]">
+          <h2 className="text-2xl md:text-3xl font-mosetta text-[#99571d]">
             Shop Neckwear
           </h2>
-          <p className="text-md md:text-xl text-stone-500 font-serif mt-4">
-            From timeless studs to graceful chandbalis, find your perfect pair.
-          </p>
+         <p className="text-md md:text-lg text-stone-500 font-serif mt-4">
+  From lightweight daily wear to exquisite wedding neckpieces, find your perfect match.
+</p>
         </div>
 
         <div>
@@ -79,7 +85,7 @@ export default function EarringsMarquee() {
             {subCategories.map((sub) => (
               <SwiperSlide key={sub._id} className="!w-auto">
                 <Link href={`/category/neckwear/${earringsCategoryId}?subcategory=${sub._id}`}>
-                  <div className="hover:bg-[#B67032] text-nowrap hover:text-white rounded-xl px-4 py-2 transition-all duration-300 text-[#B67032] text-sm lg:text-md font-medium cursor-pointer">
+                  <div className="montserrat hover:underline text-nowrap px-4 py-2 transition-all duration-300 text-[#B67032] text-sm lg:text-md font-medium cursor-pointer">
                     {sub.name.toUpperCase()}
                   </div>
                 </Link>
@@ -129,10 +135,10 @@ export default function EarringsMarquee() {
             <SwiperSlide key={item._id}>
               <Link
                 href={`/product/${item.name}/${item._id}`}
-                className="group block rounded-xl overflow-hidden transition"
+                className="group block overflow-hidden transition"
               >
           
-<div className="relative h-[300px] overflow-hidden group shadow-lg  rounded-xl">
+<div className="relative h-[300px] overflow-hidden group shadow-lg  ">
     <Image
       src={ `${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item.images?.[0]}`}
     alt={item.name}
@@ -150,7 +156,7 @@ export default function EarringsMarquee() {
 </div>
 
              <div className="flex items-center lg:items-start lg:gap-2 flex-row justify-between py-4 px-2">
-      <h3 className="font-serif font-medium text-stone-700 group-hover:text-[#B67032] transition-colors duration-300 capitalize">
+      <h3 className="montserrat  font-medium text-stone-700 group-hover:text-[#B67032] transition-colors duration-300 capitalize">
   {item.name
     .toLowerCase()
     .replace(/\b\w/g, (char) => char.toUpperCase())}

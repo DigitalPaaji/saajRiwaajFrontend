@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { useGlobalContext } from '../context/GlobalContext';
 import Image from 'next/image';
+import { FaRupeeSign } from 'react-icons/fa';
 
 export default function MegaMenu({ onClose, category, subcategories }) {
     if (!category || !subcategories?.length) return null;
@@ -90,7 +91,7 @@ function formatCategoryLabel(name) {
       key={idx}
       href={`/product/${item.name?.toLowerCase().replace(/\s+/g, '-')}/${item._id}`}
       onClick={onClose}
-      className="group flex flex-col items-center bg-stone-50 rounded-lg overflow-hidden hover:shadow-md transition-shadow"
+      className="group flex flex-col items-center  overflow-hidden hover:shadow-md transition-shadow"
     >
    <div className="relative w-full h-60 overflow-hidden group">
   <Image
@@ -102,17 +103,23 @@ function formatCategoryLabel(name) {
     className="object-cover object-center transition-transform duration-300 group-hover:scale-105"
   />
 </div>
-      <div className="p-4 flex-1">
-        <h4 className="font-semibold text-stone-800 group-hover:text-[#B67032] transition-colors capitalize">
-          {item.name}
-        </h4>
-        {item.description?.paragraphs?.[0] && (
-                      <p className="text-sm text-stone-600">
-                        {item.description.paragraphs[0].split(" ").slice(0, 10).join(" ")}...
-                      </p>
-                    )}
-    
-      </div>
+
+             {/* <div className="flex items-start justify-start py-4 ">
+      <h3 className="montserrat text-sm font-medium text-stone-700 group-hover:text-[#B67032] transition-colors duration-300 capitalize">
+  {item.name
+    .toLowerCase()
+    .replace(/\b\w/g, (char) => char.toUpperCase())}
+</h3>
+                       <h3 className="font-semibold  text-md text-[#B67032] transition-colors duration-300 flex items-center ">
+                                                        <span className="line-through mr-4 flex items-center">
+                                                          <FaRupeeSign size={14} />
+                                                          {Math.floor(item.price)}
+                                                        </span>
+                                                        <FaRupeeSign size={14} />
+                                                        {Math.floor(item.finalPrice)}
+                                                      </h3> 
+               
+               </div> */}
     </Link>
   );
 })}
