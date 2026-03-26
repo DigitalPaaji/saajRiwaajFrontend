@@ -23,16 +23,16 @@
   font-style: normal;
 }
 
-body {
-  background-color: #faf8ea8e;
-  /* background-image: repeating-linear-gradient(
+  /*body {
+ background-color: #faf8ea8e; 
+ background-image: repeating-linear-gradient(
     90deg,
     rgba(182,112,50,0.04),
     rgba(182,112,50,0.04) 1px,
     transparent 1px,
     transparent 3px
-  ); */
-}
+  ); 
+}*/
 
 .bgBanner{
   background-color: #b6703244;

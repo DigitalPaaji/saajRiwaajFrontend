@@ -292,7 +292,7 @@ useEffect(() => {
                
                </div>
                       {/* <div className="p-4 flex flex-col justify-between">
-                        <h4 className="font-semibold text-stone-800 group-hover:text-[#B67032] transition-colors text-md truncate capitalize">
+                        <h4 className="font-semibold text-stone-800 group-hover:text-[#B67032] transition-colors text-md capitalize">
                           {item.name}
                         </h4>
                         {item.description?.paragraphs?.[0] && (

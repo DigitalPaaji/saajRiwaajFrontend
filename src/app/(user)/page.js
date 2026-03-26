@@ -1,5 +1,7 @@
 "use client";
 import React from "react";
+import Banner from "../components/newHome/Neckwear";
+import Exclusive2 from '../components/newHome/Exclusive'
 import HeroBanner from "../components/user/HeroBanner";
 import BestSellers from "../components/user/BestSellers";
 import EditorialSection from "../components/user/EditorialSection";
@@ -13,10 +15,13 @@ export default function Home() {
   return (
     <div className="min-h-screen   text-stone-800 overflow-hidden ">
     
-      
       <HeroBanner />
+
       <EditorialSection />
       <EaringNew />
+  <Banner/>
+  <Exclusive2/>
+
 
       <Exclusive />
       <Neckwear />

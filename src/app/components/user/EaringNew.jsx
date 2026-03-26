@@ -139,7 +139,7 @@ useEffect(() => {
                
                </div>
                 {/* <div className="p-4">
-                  <h4 className="font-serif text-stone-800 group-hover:text-[#B67032] truncate capitalize">
+                  <h4 className="font-serif text-stone-800 group-hover:text-[#B67032]  capitalize">
                     {item.name}
                   </h4>
                   {item.description?.paragraphs?.[0] && (
@@ -313,7 +313,7 @@ useEffect(() => {
 // </div>
 
 //                 <div className="p-4">
-//                   <h4 className="font-serif text-stone-800 group-hover:text-[#B67032] truncate">
+//                   <h4 className="font-serif text-stone-800 group-hover:text-[#B67032] ">
 //                     {item.name}
 //                   </h4>
 //                   {item.description?.paragraphs?.[0] && (
