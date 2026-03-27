@@ -29,16 +29,6 @@ export default function EarringsSlider() {
 
   return (
     <section className="py-12 md:py-16 px-4 md:px-6 lg:px-12 xl:px-24 relative overflow-hidden">
-      {/* Background Decorative Image */}
-      <div className="absolute -top-24 -right-12 opacity-20 z-0 pointer-events-none select-none">
-        <Image
-          alt=""
-          src="/Images/bg1.png"
-          width={360}
-          height={360}
-          className="w-full h-auto rotate-[300deg] object-cover"
-        />
-      </div>
 
       <div className="max-w-7xl mx-auto relative z-10">
         {/* --- HEADING SECTION --- */}
