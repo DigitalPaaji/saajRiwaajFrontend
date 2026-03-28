@@ -91,18 +91,19 @@ export default function EarringsSlider() {
                   >
                     {/* 1. Image Layer */}
                     <Image
-                      src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${
-                        hoveredId === item._id && item.images?.[1]
-                          ? item.images[1]
-                          : item.images?.[0]
-                      }`}
+                     src={'/Images/4.webp'}
+                     //  src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${
+                      //   hoveredId === item._id && item.images?.[1]
+                      //     ? item.images[1]
+                      //     : item.images?.[0]
+                      // }`}
                       alt={item.name}
                       fill
                       className="object-cover z-0 transition-transform duration-700 group-hover:scale-105"
                     />
 
                     {/* 2. Text Content Layer (Bottom Left) */}
-                    <div className="absolute z-10 bg-gradient-to-b from-black/0 via-black/60 to-black/80 bottom-0 left-0 right-0 p-4 md:p-5">
+                    <div className="absolute z-10 bg-gradient-to-b from-black/20 via-black/60 to-black/80 bottom-0 left-0 right-0 p-4 md:p-5">
                       <h3 className="text-sm md:text-base font-medium text-white montserrat truncate capitalize mb-1.5 shadow-text">
                         {item.name.toLowerCase()}
                       </h3>

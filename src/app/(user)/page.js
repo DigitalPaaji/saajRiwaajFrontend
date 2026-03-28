@@ -8,6 +8,9 @@ import Offer from '../components/newHome/Offer';
 import Category from '../components/newHome/Category';
 import BestSeller from '../components/newHome/BestSeller';
 import Trust from '../components/newHome/Trust';
+import Reviews from '../components/newHome/Reviews'
+import Faq from '../components/newHome/Faq'
+import Footer from '../components/newHome/Footer'
 
 import HeroBanner from "../components/user/HeroBanner";
 import BestSellers from "../components/user/BestSellers";
@@ -16,20 +19,28 @@ import Exclusive from "../components/user/Exclusive";
 import Neckwear from "../components/user/Neckwear";
 import EaringNew from "../components/user/EaringNew";
 import TrustSection from "../components/user/TrustSection";
+import DealsSection from "../components/newHome/Deals";
 
 export default function Home() {
   return (
     <div className="min-h-screen   text-stone-800 overflow-hidden ">
-       {/* <Offer/> */}
+       <Offer/>
       <Navbar/>
       <Banner/> 
-      {/* <HeroBanner /> */}
       <Trust/>
 
+      {/* <HeroBanner /> */}
+
       <Category/>
+      <DealsSection/>
+
       <Neckwear2 />
+
       <Exclusive2 />
       <BestSeller/>
+      <Reviews/>
+      <Faq/>
+      <Footer/>
       {/* <HeroBanner />
       <EditorialSection />
       <EaringNew />

@@ -20,12 +20,12 @@ export default function AnnouncementBar() {
   }, []);
 
   return (
-    <div className="h-8 relative w-full z-[20] bg-white text-[#292927]  flex items-center justify-center overflow-hidden">
+    <div className="h-8 relative w-full z-[20] text-white bg-[#292927]  flex items-center justify-center overflow-hidden">
       {/* Shimmer Effect */}
       <motion.div 
         animate={{ x: ['-100%', '250%'] }}
         transition={{ repeat:"infinite", duration: 3, ease: "linear" }}
-        className="absolute inset-0 w-1/2 h-full bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-[-35deg] pointer-events-none"
+        // className="absolute inset-0 w-1/2 h-full bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-[-35deg] pointer-events-none"
       />
 
       {/* Sliding Text */}

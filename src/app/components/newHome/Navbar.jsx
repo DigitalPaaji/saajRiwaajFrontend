@@ -82,7 +82,7 @@ export default function Navbar() {
       className={`fixed backdrop-blur-lg left-0 right-0 z-[99] transition-all duration-500 ${
         isScrolled 
           ? "bg-white backdrop-blur-lg shadow-md  top-0" 
-          : "bg-transparent py-2 top-0" 
+          : "bg-transparent py-2 top-8" 
       }`}
       onMouseLeave={() => setActiveMegaMenu(null)}
     >
@@ -225,12 +225,12 @@ export default function Navbar() {
               const isOpen = openCategoryId === cat._id;
 
               return (
-                <div key={cat._id} className="border-b border-black/5 pb-4 last:border-0">
+                <div key={cat._id} className="border-b border-black/5 pb-2 last:border-0">
                   <div className="flex items-center justify-between">
                     <Link
                       href={categoryPath}
                       onClick={() => setIsMobileMenuOpen(false)}
-                      className="text-[16px] font-semibold text-[#292927] hover:text-[#B67032] uppercase tracking-wide"
+                      className="text-[15px] font-semibold text-[#292927] hover:text-[#B67032] uppercase tracking-wide"
                     >
                       {categoryLabel}
                     </Link>

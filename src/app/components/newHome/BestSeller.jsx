@@ -37,7 +37,8 @@ export default function MostLovedFeatured() {
       {/* Image Container */}
       <div className="relative aspect-[4/5] overflow-hidden bg-gray-50">
         <Image
-          src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item.images?.[0]}`}
+            src={'/Images/3.webp'}
+        // src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item.images?.[0]}`}
           alt={item.name}
           fill
           sizes="(max-width: 768px) 50vw, 33vw"
@@ -115,13 +116,13 @@ export default function MostLovedFeatured() {
 
         {/* --- GRID LAYOUT --- */}
         {isLoading ? (
-          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-8">
             {Array.from({ length: 4 }).map((_, idx) => (
               <div key={idx} className="animate-pulse rounded-lg bg-stone-100 aspect-[4/6]" />
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-3 gap-y-6 md:gap-x-8 md:gap-y-10">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-8">
             {featuredProducts.slice(0, 8).map((item) => (
               <Link
                 key={item._id}

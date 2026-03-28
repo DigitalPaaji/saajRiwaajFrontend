@@ -38,7 +38,8 @@ export default function Earrings() {
       {/* Image Container */}
       <div className="relative aspect-[4/5] overflow-hidden bg-gray-50">
         <Image
-          src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item.images?.[0]}`}
+        src={'/Images/2.webp'}
+          // src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item.images?.[0]}`}
           alt={item.name}
           fill
           className="absolute inset-0 object-cover transition-transform duration-700 group-hover:scale-105"
@@ -113,13 +114,13 @@ export default function Earrings() {
 
         {/* --- GRID LAYOUT --- */}
         {loading ? (
-          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-8">
             {Array.from({ length: 4 }).map((_, idx) => (
               <div key={idx} className="animate-pulse rounded-lg bg-gray-100 aspect-[4/6]" />
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-3 gap-y-6 md:gap-x-8 md:gap-y-10">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-8">
             {products.map((item) => (
               <Link
                 key={item._id}

@@ -27,12 +27,14 @@ const TrustMarquee = () => {
   const marqueeItems = [...items, ...items, ...items];
 
   return (
-    <section className="py-4 overflow-hidden " style={{ backgroundColor: brandDark }}>
+    <section className="py-4 overflow-hidden " 
+    // style={{ backgroundColor: brandDark }}
+    >
       <div className="relative flex items-center">
         
         {/* Gradients for soft edges (Editorial touch) */}
-        <div className="absolute inset-y-0 left-0 w-20 z-10 bg-gradient-to-r from-[#292927] to-transparent" />
-        <div className="absolute inset-y-0 right-0 w-20 z-10 bg-gradient-to-l from-[#292927] to-transparent" />
+        <div className="absolute inset-y-0 left-0 w-20 z-10 bg-gradient-to-r from-[#ffffff] to-transparent" />
+        <div className="absolute inset-y-0 right-0 w-20 z-10 bg-gradient-to-l from-[#ffffff] to-transparent" />
 
         <motion.div 
           className="flex whitespace-nowrap items-center gap-12 md:gap-24"
@@ -46,7 +48,7 @@ const TrustMarquee = () => {
           {marqueeItems.map((item, index) => (
             <div 
               key={index} 
-              className="flex items-center gap-4 text-white group"
+              className="flex items-center gap-4 text-[#292927] group"
             >
               {/* Icon with accent color circle */}
               <div 
@@ -62,7 +64,7 @@ const TrustMarquee = () => {
               </span>
 
               {/* Decorative Dot Divider */}
-              <div className="w-1.5 h-1.5 rounded-full bg-white/20 ml-8 md:ml-16" />
+              <div className="w-px h-[1rem] bg-[#292927]/40 ml-8 md:ml-16" />
             </div>
           ))}
         </motion.div>

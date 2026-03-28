@@ -16,9 +16,9 @@ const [subName,setSubname]=useState()
   useEffect(() => {
     const updateImage = () => {
       if (window.innerWidth < 768) {
-        setBgImage('/Images/image.png');
+        setBgImage('/banner/desktop/chain.webp');
       } else {
-        setBgImage('/Images/innerBanner3.webp');
+        setBgImage('/banner/desktop/chains.webp');
       }
     };
 
@@ -44,23 +44,21 @@ useEffect(()=>{
 
   return (
     <div
-      className="relative w-full h-[250px] md:h-[400px] flex items-center justify-center text-[#B67032]"
-      style={{
-        backgroundImage: `url(${bgImage})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-      }}
+      className="relative bg-[#292927] text-gray-200 w-full pt-[90px] px-4 md:px-6 lg:px-12 xl:px-24 "
+      // style={{
+      //   backgroundImage: `url(${bgImage})`,
+      //   backgroundSize: 'cover',
+      //   backgroundPosition: 'center',
+      //   backgroundRepeat: 'no-repeat',
+      // }}
     >
       {/* Text Content */}
-      <div className="relative z-10 text-center px-4">
-        {/* ✅ Title */}
-        <h1 className="text-2xl md:text-4xl font-mosetta font-semibold text-[#461412] capitalize">
+      <div className="relative z-10 py-6">
+        {/* <h1 className="text-2xl md:text-xl font-mosetta font-semibold text-[#ffffff] capitalize">
          {formatText(title)}
-        </h1>
+        </h1> */}
 
-        {/* ✅ Breadcrumb */}
-        <div className="mt-2 text-sm md:text-base text-gray-800 space-x-1">
+        <div className="text-sm md:text-base  space-x-1">
           <Link href="/" className="hover:underline">
             Home
           </Link>
