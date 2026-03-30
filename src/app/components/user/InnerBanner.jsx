@@ -18,7 +18,7 @@ const [subName,setSubname]=useState()
       if (window.innerWidth < 768) {
         setBgImage('/banner/desktop/chain.webp');
       } else {
-        setBgImage('/banner/desktop/chains.webp');
+        setBgImage('/banner/desktop/b1.webp');
       }
     };
 
@@ -44,21 +44,21 @@ useEffect(()=>{
 
   return (
     <div
-      className="relative bg-[#292927] text-gray-200 w-full pt-[90px] px-4 md:px-6 lg:px-12 xl:px-24 "
-      // style={{
-      //   backgroundImage: `url(${bgImage})`,
-      //   backgroundSize: 'cover',
-      //   backgroundPosition: 'center',
-      //   backgroundRepeat: 'no-repeat',
-      // }}
+      className="relative w-full h-[250px] md:h-[400px] flex items-center justify-center text-[#B67032]   px-4 md:px-6 lg:px-12 xl:px-24 "
+      style={{
+        backgroundImage: `url(${bgImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+      }}
     >
       {/* Text Content */}
       <div className="relative z-10 py-6">
-        {/* <h1 className="text-2xl md:text-xl font-mosetta font-semibold text-[#ffffff] capitalize">
+   <h1 className="text-2xl md:text-xl font-mosetta font-semibold text-[#292927] capitalize">
          {formatText(title)}
-        </h1> */}
+        </h1> 
 
-        <div className="text-sm md:text-base  space-x-1">
+        <div className="mt-2 text-sm md:text-base text-gray-800 space-x-1">
           <Link href="/" className="hover:underline">
             Home
           </Link>

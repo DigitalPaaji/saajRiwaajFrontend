@@ -24,23 +24,24 @@ import DealsSection from "../components/newHome/Deals";
 export default function Home() {
   return (
     <div className="min-h-screen   text-stone-800 overflow-hidden ">
-       <Offer/>
-      <Navbar/>
+       {/* <Offer/> */}
+      {/* <Navbar/> */}
       <Banner/> 
       <Trust/>
 
       {/* <HeroBanner /> */}
 
       <Category/>
+      <BestSeller/>
+
       <DealsSection/>
 
       <Neckwear2 />
 
       <Exclusive2 />
-      <BestSeller/>
       <Reviews/>
       <Faq/>
-      <Footer/>
+      {/* <Footer/> */}
       {/* <HeroBanner />
       <EditorialSection />
       <EaringNew />

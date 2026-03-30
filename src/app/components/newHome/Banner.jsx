@@ -11,14 +11,14 @@ import "swiper/css/effect-fade";
 
 const Carousel = () => {
   const banners = [
-    { desktop: "floral1.webp", mobile: "floralmobile.webp" },
-    { desktop: "floral1.webp", mobile: "chainsmobile.webp" },
+    { desktop: "b2.webp", mobile: "b1.webp" },
+
   ];
 
   return (
     <div className="relative w-full z-10">
       {/* Overlay Gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/10 to-transparent pointer-events-none z-20" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/0 to-transparent pointer-events-none z-20" />
 
       <Swiper
         modules={[Pagination, Autoplay, EffectFade]}

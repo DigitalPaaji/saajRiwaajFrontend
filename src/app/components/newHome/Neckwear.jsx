@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import Link from "next/link";
 import Image from "next/image";
 import { ShoppingBag } from "lucide-react";
-import { FaRupeeSign } from "react-icons/fa";
+import { FaRupeeSign, FaStar, FaStarHalfAlt } from "react-icons/fa";
 import { useGlobalContext } from "../context/GlobalContext";
 
 export default function Earrings() {
@@ -36,70 +36,67 @@ export default function Earrings() {
   const CardContent = ({ item }) => (
     <>
       {/* Image Container */}
-      <div className="relative aspect-[4/5] overflow-hidden bg-gray-50">
+      <div className="relative aspect-square overflow-hidden ">
         <Image
         src={'/Images/2.webp'}
           // src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item.images?.[0]}`}
           alt={item.name}
           fill
-          className="absolute inset-0 object-cover transition-transform duration-700 group-hover:scale-105"
+          className="absolute inset-0 object-cover"
         />
 
-        {/* DESKTOP: Add to Cart Overlay (Visible only on Hover) */}
-  {/* DESKTOP: Add to Cart Overlay (Visible only on Hover) */}
-<div className="hidden lg:group-hover:flex absolute inset-0 transition-all duration-300 items-end justify-center p-4 z-20">
-  <button
-    onClick={(e) => handleAddToCart(e, item)}
-    className="montserrat w-full bg-white text-[#292927] border border-[#292927] 
-               hover:text-white hover:bg-[#292927]
-               py-2.5 text-xs font-bold rounded shadow-lg 
-               transform translate-y-4 group-hover:-translate-y-1 
-               transition-all duration-500 ease-out
-               flex items-center justify-center gap-2"
-  >
-    <ShoppingBag size={16} />
-    ADD TO CART
-  </button>
-</div>
-
-        {/* MOBILE: Icon Only Button (Visible on small screens) */}
-        <div className="lg:hidden absolute bottom-2 right-2 z-20">
-          <button
-            onClick={(e) => handleAddToCart(e, item)}
-            className="bg-white/90 backdrop-blur-sm p-2 rounded-full shadow-md active:scale-90 transition-transform text-[#292927] border border-gray-100"
-          >
-            <ShoppingBag size={18} />
-          </button>
-        </div>
       </div>
       
-      {/* Content Area */}
-      <div className="p-3 md:p-4 bg-white flex flex-col gap-2">
-        <div className="flex flex-col gap-1">
-          {/* Text wraps naturally, no truncation */}
-          <h3 className="text-sm md:text-base font-medium text-slate-900 capitalize leading-tight break-words montserrat">
-            {item.name.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase())}
-          </h3>
-          
-          <div className="flex items-center gap-2 mt-1">
-            <span className="flex items-center text-[#8b5424] font-bold text-sm md:text-base">
-              <FaRupeeSign size={12} className="md:w-3.5" />
-              {Math.floor(item.finalPrice)}
-            </span>
-            {item.price > item.finalPrice && (
-              <span className="flex items-center text-slate-400 text-xs line-through">
-                <FaRupeeSign size={10} />
-                {Math.floor(item.price)}
-              </span>
-            )}
-          </div>
-        </div>
-      </div>
+ {/* Content Area */}
+<div className="p-3 md:p-4 bg-white flex flex-col gap-3">
+
+  {/* NAME */}
+  <h3 className="text-sm md:text-base font-medium text-slate-900 leading-tight break-words montserrat capitalize">
+    {item.name
+      .toLowerCase()
+      .replace(/\b\w/g, (char) => char.toUpperCase())}
+  </h3>
+
+  {/* ⭐ REVIEWS */}
+  <div className="flex items-center gap-1">
+    {[1, 2, 3, 4].map((i) => (
+      <FaStar key={i} size={12} className="text-yellow-500" />
+    ))}
+    <FaStarHalfAlt size={12} className="text-yellow-500" />
+    <span className="text-xs text-slate-500 ml-1">(120 reviews)</span>
+  </div>
+
+  {/* PRICE */}
+  <div className="flex items-center gap-2">
+    <span className="flex items-center text-[#8b5424] font-bold text-sm md:text-base">
+      <FaRupeeSign size={12} className="md:w-3.5" />
+      {Math.floor(item.finalPrice)}
+    </span>
+
+    {item.price > item.finalPrice && (
+      <span className="flex items-center text-slate-400 text-xs line-through">
+        <FaRupeeSign size={10} />
+        {Math.floor(item.price)}
+      </span>
+    )}
+  </div>
+
+  {/* 🛒 ADD TO CART BUTTON */}
+  <button
+    onClick={(e) => handleAddToCart(e, item)}
+    className="w-full mt-1 
+               text-white font-semibold text-xs md:text-sm py-2 rounded-md 
+                bg-[#292927] shadow-sm transition-all duration-300"
+  >
+    Add to Cart
+  </button>
+
+</div>
     </>
   );
 
   return (
-    <section className="py-12 md:py-16 px-4 md:px-6 lg:px-12 xl:px-24">
+    <section className="py-12 md:py-16 px-4 md:px-6 lg:px-12 xl:px-24 bg-stone-100">
       <div className="max-w-7xl mx-auto">
         
         {/* --- HEADING SECTION --- */}
