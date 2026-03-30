@@ -24,7 +24,6 @@ const [allLoading, setAllLoading] = useState(true);
 
   const subCategories = subCategoriesMap[categoryId] || [];
 
-console.log(productsByCategory,"asdasddddddddd")
 
   
      const fetchProductsByCategory = useCallback(async (categoryId,page=1) => {

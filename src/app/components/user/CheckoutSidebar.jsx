@@ -182,6 +182,7 @@ const handlePayOnline = async () => {
   if(address.phone.length <10 || address.length >12){
     return 
   }
+  
   const amount =
     discountPercent > 0
       ? Math.floor(total * (1 - discountPercent / 100))
@@ -239,6 +240,11 @@ if (data.tokenUrl) {
     alert("Failed to start payment!");
   }
 };
+
+
+
+
+
 function loadPhonePeScript() {
   return new Promise((resolve, reject) => {
     if (window.PhonePeCheckout) return resolve();
@@ -318,7 +324,7 @@ location.reload()
     handlePayOnline();
     };
 
-
+    
 
     if(showPopup){
       return(

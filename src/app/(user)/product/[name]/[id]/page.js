@@ -22,19 +22,29 @@ import {
 import { FaHeart } from "react-icons/fa";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { addToWishlist, removeFromWishlist } from "@/app/components/store/wishListSlice";
+import { addTocart, addTocartUser } from "@/app/components/store/cartSlice";
+import { base_url } from "@/app/components/store/utile";
+import { addSlide } from "@/app/components/store/sliderSlice";
 
 export default function ProductDetail() {
   const { id } = useParams();
   const {
     refetchProductById,
-    wishlist,
-    addToWishlist,
-    removeFromWishlist,
-    addToCart,
+ 
+
+
     setIsCartOpen,
     updateQty,
     cart,setAllCart,setIsAuthOpen,setAuthTab,setShowCheckout,setbuytypeCart
   } = useGlobalContext();
+  const wishlist = useSelector(state=>state.wishlist.items)
+ const { user } = useSelector(state=>state.user)
+  const dispatch = useDispatch()
+
+
+
   const [product, setProduct] = useState(null);
   const [selectedImage, setSelectedImage] = useState("");
 
@@ -229,13 +239,7 @@ setSelectedImage(selectedColorImage?.[0])
 
 }
 
-// if(data.success){
-        
-      //       buytype ==="buy" ? "" :  toast.success(data.message)
-      //   buytype ==="buy" ? " " :  setAddedToCart(true)
-      //   // setbuytypeCart
-      //        setAllCart(data.cart)
-      // }
+
       
       
       else{
@@ -269,8 +273,44 @@ const handelColorImage=(img)=>{
   )
   
  setSelectedColorImage(newimgset)
-  // setnewImg()
+
 }
+
+
+
+const handelAddtocartProduct = async(product)=>{
+  try {
+    if(user){
+
+try {
+  const response = await axios.post(`${base_url}/cart/post`,{
+    productid:product._id, quantity:selectedQty, price:product.finalPrice,color:selectedColor?._id
+  })
+  const data = await response.data;
+if(data.success){
+dispatch(addTocartUser(data.cart))
+  
+}
+} catch (error) {
+toast.error(error.response.data.message)  
+}
+
+
+
+    }
+    else{
+      dispatch(addTocart({product:product._id,quantity:selectedQty,price:product.finalPrice,color:selectedColor?._id}))
+    }
+  } catch (error) {
+    
+  }finally{
+    dispatch(addSlide("cart"))
+  }
+}
+
+
+
+
 
   return (
     <div>
@@ -333,17 +373,15 @@ const handelColorImage=(img)=>{
 
             {/* RIGHT SIDE (wishlist icon) */}
             <button
-              onClick={() =>
-                wishlist?.some((w) => w._id === product._id)
-                  ? removeFromWishlist(product._id)
-                  : addToWishlist(product._id)
-              }
+             
+
+              onClick={()=>dispatch(!wishlist?.some((w) => w === product._id) ?addToWishlist(product._id) : removeFromWishlist(product._id) )}
               className="cursor-pointer"
             >
-              {wishlist?.some((w) => w._id === product._id) ? (
-                <FaHeart className="w-6 h-6 text-red-500" /> // filled icon
+              {wishlist?.some((w) => w === product._id) ? (
+                <FaHeart className="w-6 h-6 text-red-500" /> 
               ) : (
-                <Heart className="w-6 h-6 text-stone-700" /> // outline icon
+                <Heart className="w-6 h-6 text-stone-700" /> 
               )}
             </button>
           </div>
@@ -514,7 +552,8 @@ const handelColorImage=(img)=>{
     // If not in cart → Add to Cart
     <button
 
-onClick={()=>{handelAddtocart("cart"),setbuytypeCart(true)}}
+    onClick={()=>handelAddtocartProduct(product)}
+// onClick={()=>{handelAddtocart("cart"),setbuytypeCart(true)}}
 
       // onClick={() => {
       //   addToCart({

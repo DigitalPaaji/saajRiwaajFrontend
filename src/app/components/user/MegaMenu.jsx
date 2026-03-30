@@ -1,50 +1,29 @@
 import React, { useEffect } from 'react';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
-import { useGlobalContext } from '../context/GlobalContext';
+
 import Image from 'next/image';
 
-export default function MegaMenu({ onClose, category, subcategories }) {
+export default function MegaMenu({ onClose, category, subcategories,products }) {
     if (!category || !subcategories?.length) return null;
-  
-      // const { productsByCategory2, refetchProductsByCategory2 } = useGlobalContext();
-const { productsByCategory2, refetchProductsByCategory2 } = useGlobalContext();
-
-const products = productsByCategory2[category._id] || [];
-
-      
-//     useEffect(()=>{
-//   refetchProductsByCategory2(category._id)
-// },[])
-
-useEffect(() => {
-  if (!products.length) {
-    refetchProductsByCategory2(category._id);
-  }
-}, [category._id, products.length]);
-
-
-
-
-
 function formatCategoryLabel(name) {
   return name
   .trim()
     .split(' ')
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' '); // e.g., saaj riwaaj → Saaj Riwaaj
+    .join(' '); 
 }
 
   return (
     <div className="absolute top- left-0 z-[99] pt-[28px] w-full">
       <div className=' w-full bg-[#faf8ea] shadow-lg border-t animate-[fadeIn_0.3s_ease-out]'>
       <div className="max-w-screen-2xl mx-auto px-8 py-10 grid grid-cols-4 gap-8">
-        {/* Categories */}
+    
         <div className="col-span-1">
           <h3 className="text-sm font-semibold uppercase text-stone-500 mb-4"> Shop By Category</h3>
           <ul className="space-y-3">
             {subcategories.map((sub) => {
-              // const categoryPath = `/${formatCategoryPath(category.name)}/${formatCategoryPath(sub.name)}`;
+           
     const categoryLabel = formatCategoryLabel(sub.name);
             return(
               <li key={sub._id} >
@@ -55,7 +34,7 @@ function formatCategoryLabel(name) {
       subcategory: sub._id,
     },
   }}
-         //  href={`/category/${category.name.toLowerCase().replace(/\s+/g, '-')}/${category._id}`}
+        
                   onClick={onClose}
                   className="hover:text-[#B67032] hover:translate-x-1 transition-all duration-200 inline-block"
                 >
@@ -75,15 +54,13 @@ function formatCategoryLabel(name) {
           </ul>
         </div>
 
-        {/* Featured Collections */}
+
         <div className="col-span-3">
           <h3 className="text-sm font-semibold uppercase text-stone-500 mb-4">Featured</h3>
           <div className="grid grid-cols-5 gap-8">
-          {/* {productsByCategory2.slice(0, 5).map((item, idx) => { */}
-          {products.slice(0, 5).map((item, idx) => {
-  // const categoryPath = item?.category?.name?.toLowerCase().replace(/\s+/g, '-') || 'category';
-  // const subcategoryPath = item.subcategory?.name?.toLowerCase().replace(/\s+/g, '-') || 'subcategory';
-  // const productPath = `${categoryPath}/${subcategoryPath}`;
+        
+        {products.slice(0, 5).map((item, idx) => {
+ 
 
   return (
     <Link
@@ -115,7 +92,7 @@ function formatCategoryLabel(name) {
       </div>
     </Link>
   );
-})}
+})} 
 
           </div>
         </div>

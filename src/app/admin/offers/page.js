@@ -9,6 +9,8 @@ import "react-toastify/dist/ReactToastify.css";
 import PopupModal from "@/app/components/admin/ConfirmPopup";
 import ImagePreviewModal from "@/app/components/user/ImagePreview";
 import { useGlobalContext } from "../../components/context/GlobalContext";
+import axios from "axios";
+import { base_url } from "@/app/components/store/utile";
 
 const CLOUDINARY_CLOUD_NAME = "dj0z0q0ut";
 const CLOUDINARY_UPLOAD_PRESET = "saajRiwaajProducts";
@@ -119,6 +121,21 @@ formData.append("price",price)
     }
   };
 
+
+const toggleStatus = async(id)=>{
+  try {
+    const response = await axios.put(`${base_url}/offer/toggle/${id}`);
+    const data = await response.data;
+    if(data.success){
+      toast.success(data.message)
+      location.reload()
+    }
+  } catch (error) {
+          toast.error(error.response.data.message)
+
+  }
+}
+
   return (
     <div className="w-full">
       <ToastContainer className="z-[9999]" />
@@ -217,6 +234,7 @@ formData.append("price",price)
               <th className="px-4 py-3">#</th>
               <th className="px-4 py-3">Title</th>
               <th className="px-4 py-3">Image</th>
+              <th className="px-4 py-3">Show on Page</th>
               <th className="px-4 py-3">Actions</th>
             </tr>
           </thead>
@@ -248,6 +266,13 @@ formData.append("price",price)
     />
   </div>
 </td>
+
+<td>
+<button onClick={()=>toggleStatus(offer._id)}>
+  {offer?.showonpage ? "show":"hide"}
+</button>
+  </td>
+
 
                   <td className="px-4 py-3">
                     <button

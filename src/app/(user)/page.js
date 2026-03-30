@@ -13,18 +13,18 @@ export default function Home() {
   return (
     <div className="min-h-screen   text-stone-800 overflow-hidden ">
     
-      
+{/*       
       <HeroBanner />
       <EditorialSection />
       <EaringNew />
 
       <Exclusive />
-      <Neckwear />
+      <Neckwear /> */}
 
       {/* <EarringsMarquee /> */}
-
+{/* 
       <BestSellers />
-      <TrustSection />
+      <TrustSection /> */}
     </div>
   );
 }

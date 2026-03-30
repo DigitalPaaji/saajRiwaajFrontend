@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import {
   ShoppingBag,
@@ -27,6 +27,19 @@ import { useGlobalContext } from "../context/GlobalContext";
 import SearchBar from "./Searchbar";
 import { IoIosArrowBack } from "react-icons/io";
 import Image from "next/image";
+import { useDispatch, useSelector } from "react-redux";
+import { getCategory } from "../store/categorySlice";
+import { getRandomProduct } from "../store/randomProductSlice";
+import { addFullList, getWishlist } from "../store/wishListSlice";
+import Wishlist from '../user/Wishlist'
+import { getUser } from "../store/getUserSlice";
+import { getcart, getCartItem } from "../store/cartSlice";
+import CartSidebar from "./CartSidebar";
+import { addSlide, removeSlide } from "../store/sliderSlice";
+import LoginSignup from "../user/LoginSignup";
+
+
+
 
 export default function Navbar() {
 const [openCategoryId, setOpenCategoryId] = useState(null);
@@ -38,22 +51,48 @@ const toggleCategory = (id) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeMegaMenu, setActiveMegaMenu] = useState(null);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const { allProducts , user, refetchUser, isLoggedIn, products, wishlist, setAuthTab, setIsWishlistOpen, setIsAuthOpen, categories, subCategoriesMap, cart, setIsCartOpen } = useGlobalContext();
-  useEffect(() => {
-      window.scrollTo(0, 0);
-setTimeout(() => {
-        refetchUser();
-}, 1000);
+  const {info ,isError ,isLoading} = useSelector(state=>state.category);
+  const {products} = useSelector(state=>state.randomProduct);
+  const wishlist = useSelector(state=>state.wishlist.items)
+  const { user } = useSelector(state=>state.user)
+  const dispatch = useDispatch()
+  const cart = useSelector(state=>state.cart.items)
+ const slider = useSelector(state=>state.slider.slide)
+
+useEffect(()=>{
+dispatch(getCategory())
+dispatch(getWishlist())
+dispatch(getUser())
+},[ ])
+
+useEffect(()=>{
+if(user){
+dispatch(addFullList(user.wishlist))
+dispatch(getCartItem())
+}
+else{
+dispatch(getcart())
+
+}
+
+},[user])
 
 
 
-  }, []);
-  useEffect(() => {
-    document.body.style.overflow = isMobileMenuOpen ? "hidden" : "auto";
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, [isMobileMenuOpen]);
+
+
+useEffect(()=>{
+
+if(activeMegaMenu){
+dispatch(getRandomProduct(activeMegaMenu))
+}
+
+
+},[ activeMegaMenu])
+
+
+
+
  
 function formatCategoryPath(name) {
   return name.trim().toLowerCase().replace(/\s+/g, '-');
@@ -67,8 +106,9 @@ function formatCategoryLabel(name) {
     .join(' '); 
 }
 
-const cartItemCount = cart?.filter((item=>item.buytype=="cart")).reduce((acc, item) => acc + item?.quantity, 0);
+// const cartItemCount = cart?.filter((item=>item.buytype=="cart")).reduce((acc, item) => acc + item?.quantity, 0);
   return (
+     <>
     <header
       className="bg-[#faf8eae0]  backdrop-blur-md sticky top-0 z-[99] shadow-sm "
       onMouseLeave={() => setActiveMegaMenu(null)}
@@ -88,56 +128,65 @@ const cartItemCount = cart?.filter((item=>item.buytype=="cart")).reduce((acc, it
   <Image
     src="/Images/logo.webp"
     alt="Saaj Riwaaj Logo"
-    width={120}       // approximate width for h-10
-    height={40}       // approximate height for h-10
+    width={120}      
+    height={40}       
     className="h-10 w-auto xl:h-12"
-    loading="lazy"    // lazy loading; use priority if above the fold
+    loading="lazy"    
   />
 </Link>
 
-        
-        
-          <nav className="hidden xl:flex items-center space-x-10">
- {categories.map((cat) => {
-    const hasSubCats = subCategoriesMap[cat._id]?.length > 0;
-    const categoryPath = `/category/${formatCategoryPath(cat.name)}/${formatCategoryPath(cat._id)}`;
-    const categoryLabel = formatCategoryLabel(cat.name);
+        {isLoading ? <div>Loading... </div> :
+
+      <nav className="hidden xl:flex items-center space-x-10">
+ { info?.data?.length >0  && info?.data?.map((cat) => {
+    const hasSubCats = cat.subCategories.length > 0
+   
     return (
       <div
-        key={cat._id}
-        onMouseEnter={() => hasSubCats && setActiveMegaMenu(cat.name.toLowerCase())}
+        key={cat.category._id}
+        onMouseEnter={() => hasSubCats && setActiveMegaMenu(cat.category._id)}
         onMouseLeave={() => setActiveMegaMenu(null)}
       >
+ 
         <Link
-           href={categoryPath}
+           href={`/category/${formatCategoryPath(cat.category.name)}/${formatCategoryPath(cat.category._id)}`}
           className="flex items-center text-shadow-stone-950 hover:text-[#99571d] font-bold font-mosetta transition "
         >
-          {categoryLabel}
+          {cat.category.name}
           {hasSubCats && (
             <ChevronDown
-              className={`w-4 h-4 ml-1 transition-transform ${
-                activeMegaMenu === cat.name.toLowerCase() ? "rotate-180" : ""
-              }`}
+              className={`w-4 h-4 ml-1 transition-transform 
+              // ${activeMegaMenu === cat.category.name.toLowerCase() ? "rotate-180" : ""}
+              `}
             />
           )}
         </Link>
 
-        {activeMegaMenu === cat.name.toLowerCase() && hasSubCats && (
+        {activeMegaMenu === cat.category._id && hasSubCats && (
           <MegaMenu
             onClose={() => setActiveMegaMenu(null)}
-            category={cat}
-            
-            subcategories={subCategoriesMap[cat._id]}
+            category={cat.category}
+             products={products}
+            subcategories={cat.subCategories}
           />
-        )}
+
+
+        )} 
+         
+           
+         
+        
       </div>
     );
   })} 
-</nav>
+</nav> 
+        }
+        
+   
 
-          {/* Right Icons */}
+        
           <div className="flex items-center sm:space-x-2 md:space-x-4">
-            {/* Search Button */}
+      
           <button
             onClick={() => setIsSearchOpen(!isSearchOpen)}
             className={`p-2 rounded-md ${
@@ -149,9 +198,9 @@ const cartItemCount = cart?.filter((item=>item.buytype=="cart")).reduce((acc, it
 
 
       {/* Search Modal */}
-      {isSearchOpen && (
+      {/* {isSearchOpen && (
         <SearchBar products={allProducts} onClose={() => setIsSearchOpen(false)} />
-      )}
+      )} */}
            
            
            
@@ -160,7 +209,7 @@ const cartItemCount = cart?.filter((item=>item.buytype=="cart")).reduce((acc, it
             </button> */}
             <button 
              onClick={() => {
-              setIsWishlistOpen(true);
+              dispatch( addSlide("wishlist"));
             }}
             className="p-2 text-stone-700 hover:text-[#B67032] relative">
               <Heart className="w-5 h-5" />
@@ -172,49 +221,51 @@ const cartItemCount = cart?.filter((item=>item.buytype=="cart")).reduce((acc, it
             </button>
   
               <button
-      onClick={() => setIsCartOpen(true)}
+       onClick={() => {
+              dispatch(addSlide("cart"));
+            }}
       className="p-2 text-stone-700 hover:text-[#B67032] relative"
     >
       <ShoppingBag className="w-5 h-5" />
-      {cartItemCount > 0 && (
+      {cart.length > 0 && (
         <span className="absolute -top-1 -right-1 bg-[#b67032de] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-          {cartItemCount}
+          {cart.length}
         </span>
       )}
     </button>
 
-              <button 
-            onClick={() => {
-              setAuthTab("login"); // or signup
-              setIsAuthOpen(true);
-            }}
+            {!user &&  <button 
+            onClick={() =>  dispatch(addSlide("login")) }
             className='p-2 text-stone-700 hover:text-[#B67032] '>
-              {isLoggedIn? (<span className="w-8 h-8 flex items-center justify-center bg-[#77481f] text-white rounded-full font-semibold">{user?.name?.substr(0,1).toUpperCase()}</span>) : ( <User className="w-5 h-5" />)}
+              {/* {user? (<span className="w-8 h-8 flex items-center justify-center bg-[#77481f] text-white rounded-full font-semibold">{user?.name?.substr(0,1).toUpperCase()}</span>) : */}
+              
+               <User className="w-5 h-5" />
             </button>
+}
+
+
+         {user &&  <button 
+            // onClick={() =>  dispatch(addSlide("login")) }
+            className='p-2 text-stone-700 hover:text-[#B67032] '>
+        <span className="w-8 h-8 flex items-center justify-center bg-[#77481f] text-white rounded-full font-semibold">{user?.email?.substr(0,1).toUpperCase()}</span>
+              
+             
+            </button>
+}
+
+
           </div>
         </div>
       </div>
 
- {/* Mega Menus (Dynamic) */}
-     
-{/* 
- {activeMegaMenu === cat.name.toLowerCase() && hasSubCats && (
-          <MegaMenu
-            onClose={() => setActiveMegaMenu(null)}
-            category={cat}
-            subcategories={subCategoriesMap[cat._id]}
-          />
-        )} */}
 
 
 
 
-      {/* Mobile Sidebar Menu */}
-      <div
-        className={`fixed inset-0 z-[99] transition-transform xl:hidden ${{
-          true: "translate-x-0",
-          false: "-translate-x-full",
-        }[isMobileMenuOpen]}`}
+
+   
+    <div
+        className={`fixed inset-0 z-[99] transition-transform xl:hidden ${isMobileMenuOpen? "translate-x-0":"-translate-x-full"}`}
       >
         <div
           className="absolute inset-0 bg-black/40 h-screen"
@@ -226,8 +277,8 @@ const cartItemCount = cart?.filter((item=>item.buytype=="cart")).reduce((acc, it
   <Image
     src="/Images/logo.webp"
     alt="Saaj Riwaaj Logo"
-    width={120}      // approximate width
-    height={48}      // approximate height for h-10
+    width={120}      
+    height={48}      
     className="h-10 w-auto xl:h-12"
     loading="lazy"
   />
@@ -237,39 +288,33 @@ const cartItemCount = cart?.filter((item=>item.buytype=="cart")).reduce((acc, it
             </button>
           </div>
 <nav className="flex-grow p-4 space-y-2 overflow-y-auto">
-  {categories.map((cat) => {
-    const Icon = iconOptions[categories.indexOf(cat) % iconOptions.length];
-    const categoryLabel = formatCategoryLabel(cat.name);
-
-    const categoryPath = `/category/${formatCategoryPath(cat.name)}/${cat._id}`;
-
-    // 🔥 IMPORTANT: get subcategories exactly like MegaMenu
-    const subcategories = subCategoriesMap?.[cat._id] || [];
-    const hasSubcategories = subcategories.length > 0;
-    const isOpen = openCategoryId === cat._id;
-
+  {info?.data?.length >0  && info?.data?.map((cat,index) => {
+    const Icon = iconOptions[index];
+   
+    const isOpen = openCategoryId === cat.category._id;
+  const hasSubCats = cat.subCategories.length > 0
     return (
-      <div key={cat._id} className="rounded-xl bg-stone-50">
+      <div key={cat.category._id} className="rounded-xl bg-stone-50">
 
-        {/* CATEGORY ROW */}
-        <div className="flex items-center justify-between px-4 py-3">
+
+     <div className="flex items-center justify-between px-4 py-3">
           
-          {/* 👉 Category navigation */}
+      
           <Link
-            href={categoryPath}
+            href={`/category/${formatCategoryPath(cat.category.name)}/${formatCategoryPath(cat.category._id)}`}
             onClick={() => setIsMobileMenuOpen(false)}
             className="flex items-center gap-3 text-sm font-medium"
           >
             <Icon size={18} />
-            {categoryLabel}
+            {cat.category.name}
           </Link>
 
-          {/* 👉 Dropdown toggle ONLY */}
-          {hasSubcategories && (
+   
+          {hasSubCats && (
             <button
               onClick={(e) => {
-                e.stopPropagation(); // ⛔ stop navigation
-                toggleCategory(cat._id);
+                e.stopPropagation(); 
+                toggleCategory(cat.category._id);
               }}
               className="p-2"
             >
@@ -281,21 +326,20 @@ const cartItemCount = cart?.filter((item=>item.buytype=="cart")).reduce((acc, it
             </button>
         
           )}
-        </div>
+        </div> 
 
 
 
 
 
-        {/* SUBCATEGORIES */}
-    {/* SUBCATEGORIES */}
-{hasSubcategories && isOpen && (
+
+{hasSubCats && isOpen && (
   <div className="pl-12 pb-3 space-y-2">
-    {subcategories.map((sub) => (
+    {cat.subCategories.map((sub) => (
       <Link
         key={sub._id}
         href={{
-          pathname: `/category/${formatCategoryPath(cat.name)}/${cat._id}`,
+          pathname: `/category/${formatCategoryPath(cat.category.name)}/${cat.category._id}`,
           query: {
             subcategory: sub._id,
           },
@@ -307,9 +351,9 @@ const cartItemCount = cart?.filter((item=>item.buytype=="cart")).reduce((acc, it
       </Link>
     ))}
 
-    {/* VIEW ALL */}
+
     <Link
-      href={`/category/${formatCategoryPath(cat.name)}/${cat._id}`}
+      href={`/category/${formatCategoryPath(cat.category.name)}/${cat.category._id}`}
       onClick={() => setIsMobileMenuOpen(false)}
       className="block text-sm font-semibold text-[#B67032] pt-1"
     >
@@ -332,5 +376,17 @@ const cartItemCount = cart?.filter((item=>item.buytype=="cart")).reduce((acc, it
 
 
     </header>
+
+   
+    
+      <Wishlist  isWishlistOpen={slider ==="wishlist"} setIsWishlistOpen={()=>dispatch(removeSlide(null))} />
+      
+       <CartSidebar  isCartOpen ={slider ==="cart" } setIsCartOpen={()=>dispatch(removeSlide(null))}  />
+
+   <LoginSignup   isAuthOpen ={slider ==="login" } setIsAuthOpen={()=>dispatch(removeSlide(null))}  />
+
+
+
+      </>
   );
 }

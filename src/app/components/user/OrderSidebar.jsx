@@ -18,7 +18,7 @@ export default function CartSidebar() {
       
       setOrders([]);
       setLoading(false);
-      return;
+      return; 
     }
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/order/my`, {

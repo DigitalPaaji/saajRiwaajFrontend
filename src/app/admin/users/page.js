@@ -6,37 +6,58 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useGlobalContext } from "@/app/components/context/GlobalContext";
+import axios from "axios";
+import { base_url } from "@/app/components/store/utile";
 export default function UsersList() {
-  const { allUsers } = useGlobalContext()
-  // const [users, setUsers] = useState([]);
-  // const [loading, setLoading] = useState(true);
+  // const { allUsers } = useGlobalContext()
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // // Fetch all users
-  // const fetchUsers = async () => {
-  //   try {
-  //     setLoading(true);
-  //     const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/user/all`, {
-  //       method: "GET",
-  //       credentials: "include", // send cookies if required
-  //     });
-  //     const data = await res.json();
+  // Fetch all users
+  const fetchUsers = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/user/all`, {
+        method: "GET",
+        credentials: "include", // send cookies if required
+      });
+      const data = await res.json();
 
-  //     if (res.ok) {
-  //       setUsers(data.users || []);
-  //     } else {
-  //       toast.error(data.message || "Failed to load users");
-  //     }
-  //   } catch (err) {
-  //     console.error("Fetch users error:", err);
-  //     toast.error("Something went wrong");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
+      if (res.ok) {
+        setUsers(data.users || []);
+      } else {
+        toast.error(data.message || "Failed to load users");
+      }
+    } catch (err) {
+      console.error("Fetch users error:", err);
+      toast.error("Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  // useEffect(() => {
-  //   fetchUsers();
-  // }, []);
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+
+const handelDeleteUser= async(id)=>{
+  try {
+    const response = await axios.delete(`${base_url}/user/delete/${id}`);
+    const data = await response.data;
+     if(data.success){
+      fetchUsers()
+      toast.success(data.message)
+    }
+    
+    
+    
+  } catch (error) {
+    toast.error(error.response.data.message)
+    
+  }
+}
+
 
   return (
     <div className="w-full">
@@ -59,18 +80,19 @@ export default function UsersList() {
                 <th className="px-4 py-3">EMAIL</th>
                 <th className="px-4 py-3">CART ITEMS</th>
                 <th className="px-4 py-3">WISHLIST ITEMS</th>
+                <th className="px-4 py-3">ACTIONS</th>
               </tr>
             </thead>
 
             <tbody className="text-sm font-medium">
-              {allUsers.length === 0 ? (
+              {users.length === 0 ? (
                 <tr>
                   <td colSpan={5} className="text-center py-6 text-gray-500">
                     No users found.
                   </td>
                 </tr>
               ) : (
-                allUsers.map((user, idx) => (
+                users.map((user, idx) => (
                   <tr
                     key={user._id}
                     className="hover:bg-[#f3f2f1] transition"
@@ -80,6 +102,16 @@ export default function UsersList() {
                     <td className="px-4 py-3">{user.email}</td>
                     <td className="px-4 py-3">{user.cart?.length || 0}</td>
                     <td className="px-4 py-3">{user.wishlist?.length || 0}</td>
+
+                     <td className="px-4 py-3"> 
+
+{!user.role.includes("admin") &&
+    <button onClick={()=>handelDeleteUser(user._id)} >Delete</button>
+
+}
+
+                     </td>
+
                   </tr>
                 ))
               )}

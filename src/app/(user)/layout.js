@@ -10,9 +10,12 @@ import Wishlist from '../components/user/Wishlist'
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import OrderSidebar from '../components/user/OrderSidebar'
-import Icon from "../components/user/Icons";
+
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import Popup from "../components/user/Popup";
+import { Provider } from "react-redux";
+import store from "../components/store/store";
+import LayoutComp from "./LayoutComp";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -44,17 +47,18 @@ export default function RootLayout({ children }) {
       >
         <GoogleOAuthProvider  clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}>
         <GlobalProvider>
-            <AnnouncementBar />
-                <Navbar/>
-                      <CartSidebar/>
+    <LayoutComp>
+            
+                      {/* <CartSidebar/>
                       <LoginSignup/>
                       <Wishlist/>
-                      <OrderSidebar/>
+                      <OrderSidebar/> */}
 {/* <Popup />                              */}
         {children}
-<Icon/>
 
-              <Footer />
+</LayoutComp>
+              {/* <Footer /> */}
+          
         </GlobalProvider>
         <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
         </GoogleOAuthProvider>
