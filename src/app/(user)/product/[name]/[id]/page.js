@@ -89,7 +89,7 @@ useEffect(()=>{
 
   const cards = [
     {
-      img: "/Images/shipping.webp",
+      img: "/Images/shipping.png",
       frontTitle: "Shipping Policy",
       frontSubtitle: "Free shipping on orders above ₹799",
       backContent: (
@@ -103,21 +103,19 @@ useEffect(()=>{
       ),
     },
     {
-      img: "/Images/return.webp",
+      img: "/Images/return.png",
       frontTitle: "Exchange Policy",
       frontSubtitle: "Easy exchange within 24 hours",
       backContent: (
         <div className="list-disc list-inside text-sm space-y-1">
-       <p>Products are eligible for exchange only if received damaged.</p>
-<p>The issue must be reported within 24 hours of delivery with clear video proof.</p>
-<p>Any exchange request raised after 24 hours will be rejected.</p>
+       <p>Products are eligible for exchange only if received damaged. The issue must be reported within 24 hours of delivery with clear video proof. Any exchange request raised after 24 hours will be rejected.</p>
 
 
         </div>
       ),
     },
     {
-      img: "/Images/care.webp",
+      img: "/Images/care.png",
       frontTitle: "Care Instructions",
       frontSubtitle: "Handle with love & care",
       backContent: (
@@ -506,13 +504,16 @@ toast.error(error.response.data.message)
         setSelectedQty(1);
        setAddedToCart(false)
       }}
-      className={`px-3 py-1 rounded-md border text-sm transition ${
+      className={`px-3 py-1 border text-sm transition ${
         selectedColor?.colorName === v?.colorName
-          ? "ring-2 ring-[#B67032] border-[#B67032] text-[#B67032] font-medium"
+          ? " ring-[#B67032] border-[#B67032] text-[#B67032] font-medium"
           : "border-gray-300 text-gray-700"
       }`}
     >
-      {v?.colorName}
+      
+      {v?.colorName.toLowerCase()
+    .replace(/\b\w/g, (char) => char.toUpperCase())}
+      
     </button>
   ))}
 </div>
@@ -563,7 +564,7 @@ toast.error(error.response.data.message)
       //   });
       //   setSelectedQty(1);
       // }}
-      className="cursor-pointer w-full flex items-center justify-center gap-2 bg-[#B67032] text-white px-4 py-3 rounded hover:bg-[#a95c2e] transition text-sm font-medium tracking-wide"
+      className="cursor-pointer w-full flex items-center justify-center gap-2 bg-[#8b5424e0] text-white px-4 py-3  hover:bg-[#a95c2e] transition text-sm font-medium tracking-wide"
     >
       <ShoppingCart className="w-4 h-4" />
       Add to Cart
@@ -592,7 +593,7 @@ toast.error(error.response.data.message)
                 {setbuytypeCart(false) ,handelAddtocart("buy"),  setShowCheckout(true)}
           
     }}
-    className="w-full flex items-center justify-center gap-2 border border-[#B67032] text-[#B67032] px-4 py-3 rounded hover:bg-[#fff4ed] transition text-sm font-medium tracking-wide"
+    className="w-full flex items-center justify-center gap-2 border border-[#8b5424e0] text-[#8b5424e0] px-4 py-3  hover:bg-[#fff4ed] transition text-sm font-medium tracking-wide"
   >
     <CreditCard className="w-4 h-4" />
     Buy Now
@@ -619,33 +620,7 @@ toast.error(error.response.data.message)
               Buy Now
             </button>
           </div> */}
-          {/* Description */}
-          {(product.description?.paragraphs?.length > 0 ||
-            product.description?.bulletPoints?.length > 0) && (
-            <div className="my-4">
-              <h3 className="text-lg font-mosetta font-semibold text-[#B67032] ">
-                Description
-              </h3>
-
-              {/* Paragraphs */}
-              {product.description?.paragraphs?.map((para, idx) => (
-                <p key={idx} className="xl:text-md  text-stone-800 my-4">
-                  {para}
-                </p>
-              ))}
-
-              {/* Bullet Points */}
-              {product.description?.bulletPoints?.length > 0 && (
-                <div className=" xl:text-md text-stone-800 marker:text-[#B67032]  space-y-2">
-                  {product.description.bulletPoints.map((point, idx) => (
-                    <h6 key={idx}>{point}</h6>
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* Shipping Info Section */}
+            {/* Shipping Info Section */}
           <div
             className="relative bg-cover md:bg-contain py-4"
             // style={{ backgroundImage: "url('/Images/bg4.png')" }}
@@ -668,12 +643,12 @@ toast.error(error.response.data.message)
                   >
                     {/* Front */}
                <div className="absolute inset-0 flex flex-col items-center justify-end rounded-2xl backface-hidden p-6 text-center text-white">
-  <div className="relative w-24 h-24 mb-4">
+  <div className="relative w-12 h-12 mb-4">
     <Image
       src={`${card.img}`}
       alt={card.frontTitle || "Card Image"}
       fill
-      className="object-cover rounded"
+      className="object-cover rounded grayscale-50 "
       loading="lazy"
     />
   </div>
@@ -700,6 +675,34 @@ toast.error(error.response.data.message)
               ))}
             </div>
           </div>
+        
+          {/* Description */}
+          {(product.description?.paragraphs?.length > 0 ||
+            product.description?.bulletPoints?.length > 0) && (
+            <div className="my-4">
+              <h3 className="text-lg font-mosetta font-semibold text-[#B67032] ">
+                Description
+              </h3>
+
+              {/* Paragraphs */}
+              {product.description?.paragraphs?.map((para, idx) => (
+                <p key={idx} className="xl:text-md  text-stone-800 my-4">
+                  {para}
+                </p>
+              ))}
+
+              {/* Bullet Points */}
+              {product.description?.bulletPoints?.length > 0 && (
+                <div className=" xl:text-md text-stone-800 marker:text-[#B67032]  space-y-2">
+                  {product.description.bulletPoints.map((point, idx) => (
+                    <h6 key={idx}>{point}</h6>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
+      
         </div>
       </div>
 

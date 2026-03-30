@@ -118,7 +118,7 @@ useEffect(() => {
           {subCategories.map((sub) => (
             <SwiperSlide key={sub._id} className="!w-auto">
               {/* <Link href={`/category/neckwear/${sub._id}`}> */}
-                <div className="hover:bg-[#B67032] text-nowrap hover:text-white rounded-xl px-4 py-2 transition-all duration-300 text-[#B67032] text-sm lg:text-md font-medium cursor-pointer">
+                <div className="montserrat hover:underline  text-nowrap px-4 py-2 transition-all duration-300 text-[#B67032] text-sm lg:text-md cursor-pointer">
                   {sub.name.toUpperCase()}
                 </div>
               {/* </Link> */}
@@ -173,10 +173,10 @@ useEffect(() => {
                 <SwiperSlide key={idx}>
                   <Link
                     href={`/product/${item.name}/${item._id}`}
-                    className="group flex-shrink-0 w-full  rounded-xl overflow-hidden "
+                    className="group flex-shrink-0 w-full   overflow-hidden "
                   >
 
-<div className="relative w-full h-[300px] overflow-hidden group rounded-xl shadow-lg">
+<div className="relative w-full h-[300px] overflow-hidden group shadow-lg">
   <Image
     src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item.images?.[0]}`}
     alt={item.name || "Product image"}
@@ -194,7 +194,7 @@ useEffect(() => {
   )}
 </div>
                     <div className="flex items-center lg:items-start lg:gap-2 flex-row justify-between py-4 px-2">
-                  <h3 className="font-serif font-medium text-stone-700 group-hover:text-[#B67032] transition-colors duration-300 capitalize">
+                  <h3 className="montserrat font-medium text-stone-700 group-hover:text-[#B67032] transition-colors duration-300 capitalize">
   {item.name
     .toLowerCase()
     .replace(/\b\w/g, (char) => char.toUpperCase())}
@@ -264,7 +264,7 @@ useEffect(() => {
                       href={`/product/${item.name}/${item._id}`}
                       className="group flex-shrink-0 w-full  overflow-hidden"
                     >
-<div className="relative w-full h-[300px] overflow-hidden group rounded-xl shadow-lg">
+<div className="relative w-full h-[300px] overflow-hidden group shadow-lg">
   <Image
     src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item.images?.[0]}`}
     alt={item.name || "Product image"}
@@ -275,7 +275,7 @@ useEffect(() => {
   />
 </div>
                   <div className="flex items-center lg:items-start lg:gap-2 flex-row justify-between py-4 px-2">
-                  <h3 className="font-serif font-medium text-stone-700 group-hover:text-[#B67032] transition-colors duration-300 capitalize">
+                  <h3 className="montserrat text-stone-700 group-hover:text-[#B67032] transition-colors duration-300 capitalize">
   {item.name
     .toLowerCase()
     .replace(/\b\w/g, (char) => char.toUpperCase())}
@@ -291,7 +291,7 @@ useEffect(() => {
                
                </div>
                       {/* <div className="p-4 flex flex-col justify-between">
-                        <h4 className="font-semibold text-stone-800 group-hover:text-[#B67032] transition-colors text-md truncate capitalize">
+                        <h4 className="font-semibold text-stone-800 group-hover:text-[#B67032] transition-colors text-md capitalize">
                           {item.name}
                         </h4>
                         {item.description?.paragraphs?.[0] && (

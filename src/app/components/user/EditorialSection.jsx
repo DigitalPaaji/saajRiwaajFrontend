@@ -2,22 +2,21 @@
 import React, { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { useGlobalContext } from "../context/GlobalContext";
-import { getOptimizedImage } from "../utils/cloudinary";
+
 import Image from "next/image";
 
 export default function EditorialSection() {
    const [offers, setOffers] = useState([]);
    
-      const fetchOffers = useCallback(async () => {
+      const fetchOffers = async () => {
         try {
-          const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/offer`);
+          const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/offer/forshow`);
           const data = await res.json();
           setOffers(data);
         } catch (err) {
           console.error("Error fetching offers:", err);
         }
-      }, []);
+      };
 
 useEffect(()=>{
   fetchOffers()

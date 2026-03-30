@@ -228,19 +228,8 @@ const AddressCompo = ({setAddressData,addressData}) => {
             </div>
           </div>
 
-          {/* Submit Button */}
-          
-          {user && 
-          <div className="pt-6">
-            <button
-              type="submit"
-              
-              className="w-full md:w-auto px-8 py-3 bg-[#B67032] hover:bg-[#99571d] text-white font-medium rounded-lg transition-colors duration-200 shadow-sm focus:ring-2 focus:ring-offset-2 focus:ring-[#B67032]"
-            >
-              Save Address
-            </button>
-          </div>
-}
+
+ 
         </form>
       </div>
     </div>

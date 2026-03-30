@@ -26,7 +26,6 @@ export default function CartSidebar({ setIsCartOpen, isCartOpen }) {
 
   const [discountPrice ,setDiscountPrice] = useState(0)
 
-console.log(discountPrice)
 
 const [total,setTotal]=useState(0)
  

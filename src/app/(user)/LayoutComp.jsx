@@ -6,6 +6,7 @@ import AnnouncementBar from '../components/user/AnnouncementBar'
 import Navbar from '../components/user/Navbar'
 import Icon from "../components/user/Icons";
 import axios from 'axios'
+import Footer from '../components/user/Footer'
 
 axios.defaults.withCredentials= true
 
@@ -19,6 +20,8 @@ const LayoutComp = ({children}) => {
 
 
 <Icon />
+
+<Footer />
 </Provider>
     </div>
   )

@@ -13,14 +13,16 @@ export default function HeroBanner() {
 
 const desktopBanner= [
   // "banner.webp",
-"banner1.webp",
-"banner2.webp",
+  "chain.webp",
+// "banner1.webp",
+// "banner2.webp",
 ]
 
 const mobileBanner= [
     // "banner.webp",
-"banner1.webp",
-"banner2.webp",
+    "chainsmobile.webp",
+// "banner1.webp",
+// "banner2.webp",
 ]
 
 
@@ -61,14 +63,14 @@ const mobileBanner= [
         pagination={{ clickable: true }}
         autoplay={{ delay: 5000, disableOnInteraction: false }}
         loop={true}
-        className="w-full relative  md:h-[480px] lg:h-[540px] xl:h-[680px]"
+        className="w-full relative  md:h-[420px] lg:h-[540px] xl:h-[800px]"
       >
         {desktopBanner?.map((banner, index) => {
           const isFirstSlide = index === 0;
 
           return (
             <SwiperSlide key={index}>
-              <div className="relative w-full  md:h-[480px] lg:h-[540px] xl:h-[680px]">
+              <div className="relative w-full  md:h-[420px] lg:h-[540px] xl:h-[800px]">
               
 
                 <div className="absolute inset-0 hidden md:block">
@@ -78,7 +80,7 @@ const mobileBanner= [
                     fill
                     priority={isFirstSlide}
                     sizes="100vw"
-                    className="object-cove"
+                    className=""
                   />
                 </div>
               </div>

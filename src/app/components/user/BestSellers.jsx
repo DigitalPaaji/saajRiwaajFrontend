@@ -5,20 +5,35 @@ import { useGlobalContext } from "../context/GlobalContext";
 import { FaRupeeSign } from "react-icons/fa";
 import Image from "next/image";
 import { getOptimizedImage } from "../utils/cloudinary";
+import { base_url } from "../store/utile";
+import axios from "axios";
 
 export default function ShopByCategory() {
-  const { featuredProducts, refetchFeaturedProducts } = useGlobalContext();
-
+const [featuredProducts,setFeaturedProducts]=useState([ ])
   const [loading, setLoading] = useState(true);
+const fetchFeaturedProducts = async () => {
+    try {
+      setLoading(true)
+      const res = await axios(
+        `${base_url}/product/featured`
+      );
+      const data = await res.data;
+  
+      setFeaturedProducts(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.error("Error fetching featured products:", err);
+      setFeaturedProducts([]);
+    }finally{
+      setLoading(false)
+    }
+  }
+
+
+
 
   useEffect(() => {
-    const fetch = async () => {
-      setLoading(true);
-      await refetchFeaturedProducts();
-      setLoading(false);
-    };
-    fetch();
-  }, [refetchFeaturedProducts]);
+   fetchFeaturedProducts()
+  }, [ ]);
 
   const skeletons = Array.from({ length: 6 });
 
@@ -37,12 +52,12 @@ export default function ShopByCategory() {
         />
       </div>
       <div>
-        <h2 className="text-3xl md:text-4xl font-mosetta text-center font-medium text-[#99571d]">
+        <h2 className="text-2xl md:text-3xl font-mosetta text-center font-medium text-[#99571d]">
           Most loved by our customers
         </h2>
-        <p className="text-md md:text-xl text-stone-500 font-serif text-center mt-4">
-          The favorites everyone's talking about. Timeless picks loved by all.
-        </p>
+       <p className="text-md md:text-lg text-stone-500 montserrat text-center mt-4">
+  Our most loved pieces, chosen for their comfort, quality, and everyday charm.
+</p>
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-6 xl:gap-12 text-center pt-24">
@@ -72,7 +87,7 @@ export default function ShopByCategory() {
     className="object-cover transition-transform duration-500 group-hover:scale-110"
   />
 </div>
-                 <h3 className="font-serif font-medium text-stone-700 group-hover:text-[#B67032] transition-colors duration-300 capitalize mt-4">
+                 <h3 className="montserrat text-stone-700 group-hover:text-[#B67032] transition-colors duration-300 capitalize mt-4">
   {product.name
     .toLowerCase()
     .replace(/\b\w/g, (char) => char.toUpperCase())}

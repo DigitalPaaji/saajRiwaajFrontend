@@ -1,9 +1,9 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "../globals.css";
 import { GlobalProvider } from "../components/context/GlobalContext";
-import AnnouncementBar from "../components/user/AnnouncementBar";
-import Navbar from "../components/user/Navbar";
-import Footer from "../components/user/Footer";
+import AnnouncementBar from "../components/newHome/Offer";
+import Navbar from "../components/newHome/Navbar";
+import Footer from "../components/newHome/Footer";
 import CartSidebar from "../components/user/CartSidebar";
 import LoginSignup from "../components/user/LoginSignup";
 import Wishlist from '../components/user/Wishlist'

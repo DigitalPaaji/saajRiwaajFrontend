@@ -8,59 +8,83 @@ import "swiper/css/navigation";
 import { useGlobalContext } from "../context/GlobalContext";
 import Image from "next/image";
 import { FaRupeeSign } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import axios from "axios";
+import { base_url } from "../store/utile";
 
 export default function EarringsMarquee() {
-  const { subCategoriesMap } = useGlobalContext();
-    const [productsByCategory, setProductsByCategory] = useState([]);
-  
-  const [loading, setLoading] = useState(true);
-
-  const earringsCategoryId = "693bbd83430ea8120089b2c1";
-  const subCategories = subCategoriesMap[earringsCategoryId] || [];
+  const [subcat,setSubCat]= useState([ ])
+ const [loading,setLoading]=useState(true)
+   const [productsByCategory2, setProductsByCategory2] = useState([ ]);
+  const info = useSelector(state=>state.category.info);
 
 
-   const fetchProductsByCategory = useCallback(async (categoryId,page=1) => {
-      try {setLoading(true)
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_LOCAL_PORT}/product/random/${categoryId}?page=${page}`
-        );
-        const data = await res.json();
-        // const shuffled = Array.isArray(data)
-        //   ? [...data.products].sort(() => 0.5 - Math.random())
-        //   : [];
-
-        setProductsByCategory(data.products);
-      } catch (err) {
-        console.error("Error fetching products by category:", err);
-       
-      }finally{
-        setLoading(false)
-      }
-   }, []);
-
-  useEffect(() => {
+  const earringsCategoryId = process.env.NEXT_PUBLIC_NECKWERE_CATEGORY_ID
 
 
-    fetchProductsByCategory(earringsCategoryId)
+const fetchProductsByCategory2 = async (categoryId) => {
+  try {
+   setLoading(true)
+
+    const res = await axios.get(
+      `${base_url}/product/random/${categoryId}`
+    );
+
+    const data = await res.data;
+
+    setProductsByCategory2(data.products);
+
+  } catch (err) {
+    console.error("Error fetching products:", err);
+  }finally{
+    setLoading(false)
+  }
+};
+
  
-  }, []);
+
+
+
+
+
+useEffect(() => {
+  fetchProductsByCategory2(earringsCategoryId);
+}, []);
+
+
+
+
+
+  useEffect(()=>{
+ const subcatfilter = info?.data?.find(
+    (item) => item?.category?._id === earringsCategoryId
+  );
+
+  setSubCat(subcatfilter?.subCategories, "filterrr");
+  },[info ])
 
   return (
     <section className="relative py-16 px-4 sm:px-8 lg:px-16">
       {/* Background */}
-      <div className="absolute -top-32 left-0 opacity-20">
-        <Image src="/Images/bg1.png" alt="" width={360} height={360} />
-      </div>
+    <div className="absolute -top-32 left-0 opacity-20 z-[10] pointer-events-none select-none">
+      <Image
+        src="/Images/bg1.png"
+        alt=""
+        width={360}
+        height={360}
+        draggable={false}
+      />
+    </div>
 
       {/* Heading + Subcategories */}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 items-center mb-8">
         <div className="max-w-xl">
-          <h2 className="text-3xl md:text-4xl font-mosetta text-[#99571d]">
+          <h2 className="text-2xl md:text-3xl font-mosetta text-[#99571d]">
             Shop Neckwear
           </h2>
-          <p className="text-md md:text-xl text-stone-500 font-serif mt-4">
-            From timeless studs to graceful chandbalis, find your perfect pair.
-          </p>
+         <p className="text-md md:text-lg text-stone-500 font-serif mt-4">
+  From lightweight daily wear to exquisite wedding neckpieces, find your perfect match.
+</p>
         </div>
 
         <div>
@@ -76,10 +100,10 @@ export default function EarringsMarquee() {
             loop
             className="mt-4 xl:mt-0"
           >
-            {subCategories.map((sub) => (
+            {subcat?.length > 0 &&  subcat?.map((sub) => (
               <SwiperSlide key={sub._id} className="!w-auto">
                 <Link href={`/category/neckwear/${earringsCategoryId}?subcategory=${sub._id}`}>
-                  <div className="hover:bg-[#B67032] text-nowrap hover:text-white rounded-xl px-4 py-2 transition-all duration-300 text-[#B67032] text-sm lg:text-md font-medium cursor-pointer">
+                  <div className="montserrat hover:underline text-nowrap px-4 py-2 transition-all duration-300 text-[#B67032] text-sm lg:text-md font-medium cursor-pointer">
                     {sub.name.toUpperCase()}
                   </div>
                 </Link>
@@ -125,14 +149,14 @@ export default function EarringsMarquee() {
             1536: { slidesPerView: 6 },
           }}
         >
-          {productsByCategory.map((item) => (
+          {  productsByCategory2.map((item) => (
             <SwiperSlide key={item._id}>
               <Link
                 href={`/product/${item.name}/${item._id}`}
-                className="group block rounded-xl overflow-hidden transition"
+                className="group block overflow-hidden transition"
               >
           
-<div className="relative h-[300px] overflow-hidden group shadow-lg  rounded-xl">
+<div className="relative h-[300px] overflow-hidden group shadow-lg  ">
     <Image
       src={ `${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item.images?.[0]}`}
     alt={item.name}
@@ -150,7 +174,7 @@ export default function EarringsMarquee() {
 </div>
 
              <div className="flex items-center lg:items-start lg:gap-2 flex-row justify-between py-4 px-2">
-      <h3 className="font-serif font-medium text-stone-700 group-hover:text-[#B67032] transition-colors duration-300 capitalize">
+      <h3 className="montserrat  font-medium text-stone-700 group-hover:text-[#B67032] transition-colors duration-300 capitalize">
   {item.name
     .toLowerCase()
     .replace(/\b\w/g, (char) => char.toUpperCase())}
@@ -165,20 +189,7 @@ export default function EarringsMarquee() {
                                                       </h3>
                
                </div>
-                {/* <div className="p-4">
-                  <h4 className="font-serif text-stone-800 group-hover:text-[#B67032] truncate">
-                    {item.name}
-                  </h4>
-                  {item.description?.paragraphs?.[0] && (
-                    <p className="text-sm text-stone-600 mt-1 line-clamp-2">
-                      {item.description.paragraphs[0]
-                        .split(" ")
-                        .slice(0, 10)
-                        .join(" ")}
-                      ...
-                    </p>
-                  )}
-                </div> */}
+             
               </Link>
             </SwiperSlide>
           ))}
