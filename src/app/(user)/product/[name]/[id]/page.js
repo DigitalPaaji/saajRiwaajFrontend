@@ -19,9 +19,10 @@ import {
   CreditCard,
   Heart,
 } from "lucide-react";
-import { FaHeart } from "react-icons/fa";
+import { FaHeart, FaStarHalfAlt } from "react-icons/fa";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { FaStar } from "react-icons/fa6";
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -346,7 +347,16 @@ const handelColorImage=(img)=>{
             </button>
           </div>
 
-          
+                  {/* ⭐ REVIEWS SECTION */}
+        <div className="flex items-center justify-center sm:justify-start gap-1">
+          {/* Stars */}
+          {[1, 2, 3, 4].map((star) => (
+            <FaStar key={star} size={12} className="text-yellow-500" />
+          ))}
+          <FaStarHalfAlt size={12} className="text-yellow-500" />
+    
+
+        </div>  
 
           {/* Price, Discount & Quantity in one line */}
           <div className="flex items-center justify-between gap-6">

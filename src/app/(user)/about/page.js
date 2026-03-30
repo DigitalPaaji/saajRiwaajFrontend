@@ -3,6 +3,7 @@
 import { Suspense, useEffect, useState } from "react";
 import Banner from "../../components/user/InnerBanner";
 import axios from "axios";
+import Image from "next/image";
 
 // const returnsPolicyData = [
 //   {
@@ -61,7 +62,10 @@ const [returnsPolicyData,setFaqData]=useState()
       <Banner title="About Us" />
       </Suspense>
 
-      <div className="px-4 sm:px-8 lg:px-24 xl:px-60 mx-auto my-16">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 px-4 sm:px-8 lg:px-24 xl:px-60 mx-auto my-16">
+        <div className="hidden lg:block">
+          <Image alt=""  src={'/Images/admin1.webp'} width={400} height={400} className="w-full h-auto object-cover"/>
+        </div>
         {returnsPolicyData?.map((section, index) => (
           <div key={index} className="mb-10">
             <h2 className="text-xl font-semibold mb-3 text-[#111]">

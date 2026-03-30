@@ -114,10 +114,10 @@ const handelTages=(tag)=>{
 
               {subcategory==item._id ? <div className='flex items-center gap-2  text-[#88460c]'>
                 <div className='opacity-0 w-2'></div>
-              <FaDotCircle className='text-[10px]' />
+              <FaDotCircle className='text-[0px]' />
           <p className='capitalize'>   {item.name} </p> </div> :
               <>
-              <FaDotCircle className='text-[10px]' />
+              <FaDotCircle className='text-[0px]' />
           <p className='capitalize'>   {item.name} </p> 
               </>
               }
@@ -148,10 +148,10 @@ const handelTages=(tag)=>{
               /> */}
 {item._id==currentTags[0] ? <div className='capitalize flex items-center gap-2 text-[#88460c]  ' >
     <div className='opacity-0 w-2'></div>
-             <FaTag className='text-[10px]  ' /> {item.name }
+             <FaTag className='text-[0px]  ' /> {item.name }
 
 
-</div> :<><FaTag className='text-[10px]' /> {item.name }
+</div> :<><FaTag className='text-[0px]' /> {item.name }
 </> }
             </label>
           </li>

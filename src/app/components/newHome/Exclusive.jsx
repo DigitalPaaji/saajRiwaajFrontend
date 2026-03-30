@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useGlobalContext } from "../context/GlobalContext";
-import { FaRupeeSign, FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { FaRupeeSign, FaChevronLeft, FaChevronRight, FaStar, FaStarHalfAlt } from "react-icons/fa";
 import { Swiper, SwiperSlide } from "swiper/react";
 // 1. Added Autoplay to imports
 import { Navigation, Autoplay } from "swiper/modules";
@@ -104,12 +104,29 @@ export default function EarringsSlider() {
 
                     {/* 2. Text Content Layer (Bottom Left) */}
             <div className="absolute z-10 bg-gradient-to-b from-black/40 via-black/60 to-black/80 bottom-0 left-0 right-0 p-4 md:p-5">
-  <h3 className="text-sm md:text-base font-medium text-white montserrat truncate capitalize mb-1.5 shadow-text">
+
+
+
+
+  <div className=" flex items-center justify-between">
+              <h3 className="text-sm md:text-base font-medium text-white montserrat truncate capitalize mb-1.5 shadow-text">
     {item.name.toLowerCase()}
   </h3>
+            <div className="w-8 h-8 rounded-full border border-white/30 flex items-center justify-center text-white group-hover:bg-white group-hover:text-black transition-all duration-500">
+           <ShoppingBag size={14} />
+            </div>
+          </div>
+        {/* ⭐ REVIEWS SECTION */}
+        <div className="flex items-center justify-center sm:justify-start gap-1">
+          {/* Stars */}
+          {[1, 2, 3, 4].map((star) => (
+            <FaStar key={star} size={12} className="text-yellow-500" />
+          ))}
+          <FaStarHalfAlt size={12} className="text-yellow-500" />
+    
 
-  {/* PRICE SECTION */}
-  <div className="flex items-center gap-3 mb-3">
+        </div>        {/* PRICE SECTION */}
+  <div className="flex items-center gap-3 ">
     <span className="flex items-center text-white font-bold text-sm md:text-base">
       <FaRupeeSign size={12} className="mr-0.5" />
       {Math.floor(item.finalPrice)}
@@ -122,15 +139,6 @@ export default function EarringsSlider() {
       </span>
     )}
   </div>
-
-  <div className="pt-4 flex items-center justify-between border-t border-white/10 mt-4">
-            <span className="text-white font-semibold text-[10px] tracking-[0.4em] capitalize">
-              Add To Cart
-            </span>
-            <div className="w-8 h-8 rounded-full border border-white/30 flex items-center justify-center text-white group-hover:bg-white group-hover:text-black transition-all duration-500">
-           <ShoppingBag size={14} />
-            </div>
-          </div>
 </div>
                   </Link>
                 </SwiperSlide>

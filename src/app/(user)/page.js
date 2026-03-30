@@ -20,7 +20,7 @@ import Neckwear from "../components/user/Neckwear";
 import EaringNew from "../components/user/EaringNew";
 import TrustSection from "../components/user/TrustSection";
 import DealsSection from "../components/newHome/Deals";
-
+import Content from '../components/newHome/Content'
 export default function Home() {
   return (
     <div className="min-h-screen   text-stone-800 overflow-hidden ">
@@ -40,6 +40,7 @@ export default function Home() {
 
       <Exclusive2 />
       <Reviews/>
+      <Content/>
       <Faq/>
       {/* <Footer/> */}
       {/* <HeroBanner />
