@@ -179,7 +179,7 @@ function formatCategoryLabel(name) {
 
         <Link
            href={`/category/${formatCategoryPath(cat.category.name)}/${formatCategoryPath(cat.category._id)}`}
-          className={`flex items-center text-[16px]   uppercase transition-colors duration-300  font-serif
+          className={`flex items-center text-[16px]   uppercase transition-colors duration-300 
                        ${
     isHomePage 
       ? (isScrolled ? "text-[#292927] " : "text-white font-semibold")

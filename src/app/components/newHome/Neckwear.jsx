@@ -134,9 +134,7 @@ toast.error(error.response.data.message)
   <button
    onClick={(e)=>{  e.preventDefault()
               handelAddtocartProduct(item)}}
-    className="w-full mt-1 
-               text-white font-semibold text-xs md:text-sm py-2 rounded-md 
-                bg-[#292927] shadow-sm transition-all duration-300"
+    className="w-full mt-1                font-semibold text-xs md:text-sm py-2 rounded-md                bg-gradient-to-r from-[#bc861a] via-[#f1d981] to-[#bc861a]   text-[#292927] shadow-sm transition-all duration-300"
   >
     Add to Cart
   </button>
