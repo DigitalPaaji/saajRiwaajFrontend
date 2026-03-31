@@ -3,37 +3,24 @@ import React, { Suspense, useEffect, useState } from "react";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import Banner from "../../components/user/InnerBanner";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { getFaqs } from "@/app/components/store/faqSlice";
 
 function Faq() {
   const [openIndex, setOpenIndex] = useState(null);
-  const [faqData,setFaqData]=useState()
-const [loading,setLoading]=useState(false)
+
+const {faqs,isLoading} = useSelector(state=>state.faq)
+
+const dispatch = useDispatch()
+
+
   const toggleDropdown = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
- const fetchPages = async () => {
-    setLoading(true);
-    try {
-      const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_LOCAL_PORT}/pages/get/faq`
-      );
-      const data = await response.data;
-      if (data.success) {
-        setFaqData(data?.data?.contant || []);
-      } else {
-        setFaqData([]);
-      }
-    } catch (error) {
-      console.error("Error fetching pages:", error);
-      setFaqData([]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(()=>{
-    fetchPages()
+
+    dispatch(getFaqs())
   },[])
   
   return (
@@ -46,7 +33,7 @@ const [loading,setLoading]=useState(false)
     
       <div className="px-4 sm:px-8 lg:px-24 xl:px-60 mx-auto my-16">
         <div className="space-y-6">
-          {faqData?.map((faq, index) => (
+          {!isLoading && faqs?.map((faq, index) => (
             <div
               key={index}
               className="rounded-xl border border-[#d4af37]/40 bg-white shadow-sm hover:shadow-md transition-shadow duration-300"

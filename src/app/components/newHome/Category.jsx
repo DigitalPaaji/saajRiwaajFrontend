@@ -3,11 +3,12 @@ import React from 'react';
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
-import { useGlobalContext } from "../context/GlobalContext";
+
+import { useSelector } from 'react-redux';
 
 export default function ShopByCategories() {
-  const { categories } = useGlobalContext();
 
+ const {data} = useSelector(state=>state.category.info);
   function formatCategoryPath(name) {
     return name.trim().toLowerCase().replace(/\s+/g, "-");
   }
@@ -43,26 +44,26 @@ export default function ShopByCategories() {
 
         {/* --- CATEGORY GRID / SKELETON --- */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-8">
-          {categories && categories.length > 0 ? (
-            categories.map((cat) => {
-              const categoryPath = `/category/${formatCategoryPath(cat.name)}/${cat._id}`;
-              const label = formatCategoryLabel(cat.name);
-              const imageSrc = getCategoryImage(cat.name);
+          {data && data.length > 0 ? (
+            data.map((cat) => {
+              const categoryPath = `/category/${formatCategoryPath(cat.category.name)}/${cat.category._id}`;
+               const label = formatCategoryLabel(cat.category.name);
+              const imageSrc = getCategoryImage(cat.category.name);
               
               return (
                 <Link
-                  key={cat._id}
+                  key={cat?.category._id}
                   href={categoryPath}
                   className="group relative flex flex-col items-center overflow-hidden transition-all duration-500"
                 >
-                  <div className="relative w-full aspect-[4/5] overflow-hidden bg-stone-100 mb-4 rounded-sm">
+                  <div className="relative w-full aspect-[4/5] overflow-hidden bg-stone-100 mb-4 rounded-2xl">
                     <Image
                       src={imageSrc}
                       alt={label}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                       className="object-cover transition-transform duration-1000 ease-out group-hover:scale-110"
-                      priority={cat.name.toLowerCase() === 'earrings'}
+                      priority={cat.category.name.toLowerCase() === 'earrings'}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0">
@@ -87,7 +88,7 @@ export default function ShopByCategories() {
             /* --- SKELETON LOADING STATE --- */
             [1, 2, 3, 4].map((i) => (
               <div key={i} className="flex flex-col items-center w-full">
-                <div className="w-full aspect-[4/5] bg-gray-200 animate-pulse rounded-sm mb-4" />
+                <div className="w-full aspect-[4/5] bg-gray-200 animate-pulse rounded-2xl mb-4" />
                 <div className="h-4 w-2/3 bg-gray-200 animate-pulse rounded" />
               </div>
             ))

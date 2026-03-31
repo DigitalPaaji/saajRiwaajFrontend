@@ -12,7 +12,7 @@ export default function ShopByCategory() {
 const [featuredProducts,setFeaturedProducts]=useState([ ])
   const [loading, setLoading] = useState(true);
 const fetchFeaturedProducts = async () => {
-    try {
+    try { 
       setLoading(true)
       const res = await axios(
         `${base_url}/product/featured`

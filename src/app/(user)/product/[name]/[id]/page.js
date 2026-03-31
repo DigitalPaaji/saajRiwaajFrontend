@@ -548,7 +548,7 @@ toast.error(error.response.data.message)
     >
       <ShoppingCart className="w-4 h-4" />
       Go to Cart
-    </button>
+    </button> 
   ) : (
     // If not in cart → Add to Cart
     <button

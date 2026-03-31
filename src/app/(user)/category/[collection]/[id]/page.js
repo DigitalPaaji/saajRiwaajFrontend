@@ -101,8 +101,6 @@ return (
     <div>
       <InnerBanner title={collection} idc={id} image="/Images/banner.webp" />
      
-     
-      {/* Floating filter button (mobile only) */}
       <button
         onClick={() => setIsFilterOpen(true)}
         className="lg:hidden fixed bottom-6 left-6 z-40 bg-[#88460c] text-white p-4 rounded-full shadow-lg"

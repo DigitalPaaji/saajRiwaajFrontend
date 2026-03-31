@@ -11,7 +11,7 @@ import { FaRupeeSign } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { base_url } from "../store/utile";
-
+ 
 export default function EarringsMarquee() {
 
  const [subcat,setSubCat]= useState([ ])

@@ -43,7 +43,6 @@ export default function AuthSidebar({ isAuthOpen, setIsAuthOpen }) {
       if (data.success) {
         toast.success(data.message);
         setShowOtpFields(true);
-        // Small timeout ensures the DOM renders the input before focusing
         setTimeout(() => inputRef.current[0]?.focus(), 50);
       }
     } catch (error) {
@@ -56,17 +55,24 @@ export default function AuthSidebar({ isAuthOpen, setIsAuthOpen }) {
   const handleGoogleLogin = async (credentialResponse) => {
     const token = credentialResponse.credential;
     setIsLoading(true);
-
+ const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      const wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_LOCAL_PORT}/user/loginUser/google`,
-        { token2: token }
+        `${base_url}/user/loginUser/google`,
+        {  token2: token,
+           cart,
+           wishlist, }
       );
-      
-      toast.success("Login Successful!");
-      setForm({ email: "" });
-      setIsAuthOpen(false);
-      // location.reload(); // Uncomment if you want the page to refresh on Google Login
+      const data = await response.data;
+        if (data.success) {
+  
+        localStorage.removeItem("cart");
+        localStorage.removeItem("wishlist");
+        toast.success(data.message);
+        location.reload();
+      }
+     
     } catch (error) {
       toast.error(
         error.response?.data?.message || 
@@ -139,7 +145,7 @@ export default function AuthSidebar({ isAuthOpen, setIsAuthOpen }) {
       {isAuthOpen && (
         <div
           className="fixed inset-0 bg-black/50 z-[998]"
-          onClick={() => !isLoading && setIsAuthOpen(false)} // Prevent closing while loading
+          onClick={() => !isLoading && setIsAuthOpen(false)} 
         />
       )}
 

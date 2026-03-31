@@ -19,7 +19,7 @@ import { useGlobalContext } from "../context/GlobalContext";
 import SearchBar from "./SearchBar";
 import { IoIosArrowBack } from "react-icons/io";
 import Image from "next/image";
-
+import { usePathname } from "next/navigation";
 const iconOptions = [Sparkles, Gem, Flower, HandHeart];
 
 export default function Navbar() {
@@ -28,6 +28,8 @@ export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeMegaMenu, setActiveMegaMenu] = useState(null);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const pathname = usePathname();
+  const isHomePage = pathname === "/";
   
   const { 
     allProducts, user, refetchUser, isLoggedIn, wishlist, 
@@ -79,21 +81,28 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed backdrop-blur-lg left-0 right-0 z-[99] transition-all duration-500 ${
-        isScrolled 
-          ? "bg-white backdrop-blur-lg shadow-md  top-0" 
-          : "bg-transparent py-2 top-8" 
-      }`}
-      onMouseLeave={() => setActiveMegaMenu(null)}
-    >
+  className={`
+     left-0 right-0 z-[99] transition-all duration-500 
+    ${isHomePage 
+      ? isScrolled 
+        ? "fixed bg-white shadow-md top-0" 
+        : "fixed text-white bg-transparent top-0 py-2"
+      : "sticky bg-white shadow-md top-0"
+    }
+  `}
+  onMouseLeave={() => setActiveMegaMenu(null)}
+>
+
+  
       <div className="px-4 md:px-12 xl:px-24">
         <div className="flex justify-between items-center   h-20">
           {/* Mobile Menu Toggle */}
           <button
             onClick={() => setIsMobileMenuOpen(true)}
-            className={`xl:hidden p-2 transition-colors ${
-              isScrolled ? "text-[#292927]" : "text-white"
-            }`}
+            className={`xl:hidden p-2 transition-colors 
+              ${isHomePage 
+  ? (isScrolled ? "text-[#292927]" : "text-white") 
+  : "text-[#292927]"}`}
           >
             <Menu className="w-6 h-6" />
           </button>
@@ -104,7 +113,9 @@ export default function Navbar() {
                    {/* Logo */}
           <Link href="/" className="flex-shrink-0 group ">
             <Image
-              src={isScrolled ? "/Images/logo.webp":"/Images/logoWhite.webp"}
+              src={isHomePage
+      ? (isScrolled ? "/Images/logo.webp" : "/Images/logoWhite.webp")
+      : "/Images/logo.webp"}
               alt="Logo"
               width={120}
               height={40}
@@ -126,9 +137,12 @@ export default function Navbar() {
                 >
                   <Link
                     href={categoryPath}
-                    className={`flex items-center text-[16px]   uppercase transition-colors duration-300 ${
-                      isScrolled ? "text-[#292927] font-medium " : "text-white font-semibold"
-                    }`}
+                    className={`flex items-center text-[16px]   uppercase transition-colors duration-300 
+                       ${
+    isHomePage 
+      ? (isScrolled ? "text-[#292927]  font-medium " : "text-white font-semibold")
+      : "text-[#292927]  font-medium "
+  }`}
                   >
                     {categoryLabel}
                     {hasSubCats && (
@@ -152,7 +166,12 @@ export default function Navbar() {
             })}
           </nav>
           {/* Right Icons */}
-          <div className={` justify-end flex items-center sm:space-x-2 md:space-x-4 ${isScrolled ? "text-[#292927]" : "text-white"}`}>
+          <div className={` justify-end flex items-center sm:space-x-2 md:space-x-4
+             ${
+    isHomePage 
+      ? (isScrolled ? "text-[#292927]" : "text-white")
+      : "text-[#292927]"
+  }`}>
             <button
               onClick={() => setIsSearchOpen(!isSearchOpen)}
               className="p-2 hover:opacity-70 transition-opacity"

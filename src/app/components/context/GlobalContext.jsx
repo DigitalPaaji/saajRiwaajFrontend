@@ -661,45 +661,45 @@ const fetchProductById = useCallback(async (id) => {
     const [buytypeCart, setbuytypeCart] = useState(true);
 
 
-  useEffect(
-    () => {
-      const savedUser = localStorage.getItem("saajUser");
-      const savedAdmin = localStorage.getItem("saajAdmin");
+  // useEffect(
+  //   () => {
+  //     const savedUser = localStorage.getItem("saajUser");
+  //     const savedAdmin = localStorage.getItem("saajAdmin");
 
-      if (savedUser) setUser(JSON.parse(savedUser));
-      if (savedAdmin) setAdmin(JSON.parse(savedAdmin));
+  //     if (savedUser) setUser(JSON.parse(savedUser));
+  //     if (savedAdmin) setAdmin(JSON.parse(savedAdmin));
 
-      if (savedUser) {
-        setTimeout(() => {
-           fetchUser();
-        }, 1000);
+  //     if (savedUser) {
+  //       setTimeout(() => {
+  //          fetchUser();
+  //       }, 1000);
        
-      }
+  //     }
 
-      if (window.location.pathname.startsWith("/admin") && savedAdmin) {
-        fetchAdmin();
-      }
-      (async () => {
-        const cats = await fetchCategories();
-        if (cats?.length) await fetchSubCategories(cats);
-        // await fetchAllProducts();
-        await fetchFeaturedProducts();
-        await fetchTags();
-        await fetchOffers();
-        // await fetchAllUsers();
-      })();
-    },
-    [
-      // fetchCategories,
-      // fetchSubCategories,
-      // fetchAllProducts,
-      // fetchTags,
-      // fetchFeaturedProducts,
-      // fetchAllUsers,
-      // fetchUser,
-      // fetchAdmin,
-    ]
-  );
+  //     if (window.location.pathname.startsWith("/admin") && savedAdmin) {
+  //       fetchAdmin();
+  //     }
+  //     (async () => {
+  //       const cats = await fetchCategories();
+  //       if (cats?.length) await fetchSubCategories(cats);
+  //       // await fetchAllProducts();
+  //       await fetchFeaturedProducts();
+  //       await fetchTags();
+  //       await fetchOffers();
+  //       // await fetchAllUsers();
+  //     })();
+  //   },
+  //   [
+  //     // fetchCategories,
+  //     // fetchSubCategories,
+  //     // fetchAllProducts,
+  //     // fetchTags,
+  //     // fetchFeaturedProducts,
+  //     // fetchAllUsers,
+  //     // fetchUser,
+  //     // fetchAdmin,
+  //   ]
+  // );
   return (
     <GlobalContext.Provider
       value={{

@@ -4,7 +4,7 @@ import { ArrowRight } from 'lucide-react';
 
 import Image from 'next/image';
 import { FaRupeeSign } from 'react-icons/fa';
-
+   
 export default function MegaMenu({ onClose, category, subcategories,products }) {
     if (!category || !subcategories?.length) return null;
 function formatCategoryLabel(name) {
@@ -16,15 +16,17 @@ function formatCategoryLabel(name) {
 }
 
   return (
-    <div className="absolute top- left-0 z-[99] pt-[28px] w-full">
-      <div className=' w-full bg-[#faf8ea] shadow-lg border-t animate-[fadeIn_0.3s_ease-out]'>
-      <div className="max-w-screen-2xl mx-auto px-8 py-10 grid grid-cols-4 gap-8">
-    
-        <div className="col-span-1">
-          <h3 className="text-sm font-semibold uppercase text-stone-500 mb-4"> Shop By Category</h3>
-          <ul className="space-y-3">
+  <div className="absolute left-0 pt-[27px]  z-[99] w-full text-black ">
+      <div className='  bg-white shadow-lg border-t border-black/20'>
+      <div 
+      className="px-4 md:px-12 xl:px-24 mx-auto px-8 py-10 grid grid-cols-6 gap-8"
+      >
+        {/* Categories */}
+        <div className="col-span-1 border-r border-black/20">
+          <h3 className="uppercase text-[#8b5424] font-semibold text-base mb-2"> Shop By Category</h3>
+          <ul className="space-y-2">
             {subcategories.map((sub) => {
-           
+              // const categoryPath = `/${formatCategoryPath(category.name)}/${formatCategoryPath(sub.name)}`;
     const categoryLabel = formatCategoryLabel(sub.name);
             return(
               <li key={sub._id} >
@@ -35,11 +37,11 @@ function formatCategoryLabel(name) {
       subcategory: sub._id,
     },
   }}
-        
+         //  href={`/category/${category.name.toLowerCase().replace(/\s+/g, '-')}/${category._id}`}
                   onClick={onClose}
-                  className="hover:text-[#B67032] hover:translate-x-1 transition-all duration-200 inline-block"
+                  className="text-[15px] hover:text-[#8b5424] hover:translate-x-1 capitalize  transition-all duration-200 inline-block"
                 >
-                  {categoryLabel}
+                  {categoryLabel.toLowerCase()}
                 </Link>
               </li>
             )})}
@@ -55,13 +57,12 @@ function formatCategoryLabel(name) {
           </ul>
         </div>
 
-
-        <div className="col-span-3">
+        {/* Featured Collections */}
+         <div className="col-span-5">
           <h3 className="text-sm font-semibold uppercase text-stone-500 mb-4">Featured</h3>
           <div className="grid grid-cols-5 gap-8">
-        
-        {products.slice(0, 5).map((item, idx) => {
- 
+    
+          {products.slice(0, 5).map((item, idx) => {
 
   return (
     <Link
@@ -72,7 +73,8 @@ function formatCategoryLabel(name) {
     >
    <div className="relative w-full h-60 overflow-hidden group">
   <Image
-    src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item.images?.[0]}`}
+        src={'/Images/category/earrings.webp'}
+    // src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item.images?.[0]}`}
     alt={item.name || "Product image"}
     fill
     sizes="(max-width: 768px) 100vw, 33vw"
@@ -81,28 +83,22 @@ function formatCategoryLabel(name) {
   />
 </div>
 
-             {/* <div className="flex items-start justify-start py-4 ">
-      <h3 className="montserrat text-sm font-medium text-stone-700 group-hover:text-[#B67032] transition-colors duration-300 capitalize">
+         <div className="flex items-start justify-start py-4 ">
+      <h3 className="montserrat  font-medium text-stone-700 group-hover:text-[#B67032] transition-colors duration-300 capitalize">
   {item.name
     .toLowerCase()
     .replace(/\b\w/g, (char) => char.toUpperCase())}
 </h3>
-                       <h3 className="font-semibold  text-md text-[#B67032] transition-colors duration-300 flex items-center ">
-                                                        <span className="line-through mr-4 flex items-center">
-                                                          <FaRupeeSign size={14} />
-                                                          {Math.floor(item.price)}
-                                                        </span>
-                                                        <FaRupeeSign size={14} />
-                                                        {Math.floor(item.finalPrice)}
-                                                      </h3> 
-               
-               </div> */}
+                 
+               </div> 
     </Link>
   );
-})} 
+})}
 
           </div>
-        </div>
+        </div> 
+
+
       </div>
       </div>
     </div>

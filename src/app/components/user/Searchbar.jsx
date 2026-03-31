@@ -3,9 +3,9 @@ import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { X } from "lucide-react";
 import { IoSearch } from "react-icons/io5";
-import { getOptimizedImage } from "../utils/cloudinary";
 import Image from "next/image";
 import axios from "axios";
+import { base_url } from "../store/utile";
 
 export default function SearchBar({ onClose }) {
   const [query, setQuery] = useState("");
@@ -18,7 +18,7 @@ export default function SearchBar({ onClose }) {
 
 const fetchSearch = async(text)=>{
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/product/search/${text}`)
+    const response = await fetch(`${base_url}/product/search/${text}`)
     const data = await response.json();
 
     if(data.success){
@@ -55,7 +55,7 @@ const fetchSearch = async(text)=>{
   }, [onClose]);
 
   return (
-    <div className="absolute top-full left-0 w-full bg-[#faf8ea] shadow-lg animate-[fadeIn_0.3s_ease-out] z-50 ">
+    <div className="absolute text-black top-full left-0 w-full bg-[#faf8ea] shadow-lg animate-[fadeIn_0.3s_ease-out] z-50 ">
       <div
         ref={modalRef}
         className="w-full overflow-hidden md:max-w-screen-2xl mx-auto px-4 md:px-8 py-6 relative"

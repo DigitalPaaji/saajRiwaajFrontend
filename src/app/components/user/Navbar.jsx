@@ -23,7 +23,6 @@ const iconOptions = [
     HandHeart,
 ];
 import MegaMenu from "./MegaMenu";
-import { useGlobalContext } from "../context/GlobalContext";
 import SearchBar from "./Searchbar";
 import { IoIosArrowBack } from "react-icons/io";
 import Image from "next/image";
@@ -37,6 +36,8 @@ import { getcart, getCartItem } from "../store/cartSlice";
 import CartSidebar from "./CartSidebar";
 import { addSlide, removeSlide } from "../store/sliderSlice";
 import LoginSignup from "../user/LoginSignup";
+import { usePathname } from "next/navigation";
+import Account from "./Account";
 
 
 
@@ -50,19 +51,35 @@ const toggleCategory = (id) => {
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeMegaMenu, setActiveMegaMenu] = useState(null);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const {info ,isError ,isLoading} = useSelector(state=>state.category);
   const {products} = useSelector(state=>state.randomProduct);
   const wishlist = useSelector(state=>state.wishlist.items)
   const { user } = useSelector(state=>state.user)
   const dispatch = useDispatch()
   const cart = useSelector(state=>state.cart.items)
- const slider = useSelector(state=>state.slider.slide)
+  const slider = useSelector(state=>state.slider.slide)
+  const [isScrolled, setIsScrolled] = useState(false); // Track scroll state
+ 
+const pathname = usePathname();
+  const isHomePage = pathname === "/";
+
+
 
 useEffect(()=>{
 dispatch(getCategory())
 dispatch(getWishlist())
 dispatch(getUser())
+
+
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+
+    window.scrollTo(0, 0);
+  
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+
 },[ ])
 
 useEffect(()=>{
@@ -110,14 +127,22 @@ function formatCategoryLabel(name) {
   return (
      <>
     <header
-      className="bg-[#faf8eae0]  backdrop-blur-md sticky top-0 z-[99] shadow-sm "
+      className={`
+     left-0 right-0 z-[99] transition-all duration-500 
+    ${isHomePage 
+      ? isScrolled 
+        ? "fixed bg-white shadow-md top-0" 
+        : "fixed text-white bg-transparent top-0 py-2"
+      : "sticky bg-white shadow-md top-0"
+    }
+  `}
       onMouseLeave={() => setActiveMegaMenu(null)}
     >
       <div className=" sm:mx-4 md:mx-12 xl:mx-24  ">
         <div className="flex justify-between items-center h-20">
           <button
-            onClick={() => setIsMobileMenuOpen(true)}
-            className="xl:hidden p-2 text-stone-700 hover:text-[#B67032]"
+            onClick={() => setIsMobileMenuOpen(prev=>(!prev))}
+            className="xl:hidden p-2 "
           >
             <Menu className="w-6 h-6" />
           </button>
@@ -126,13 +151,15 @@ function formatCategoryLabel(name) {
 
          <Link href="/" className="flex-shrink-0 group">
   <Image
-    src="/Images/logo.webp"
-    alt="Saaj Riwaaj Logo"
-    width={120}      
-    height={40}       
-    className="h-10 w-auto xl:h-12"
-    loading="lazy"    
-  />
+               src={isHomePage
+       ? (isScrolled ? "/Images/logo.webp" : "/Images/logoWhite.webp")
+       : "/Images/logo.webp"}
+               alt="Logo"
+               width={120}
+               height={40}
+               className="h-10 w-full xl:h-12"
+               priority
+             />
 </Link>
 
         {isLoading ? <div>Loading... </div> :
@@ -147,10 +174,17 @@ function formatCategoryLabel(name) {
         onMouseEnter={() => hasSubCats && setActiveMegaMenu(cat.category._id)}
         onMouseLeave={() => setActiveMegaMenu(null)}
       >
- 
+
+
+
         <Link
            href={`/category/${formatCategoryPath(cat.category.name)}/${formatCategoryPath(cat.category._id)}`}
-          className="flex items-center text-shadow-stone-950 hover:text-[#99571d] font-bold font-mosetta transition "
+          className={`flex items-center text-[16px]   uppercase transition-colors duration-300  font-serif
+                       ${
+    isHomePage 
+      ? (isScrolled ? "text-[#292927] " : "text-white font-semibold")
+      : "text-[#292927]  font-medium "
+  }`}
         >
           {cat.category.name}
           {hasSubCats && (
@@ -162,6 +196,7 @@ function formatCategoryLabel(name) {
           )}
         </Link>
 
+
         {activeMegaMenu === cat.category._id && hasSubCats && (
           <MegaMenu
             onClose={() => setActiveMegaMenu(null)}
@@ -171,11 +206,7 @@ function formatCategoryLabel(name) {
           />
 
 
-        )} 
-         
-           
-         
-        
+        )}         
       </div>
     );
   })} 
@@ -188,30 +219,26 @@ function formatCategoryLabel(name) {
           <div className="flex items-center sm:space-x-2 md:space-x-4">
       
           <button
-            onClick={() => setIsSearchOpen(!isSearchOpen)}
-            className={`p-2 rounded-md ${
-              isSearchOpen ? "bg-[#B67032] text-white" : "text-stone-700 hover:text-[#B67032]"
-            }`}
+            onClick={() => dispatch(addSlide("search"))}
+            className={`p-2 rounded-md `}
           >
             <Search className="w-5 h-5" />
           </button>
 
 
       {/* Search Modal */}
-      {/* {isSearchOpen && (
-        <SearchBar products={allProducts} onClose={() => setIsSearchOpen(false)} />
-      )} */}
+      {slider==="search" && (
+        <SearchBar onClose={() =>  {slider==="search" ? dispatch(removeSlide(null))  : dispatch(addSlide("search"))  }} />
+      )}
            
            
            
-            {/* <button className="hidden md:block p-2 text-stone-700 hover:text-[#B67032]">
-              <Search className="w-5 h-5" />
-            </button> */}
+            
             <button 
              onClick={() => {
               dispatch( addSlide("wishlist"));
             }}
-            className="p-2 text-stone-700 hover:text-[#B67032] relative">
+            className="p-2   relative">
               <Heart className="w-5 h-5" />
               {wishlist.length > 0 && (
         <span className="absolute -top-1 -right-1 bg-[#b67032de] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
@@ -224,7 +251,7 @@ function formatCategoryLabel(name) {
        onClick={() => {
               dispatch(addSlide("cart"));
             }}
-      className="p-2 text-stone-700 hover:text-[#B67032] relative"
+      className="p-2  relative"
     >
       <ShoppingBag className="w-5 h-5" />
       {cart.length > 0 && (
@@ -236,7 +263,7 @@ function formatCategoryLabel(name) {
 
             {!user &&  <button 
             onClick={() =>  dispatch(addSlide("login")) }
-            className='p-2 text-stone-700 hover:text-[#B67032] '>
+            className='p-2  '>
               {/* {user? (<span className="w-8 h-8 flex items-center justify-center bg-[#77481f] text-white rounded-full font-semibold">{user?.name?.substr(0,1).toUpperCase()}</span>) : */}
               
                <User className="w-5 h-5" />
@@ -245,8 +272,10 @@ function formatCategoryLabel(name) {
 
 
          {user &&  <button 
-            // onClick={() =>  dispatch(addSlide("login")) }
-            className='p-2 text-stone-700 hover:text-[#B67032] '>
+     onClick={() => {
+              dispatch( addSlide("user"));
+            }}
+            className='p-2  '>
         <span className="w-8 h-8 flex items-center justify-center bg-[#77481f] text-white rounded-full font-semibold">{user?.email?.substr(0,1).toUpperCase()}</span>
               
              
@@ -265,45 +294,34 @@ function formatCategoryLabel(name) {
 
    
     <div
-        className={`fixed inset-0 z-[99] transition-transform xl:hidden ${isMobileMenuOpen? "translate-x-0":"-translate-x-full"}`}
+        className={`fixed left-0 right-0 z-[98] transition-all duration-500 ease-in-out xl:hidden overflow-hidden bg-white shadow-xl border-t border-black/10 ${
+          isMobileMenuOpen 
+            ? "max-h-[85vh] opacity-100 translate-y-0" 
+            : "max-h-0 opacity-0 -translate-y-4 pointer-events-none"
+        } ${  isHomePage 
+      ? isScrolled  ? "top-20" : "top-28" :"top-20"}`}
       >
-        <div
-          className="absolute inset-0 bg-black/40 h-screen"
-          onClick={() => setIsMobileMenuOpen(false)}
-        ></div>
-        <div className="relative w-4/5 max-w-sm h-screen bg-white shadow-xl flex flex-col">
-          <div className="flex justify-between items-center p-4 border-b">
-             <Link href="/" className="flex-shrink-0 group">
-  <Image
-    src="/Images/logo.webp"
-    alt="Saaj Riwaaj Logo"
-    width={120}      
-    height={48}      
-    className="h-10 w-auto xl:h-12"
-    loading="lazy"
-  />
-</Link>
-            <button onClick={() => setIsMobileMenuOpen(false)} className="cursor-pointer p-2">
-              <X className="w-6 h-6" />
-            </button>
-          </div>
-<nav className="flex-grow p-4 space-y-2 overflow-y-auto">
+     
+          
+    
+          <div className="flex flex-col h-full max-h-[80vh]">
+<nav className="p-6 space-y-6 overflow-y-auto">
   {info?.data?.length >0  && info?.data?.map((cat,index) => {
     const Icon = iconOptions[index];
    
     const isOpen = openCategoryId === cat.category._id;
   const hasSubCats = cat.subCategories.length > 0
     return (
-      <div key={cat.category._id} className="rounded-xl bg-stone-50">
+      <div key={cat.category._id} className="border-b border-black/5 pb-2 last:border-0">
 
 
-     <div className="flex items-center justify-between px-4 py-3">
+     <div className="flex items-center justify-between">
           
       
           <Link
             href={`/category/${formatCategoryPath(cat.category.name)}/${formatCategoryPath(cat.category._id)}`}
             onClick={() => setIsMobileMenuOpen(false)}
-            className="flex items-center gap-3 text-sm font-medium"
+            className="text-[15px] font-semibold text-[#292927] hover:text-[#B67032] uppercase tracking-wide flex gap-4 items-center"
           >
             <Icon size={18} />
             {cat.category.name}
@@ -316,11 +334,11 @@ function formatCategoryLabel(name) {
                 e.stopPropagation(); 
                 toggleCategory(cat.category._id);
               }}
-              className="p-2"
+              className="p-2 text-black"
             >
               <IoIosArrowBack 
                 className={`w-4 h-4 transition-transform ${
-                  isOpen ? "rotate-90" : ""
+                  isOpen ? "rotate-90" : "-rotate-90"
                 }`}
               />
             </button>
@@ -334,7 +352,7 @@ function formatCategoryLabel(name) {
 
 
 {hasSubCats && isOpen && (
-  <div className="pl-12 pb-3 space-y-2">
+  <div className="mt-4 grid grid-cols-2 gap-2 pl-2">
     {cat.subCategories.map((sub) => (
       <Link
         key={sub._id}
@@ -345,7 +363,7 @@ function formatCategoryLabel(name) {
           },
         }}
         onClick={() => setIsMobileMenuOpen(false)}
-        className="block text-sm text-stone-600 hover:text-[#B67032]"
+        className="text-[15px] text-stone-600 hover:text-[#B67032] capitalize py-1"
       >
         {formatCategoryLabel(sub.name)}
       </Link>
@@ -353,12 +371,12 @@ function formatCategoryLabel(name) {
 
 
     <Link
-      href={`/category/${formatCategoryPath(cat.category.name)}/${cat.category._id}`}
-      onClick={() => setIsMobileMenuOpen(false)}
-      className="block text-sm font-semibold text-[#B67032] pt-1"
-    >
-      View All
-    </Link>
+                        href={""}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="col-span-2 text-[14px] font-semibold text-[#B67032] flex items-center pt-2"
+                      >
+                        View All Collections <IoIosArrowBack className="rotate-180 ml-1 w-3 h-3" />
+                      </Link>
   </div>
 )}
 
@@ -367,10 +385,10 @@ function formatCategoryLabel(name) {
   })}
 </nav>
 
-
- 
-        </div>
-      </div>
+ </div>
+ </div>
+        {/* </div>
+      </div> */}
 
 
 
@@ -384,7 +402,7 @@ function formatCategoryLabel(name) {
        <CartSidebar  isCartOpen ={slider ==="cart" } setIsCartOpen={()=>dispatch(removeSlide(null))}  />
 
    <LoginSignup   isAuthOpen ={slider ==="login" } setIsAuthOpen={()=>dispatch(removeSlide(null))}  />
-
+<Account   isAuthOpen ={slider ==="user" }   setIsAuthOpen={()=>dispatch(removeSlide(null))} />
 
 
       </>

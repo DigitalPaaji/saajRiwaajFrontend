@@ -25,18 +25,26 @@ import Carousel from "../components/newHome/Banner";
 export default function Home() {
   return (
     <div className="min-h-screen   text-stone-800 overflow-hidden ">
-    
-{/* <Carousel /> */}
-    <HeroBanner />
-    <EditorialSection />
-    <EaringNew />
-    <Exclusive />
-    <Neckwear />
+       
 
-      {/* <EarringsMarquee /> */}
+     <Banner/> 
+     <Trust/>
+     <Category/>
+     <BestSeller/>
+     <DealsSection/>
+     <Neckwear2 />
 
+      <Exclusive2 />
+      <Reviews/>
+      <Faq/>
+      {/* <Footer/> */}
+     {/* <HeroBanner /> */}
+      {/* <EditorialSection />
+      <EaringNew />
+      <Exclusive />
+      <Neckwear /> 
       <BestSellers />
-      <TrustSection />
+      <TrustSection /> */}
     </div>
   );
 }

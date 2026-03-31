@@ -11,7 +11,7 @@ export default function DealsSection() {
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/offer`);
       const data = await res.json();
-      setOffers(data);
+      setOffers(data.filter((item)=>item.showonpage));
     } catch (err) {
       console.error("Error fetching offers:", err);
     }
@@ -22,6 +22,8 @@ export default function DealsSection() {
   }, [fetchOffers]);
 
   return (
+    <>
+    {offers.length >0 && 
     <section className=" py-12 md:py-16 px-4 md:px-6 lg:px-12 xl:px-24">
       <div className="max-w-7xl mx-auto">
         
@@ -41,10 +43,10 @@ export default function DealsSection() {
     <Link
       key={item._id}
       href={`/offer/${item.slug}/${item._id}`}
-      className="group relative aspect-square w-full overflow-hidden bg-stone-100 flex flex-col justify-end"
+      className="group relative aspect-square w-full overflow-hidden bg-stone-100 rounded-2xl flex flex-col justify-end"
     >
       {/* Background Image - Use your sample images here */}
-      <div className="absolute inset-0 z-0 ">
+      <div className="absolute inset-0 z-0">
         <Image
              src={'/Images/3.webp'}
          // src={`/Image/${(index % 5) + 1}.webp`} 
@@ -90,5 +92,7 @@ export default function DealsSection() {
         </div>
       </div>
     </section>
+}
+    </>
   );
 }

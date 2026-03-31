@@ -7,6 +7,8 @@ import Navbar from '../components/user/Navbar'
 import Icon from "../components/user/Icons";
 import axios from 'axios'
 import Footer from '../components/user/Footer'
+import Offer from '../components/newHome/Offer';
+// import Navbar from "../components/newHome/Navbar";
 
 axios.defaults.withCredentials= true
 
@@ -14,7 +16,9 @@ const LayoutComp = ({children}) => {
   return (
     <div>
 <Provider store={store}>
-<AnnouncementBar />
+{/* <AnnouncementBar /> */}
+
+{/* <Offer/> */}
                 <Navbar/>
 {children}
 

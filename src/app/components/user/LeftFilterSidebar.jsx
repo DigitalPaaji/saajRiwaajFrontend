@@ -16,11 +16,14 @@ const priceRanges = [
 ];
 
 export default function LeftFilterSidebar({minPrice,maxPrice,Pid,subcategory,handleFilter,currentTags}) {
-  const { subCategoriesMap, tags } = useGlobalContext();
+const {  tags } = useGlobalContext();
+
+
+
 const {data} = useSelector(state=>state.category.info);
 
 
-  const router = useRouter();
+const router = useRouter();
 const [subCategories,setSubCategories]=useState([ ])
 
 
@@ -66,7 +69,7 @@ const handelTages=(tag)=>{
     const subcatfit = data?.find((item)=>item.category._id ==Pid )
    setSubCategories(subcatfit?.subCategories)
 
-  },[ data])
+  },[data])
   return (
     <aside className="px-2 py-4">
       <div className="flex items-center justify-end lg:justify-between lg:mb-6">
