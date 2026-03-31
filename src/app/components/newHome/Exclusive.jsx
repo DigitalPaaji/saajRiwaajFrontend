@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useGlobalContext } from "../context/GlobalContext";
 import { FaRupeeSign, FaChevronLeft, FaChevronRight, FaStar, FaStarHalfAlt } from "react-icons/fa";
 import { Swiper, SwiperSlide } from "swiper/react";
 // 1. Added Autoplay to imports
@@ -11,21 +10,35 @@ import { Navigation, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import { ArrowRight, ShoppingBag } from "lucide-react";
+import axios from "axios";
+import { base_url } from "../store/utile";
 
 export default function EarringsSlider() {
-  const { productsByCategory2, refetchProductsByCategory2 } = useGlobalContext();
+const [featuredProducts,setFeaturedProducts]=useState([ ])
+  const [loading, setLoading] = useState(true);
+const fetchFeaturedProducts = async () => {
+    try { 
+      setLoading(true)
+      const res = await axios(
+        `${base_url}/product/featured`
+      );
+      const data = await res.data;
+  
+      setFeaturedProducts(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.error("Error fetching featured products:", err);
+      setFeaturedProducts([]);
+    }finally{
+      setLoading(false)
+    }
+  }
 
-  const earringsCategoryId = "693bbd1b430ea8120089b2ab";
-  const [hoveredId, setHoveredId] = useState(null);
 
-  const products = productsByCategory2[earringsCategoryId] || [];
-  const loading = !products.length && !productsByCategory2[earringsCategoryId];
+
 
   useEffect(() => {
-    if (!products.length) {
-      refetchProductsByCategory2(earringsCategoryId);
-    }
-  }, [earringsCategoryId, products.length, refetchProductsByCategory2]);
+   fetchFeaturedProducts()
+  }, [ ]);
 
   return (
     <section className="py-12 md:py-16 px-4 md:px-12 lg:px-24 xl:px-40 2xl:px-52 relative overflow-hidden">
@@ -41,9 +54,9 @@ export default function EarringsSlider() {
           </p>
         </div>
 
-        {/* --- SWIPER SECTION --- */}
+        
         <div className=" relative flex flex-col justify-center">
-          {/* Custom Navigation Buttons */}
+        
           <div className="flex justify-end gap-2 mb-4">
             <button className="swiper-prev-btn p-3 rounded-full border border-stone-300 text-stone-600 hover:bg-[#292927] hover:text-white transition-all">
               <FaChevronLeft size={14} />
@@ -61,11 +74,11 @@ export default function EarringsSlider() {
             </div>
           ) : (
             <Swiper
-              // 2. Added Autoplay to modules
+              
               modules={[Navigation, Autoplay]}
               spaceBetween={20}
               slidesPerView={1}
-              // 3. Configured Autoplay
+             
               autoplay={{
                 delay: 3000,
                 disableOnInteraction: false,
@@ -81,7 +94,7 @@ export default function EarringsSlider() {
               }}
               className="w-full"
             >
-              {products.map((item) => (
+              {featuredProducts.map((item) => (
                 <SwiperSlide key={item._id}>
                   <Link
                     href={`/product/${item.name}/${item._id}`}

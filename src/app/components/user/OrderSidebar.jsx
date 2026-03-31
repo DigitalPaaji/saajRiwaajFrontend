@@ -7,8 +7,8 @@ import React, { useCallback, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { getOptimizedImage } from "../utils/cloudinary";
 
-export default function CartSidebar() {
-  const { isOrderOpen, setIsOrderOpen, allProducts, user } = useGlobalContext();
+export default function CartSidebar({ isOrderOpen, setIsOrderOpen,}) {
+  const { allProducts, user } = useGlobalContext();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -18,7 +18,7 @@ export default function CartSidebar() {
       
       setOrders([]);
       setLoading(false);
-      return;
+      return; 
     }
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/order/my`, {

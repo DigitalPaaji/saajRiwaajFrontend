@@ -6,6 +6,8 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useGlobalContext } from "../../components/context/GlobalContext";
 import { useRouter } from "next/navigation";
+import axios from "axios";
+import { base_url } from "@/app/components/store/utile";
 
 const OrdersList = () => {
   const { orders, loadingOrders, fetchOrders } = useGlobalContext();
@@ -14,6 +16,22 @@ const OrdersList = () => {
   useEffect(() => {
     fetchOrders();
   }, [fetchOrders]);
+
+  const handelDeleteOrder = async(id)=>{
+    try {
+      const response = await axios.delete(`${base_url}/order/delete/${id}`);
+      const data = await response.data;
+      if(data.success){
+        toast.success(data.message)
+         fetchOrders();
+      }
+    } catch (error) {
+      toast.error(error.response.data.message)
+    }
+  }
+
+
+
 
   return (
     <div className="w-full">
@@ -40,6 +58,7 @@ const OrdersList = () => {
                   <th className="p-3 border-b">Payment Mode</th>
                   <th className="p-3 border-b">Payment Status</th>
                   <th className="p-3 border-b">Status</th>
+                      <th className="p-3 border-b">Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -97,6 +116,10 @@ const OrdersList = () => {
                         {order.orderStatus}
                       </span>
                     </td>
+
+                    <td className="p-3 border-b">
+    <button onClick={()=>handelDeleteOrder(order._id)}>Delete Order</button>
+                      </td>
                   </tr>
                 ))}
               </tbody>

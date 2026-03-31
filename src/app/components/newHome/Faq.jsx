@@ -1,7 +1,9 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Minus } from "lucide-react"; // Or use standard SVG
+import { useDispatch, useSelector } from "react-redux";
+import { getFaqs } from "../store/faqSlice";
 
 const FAQ_DATA = [
   {
@@ -57,8 +59,16 @@ const AccordionItem = ({ question, answer, isOpen, onClick }) => {
 };
 
 export default function FaqSection() {
-  const [openIndex, setOpenIndex] = useState(0); // First item open by default
+  const [openIndex, setOpenIndex] = useState(0); 
 
+const {faqs,isLoading} = useSelector(state=>state.faq)
+
+const dispatch = useDispatch()
+
+ useEffect(()=>{
+
+    dispatch(getFaqs())
+  },[])
   return (
     <section className="px-4 md:px-12 lg:px-24 xl:px-40 2xl:px-52 bg-white">
 
@@ -75,11 +85,11 @@ export default function FaqSection() {
         </div>
 
         <div className="mt-12 border-t border-zinc-100">
-          {FAQ_DATA.map((faq, index) => (
+          {faqs?.slice(0,5).map((faq, index) => (
             <AccordionItem
               key={index}
-              question={faq.question}
-              answer={faq.answer}
+              question={faq.heading}
+              answer={faq.des}
               isOpen={openIndex === index}
               onClick={() => setOpenIndex(openIndex === index ? -1 : index)}
             />

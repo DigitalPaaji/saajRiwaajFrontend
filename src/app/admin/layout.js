@@ -5,6 +5,8 @@ import { useRouter, usePathname } from "next/navigation";
 import { GlobalProvider } from "../components/context/GlobalContext";
 import Sidebar from "../components/admin/Sidebar";
 import { ToastContainer } from "react-toastify";
+import axios from "axios";
+axios.defaults.withCredentials = true
 
 export default function AdminLayout({ children }) {
   const router = useRouter();

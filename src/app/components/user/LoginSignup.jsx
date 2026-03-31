@@ -1,381 +1,240 @@
 "use client";
-import { X } from "lucide-react";
-import { useGlobalContext } from "../context/GlobalContext";
-import { useEffect, useState } from "react";
-import { toast, ToastContainer } from "react-toastify";
-import Account from "./Account";
+import { X, Loader2 } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { toast } from "react-toastify";
 import { GoogleLogin } from "@react-oauth/google";
 import axios from "axios";
+import { base_url } from "../store/utile";
+// Assuming you still need these if they are used elsewhere in your app:
+// import { useGlobalContext } from "../context/GlobalContext";
+// import Account from "./Account";
 
-export default function AuthSidebar() {
-  const {
-    isAuthOpen,
-    setIsAuthOpen,
-    forgotPassword,
-    authTab,
-    setAuthTab,
-    user,
-    setUser,
-    isLoggedIn,
-  } = useGlobalContext();
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
-  const [fieldErrors, setFieldErrors] = useState({});
-  const [error, setError] = useState("");
-  const [linkSent, setLinkSent] = useState(false);
-  const [timer, setTimer] = useState(0);
-  useEffect(() => {
-    if (timer > 0) {
-      const interval = setInterval(() => {
-        setTimer((prev) => prev - 1);
-      }, 1000);
-      return () => clearInterval(interval);
-    }
-     // when timer hits 0
-    if (timer === 0) {
-      setLinkSent(false);
-      setError("");          // <–– CLEAR ERROR
-    }
-    }, [timer]);
+export default function AuthSidebar({ isAuthOpen, setIsAuthOpen }) {
+  const [form, setForm] = useState({ email: "" });
+  const [showOtpFields, setShowOtpFields] = useState(false);
+  const [otp, setOtp] = useState(new Array(6).fill(""));
+  const [errors, setErrors] = useState({ email: "" });
+  const [isLoading, setIsLoading] = useState(false); // Added loading state
+  const inputRef = useRef([]);
 
-  const handleForgotPassword = async () => {
-    if (timer > 0) return; // Block if still in cooldown
- const { email } = form; // Get email from state
-  if (!email) {
-  setError("Please enter your email first.");
-    return;
-  }
-    // Call your forgot password API
-    const { ok, message } = await forgotPassword(email);
-    if (ok) {
-      setError("Password reset link sent! Valid for 5 minutes.");
-      setLinkSent(true);
-      setTimer(300); // 5 minutes in seconds
-    } else {
-      toast.error(message);
-    }
-  };
+  const handleSendOtp = async () => {
+    const { email } = form;
+    let emailError = "";
 
-  const switchTab = (tab) => {
-    setAuthTab(tab);
-    setForm({ name: "", email: "", password: "", confirmPassword: "" });
-    setError("");
-    setFieldErrors("");
-  };
-
-  const signupUser = async ({ name, email, password }) => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/user/signup`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, password }),
-      credentials: "include",
-    });
-
-    const data = await res.json();
-   
-
-    if (!res.ok) {
-      // Try to extract a proper error message
-      const errorMessage =
-        data.message ||
-        (data.errors && Object.values(data.errors)[0]?.message) ||
-        "Signup failed.";
-      throw new Error(errorMessage);
-    }
-    return data;
-  };
-
-  const handleSignup = async () => {
-    const { name, email, password, confirmPassword } = form;
-    let errors = {};
-
-    if (!name) errors.name = "Name is required.";
     if (!email) {
-      errors.email = "Email is required.";
+      emailError = "Email is required.";
     } else {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(email)) errors.email = "Invalid email format.";
+      if (!emailRegex.test(email)) emailError = "Invalid email format.";
     }
 
-    if (!password) {
-      errors.password = "Password is required.";
-    } else if (password.length < 8) {
-      errors.password = "Password must be at least 8 characters.";
-    } else {
-      const strongPasswordRegex =
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-      if (!strongPasswordRegex.test(password)) {
-        errors.password =
-          "Password must include uppercase, lowercase, number, and special character.";
+    if (emailError) {
+      setErrors({ email: emailError });
+      return;
+    }
+    
+    setErrors({ email: "" });
+    setIsLoading(true);
+
+    try {
+      const response = await axios.post(`${base_url}/user/loginUser`, form);
+      const data = response.data;
+      
+      if (data.success) {
+        toast.success(data.message);
+        setShowOtpFields(true);
+        setTimeout(() => inputRef.current[0]?.focus(), 50);
       }
-    }
-
-    if (!confirmPassword) {
-      errors.confirmPassword = "Please confirm your password.";
-    } else if (password !== confirmPassword) {
-      errors.confirmPassword = "Passwords do not match.";
-    }
-
-    // If any errors, show and return
-    if (Object.keys(errors).length > 0) {
-      setFieldErrors(errors);
-      return;
-    }
-
-    setError("");
-    setFieldErrors({});
-
-    try {
-      const data = await signupUser({ name, email, password });
-     
-      // Handle success
-      toast.success("Signup Successful!");
-      setForm({ name: "", email: "", password: "", confirmPassword: "" });
-      setAuthTab("login");
-      // setIsAuthOpen(false);
-    } catch (err) {
-      console.error("Signup Error:", err);
-      setError(err.message || "Something went wrong.");
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to send OTP");
     } finally {
+      setIsLoading(false);
     }
   };
 
-  const loginUser = async ({ email, password }) => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/user/loginUser`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-      credentials: "include",
-    });
-    const data = await res.json();
-    localStorage.setItem("saajUser", JSON.stringify(data.user));
-    localStorage.setItem("saajToken", data.token);
-    setUser(data.user);
-    if (!res.ok) {
-      const errorMessage =
-        data.message ||
-        (data.errors && Object.values(data.errors)[0]?.message) ||
-        "Login failed.";
-      throw new Error(errorMessage);
+  const handleGoogleLogin = async (credentialResponse) => {
+    const token = credentialResponse.credential;
+    setIsLoading(true);
+ const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      const wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+    try {
+      const response = await axios.post(
+        `${base_url}/user/loginUser/google`,
+        {  token2: token,
+           cart,
+           wishlist, }
+      );
+      const data = await response.data;
+        if (data.success) {
+  
+        localStorage.removeItem("cart");
+        localStorage.removeItem("wishlist");
+        toast.success(data.message);
+        location.reload();
+      }
+     
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message || 
+        (error.response?.data?.errors && Object.values(error.response.data.errors)[0]?.message) || 
+        "Google Login failed."
+      );
+    } finally {
+      setIsLoading(false);
     }
-
-    return data;
   };
-  const handleLogin = async () => {
-    const { email, password } = form;
-    let errors = {};
-    if (!email) {
-      errors.email = "Email is required.";
-    } else {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(email)) errors.email = "Invalid email format.";
-    }
 
-    if (!password) errors.password = "Password is required.";
-    if (Object.keys(errors).length > 0) {
-      setFieldErrors(errors);
+  const handleChange = (element, index) => {
+    if (isNaN(element.value)) return false;
+
+    const newOtp = [...otp];
+    newOtp[index] = element.value;
+    setOtp(newOtp);
+
+  
+    if (element.value !== "" && index < 5) {
+      inputRef.current[index + 1].focus();
+    }
+  };
+
+  const handleKeyDown = (e, index) => {
+    if (e.key === "Backspace" && !otp[index] && index > 0) {
+      inputRef.current[index - 1].focus();
+    }
+  };
+
+  const verifyOtp = async () => {
+    const fullOtp = otp.join("");
+    if (fullOtp.length < 6) {
+      toast.error("Please enter the complete 6-digit OTP.");
       return;
     }
-    setError("");
-    setFieldErrors({});
-    try {
-      const data = await loginUser({ email, password });
-      setUser(data.user)
-      toast.success("Login Successful!");
-  
 
-      // You can save user in localStorage or context here
-      setForm({ name: "", email: "", password: "", confirmPassword: "" });
-      setIsAuthOpen(false);
-    } catch (err) {
-      // console.error("Login Error:", err);
-      setError(err.message || "Something went wrong.");
+    setIsLoading(true);
+
+    try {
+      // Safely parse local storage
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      const wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+
+      const response = await axios.post(`${base_url}/user/verifyotp`, {
+        email: form.email,
+        otp: fullOtp,
+        cart,
+        wishlist,
+      });
+
+      const data = response.data;
+      if (data.success) {
+  
+        localStorage.removeItem("cart");
+        localStorage.removeItem("wishlist");
+        toast.success(data.message);
+        location.reload();
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Invalid OTP");
+    } finally {
+      setIsLoading(false);
     }
   };
-
-const handleGoogleLogin=async(credentialResponse)=>{
-  const token = credentialResponse.credential;
-try {
-  const response = await axios.post(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/user/loginUser/google`,{token2:token})
-const data = response.data;
- setUser(data.user);
-
- if (!res.ok) {
-      const errorMessage =
-        data.message ||
-        (data.errors && Object.values(data.errors)[0]?.message) ||
-        "Login failed.";
-      throw new Error(errorMessage);
-    }
-  toast.success("Login Successful!");
-  
-
-      // You can save user in localStorage or context here
-      setForm({ name: "", email: "", password: "", confirmPassword: "" });
-      setIsAuthOpen(false);
-
-} catch (error) {
-    setError(error.message || "Something went wrong.");
-}
-}
 
   return (
     <>
+      {/* Overlay */}
       {isAuthOpen && (
         <div
           className="fixed inset-0 bg-black/50 z-[998]"
-          onClick={() => setIsAuthOpen(false)} // close on overlay click
+          onClick={() => !isLoading && setIsAuthOpen(false)} 
         />
       )}
+
+      {/* Sidebar */}
       <div
         className={`fixed top-0 right-0 h-screen w-[90%] md:w-[40%] xl:w-[25%] bg-white shadow-lg z-[999] transition-transform duration-300 ${
           isAuthOpen ? "translate-x-0" : "translate-x-full"
         }`}
-   
       >
-        {/* <ToastContainer /> */}
-
-        {isLoggedIn && <Account />}
-
         <div className="flex justify-between items-center px-4 py-6 border-b-[1px] border-[#99571d]">
-
-          <h2 className="text-xl font-semibold">
-            {authTab === "login" ? "Customer Login" : "Create New Account"}
-          </h2>
-
-          <button onClick={() => setIsAuthOpen(false)}>
-            <X className="w-5 h-5" />
+          <h2 className="text-xl font-semibold">Customer Login</h2>
+          <button onClick={() => setIsAuthOpen(false)} disabled={isLoading}>
+            <X className="w-5 h-5 text-gray-600 hover:text-black" />
           </button>
         </div>
 
-
         <div className="p-5 space-y-4">
-          {/* Tab Switch */}
-          {authTab === "signup" && (
-            <div className="flex justify-end gap-4">
-              <button
-                onClick={() => switchTab("login")}
-                className={"text-[#B67032] text-md underline"}
-              >
-                Login Instead
-              </button>
-            </div>
-          )}
-
-          {/* Tab Switch */}
-          {authTab === "login" && (
-            <div className="flex justify-end gap-4">
-              <button
-                onClick={() => switchTab("signup")}
-                className={"text-[#B67032] text-md underline"}
-              >
-                Create New Account
-              </button>
-            </div>
-          )}
-
-          {/* Form Fields */}
-          {(authTab === "signup" || isLoggedIn) && (
-            <>
-              <input
-                type="text"
-                placeholder="Full Name"
-                autoComplete="name"
-                value={form.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
-                className="w-full border border-gray-400 p-2 rounded"
-              />
-              {fieldErrors.name && (
-                <p className="text-red-500 text-sm">{fieldErrors.name}</p>
-              )}
-            </>
-          )}
-
-          <>
+          <div>
             <input
               type="email"
               placeholder="Email"
               autoComplete="email"
               value={form.email}
-              onChange={(e) => setForm({ ...form, email: e.target.value })}
-              className="w-full border border-gray-400 p-2 rounded"
+              onChange={(e) => setForm({ email: e.target.value })}
+              className={`w-full border p-2 rounded outline-none transition-all ${
+                errors.email ? "border-red-500" : "border-gray-400 focus:border-[#B67032]"
+              } ${isLoading ? "opacity-60 cursor-not-allowed" : ""}`}
+              disabled={showOtpFields || isLoading}
             />
-            {fieldErrors.email && (
-              <p className="text-red-500 text-sm">{fieldErrors.email}</p>
+            {errors.email && (
+              <p className="text-red-500 text-sm mt-1">{errors.email}</p>
             )}
-          </>
-          <>
-            <input
-              type="password"
-              placeholder="Password"
-              autoComplete={authTab === "signup" ? "new-password" : "current-password"}
-              value={form.password}
-              onChange={(e) => setForm({ ...form, password: e.target.value })}
-              className="w-full border border-gray-400 p-2 rounded"
-            />
-            {fieldErrors.password && (
-              <p className="text-red-500 text-sm">{fieldErrors.password}</p>
-            )}
-          </>
-          {authTab === "signup" && (
-            <>
-              <input
-                type="password"
-                placeholder="Confirm Password"
-                autoComplete="new-password"
-                value={form.confirmPassword}
-                onChange={(e) =>
-                  setForm({ ...form, confirmPassword: e.target.value })
-                }
-                className="w-full border border-gray-400 p-2 rounded"
-              />
-              {fieldErrors.confirmPassword && (
-                <p className="text-red-500 text-sm">
-                  {fieldErrors.confirmPassword}
-                </p>
-              )}
-            </>
-          )}
-          {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+          </div>
 
-          {authTab === "login" && (
-            <p
-              className={`text-right text-sm ${
-                timer > 0 ? "text-gray-500" : "text-[#99571d] cursor-pointer"
-              }`}
-              onClick={handleForgotPassword}
+          {showOtpFields && (
+            <div className="py-2">
+              <p className="text-gray-600 font-medium mb-3 text-center">
+                Enter Verification Code
+              </p>
+              <div className="flex justify-between gap-2">
+                {otp.map((data, index) => (
+                  <input
+                    key={index}
+                    type="text"
+                    maxLength="1"
+                    value={data}
+                    ref={(elm) => (inputRef.current[index] = elm)}
+                    onKeyDown={(e) => handleKeyDown(e, index)}
+                    onChange={(e) => handleChange(e.target, index)}
+                    disabled={isLoading}
+                    className="w-10 h-10 md:w-12 md:h-12 border-2 rounded-lg text-center text-xl text-gray-800 bg-white outline-none transition-all border-gray-400 focus:border-[#B67032] focus:ring-2 focus:ring-[#e2ad7f] disabled:opacity-60"
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {!showOtpFields ? (
+            <button
+              className="w-full bg-[#B67032] hover:bg-[#99571d] transition-colors text-white py-2 rounded flex justify-center items-center h-10 disabled:opacity-70"
+              onClick={handleSendOtp}
+              disabled={isLoading}
             >
-              {timer > 0
-                ? `Link sent — valid for ${Math.floor(timer / 60)}:${String(
-                    timer % 60
-                  ).padStart(2, "0")}`
-                : linkSent
-                ? "Resend password link"
-                : "Forgot password?"}
-            </p>
+              {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Send OTP"}
+            </button>
+          ) : (
+            <button
+              className="w-full bg-[#B67032] hover:bg-[#99571d] transition-colors text-white py-2 rounded flex justify-center items-center h-10 disabled:opacity-70"
+              onClick={verifyOtp}
+              disabled={isLoading}
+            >
+              {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Verify OTP"}
+            </button>
           )}
 
-          {authTab === "login" && <div>
-                  <GoogleLogin  onSuccess={handleGoogleLogin} onError={() => console.log("Error")} />
+          <div className="relative flex items-center py-2">
+            <div className="flex-grow border-t border-gray-300"></div>
+            <span className="flex-shrink-0 mx-4 text-sm text-stone-500">or</span>
+            <div className="flex-grow border-t border-gray-300"></div>
+          </div>
 
-            </div>}
-
-          <button
-            className="w-full bg-[#B67032] text-white py-2 rounded"
-            onClick={authTab === "login" ? handleLogin : handleSignup}
-          >
-            {authTab === "login" ? "Login" : "Create Account"}
-          </button>
-
-          {/* <div className="text-center text-sm text-stone-500">or</div>
-
-          <button className="w-full border py-2 rounded">
-            Continue with Google
-          </button> */}
+          <div className="flex justify-center pointer-events-auto">
+            <div className={isLoading ? "opacity-50 pointer-events-none" : ""}>
+               <GoogleLogin 
+                 onSuccess={handleGoogleLogin} 
+                 onError={() => toast.error("Google Login Failed")} 
+               />
+            </div>
+          </div>
         </div>
       </div>
     </>

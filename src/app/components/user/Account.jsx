@@ -12,30 +12,35 @@ import {
   Package, Heart, ShoppingCart
 } from "lucide-react";
 import { toast } from "react-toastify";
-import { useGlobalContext } from "../context/GlobalContext";
+
 import PopupModal from "../admin/ConfirmPopup";
 import Link from "next/link";
+import { addSlide } from "../store/sliderSlice";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { base_url } from "../store/utile";
 
 const Apiurl = process.env.NEXT_PUBLIC_LOCAL_PORT;
 
-function Account() {
-  const { user, setIsAuthOpen, logoutUser, refetchUser, setIsWishlistOpen, setIsOrderOpen, setIsCartOpen, logoutAdmin } = useGlobalContext();
+function Account({isAuthOpen,setIsAuthOpen}) {
+
+
+const {user} = useSelector(state=>state.user)
+
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [showLogoutPopup, setShowLogoutPopup] = useState(false);
+  const dispatch = useDispatch()
   const [formData, setFormData] = useState({
     phone: "",
     addressLine: "",
     city: "",
     state: "",
-    country: "",
+    country: "India",
     pincode: "",
   });
 
   
-  useEffect(() => {
-    refetchUser();
-  }, [refetchUser]);
 
 
   useEffect(() => {
@@ -45,7 +50,7 @@ function Account() {
         addressLine: user.address?.addressLine || "",
         city: user.address?.city || "",
         state: user.address?.state || "",
-        country: user.address?.country || "",
+        country: user.address?.country || "India",
         pincode: user.address?.pincode || "",
       });
     }
@@ -95,9 +100,31 @@ const handleSave = async () => {
   }
 };
 
+
+  const logoutUser = async()=>{
+    try {
+      const response = await axios.get(`${base_url}/user/userlogout`)
+      const data = await response.data;
+      if(data.success){
+        toast.success(data.message)
+        location.reload()
+      }
+    } catch (error) {
+      toast.error(error.response.data.message)
+    }
+  }
+
   return (
+    <>{isAuthOpen && (
+        <div
+          className="fixed inset-0 w-full bg-black/50 z-[998]"
+          onClick={() => !isLoading && setIsAuthOpen()} 
+        />
+      )}
     <div
-     className="bg-white h-full w-full  flex flex-col"
+     className={`fixed top-0 right-0 h-screen w-[90%] md:w-[40%] xl:w-[25%] bg-white shadow-lg z-[999] transition-transform duration-300 ${
+          isAuthOpen ? "translate-x-0" : "translate-x-full"
+        }`}
 
     >
       
@@ -150,14 +177,15 @@ const handleSave = async () => {
             <Package className="w-5 h-5 text-[#99571db7]" />
             <span className="text-md font-medium">My Orders</span>
           </Link>
-          <button onClick={()=>setIsWishlistOpen(true)} className="flex items-center gap-3 text-stone-700 hover:text-[#B67032] transition-colors">
+          <button  onClick={() => {
+                        dispatch(addSlide("wishlist"));
+                      }} className="flex items-center gap-3 text-stone-700 hover:text-[#B67032] transition-colors">
             <Heart className="w-5 h-5 text-[#99571db7]" />
             <span className="text-md font-medium">Wishlist</span>
           </button>
-          <button onClick={()=>{
-           setIsAuthOpen(false)
-           setIsCartOpen(true)
-          }} className="flex items-center gap-3 text-stone-700 hover:text-[#B67032] transition-colors">
+          <button   onClick={() => {
+                        dispatch( addSlide("cart"));
+                      }} className="flex items-center gap-3 text-stone-700 hover:text-[#B67032] transition-colors">
             <ShoppingCart className="w-5 h-5 text-[#99571db7]" />
             <span className="text-md font-medium">Cart</span>
           </button>
@@ -246,9 +274,7 @@ const handleSave = async () => {
           onCancel={() => setShowLogoutPopup(false)}
           onConfirm={async () => {
             setShowLogoutPopup(false);
-            await logoutUser();
-            toast.success("Logged out!");
-          }}
+            await logoutUser()}}
           confirmText="Logout"
           cancelText="Cancel"
           type="delete"
@@ -256,6 +282,7 @@ const handleSave = async () => {
         />
       )}
     </div>
+    </>
   );
 }
 

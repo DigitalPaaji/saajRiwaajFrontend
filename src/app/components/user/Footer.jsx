@@ -6,12 +6,12 @@ import { useGlobalContext } from "../context/GlobalContext";
 import { getSocket } from '../socket';
 import { Flip, Slide, toast } from 'react-toastify';
 import Image from 'next/image';
+import { useSelector } from 'react-redux';
 
 export default function Footer() {
-    const { categories, subCategoriesMap } = useGlobalContext();
-  function formatCategoryPath(name) {
-  return name.trim().toLowerCase().replace(/\s+/g, '-'); 
-}
+
+const {data} = useSelector(state=>state.category.info);
+
 
 function formatCategoryLabel(name) {
   return name
@@ -74,12 +74,11 @@ useEffect(() => {
           </div>
           <div>
             <h3 className="text-[#f3ecdf] text-md font-semibold mb-2">SHOP</h3>
-         {categories.map((cat) => {
-           const hasSubCats = subCategoriesMap[cat._id]?.length > 0;
-    const categoryPath = `/${formatCategoryPath(cat.name)}`;
-    const categoryLabel = formatCategoryLabel(cat.name);
-    return (   <ul  key={cat._id} className=" text-stone-200">
-              <li><Link  href={`/category/${cat.name?.trim().toLowerCase().replace(/\s+/g, '-')}/${cat._id}`} className="hover:text-[#B67032]">   {categoryLabel}</Link></li>
+         {data?.map((cat) => {
+       
+    const categoryLabel = formatCategoryLabel(cat.category.name);
+    return (   <ul  key={cat.category._id} className=" text-stone-200">
+              <li><Link  href={`/category/${cat.category.name?.trim().toLowerCase().replace(/\s+/g, '-')}/${cat.category._id}`} className="hover:text-[#B67032]">   {categoryLabel}</Link></li>
              
             </ul>  )})}
           </div>

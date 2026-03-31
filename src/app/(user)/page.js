@@ -44,13 +44,13 @@ export default function Home() {
 
       <Faq/>
       {/* <Footer/> */}
-      {/* <HeroBanner />
-      <EditorialSection />
+     {/* <HeroBanner /> */}
+      {/* <EditorialSection />
       <EaringNew />
       <Exclusive />
       <Neckwear /> 
       <BestSellers />
-      <TrustSection />*/}
+      <TrustSection /> */}
     </div>
   );
 }

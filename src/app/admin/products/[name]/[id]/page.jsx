@@ -14,6 +14,7 @@ import axios from "axios";
 import ImagesUploads from "./compomy/ImagesUploads";
 import BarCodeUpload from "./compomy/BarCodeUpload";
 import ThumbnailUpload from "./compomy/ThumbnailUpload";
+import ReviewSection from "./compomy/ReviewSection";
 
 // IMPORTANT: Replace with your Cloudinary details
 const CLOUDINARY_CLOUD_NAME = "dj0z0q0ut";
@@ -1428,7 +1429,38 @@ const removeNewImages=(indx)=>{
 
 
                 </div>
-              
+
+<div>
+                  <label htmlFor="tags" className={labelClasses}>
+                 Reviews
+                  </label>
+
+          <div className={cardClasses + " space-y-3"}>
+                  
+
+<div className="flex flex-wrap gap-3">
+
+
+<ReviewSection product={id} />
+
+</div>
+ 
+
+
+
+
+
+
+
+                  </div>
+
+
+
+
+                </div>
+
+
+
             </div>
           </div>
         </form>

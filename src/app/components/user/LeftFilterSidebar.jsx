@@ -6,6 +6,7 @@ import { useGlobalContext } from '../context/GlobalContext';
 import { FaDotCircle ,FaRegCheckSquare } from "react-icons/fa";
 import { FaRegSquare } from "react-icons/fa6";
 import { FaTag } from "react-icons/fa";
+import { useSelector } from 'react-redux';
 
 const priceRanges = [
   { label: "Under ₹1000", min: 0, max: 1000 },
@@ -15,10 +16,15 @@ const priceRanges = [
 ];
 
 export default function LeftFilterSidebar({minPrice,maxPrice,Pid,subcategory,handleFilter,currentTags}) {
-  const { subCategoriesMap, tags } = useGlobalContext();
-  const subCategories = subCategoriesMap[Pid] || [];
-  const router = useRouter();
+const {  tags } = useGlobalContext();
 
+
+
+const {data} = useSelector(state=>state.category.info);
+
+
+const router = useRouter();
+const [subCategories,setSubCategories]=useState([ ])
 
 
 
@@ -59,6 +65,11 @@ const handelTages=(tag)=>{
 
   };
 
+  useEffect(()=>{
+    const subcatfit = data?.find((item)=>item.category._id ==Pid )
+   setSubCategories(subcatfit?.subCategories)
+
+  },[data])
   return (
     <aside className="px-2 py-4">
       <div className="flex items-center justify-end lg:justify-between lg:mb-6">
@@ -76,12 +87,7 @@ const handelTages=(tag)=>{
         {priceRanges.map(item => (
           <li key={item.label}>
             <label className="flex items-center gap-2 text-sm cursor-pointer"  onClick={() => handelChangePrice(item.min,item.max)}>
-              {/* <input
-                type="radio"
-              name ={"price"}
-              checked={item.min==minPrice && item.max==maxPrice}
-                onChange={() => handelChangePrice(item.min,item.max)}
-              /> */}
+           
 
 {item.min==minPrice && item.max==maxPrice ? <div className='flex items-center gap-2 text-[#88460c]'>
    <FaRegCheckSquare />  {item.label }
@@ -96,7 +102,7 @@ const handelTages=(tag)=>{
 
       
 
-        {subCategories.length > 0 && (
+        {subCategories?.length > 0 && (
 
 
  <div>
@@ -139,13 +145,7 @@ const handelTages=(tag)=>{
         {tags.map(item => (
           <li key={item._id}>
             <label className="capitalize flex items-center gap-2 text-sm cursor-pointer" onClick={() => handelTages(item._id)}>
-              {/* <input
-                type="radio"
-              name ={"tags"}
-              value={item._id}
-              checked={item._id==currentTags}
-                onChange={() => handelTages(item._id)}
-              /> */}
+             
 {item._id==currentTags[0] ? <div className='capitalize flex items-center gap-2 text-[#88460c]  ' >
     <div className='opacity-0 w-2'></div>
              <FaTag className='text-[0px]  ' /> {item.name }

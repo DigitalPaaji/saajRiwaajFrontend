@@ -5,20 +5,35 @@ import { useGlobalContext } from "../context/GlobalContext";
 import { FaRupeeSign } from "react-icons/fa";
 import Image from "next/image";
 import { getOptimizedImage } from "../utils/cloudinary";
+import { base_url } from "../store/utile";
+import axios from "axios";
 
 export default function ShopByCategory() {
-  const { featuredProducts, refetchFeaturedProducts } = useGlobalContext();
-
+const [featuredProducts,setFeaturedProducts]=useState([ ])
   const [loading, setLoading] = useState(true);
+const fetchFeaturedProducts = async () => {
+    try { 
+      setLoading(true)
+      const res = await axios(
+        `${base_url}/product/featured`
+      );
+      const data = await res.data;
+  
+      setFeaturedProducts(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.error("Error fetching featured products:", err);
+      setFeaturedProducts([]);
+    }finally{
+      setLoading(false)
+    }
+  }
+
+
+
 
   useEffect(() => {
-    const fetch = async () => {
-      setLoading(true);
-      await refetchFeaturedProducts();
-      setLoading(false);
-    };
-    fetch();
-  }, [refetchFeaturedProducts]);
+   fetchFeaturedProducts()
+  }, [ ]);
 
   const skeletons = Array.from({ length: 6 });
 

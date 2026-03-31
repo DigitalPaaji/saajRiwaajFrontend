@@ -4,53 +4,64 @@ import Link from "next/link";
 import Image from "next/image";
 import { ShoppingBag } from "lucide-react";
 import { FaRupeeSign } from "react-icons/fa";
-import { useGlobalContext } from "../context/GlobalContext";
 import { FaStar, FaStarHalfAlt } from "react-icons/fa";
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
+import { base_url } from '../store/utile';
+import { getRandomProduct } from '../store/randomProductSlice';
+import { addTocart, addTocartUser } from '../store/cartSlice';
+import { addSlide } from '../store/sliderSlice';
+import { toast } from 'react-toastify';
 
 export default function MostLovedFeatured() {
-  const { categories, featuredProducts, refetchFeaturedProducts, addToCart } =
-    useGlobalContext();
 
-  const [isLoading, setIsLoading] = useState(true);
+  const {data} = useSelector(state=>state.category.info);
+   const { user } = useSelector(state=>state.user)
+  
+ const [filteredProducts,setfilteredProducts]=useState([ ])
+ const [allProduct,setAllProduct]=useState([ ])
+  const [Loading, setIsLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState("all");
+  const dispatch = useDispatch()
+ const {products, isLoading   } = useSelector(state=>state.randomProduct)
 
-  // ---------------------------------
-  // Helpers
-  // ---------------------------------
-  const formatCategoryPath = (name) =>
-    name.trim().toLowerCase().replace(/\s+/g, "-");
 
-  const formatCategoryLabel = (name) =>
-    name
-      .trim()
-      .split(" ")
-      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-      .join(" ");
+ 
+  const formatCategoryLabel = (name) =>name.trim().split(" ").map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
 
-  // ---------------------------------
-  // Fetch Featured Products
-  // ---------------------------------
-  useEffect(() => {
-    const fetch = async () => {
-      setIsLoading(true);
-      await refetchFeaturedProducts();
-      setIsLoading(false);
-    };
-    fetch();
-  }, [refetchFeaturedProducts]);
+  const handelAddtocartProduct = async(product)=>{
 
-  // ---------------------------------
-  // Add to Cart
-  // ---------------------------------
-  const handleAddToCart = (e, item) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (addToCart) addToCart(item);
-  };
+  try {
+    if(user){
 
-  // ---------------------------------
-  // Card Component
-  // ---------------------------------
+try {
+  const response = await axios.post(`${base_url}/cart/post`,{
+    productid:product._id, quantity:1, price:product.finalPrice,color:product.colorVariants[0]?._id
+  })
+  const data = await response.data;
+if(data.success){
+dispatch(addTocartUser(data.cart))
+  
+}
+} catch (error) {
+toast.error(error.response.data.message)  
+}
+
+
+
+    }
+    else{
+      dispatch(addTocart({product:product._id,quantity:1,price:product.finalPrice,color:product.colorVariants[0]?._id}))
+    }
+  } catch (error) {
+  toast.error(error.response.data.message)
+  }finally{
+    dispatch(addSlide("cart"))
+  }
+}
+
+
+
   const CardContent = ({ item }) => (
     <>
       {/* Image */}
@@ -66,7 +77,8 @@ export default function MostLovedFeatured() {
         {/* Desktop Add to Cart */}
         <div className="hidden lg:group-hover:flex absolute inset-0 transition-all duration-300 items-end justify-center p-4 z-20 ">
           <button
-            onClick={(e) => handleAddToCart(e, item)}
+onClick={(e)=>{  e.preventDefault() 
+  handelAddtocartProduct(item)}}
             className="montserrat w-full
              
               text-black bg-white font-semibold py-2.5 text-xs rounded shadow-lg 
@@ -81,7 +93,8 @@ export default function MostLovedFeatured() {
         {/* Mobile Add to Cart */}
         <div className="lg:hidden absolute bottom-2 right-2 z-20">
           <button
-            onClick={(e) => handleAddToCart(e, item)}
+            onClick={(e)=>{  e.preventDefault()
+              handelAddtocartProduct(item)}}
             className="bg-white/90 backdrop-blur-sm p-2 rounded-full shadow-md active:scale-90 transition-transform text-[#292927] border border-gray-100"
           >
             <ShoppingBag size={18} />
@@ -128,17 +141,38 @@ export default function MostLovedFeatured() {
     </>
   );
 
-  // ---------------------------------
-  // Filtered Products by Category
-  // ---------------------------------
-  const filteredProducts =
-    activeCategory === "all"
-      ? featuredProducts
-      : featuredProducts.filter((p) => p.category_id === activeCategory);
+const fetchFeturProduct = async()=>{
+  try {setIsLoading(true)
+    const response = await axios.get(`${base_url}/product/featured`)
+    const data = await response.data;
+   setfilteredProducts(data)
+   setAllProduct(data)
+  } catch (error) {
+    setfilteredProducts([ ])
+    setAllProduct([ ])
+  }finally{setIsLoading(false)}
+}
 
-  // ---------------------------------
-  // Component Return
-  // ---------------------------------
+useEffect(()=>{
+fetchFeturProduct()
+},[ ])
+
+
+ 
+useEffect(()=>{
+
+  if(activeCategory =="all"){
+
+}else{
+dispatch(getRandomProduct(activeCategory))
+}
+},[ activeCategory ])
+
+
+useEffect(()=>{
+setfilteredProducts(products)
+},[products])
+
   return (
     <section className="py-12 md:py-20 px-4 md:px-12 lg:px-24 xl:px-40 2xl:px-52 relative overflow-hidden">
       {/* Decorative BG */}
@@ -170,22 +204,22 @@ export default function MostLovedFeatured() {
                   : "text-[#292927]/80 hover:text-[#292927]"
               }
             `}
-            onClick={() => setActiveCategory("all")}
+            onClick={() => {setActiveCategory("all"),setfilteredProducts(allProduct)}}
           >
             All
           </button>
 
           {/* Dynamic Categories */}
-          {categories?.map((cat) => {
-            const label = formatCategoryLabel(cat.name);
+          {data && data.length >0 &&  data?.map((cat) => {
+            const label = formatCategoryLabel(cat.category.name);
             return (
               <button
-                key={cat._id}
-                onClick={() => setActiveCategory(cat._id)}
+                key={cat.category._id}
+                onClick={() => setActiveCategory(cat.category._id)}
                 className={`
                   px-3 py-1 text-sm md:text-base border whitespace-nowrap
                   ${
-                    activeCategory === cat._id
+                    activeCategory === cat.category._id
                       ? "bg-[#292927] text-white"
                       : "text-[#292927]/80 hover:text-[#292927]"
                   }
@@ -197,8 +231,8 @@ export default function MostLovedFeatured() {
           })}
         </div>
 
-        {/* ----------------- PRODUCT GRID ----------------- */}
-        {isLoading ? (
+     
+        { Loading && isLoading ? (
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-8">
             {Array.from({ length: 4 }).map((_, idx) => (
               <div
@@ -209,7 +243,7 @@ export default function MostLovedFeatured() {
           </div>
         ) : (
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-8">
-            {filteredProducts.slice(0, 8).map((item) => (
+            {filteredProducts.slice(0,8)?.map((item) => (
               <Link
                 key={item._id}
                 href={`/product/${item.name.toLowerCase().replace(/\s+/g, "-")}/${item._id}`}
@@ -221,8 +255,8 @@ export default function MostLovedFeatured() {
           </div>
         )}
 
-        {/* Empty State */}
-        {!isLoading && filteredProducts.length === 0 && (
+       
+        {!Loading && !isLoading && filteredProducts.length === 0 && (
           <div className="text-center py-20 text-stone-400 italic">
             No items found in this category.
           </div>

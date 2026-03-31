@@ -2,32 +2,55 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useGlobalContext } from "../context/GlobalContext";
+
 import { FaRupeeSign } from "react-icons/fa";
+import axios from "axios";
+import { base_url } from "../store/utile";
+
 
 export default function ShopByCategory() {
-  const {
-    productsByCategory2,
-    refetchProductsByCategory2,
-  } = useGlobalContext();
 
-  const exclusiveCategoryId = "693bbf62430ea8120089b320";
+ const [loading,setLoading]=useState(true)
+   const [productsByCategory2, setProductsByCategory2] = useState([ ]);
+
+
+  const exclusiveCategoryId = process.env.NEXT_PUBLIC_EXCLUSIVE_CATEGORY_ID
 
   const [hoveredIndex, setHoveredIndex] = useState(null);
-  // const [randomProducts, setRandomProducts] = useState([]);
 
-  // ✅ Get cached products
-  const products = productsByCategory2[exclusiveCategoryId] || [];
+ const fetchProductsByCategory2 = async (categoryId) => {
+  try {
+   setLoading(true)
 
- // ✅ Fetch ONLY IF NOT IN CACHE
-useEffect(() => {
-  if (!products.length) {
-    refetchProductsByCategory2(exclusiveCategoryId);
+    const res = await axios.get(
+      `${base_url}/product/random/${categoryId}`
+    );
+
+    const data = await res.data;
+
+    setProductsByCategory2(data.products);
+
+  } catch (err) {
+    console.error("Error fetching products:", err);
+  }finally{
+    setLoading(false)
   }
-}, [exclusiveCategoryId, products.length, refetchProductsByCategory2]);
+};
+
+ 
 
 
-const loading = products.length === 0;
+
+
+
+useEffect(() => {
+  fetchProductsByCategory2(exclusiveCategoryId);
+}, []);
+
+
+
+
+
 
 
   return (
@@ -88,7 +111,7 @@ const loading = products.length === 0;
           </div>
         ))
 
-                : products.slice(0, 3).map((product, index) => (
+                : productsByCategory2.slice(0, 3).map((product, index) => (
                     <Link
                       href={`/product/${product.name}/${product._id}`}
                       key={product._id}

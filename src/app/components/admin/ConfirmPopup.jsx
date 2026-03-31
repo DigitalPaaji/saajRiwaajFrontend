@@ -7,7 +7,7 @@ const PopupModal = ({
   onConfirm,
   confirmText,
   cancelText,
-  type, // options: default | delete | warning | info
+  type, 
   
 }) => {
   const getConfirmButtonColor = () => {

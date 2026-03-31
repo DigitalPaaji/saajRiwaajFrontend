@@ -8,42 +8,60 @@ import "swiper/css/navigation";
 import { useGlobalContext } from "../context/GlobalContext";
 import Image from "next/image";
 import { FaRupeeSign } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import axios from "axios";
+import { base_url } from "../store/utile";
 
 export default function EarringsMarquee() {
-  const { subCategoriesMap } = useGlobalContext();
-    const [productsByCategory, setProductsByCategory] = useState([]);
-  
-  const [loading, setLoading] = useState(true);
-
-  const earringsCategoryId = "693bbd83430ea8120089b2c1";
-  const subCategories = subCategoriesMap[earringsCategoryId] || [];
+  const [subcat,setSubCat]= useState([ ])
+ const [loading,setLoading]=useState(true)
+   const [productsByCategory2, setProductsByCategory2] = useState([ ]);
+  const info = useSelector(state=>state.category.info);
 
 
-   const fetchProductsByCategory = useCallback(async (categoryId,page=1) => {
-      try {setLoading(true)
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_LOCAL_PORT}/product/random/${categoryId}?page=${page}`
-        );
-        const data = await res.json();
-        // const shuffled = Array.isArray(data)
-        //   ? [...data.products].sort(() => 0.5 - Math.random())
-        //   : [];
-
-        setProductsByCategory(data.products);
-      } catch (err) {
-        console.error("Error fetching products by category:", err);
-       
-      }finally{
-        setLoading(false)
-      }
-   }, []);
-
-  useEffect(() => {
+  const earringsCategoryId = process.env.NEXT_PUBLIC_NECKWERE_CATEGORY_ID
 
 
-    fetchProductsByCategory(earringsCategoryId)
+const fetchProductsByCategory2 = async (categoryId) => {
+  try {
+   setLoading(true)
+
+    const res = await axios.get(
+      `${base_url}/product/random/${categoryId}`
+    );
+
+    const data = await res.data;
+
+    setProductsByCategory2(data.products);
+
+  } catch (err) {
+    console.error("Error fetching products:", err);
+  }finally{
+    setLoading(false)
+  }
+};
+
  
-  }, []);
+
+
+
+
+
+useEffect(() => {
+  fetchProductsByCategory2(earringsCategoryId);
+}, []);
+
+
+
+
+
+  useEffect(()=>{
+ const subcatfilter = info?.data?.find(
+    (item) => item?.category?._id === earringsCategoryId
+  );
+
+  setSubCat(subcatfilter?.subCategories, "filterrr");
+  },[info ])
 
   return (
     <section className="relative py-16 px-4 sm:px-8 lg:px-16">
@@ -82,7 +100,7 @@ export default function EarringsMarquee() {
             loop
             className="mt-4 xl:mt-0"
           >
-            {subCategories.map((sub) => (
+            {subcat?.length > 0 &&  subcat?.map((sub) => (
               <SwiperSlide key={sub._id} className="!w-auto">
                 <Link href={`/category/neckwear/${earringsCategoryId}?subcategory=${sub._id}`}>
                   <div className="montserrat hover:underline text-nowrap px-4 py-2 transition-all duration-300 text-[#B67032] text-sm lg:text-md font-medium cursor-pointer">
@@ -131,7 +149,7 @@ export default function EarringsMarquee() {
             1536: { slidesPerView: 6 },
           }}
         >
-          {productsByCategory.map((item) => (
+          {  productsByCategory2.map((item) => (
             <SwiperSlide key={item._id}>
               <Link
                 href={`/product/${item.name}/${item._id}`}
@@ -171,20 +189,7 @@ export default function EarringsMarquee() {
                                                       </h3>
                
                </div>
-                {/* <div className="p-4">
-                  <h4 className="font-serif text-stone-800 group-hover:text-[#B67032] ">
-                    {item.name}
-                  </h4>
-                  {item.description?.paragraphs?.[0] && (
-                    <p className="text-sm text-stone-600 mt-1 line-clamp-2">
-                      {item.description.paragraphs[0]
-                        .split(" ")
-                        .slice(0, 10)
-                        .join(" ")}
-                      ...
-                    </p>
-                  )}
-                </div> */}
+             
               </Link>
             </SwiperSlide>
           ))}

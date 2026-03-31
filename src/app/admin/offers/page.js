@@ -1,33 +1,42 @@
 "use client";
 
-import React, { useState, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { FaPlus } from "react-icons/fa";
-import { UploadCloud, Loader2, X } from "lucide-react";
+import { UploadCloud, Loader2 } from "lucide-react";
 import Image from "next/image";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import PopupModal from "@/app/components/admin/ConfirmPopup";
 import ImagePreviewModal from "@/app/components/user/ImagePreview";
 import { useGlobalContext } from "../../components/context/GlobalContext";
-
-const CLOUDINARY_CLOUD_NAME = "dj0z0q0ut";
-const CLOUDINARY_UPLOAD_PRESET = "saajRiwaajProducts";
+import axios from "axios";
+import { base_url } from "@/app/components/store/utile";
 
 export default function OffersPage() {
-      const {  offers } = useGlobalContext();
+  const { offers } = useGlobalContext();
+  
+  // Local state to manage UI updates instantly without reloading the page
+  const [localOffers, setLocalOffers] = useState([]);
+
+  // Form States
   const [title, setTitle] = useState("");
-  const [image, setImage] = useState("");
-    const [minquantity, setMinQuantity] = useState(1);
-  const [price, setPrice] = useState();
+  const [image, setImage] = useState(null);
+  const [minquantity, setMinQuantity] = useState(1);
+  const [price, setPrice] = useState("");
+  
+  // UI States
   const [dragActive, setDragActive] = useState(false);
-  const [isUploading, setIsUploading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
   const [deleteOfferId, setDeleteOfferId] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
 
-  
+  // Sync context offers with local state for instant UI updates
+  useEffect(() => {
+    if (offers) setLocalOffers(offers);
+  }, [offers]);
 
+  // Drag & Drop Handlers
   const handleDrag = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -39,62 +48,56 @@ export default function OffersPage() {
     e.preventDefault();
     e.stopPropagation();
     setDragActive(false);
-
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      handleImageUpload(e.dataTransfer.files[0]);
+      setImage(e.dataTransfer.files[0]);
     }
   };
 
-  const handleImageUpload = async (file) => {
-    if (!file) return;
-    setIsUploading(true);
-setImage(file)
-
-
-   
-  };
-
+  // Add Offer
   const handleAddOffer = async (e) => {
     e.preventDefault();
 
-    if (!title.trim()) return toast.warn("Please enter offer title.");
-    if (!image) return toast.warn("Please upload offer image.");
-     if (!minquantity.trim()) return toast.warn("Please enter offer quantity.");
-      if (!price.trim()) return toast.warn("Please enter offer price.");
+    if (!title.trim()) return toast.warn("Please enter an offer title.");
+    if (!image) return toast.warn("Please upload an offer image.");
+    if (!minquantity) return toast.warn("Please enter offer quantity.");
+    if (!price) return toast.warn("Please enter offer price.");
 
     setIsSubmitting(true);
 
     try {
-
-const formData = new FormData()
-
-formData.append("title",title)
-formData.append("image",image)
-formData.append("minquantity",minquantity)
-formData.append("price",price)
-
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("image", image);
+      formData.append("minquantity", minquantity);
+      formData.append("price", price);
 
       const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/offer`, {
         method: "POST",
-       body:formData,
+        body: formData,
       });
 
-      const data = await res.json()
+      const data = await res.json();
       if (data.success) {
-        toast.success("Offer added!");
+        toast.success("Offer added successfully!");
+        // Reset form
         setTitle("");
-        setImage("");
-        location.reload()
+        setImage(null);
+        setMinQuantity(1);
+        setPrice("");
+        
+        // Slight delay before reload to let toast show, or ideally trigger a context refetch here
+        setTimeout(() => window.location.reload(), 1500); 
       } else {
         toast.error("Failed to add offer.");
       }
     } catch {
-      toast.error("Error adding offer.");
+      toast.error("Error adding offer. Check console or server.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
+  // Delete Offer
   const confirmDelete = async () => {
     if (!deleteOfferId) return;
 
@@ -106,8 +109,7 @@ formData.append("price",price)
 
       if (res.ok) {
         toast.success("Offer deleted!");
-        location.reload()
-
+        setLocalOffers((prev) => prev.filter((o) => o._id !== deleteOfferId));
       } else {
         toast.error("Failed to delete.");
       }
@@ -119,9 +121,35 @@ formData.append("price",price)
     }
   };
 
+  // Toggle Status (Optimistic UI Update)
+  const toggleStatus = async (id, currentStatus) => {
+    // 1. Instantly update the UI so it feels fast
+    setLocalOffers((prev) =>
+      prev.map((offer) =>
+        offer._id === id ? { ...offer, showonpage: !currentStatus } : offer
+      )
+    );
+
+    try {
+      // 2. Call the API
+      const response = await axios.put(`${base_url}/offer/toggle/${id}`);
+      if (response.data.success) {
+        toast.success(response.data.message);
+      }
+    } catch (error) {
+      // 3. Revert the UI back if the API fails
+      setLocalOffers((prev) =>
+        prev.map((offer) =>
+          offer._id === id ? { ...offer, showonpage: currentStatus } : offer
+        )
+      );
+      toast.error(error.response?.data?.message || "Failed to toggle status");
+    }
+  };
+
   return (
     <div className="w-full">
-      <ToastContainer className="z-[9999]" />
+      <ToastContainer className="z-[9999]" position="top-right" autoClose={3000} />
 
       <h2 className="text-2xl font-bold mb-6 text-[#4d4c4b] drop-shadow-sm">
         Manage Offers
@@ -130,43 +158,43 @@ formData.append("price",price)
       {/* Add Offer Form */}
       <form
         onSubmit={handleAddOffer}
-        className="bg-white p-6 rounded-xl shadow-md border mb-6"
+        className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 mb-8"
       >
-        <label className="font-medium">Offer Title</label>
-        <input
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="Buy 1 Get 1, Winter Sale, etc."
-          className="border px-3 py-2 w-full rounded-xl mt-1"
-        />
-
-
-<div className="grid md:grid-cols-2 gap-6 my-6">
-  <div>
-       
-<label className="font-medium">Offer Quantity</label>
-         <input
-          type="number"
-          value={minquantity}
-          onChange={(e) => setMinQuantity(e.target.value)}
-          placeholder="Quantity of Product"
-          className="border px-3 py-2 w-full rounded-xl mt-1"
-        />
-</div>
-<div>
-<label className="font-medium">Offer Price</label>
+        <div>
+          <label className="text-sm font-semibold text-gray-700">Offer Title</label>
           <input
-          type="number"
-          value={price}
-          onChange={(e) => setPrice(e.target.value)}
-          placeholder="Price of Offer "
-          className="border px-3 py-2 w-full rounded-xl mt-1"
-          required
-        />
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Buy 1 Get 1, Winter Sale, etc."
+            className="border border-gray-300 px-4 py-2.5 w-full rounded-lg mt-1 focus:ring-2 focus:ring-[#99571d] focus:border-[#99571d] outline-none transition"
+          />
         </div>
-</div>
-        
+
+        <div className="grid md:grid-cols-2 gap-6 my-5">
+          <div>
+            <label className="text-sm font-semibold text-gray-700">Offer Quantity</label>
+            <input
+              type="number"
+              value={minquantity}
+              onChange={(e) => setMinQuantity(e.target.value)}
+              placeholder="Quantity of Product"
+              min="1"
+              className="border border-gray-300 px-4 py-2.5 w-full rounded-lg mt-1 focus:ring-2 focus:ring-[#99571d] outline-none transition"
+            />
+          </div>
+          <div>
+            <label className="text-sm font-semibold text-gray-700">Offer Price</label>
+            <input
+              type="number"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              placeholder="Price of Offer"
+              min="0"
+              className="border border-gray-300 px-4 py-2.5 w-full rounded-lg mt-1 focus:ring-2 focus:ring-[#99571d] outline-none transition"
+            />
+          </div>
+        </div>
 
         {/* Image Upload */}
         <div
@@ -174,109 +202,142 @@ formData.append("price",price)
           onDragLeave={handleDrag}
           onDragOver={handleDrag}
           onDrop={handleDrop}
-          className={`mt-4 w-full p-6 border-2 border-dashed rounded-xl text-center cursor-pointer transition ${
-            dragActive ? "border-blue-500 bg-blue-50" : "border-gray-300"
+          className={`mt-4 w-full p-8 border-2 border-dashed rounded-xl text-center cursor-pointer transition-colors ${
+            dragActive ? "border-[#99571d] bg-orange-50" : "border-gray-300 bg-gray-50"
           }`}
         >
           <input
             type="file"
             accept="image/*"
             id="offerUpload"
-            onChange={(e) => handleImageUpload(e.target.files[0])}
+            onChange={(e) => setImage(e.target.files[0])}
             className="hidden"
           />
-          <label htmlFor="offerUpload" className="cursor-pointer">
-            <UploadCloud className="mx-auto h-10 w-10 text-gray-400" />
-            <p className="mt-2 text-sm">
-              <span className="text-[#99571d] font-medium">Click to upload</span>{" "}
-              or drag image here
+          <label htmlFor="offerUpload" className="cursor-pointer block w-full h-full">
+            <UploadCloud className="mx-auto h-12 w-12 text-gray-400 mb-2" />
+            <p className="text-sm text-gray-600">
+              <span className="text-[#99571d] font-semibold">Click to upload</span> or drag and drop
             </p>
+            <p className="text-xs text-gray-400 mt-1">SVG, PNG, JPG or GIF</p>
           </label>
         </div>
 
-        {image && (
-          <div className="mt-3 relative w-40 h-28 border rounded-lg overflow-hidden shadow-sm">
-            <Image  src={URL.createObjectURL(image)} alt="Offer" fill className="object-cover" />
+        {image && typeof image === "object" && (
+          <div className="mt-4 relative w-32 h-24 border rounded-lg overflow-hidden shadow-sm">
+            <Image
+              src={URL.createObjectURL(image)}
+              alt="Offer Preview"
+              fill
+              className="object-cover"
+            />
           </div>
         )}
 
         <button
           type="submit"
-          className="bg-[#4d4c4b] mt-4 text-white px-4 py-2 rounded-xl shadow flex items-center"
+          disabled={isSubmitting}
+          className="bg-[#4d4c4b] hover:bg-[#383736] mt-6 text-white px-6 py-2.5 rounded-lg shadow-md flex items-center transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
         >
-          {isSubmitting && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
-          <FaPlus className="mr-2" /> Add Offer
+          {isSubmitting ? (
+            <Loader2 className="h-4 w-4 animate-spin mr-2" />
+          ) : (
+            <FaPlus className="mr-2" />
+          )}
+          {isSubmitting ? "Adding..." : "Add Offer"}
         </button>
       </form>
 
       {/* Offers Table */}
-      <div className="overflow-x-auto rounded-lg">
-        <table className="min-w-full text-left">
-          <thead className="bg-[#4d4c4b] text-white text-xl font-medium">
-            <tr className="text-sm">
-              <th className="px-4 py-3">#</th>
-              <th className="px-4 py-3">Title</th>
-              <th className="px-4 py-3">Image</th>
-              <th className="px-4 py-3">Actions</th>
-            </tr>
-          </thead>
-
-          <tbody className="text-sm font-medium">
-            {offers.length === 0 ? (
+      <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left whitespace-nowrap">
+            <thead className="bg-[#4d4c4b] text-white">
               <tr>
-                <td colSpan={4} className="text-center py-6 text-gray-500">
-                  No offers found.
-                </td>
+                <th className="px-6 py-4 font-semibold text-sm">#</th>
+                <th className="px-6 py-4 font-semibold text-sm">Title</th>
+                <th className="px-6 py-4 font-semibold text-sm">Image</th>
+                <th className="px-6 py-4 font-semibold text-sm">Show on Page</th>
+                <th className="px-6 py-4 font-semibold text-sm text-right">Actions</th>
               </tr>
-            ) : (
-              offers.map((offer, index) => (
-                <tr key={offer._id} className="hover:bg-[#f3f2f1] border-b">
-                  <td className="px-4 py-3">{index + 1}</td>
-                  <td className="px-4 py-3 capitalize">{offer.title}</td>
+            </thead>
 
-                 <td className="px-4 py-3">
-  <div
-    className="w-[70px] h-[70px] rounded overflow-hidden cursor-pointer"
-    onClick={() => setPreviewImage(offer.image)}
-  >
-    <Image
-      src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${offer.image}`}
-      alt="Offer"
-      width={70}
-      height={70}
-      className="object-cover"
-    />
-  </div>
-</td>
-
-                  <td className="px-4 py-3">
-                    <button
-                      onClick={() => {
-                        setShowDeletePopup(true);
-                        setDeleteOfferId(offer._id);
-                      }}
-                      className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-                    >
-                      Delete
-                    </button>
+            <tbody className="divide-y divide-gray-100">
+              {localOffers.length === 0 ? (
+                <tr>
+                  <td colSpan={5} className="text-center py-8 text-gray-500">
+                    No offers found.
                   </td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+              ) : (
+                localOffers.map((offer, index) => (
+                  <tr key={offer._id} className="hover:bg-gray-50 transition-colors">
+                    <td className="px-6 py-4 text-sm text-gray-600">{index + 1}</td>
+                    <td className="px-6 py-4 font-medium text-gray-800 capitalize">
+                      {offer.title}
+                    </td>
+
+                    <td className="px-6 py-4">
+                      <div
+                        className="w-12 h-12 rounded-md overflow-hidden cursor-pointer border shadow-sm hover:opacity-80 transition"
+                        onClick={() => setPreviewImage(offer.image)}
+                      >
+                        <Image
+                          src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${offer.image}`}
+                          alt="Offer"
+                          width={48}
+                          height={48}
+                          className="object-cover w-full h-full"
+                        />
+                      </div>
+                    </td>
+
+                    {/* Styled Toggle Switch */}
+                    <td className="px-6 py-4">
+                      <button
+                        onClick={() => toggleStatus(offer._id, offer.showonpage)}
+                        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#99571d] ${
+                          offer.showonpage ? "bg-green-500" : "bg-gray-300"
+                        }`}
+                      >
+                        <span
+                          className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                            offer.showonpage ? "translate-x-6" : "translate-x-1"
+                          }`}
+                        />
+                      </button>
+                    </td>
+
+                    <td className="px-6 py-4 text-right">
+                      <button
+                        onClick={() => {
+                          setShowDeletePopup(true);
+                          setDeleteOfferId(offer._id);
+                        }}
+                        className="text-red-500 hover:text-white border border-red-500 hover:bg-red-500 px-4 py-1.5 rounded-md transition-colors text-sm font-medium"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {/* Image Preview */}
-      <ImagePreviewModal
-        src={previewImage}
-        onClose={() => setPreviewImage(null)}
-      />
+      {previewImage && (
+        <ImagePreviewModal
+          src={previewImage}
+          onClose={() => setPreviewImage(null)}
+        />
+      )}
 
       {/* Delete Confirm Popup */}
       {showDeletePopup && (
         <PopupModal
-          title={`Delete offer?`}
+          title="Delete offer?"
           onCancel={() => setShowDeletePopup(false)}
           onConfirm={confirmDelete}
           confirmText="Delete"

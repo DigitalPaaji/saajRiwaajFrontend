@@ -11,7 +11,7 @@ export default function DealsSection() {
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/offer`);
       const data = await res.json();
-      setOffers(data);
+      setOffers(data.filter((item)=>item.showonpage));
     } catch (err) {
       console.error("Error fetching offers:", err);
     }
@@ -22,7 +22,10 @@ export default function DealsSection() {
   }, [fetchOffers]);
 
   return (
-    <section className=" py-12 md:py-16 px-4 md:px-12 lg:px-24 xl:px-40 2xl:px-52">
+    
+    <>
+    {offers.length >0 && 
+    <section className="py-12 md:py-16 px-4 md:px-12 lg:px-24 xl:px-40 2xl:px-52">
       <div className="">
         
         {/* Header - Minimalist & Bold */}
@@ -94,5 +97,7 @@ export default function DealsSection() {
 
        </div>
     </section>
+}
+    </>
   );
 }
