@@ -33,8 +33,8 @@ export default function ShopByCategories() {
   };
 
   return (
-    <section className="py-12 md:py-16 px-4 md:px-6 lg:px-12 xl:px-24 bg-white">
-      <div className="max-w-7xl mx-auto">
+    <section className="py-12 md:py-16 px-4 md:px-12 lg:px-24 xl:px-40 2xl:px-52 bg-white">
+      <div className="">
         
         <div className="text-center mb-10 md:mb-16">
           <h2 className="text-2xl md:text-4xl text-[#292927] mb-3 tracking-tight">

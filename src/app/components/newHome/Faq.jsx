@@ -70,8 +70,8 @@ const dispatch = useDispatch()
     dispatch(getFaqs())
   },[])
   return (
-    <section className=" px-4 md:px-6 lg:px-12 xl:px-24 bg-white">
-       <div className="max-w-7xl mx-auto relative z-10 py-12 md:py-16">
+    <section className="px-4 md:px-12 lg:px-24 xl:px-40 2xl:px-52 bg-white">
+       <div className=" relative z-10 py-12 md:py-16">
         <img src="/Images/careImage.webp" alt="" className="w-full h-auto" />
 
        </div>
@@ -80,10 +80,10 @@ const dispatch = useDispatch()
        
         <div className="text-center mb-16">
           <h2 className="text-[10px] uppercase tracking-[0.3em] text-zinc-400 mb-3">
-            Assistance
+           The stuff everyone asks before their first order
           </h2>
           <h3 className="text-3xl md:text-4xl font-serif text-[#292927]">
-            Frequently Asked <span className="italic">Questions</span>
+           Got Questions? <span className="italic"> We've Got Answers</span>
           </h3>
         </div>
 

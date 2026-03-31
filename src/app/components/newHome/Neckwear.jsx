@@ -146,8 +146,10 @@ toast.error(error.response.data.message)
   );
 
   return (
-    <section className="py-12 md:py-16 px-4 md:px-6 lg:px-12 xl:px-24 bg-stone-100">
-      <div className="max-w-7xl mx-auto">
+    <section className="py-12 md:py-16 px-4 md:px-12 lg:px-24 xl:px-40 2xl:px-52 bg-stone-100">
+    
+
+      <div className="">
         
         {/* --- HEADING SECTION --- */}
         <div className="max-w-4xl mx-auto text-center mb-10 md:mb-12">

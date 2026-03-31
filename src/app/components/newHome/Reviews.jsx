@@ -63,11 +63,19 @@ const StyleVideo = ({ videoSrc, label, price }) => {
 
 export default function StyleEdit() {
   return (
-    <section className="py-12 md:py-16 px-4 md:px-6 lg:px-12 xl:px-24  bg-white">
-      <div className="max-w-7xl mx-auto">
-        <h2 className="text-sm font-medium tracking-[0.2em] uppercase mb-10 border-b border-zinc-100 pb-4">
-          The Style Edit
-        </h2>
+    <section className="py-12 md:py-16 px-4 md:px-12 lg:px-24 xl:px-40 2xl:px-52 bg-white">
+      <div className="">
+             <div className="max-w-4xl mx-auto text-center mb-10 md:mb-12">
+          <h2 className="text-2xl md:text-4xl font-serif text-[#292927] mb-3 tracking-tight">
+            Real Women. Real Style.
+          </h2>
+          <p className="text-stone-600 text-sm md:text-[18px] max-w-xl mx-auto font-light leading-relaxed">
+              Join 5,000+ women who style SaajRiwaaj their way
+          </p>
+        </div>
+         {/* <h2 className="text-sm font-medium tracking-[0.2em] uppercase mb-10 border-b border-zinc-100 pb-4">
+    The Style Edit
+        </h2> */}
 
         <Swiper
           spaceBetween={16}

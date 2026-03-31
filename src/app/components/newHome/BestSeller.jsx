@@ -1,5 +1,5 @@
-'use client';
-import React, { useEffect, useState } from 'react';
+"use client";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ShoppingBag } from "lucide-react";
@@ -67,7 +67,7 @@ toast.error(error.response.data.message)
       {/* Image */}
       <div className="relative aspect-square overflow-hidden bg-gray-50 ">
         <Image
-          src={'/Images/3.webp'}
+          src={"/Images/3.webp"}
           alt={item.name}
           fill
           sizes="(max-width: 768px) 50vw, 33vw"
@@ -75,13 +75,13 @@ toast.error(error.response.data.message)
         />
 
         {/* Desktop Add to Cart */}
-        <div className="hidden lg:group-hover:flex absolute inset-0 transition-all duration-300 items-end justify-center p-4 z-20 bg-black/5">
+        <div className="hidden lg:group-hover:flex absolute inset-0 transition-all duration-300 items-end justify-center p-4 z-20 ">
           <button
 onClick={(e)=>{  e.preventDefault() 
   handelAddtocartProduct(item)}}
             className="montserrat w-full
-              text-white group-hover:bg-white group-hover:text-black 
-              text-black font-semibold py-2.5 text-xs font-bold rounded shadow-lg 
+             
+              text-black bg-white font-semibold py-2.5 text-xs rounded shadow-lg 
               transform translate-y-4 group-hover:-translate-y-1 
               transition-all duration-500 ease-out flex items-center justify-center gap-2"
           >
@@ -103,44 +103,41 @@ onClick={(e)=>{  e.preventDefault()
       </div>
 
       {/* Content */}
-      <div className="p-3 md:p-4 bg-white flex flex-col gap-2">
-  <div className="flex flex-col gap-1 text-center sm:text-left">
-    
-    {/* PRODUCT NAME */}
-    <h3 className="text-sm md:text-base font-medium text-slate-900 capitalize leading-tight break-words montserrat">
-      {item.name.toLowerCase()}
-    </h3>
+      <div className="p-3 md:p-4 flex flex-col gap-2">
+        <div className="flex flex-col gap-1 text-center sm:text-left">
+          {/* PRODUCT NAME */}
+          <h3 className="text-sm md:text-base font-medium text-slate-900 capitalize leading-tight break-words montserrat">
+            {item.name.toLowerCase()}
+          </h3>
 
-    {/* ⭐ REVIEWS SECTION */}
-    <div className="flex items-center justify-center sm:justify-start gap-1">
-      {/* Stars */}
-      {[1, 2, 3, 4].map((star) => (
-        <FaStar key={star} size={12} className="text-yellow-500" />
-      ))}
-      <FaStarHalfAlt size={12} className="text-yellow-500" />
+          {/* ⭐ REVIEWS SECTION */}
+          <div className="flex items-center justify-center sm:justify-start gap-1">
+            {/* Stars */}
+            {[1, 2, 3, 4].map((star) => (
+              <FaStar key={star} size={12} className="text-yellow-500" />
+            ))}
+            <FaStarHalfAlt size={12} className="text-yellow-500" />
 
-      {/* Review count */}
-      <span className="text-xs text-slate-500 ml-1">
-        (120 reviews)
-      </span>
-    </div>
+            {/* Review count */}
+            <span className="text-xs text-slate-500 ml-1">(120 reviews)</span>
+          </div>
 
-    {/* PRICE SECTION */}
-    <div className="flex items-center justify-center sm:justify-start gap-2 mt-1">
-      <span className="flex items-center text-[#8b5424] font-bold text-sm md:text-base">
-        <FaRupeeSign size={12} className="md:w-3.5" />
-        {Math.floor(item.finalPrice)}
-      </span>
+          {/* PRICE SECTION */}
+          <div className="flex items-center justify-center sm:justify-start gap-2 mt-1">
+            <span className="flex items-center text-[#8b5424] font-bold text-sm md:text-base">
+              <FaRupeeSign size={12} className="md:w-3.5" />
+              {Math.floor(item.finalPrice)}
+            </span>
 
-      {item.price > item.finalPrice && (
-        <span className="flex items-center text-slate-400 text-xs line-through">
-          <FaRupeeSign size={10} />
-          {Math.floor(item.price)}
-        </span>
-      )}
-    </div>
-  </div>
-</div>
+            {item.price > item.finalPrice && (
+              <span className="flex items-center text-slate-400 text-xs line-through">
+                <FaRupeeSign size={10} />
+                {Math.floor(item.price)}
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
     </>
   );
 
@@ -177,35 +174,35 @@ setfilteredProducts(products)
 },[products])
 
   return (
-    <section className="py-12 md:py-20 px-4 md:px-6 lg:px-12 xl:px-24 relative overflow-hidden">
-      
+    <section className="py-12 md:py-20 px-4 md:px-12 lg:px-24 xl:px-40 2xl:px-52 relative overflow-hidden">
       {/* Decorative BG */}
       <div className="absolute -top-32 -right-12 opacity-5 pointer-events-none">
         <Image alt="" src="/Images/bg2.png" width={400} height={400} />
       </div>
 
-      <div className="max-w-7xl mx-auto relative z-10">
-
+      <div className="relative z-10">
         {/* Heading */}
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-2xl md:text-4xl text-[#292927] mb-4 tracking-tight montserrat font-light">
             Best Sellers
           </h2>
           <p className="text-stone-500 text-sm md:text-lg max-w-xl mx-auto font-light leading-relaxed montserrat">
-            Our most popular pieces, chosen for their quality and everyday charm.
+            Our most popular pieces, chosen for their quality and everyday
+            charm.
           </p>
         </div>
 
         {/* ----------------- TABS ----------------- */}
         <div className="flex flex-wrap gap-3 md:gap-4 justify-center my-8 pb-2 ">
-
           {/* ALL TAB */}
           <button
             className={`
               px-3 py-1 text-sm md:text-base font-medium border whitespace-nowrap
-              ${activeCategory === "all"
-                ? "bg-[#292927] text-white"
-                : "text-[#292927]/80 hover:text-[#292927]"}
+              ${
+                activeCategory === "all"
+                  ? "bg-[#292927] text-white"
+                  : "text-[#292927]/80 hover:text-[#292927]"
+              }
             `}
             onClick={() => {setActiveCategory("all"),setfilteredProducts(allProduct)}}
           >
@@ -238,7 +235,10 @@ setfilteredProducts(products)
         { Loading && isLoading ? (
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-8">
             {Array.from({ length: 4 }).map((_, idx) => (
-              <div key={idx} className="animate-pulse rounded-2xl bg-stone-100 aspect-[4/6]" />
+              <div
+                key={idx}
+                className="animate-pulse rounded-md bg-stone-100 aspect-[4/6]"
+              />
             ))}
           </div>
         ) : (
@@ -246,8 +246,8 @@ setfilteredProducts(products)
             {filteredProducts.slice(0,8)?.map((item) => (
               <Link
                 key={item._id}
-                href={`/product/${item.name.toLowerCase().replace(/\s+/g, '-')}/${item._id}`}
-                className="group relative flex flex-col overflow-hidden rounded-2xl transition-all duration-300 shadow-2xl "
+                href={`/product/${item.name.toLowerCase().replace(/\s+/g, "-")}/${item._id}`}
+                className="group relative flex flex-col overflow-hidden rounded-md transition-all duration-300 shadow-2xl "
               >
                 <CardContent item={item} />
               </Link>

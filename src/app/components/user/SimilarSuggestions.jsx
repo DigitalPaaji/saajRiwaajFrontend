@@ -95,7 +95,7 @@ useEffect(() => {
 
 
   return (
-    <section className="py-16 px-4 sm:px-8 lg:px-16">
+    <section className="py-16 px-4 md:px-12 lg:px-24 xl:px-40 2xl:px-52">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 flex-wrap xl:flex-nowrap mb-8">
        
           <h2 className="text-xl md:text-2xl font-mosetta  font-semibold text-[#99571d]  capitalize">
@@ -178,7 +178,8 @@ useEffect(() => {
 
 <div className="relative w-full h-[300px] overflow-hidden group shadow-lg">
   <Image
-    src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item.images?.[0]}`}
+   src={'/Images/4.webp'}
+    // src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item.images?.[0]}`}
     alt={item.name || "Product image"}
     fill
     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -266,7 +267,8 @@ useEffect(() => {
                     >
 <div className="relative w-full h-[300px] overflow-hidden group shadow-lg">
   <Image
-    src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item.images?.[0]}`}
+     src={'/Images/2.webp'}
+    // src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item.images?.[0]}`}
     alt={item.name || "Product image"}
     fill
     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"

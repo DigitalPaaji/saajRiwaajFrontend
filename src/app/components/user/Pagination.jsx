@@ -11,7 +11,7 @@ const Pagination = ({ page, pages, onPageChange }) => {
         className={`px-3 py-1 rounded border text-sm
           ${page === 1
             ? "cursor-not-allowed text-gray-400 border-gray-300"
-            : "hover:bg-[#B67032] hover:text-white border-gray-400"
+            : "hover:bg-[#292927] hover:text-white border-gray-400"
           }`}
       >
         Prev
@@ -24,7 +24,7 @@ const Pagination = ({ page, pages, onPageChange }) => {
           onClick={() => onPageChange(p)}
           className={`px-3 py-1 rounded border text-sm
             ${page === p
-              ? "bg-[#B67032] text-white border-[#B67032]"
+              ? "bg-[#292927] text-white border-[#292927]"
               : "border-gray-400 hover:bg-gray-100"
             }`}
         >
@@ -39,7 +39,7 @@ const Pagination = ({ page, pages, onPageChange }) => {
         className={`px-3 py-1 rounded border text-sm
           ${page === pages
             ? "cursor-not-allowed text-gray-400 border-gray-300"
-            : "hover:bg-[#B67032] hover:text-white border-gray-400"
+            : "hover:bg-[#292927] hover:text-white border-gray-400"
           }`}
       >
         Next

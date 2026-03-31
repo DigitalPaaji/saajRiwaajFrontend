@@ -86,7 +86,7 @@ export default function Navbar() {
     ${isHomePage 
       ? isScrolled 
         ? "fixed bg-white shadow-md top-0" 
-        : "fixed text-white bg-transparent top-0 py-2"
+        : "fixed bg-transparent top-0 py-2"
       : "sticky bg-white shadow-md top-0"
     }
   `}
@@ -94,12 +94,12 @@ export default function Navbar() {
 >
 
   
-      <div className="px-4 md:px-12 xl:px-24">
+      <div className="px-4 md:px-12 lg:px-24 xl:px-40 2xl:px-52">
         <div className="flex justify-between items-center   h-20">
           {/* Mobile Menu Toggle */}
           <button
             onClick={() => setIsMobileMenuOpen(true)}
-            className={`xl:hidden p-2 transition-colors 
+            className={`xl:hidden py-2 transition-colors 
               ${isHomePage 
   ? (isScrolled ? "text-[#292927]" : "text-white") 
   : "text-[#292927]"}`}
@@ -140,7 +140,7 @@ export default function Navbar() {
                     className={`flex items-center text-[16px]   uppercase transition-colors duration-300 
                        ${
     isHomePage 
-      ? (isScrolled ? "text-[#292927]  font-medium " : "text-white font-semibold")
+      ? (isScrolled ? "text-[#292927]   " : "text-white font-medium")
       : "text-[#292927]  font-medium "
   }`}
                   >

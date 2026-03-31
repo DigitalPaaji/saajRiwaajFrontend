@@ -22,10 +22,11 @@ export default function DealsSection() {
   }, [fetchOffers]);
 
   return (
+    
     <>
     {offers.length >0 && 
-    <section className=" py-12 md:py-16 px-4 md:px-6 lg:px-12 xl:px-24">
-      <div className="max-w-7xl mx-auto">
+    <section className="py-12 md:py-16 px-4 md:px-12 lg:px-24 xl:px-40 2xl:px-52">
+      <div className="">
         
         {/* Header - Minimalist & Bold */}
         <div className="mb-16 text-center">

@@ -17,9 +17,9 @@ export default function Footer() {
   }, []);
 
   return (
-    <footer className="bg-[#292927] text-white font-sans overflow-hidden">
+    <footer className="bg-[#292927] text-white font-sans overflow-hidden ">
       {/* 1. High-End Newsletter Section */}
-      <div className="max-w-[1440px] mx-auto px-6 md:px-12 py-20 border-b border-white/5">
+      <div className="px-4 md:px-12 lg:px-24 xl:px-40 2xl:px-52 py-20 border-b border-white/5">
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-10">
           <div className="max-w-xl">
             <h3 className="text-white text-lg md:text-xl font-serif tracking-wide mb-3">
@@ -43,7 +43,7 @@ export default function Footer() {
       </div>
 
       {/* 2. Main Navigation Grid */}
-      <div className="max-w-[1440px] mx-auto px-6 md:px-12 py-20">
+      <div className="py-20 px-4 md:px-12 lg:px-24 xl:px-40 2xl:px-52">
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-y-16 gap-x-12">
           
           {/* Brand Identity */}
@@ -112,7 +112,7 @@ export default function Footer() {
       </div>
 
       {/* 3. Credits Bar */}
-      <div className="bg-black/20 py-2 px-6">
+      <div className="bg-black/20 py-2 px-4 md:px-12 lg:px-24 xl:px-40 2xl:px-52">
         <div className="max-w-[1440px] mx-auto flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] md:text-xs tracking-[0.2em] text-zinc-400 uppercase">
           <p className="text-center md:text-left">
             &copy; {new Date().getFullYear()} SAAJ RIWAAJ. ALL RIGHTS RESERVED.

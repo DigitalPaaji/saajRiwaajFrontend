@@ -86,6 +86,30 @@ const fetchFeaturedProducts = async () => {
     loading="lazy"
     className="object-cover transition-transform duration-500 group-hover:scale-110"
   />
+          {/* Desktop Add to Cart */}
+        <div className="hidden lg:group-hover:flex absolute inset-0 transition-all duration-300 items-end justify-center p-4 z-20 bg-black/5">
+          <button
+            onClick={(e) => handleAddToCart(e, item)}
+            className="montserrat w-full
+             
+              text-black font-semibold py-2.5 text-xs rounded shadow-lg 
+              transform translate-y-4 group-hover:-translate-y-1 
+              transition-all duration-500 ease-out flex items-center justify-center gap-2"
+          >
+            <ShoppingBag size={16} />
+            ADD TO CART
+          </button>
+        </div>
+
+        {/* Mobile Add to Cart */}
+        <div className="lg:hidden absolute bottom-2 right-2 z-20">
+          <button
+            onClick={(e) => handleAddToCart(e, item)}
+            className="bg-white/90 backdrop-blur-sm p-2 rounded-full shadow-md active:scale-90 transition-transform text-[#292927] border border-gray-100"
+          >
+            <ShoppingBag size={18} />
+          </button>
+        </div>
 </div>
                  <h3 className="montserrat text-stone-700 group-hover:text-[#B67032] transition-colors duration-300 capitalize mt-4">
   {product.name
