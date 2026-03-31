@@ -36,11 +36,12 @@ export default function Home() {
       <Reviews/>
 
       <DealsSection/>
-      <Content/>
 
       <Neckwear2 />
 
       <Exclusive2 />
+      <Content/>
+
       <Faq/>
       {/* <Footer/> */}
       {/* <HeroBanner />

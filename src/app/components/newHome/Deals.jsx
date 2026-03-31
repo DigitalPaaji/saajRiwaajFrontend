@@ -41,7 +41,7 @@ export default function DealsSection() {
     <Link
       key={item._id}
       href={`/offer/${item.slug}/${item._id}`}
-      className="group relative aspect-square w-full overflow-hidden bg-stone-100 rounded-2xl flex flex-col justify-end"
+      className="group relative aspect-square w-full overflow-hidden bg-stone-100 rounded-md flex flex-col justify-end"
     >
       {/* Background Image - Use your sample images here */}
       <div className="absolute inset-0 z-0">
@@ -89,6 +89,10 @@ export default function DealsSection() {
           </p>
         </div>
       </div>
+             <div className=" relative z-10 py-12 md:py-16">
+        <img src="/Images/careImage.webp" alt="" className="w-full h-auto" />
+
+       </div>
     </section>
   );
 }

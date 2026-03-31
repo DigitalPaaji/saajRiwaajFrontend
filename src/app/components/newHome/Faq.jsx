@@ -61,10 +61,7 @@ export default function FaqSection() {
 
   return (
     <section className="px-4 md:px-12 lg:px-24 xl:px-40 2xl:px-52 bg-white">
-       <div className=" relative z-10 py-12 md:py-16">
-        <img src="/Images/careImage.webp" alt="" className="w-full h-auto" />
 
-       </div>
       <div className="max-w-4xl mx-auto  py-12 md:py-16">
        
        

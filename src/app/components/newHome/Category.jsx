@@ -55,7 +55,7 @@ export default function ShopByCategories() {
                   href={categoryPath}
                   className="group relative flex flex-col items-center overflow-hidden transition-all duration-500"
                 >
-                  <div className="relative w-full aspect-[4/5] overflow-hidden bg-stone-100 mb-4 rounded-2xl">
+                  <div className="relative w-full aspect-[4/5] overflow-hidden bg-stone-100 mb-4 rounded-md">
                     <Image
                       src={imageSrc}
                       alt={label}
@@ -87,7 +87,7 @@ export default function ShopByCategories() {
             /* --- SKELETON LOADING STATE --- */
             [1, 2, 3, 4].map((i) => (
               <div key={i} className="flex flex-col items-center w-full">
-                <div className="w-full aspect-[4/5] bg-gray-200 animate-pulse rounded-2xl mb-4" />
+                <div className="w-full aspect-[4/5] bg-gray-200 animate-pulse rounded-md mb-4" />
                 <div className="h-4 w-2/3 bg-gray-200 animate-pulse rounded" />
               </div>
             ))
