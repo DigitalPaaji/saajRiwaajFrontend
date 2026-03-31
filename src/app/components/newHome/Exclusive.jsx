@@ -28,9 +28,9 @@ export default function EarringsSlider() {
   }, [earringsCategoryId, products.length, refetchProductsByCategory2]);
 
   return (
-    <section className="py-12 md:py-16 px-4 md:px-6 lg:px-12 xl:px-24 relative overflow-hidden">
+    <section className="py-12 md:py-16 px-4 md:px-12 lg:px-24 xl:px-40 2xl:px-52 relative overflow-hidden">
 
-      <div className="max-w-7xl mx-auto relative z-10">
+      <div className="relative z-10">
         {/* --- HEADING SECTION --- */}
         <div className="max-w-4xl mx-auto text-center mb-10 md:mb-12">
           <h2 className="text-2xl md:text-4xl  text-[#292927] mb-3 tracking-tight">

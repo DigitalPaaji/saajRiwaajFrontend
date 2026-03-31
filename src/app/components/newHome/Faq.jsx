@@ -60,8 +60,8 @@ export default function FaqSection() {
   const [openIndex, setOpenIndex] = useState(0); // First item open by default
 
   return (
-    <section className=" px-4 md:px-6 lg:px-12 xl:px-24 bg-white">
-       <div className="max-w-7xl mx-auto relative z-10 py-12 md:py-16">
+    <section className="px-4 md:px-12 lg:px-24 xl:px-40 2xl:px-52 bg-white">
+       <div className=" relative z-10 py-12 md:py-16">
         <img src="/Images/careImage.webp" alt="" className="w-full h-auto" />
 
        </div>

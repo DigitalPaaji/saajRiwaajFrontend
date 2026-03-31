@@ -33,14 +33,14 @@ export default function Home() {
 
       <Category/>
       <BestSeller/>
+      <Reviews/>
 
       <DealsSection/>
+      <Content/>
 
       <Neckwear2 />
 
       <Exclusive2 />
-      <Reviews/>
-      <Content/>
       <Faq/>
       {/* <Footer/> */}
       {/* <HeroBanner />

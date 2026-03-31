@@ -40,7 +40,7 @@ function formatCategoryLabel(name) {
     <div className="absolute left-0 pt-[27px]  z-[99] w-full ">
       <div className='  bg-white shadow-lg border-t border-black/20'>
       <div 
-      className="px-4 md:px-12 xl:px-24 mx-auto px-8 py-10 grid grid-cols-6 gap-8"
+      className="px-4 md:px-12 xl:px-24 mx-auto py-10 grid grid-cols-6 gap-8"
       >
         {/* Categories */}
         <div className="col-span-1 border-r border-black/20">

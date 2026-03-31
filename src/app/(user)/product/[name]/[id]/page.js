@@ -273,7 +273,7 @@ const handelColorImage=(img)=>{
 
   return (
     <div>
-      <div className="relative flex flex-col items-center xl:flex-row xl:items-start justify-center flex-wrap xl:flex-nowrap gap-6 px-4 md:px-12 xl:px-24 py-12 ">
+      <div className="relative flex flex-col items-center xl:flex-row xl:items-start justify-center flex-wrap xl:flex-nowrap gap-6 px-4 md:px-12 lg:px-24 xl:px-40 2xl:px-52 py-12">
         {/* Left: Sticky Images */}
         <div className="w-full xl:w-1/2 xl:sticky xl:top-24  ">
           <div className="flex flex-col md:flex-row items-center gap-4">
@@ -287,8 +287,8 @@ const handelColorImage=(img)=>{
       // src={'/Images/3.webp'}
       alt={' '}
       fill
-      className={`object-cover object-center rounded-tl-2xl rounded-br-2xl transition-all duration-200 ${
-        selectedImage === img ? "border-2 border-[#B67032]" : ""
+      className={`object-cover object-center transition-all duration-200 ${
+        selectedImage === img ? "border-2 border-[#292927]" : ""
       }`}
       onClick={() => setSelectedImage(img)}
       loading="lazy"
@@ -321,9 +321,9 @@ const handelColorImage=(img)=>{
           <div className="flex justify-between items-start">
             {/* LEFT SIDE (name + category) */}
             <div>
-              <h1 className="text-2xl md:text-4xl font-serif text-stone-900 capitalize">
+              <h3 className="text-2xl md:text-4xl montserrat text-[#292927] capitalize">
                 {funshow(product.name,"name")}
-              </h1>
+              </h3>
               <p className="xl:text-md text-stone-700 mt-2 capitalize">
                 {product?.category?.name}{" "}
                 {product.subcategory?.name && `→ ${product.subcategory.name}`}
@@ -359,10 +359,10 @@ const handelColorImage=(img)=>{
         </div>  
 
           {/* Price, Discount & Quantity in one line */}
-          <div className="flex items-center justify-between gap-6">
+          <div className=" space-y-6 w-fit">
             {/* Price Section */}
             <div className="flex items-end gap-2">
-              <span className="text-[#B67032] text-2xl font-bold tracking-wide">
+              <span className="text-[#292927] text-2xl font-semibold tracking-wide">
                 ₹{ funshow(Math.floor(product.finalPrice),"finalPrice")}
               </span>
               {product.discount > 0 && (
@@ -376,9 +376,16 @@ const handelColorImage=(img)=>{
                 </>
               )}
             </div>
+            <div className="flex items-center justify-start gap-2">
+
+  <h3 className="text-md font-mosetta font-semibold text-[#292927] tracking-wide">
+               Quantity
+              </h3>
 
 {/* Quantity Selector */}
-<div className="flex items-center gap-6 border border-gray-200 rounded-full px-4 py-2 text-gray-700 font-medium">
+<div className="flex items-center gap-6 border border-gray-200 rounded-md px-2 py-1 text-gray-700 font-medium">
+ 
+     
   {/* Decrease */}
   <button
     disabled={selectedQty === 1}
@@ -431,6 +438,7 @@ const handelColorImage=(img)=>{
     +
   </button>
 </div>
+            </div>
 
 
 
@@ -444,7 +452,7 @@ const handelColorImage=(img)=>{
           {/* Colors */}
           {product.colorVariants?.length > 0 && selectedColor && (
             <div className="space-y-2 mt-4">
-              <h3 className="text-lg font-mosetta font-semibold text-[#B67032] tracking-wide">
+              <h3 className="text-lg font-mosetta font-semibold text-[#292927] tracking-wide">
                 Available Colors
               </h3>
 
@@ -459,7 +467,7 @@ const handelColorImage=(img)=>{
                     style={{ backgroundColor: v.colorName.toLowerCase() }}
                     className={`w-6 h-6 rounded-full  transition ${
                       selectedColor?.colorName === v.colorName
-                        ? "ring-2 ring-[#B67032] ring-offset-1"
+                        ? "ring-2 ring-[#292927] ring-offset-1"
                         : "border-gray-300"
                     }`}
                     title={v.colorName} // tooltip for accessibility
@@ -478,7 +486,7 @@ const handelColorImage=(img)=>{
       }}
       className={`px-3 py-1 border text-sm transition ${
         selectedColor?.colorName === v?.colorName
-          ? " ring-[#B67032] border-[#B67032] text-[#B67032] font-medium"
+          ? " ring-[#292927] border-[#292927] text-[#292927] font-medium"
           : "border-gray-300 text-gray-700"
       }`}
     >
@@ -581,12 +589,12 @@ onClick={()=>{handelAddtocart("cart"),setbuytypeCart(true)}}
     addToCart({ ...product, selectedColor, selectedQty });
     setSelectedQty(1);
   }}
-              className="cursor-pointer w-full flex items-center justify-center gap-2 bg-[#B67032] text-white px-4 py-3 rounded hover:bg-[#a95c2e] transition text-sm font-medium tracking-wide"
+              className="cursor-pointer w-full flex items-center justify-center gap-2 bg-[#292927] text-white px-4 py-3 rounded hover:bg-[#a95c2e] transition text-sm font-medium tracking-wide"
             >
               <ShoppingCart className="w-4 h-4" />
               Add to Cart
             </button>
-            <button className="w-full flex items-center justify-center gap-2 border border-[#B67032] text-[#B67032] px-4 py-3 rounded hover:bg-[#fff4ed] transition text-sm font-medium tracking-wide">
+            <button className="w-full flex items-center justify-center gap-2 border border-[#292927] text-[#292927] px-4 py-3 rounded hover:bg-[#fff4ed] transition text-sm font-medium tracking-wide">
               <CreditCard className="w-4 h-4" />
               Buy Now
             </button>
@@ -651,7 +659,7 @@ onClick={()=>{handelAddtocart("cart"),setbuytypeCart(true)}}
           {(product.description?.paragraphs?.length > 0 ||
             product.description?.bulletPoints?.length > 0) && (
             <div className="my-4">
-              <h3 className="text-lg font-mosetta font-semibold text-[#B67032] ">
+              <h3 className="text-lg font-mosetta font-semibold text-[#292927] ">
                 Description
               </h3>
 
@@ -664,7 +672,7 @@ onClick={()=>{handelAddtocart("cart"),setbuytypeCart(true)}}
 
               {/* Bullet Points */}
               {product.description?.bulletPoints?.length > 0 && (
-                <div className=" xl:text-md text-stone-800 marker:text-[#B67032]  space-y-2">
+                <div className=" xl:text-md text-stone-800 marker:text-[#292927]  space-y-2">
                   {product.description.bulletPoints.map((point, idx) => (
                     <h6 key={idx}>{point}</h6>
                   ))}
