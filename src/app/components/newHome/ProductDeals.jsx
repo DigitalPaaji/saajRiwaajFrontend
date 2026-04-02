@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ArrowRight, Box, Layers, Sparkles } from "lucide-react";
 import Image from "next/image";
 
-export default function DealsSection() {
+export default function ProductDeal() {
   const [offers, setOffers] = useState([]);
 
   const fetchOffers = useCallback(async () => {
@@ -27,13 +27,10 @@ export default function DealsSection() {
         <section className="py-12 md:py-16 px-4 md:px-12 lg:px-24 xl:px-40 2xl:px-52">
           <div className="">
             {/* Header - Minimalist & Bold */}
-            <div className="mb-16 text-center">
-              <h2 className="text-2xl md:text-4xl  text-[#292927] mb-3 tracking-tight">
-                Curated Bundles & Sets
-              </h2>
-              <p className="text-zinc-500 uppercase tracking-[0.4em] text-[10px] md:text-xs">
-                Hand-picked combinations. Automatic savings. Limited
-                availability.
+            <div className="mb-4 text-center">
+             
+              <p className="text-md font-mosetta font-semibold text-[#292927] tracking-wide">
+                Ongoing Offers
               </p>
             </div>
 
@@ -43,20 +40,9 @@ export default function DealsSection() {
                 <Link
                   key={item._id}
                   href={`/offer/${item.slug}/${item._id}`}
-                  className="group relative aspect-square w-full overflow-hidden bg-stone-100 rounded-md flex flex-col justify-end"
+                  className="group relative w-full overflow-hidden bg-green-50 rounded-md flex flex-col justify-end"
                 >
-                  {/* Background Image - Use your sample images here */}
-                  <div className="absolute inset-0 z-0">
-                    <Image
-                      src={"/Images/3.webp"}
-                      // src={`/Image/${(index % 5) + 1}.webp`}
-                      alt={item.title}
-                      fill
-                      className="object-cover"
-                    />
-                    {/* Elegant Dark Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
-                  </div>
+           
 
                   {/* Content Area */}
                   <div className="relative z-10 p-8 transform transition-all duration-500 translate-y-4 group-hover:translate-y-0">

@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Minus } from "lucide-react"; // Or use standard SVG
 import { useDispatch, useSelector } from "react-redux";
 import { getFaqs } from "../store/faqSlice";
+import Link from "next/link";
 
 const FAQ_DATA = [
   {
@@ -100,9 +101,9 @@ const dispatch = useDispatch()
           <p className="text-xs text-zinc-400 uppercase tracking-widest mb-4">
             Still have questions?
           </p>
-          <button className="text-[11px] uppercase tracking-widest font-semibold text-[#292927] border-b border-[#292927] pb-1 hover:text-zinc-500 hover:border-zinc-500 transition-colors">
+          <Link href={'/contact'} className="text-[11px] uppercase tracking-widest font-semibold text-[#292927] border-b border-[#292927] pb-1 hover:text-zinc-500 hover:border-zinc-500 transition-colors">
             Contact Concierge
-          </button>
+          </Link>
         </div>
       </div>
     </section>

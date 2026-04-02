@@ -70,7 +70,7 @@ export default function StyleEdit() {
             Real Women. Real Style.
           </h2>
           <p className="text-stone-600 text-sm md:text-[18px] max-w-xl mx-auto font-light leading-relaxed">
-              Join 5,000+ women who style SaajRiwaaj their way
+              Join 1,500+ women who style SaajRiwaaj their way
           </p>
         </div>
          {/* <h2 className="text-sm font-medium tracking-[0.2em] uppercase mb-10 border-b border-zinc-100 pb-4">

@@ -661,6 +661,36 @@ const fetchProductById = useCallback(async (id) => {
     const [buytypeCart, setbuytypeCart] = useState(true);
 
 
+    // ---- SOLD COUNT GENERATOR (24 hours persistence) ----
+const getSoldCount = (productId) => {
+  if (!productId) return null;
+
+  const key = `soldCount_${productId}`;
+  const timeKey = `${key}_time`;
+
+  const savedValue = localStorage.getItem(key);
+  const savedTime = localStorage.getItem(timeKey);
+  const now = Date.now();
+
+  // If exists and within 24 hours → return same value
+  if (savedValue && savedTime && now - savedTime < 24 * 60 * 60 * 1000) {
+    return parseInt(savedValue, 10);
+  }
+
+  // --- Generate based on last chars of product ID ---
+  const lastChars = productId.slice(-2); // or -1 if you want
+  const base = parseInt(lastChars, 16); // convert hex-like to number
+
+  // Convert to realistic sold count range (4–50)
+  let count = (base % 47) + 4; // ensures always between 4–50
+
+  // Save new count
+  localStorage.setItem(key, count);
+  localStorage.setItem(timeKey, now);
+
+  return count;
+};
+
   // useEffect(
   //   () => {
   //     const savedUser = localStorage.getItem("saajUser");
@@ -757,7 +787,8 @@ setShowCheckout,
 showCheckout,
 setbuytypeCart,
 buytypeCart,
-pages
+pages,
+getSoldCount,
       }}
     >
       {children}

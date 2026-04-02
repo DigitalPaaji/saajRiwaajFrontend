@@ -17,13 +17,13 @@ import {
 
 } from "lucide-react";
 const iconOptions = [
-    Sparkles,
-    Gem,
-    Flower,
-    HandHeart,
+    <Sparkles />,
+    <Gem />,
+    <Flower />,
+    <HandHeart />,
 ];
 import MegaMenu from "./MegaMenu";
-import SearchBar from "./Searchbar";
+import SearchBar from "../newHome/SearchBar";
 import { IoIosArrowBack } from "react-icons/io";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
@@ -138,7 +138,7 @@ function formatCategoryLabel(name) {
   `}
       onMouseLeave={() => setActiveMegaMenu(null)}
     >
-      <div className=" sm:mx-4 md:mx-12 xl:mx-24  ">
+      <div className="px-4 md:px-12 lg:px-24 xl:px-40 2xl:px-52">
         <div className="flex justify-between items-center h-20">
           <button
             onClick={() => setIsMobileMenuOpen(prev=>(!prev))}
@@ -303,7 +303,7 @@ function formatCategoryLabel(name) {
       >
      
           
-    
+   
           <div className="flex flex-col h-full max-h-[80vh]">
 <nav className="p-6 space-y-6 overflow-y-auto">
   {info?.data?.length >0  && info?.data?.map((cat,index) => {
@@ -323,8 +323,10 @@ function formatCategoryLabel(name) {
             onClick={() => setIsMobileMenuOpen(false)}
             className="text-[15px] font-semibold text-[#292927] hover:text-[#B67032] uppercase tracking-wide flex gap-4 items-center"
           >
-            <Icon size={18} />
-            {cat.category.name}
+            {/* <Icon size={18} /> */}
+
+         
+            {cat.category.name}kkkk
           </Link>
 
    

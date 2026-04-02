@@ -67,7 +67,7 @@ export default function ShopByCategories() {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0">
-                      <span className="bg-white text-[#292927] px-6 py-2.5 text-[10px] font-bold tracking-[0.2em] uppercase shadow-2xl">
+                      <span className="bg-gradient-to-r from-[#bc861a] via-[#f1d981] to-[#bc861a]   text-[#292927]  px-6 py-2.5 text-[10px] font-bold tracking-[0.2em] uppercase shadow-2xl">
                         View Collection
                       </span>
                     </div>
