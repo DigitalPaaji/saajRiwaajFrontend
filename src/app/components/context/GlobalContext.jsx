@@ -683,23 +683,26 @@ const fetchProductById = useCallback(async (id) => {
   //       const cats = await fetchCategories();
   //       if (cats?.length) await fetchSubCategories(cats);
   //       // await fetchAllProducts();
-  //       await fetchFeaturedProducts();
+  //       // await fetchFeaturedProducts();
   //       await fetchTags();
-  //       await fetchOffers();
+  //       // await fetchOffers();
   //       // await fetchAllUsers();
   //     })();
   //   },
   //   [
-  //     // fetchCategories,
-  //     // fetchSubCategories,
-  //     // fetchAllProducts,
-  //     // fetchTags,
-  //     // fetchFeaturedProducts,
-  //     // fetchAllUsers,
-  //     // fetchUser,
-  //     // fetchAdmin,
+  //     fetchCategories,
+  //     fetchSubCategories,
+  //     fetchAllProducts,
+  //     fetchTags,
+  //     fetchFeaturedProducts,
+  //     fetchAllUsers,
+  //     fetchUser,
+  //     fetchAdmin,
   //   ]
   // );
+
+
+  
   return (
     <GlobalContext.Provider
       value={{

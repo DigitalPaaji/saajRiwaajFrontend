@@ -99,8 +99,8 @@ const fetchFeaturedProducts = async () => {
                   <Link
                     href={`/product/${item.name}/${item._id}`}
                     className="group block relative rounded-lg overflow-hidden shadow-sm aspect-[4/5]"
-                    onMouseEnter={() => setHoveredId(item._id)}
-                    onMouseLeave={() => setHoveredId(null)}
+                    // onMouseEnter={() => setHoveredId(item._id)}
+                    // onMouseLeave={() => setHoveredId(null)}
                   >
                     {/* 1. Image Layer */}
                     <Image

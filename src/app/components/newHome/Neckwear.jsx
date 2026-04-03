@@ -170,7 +170,7 @@ toast.error(error.response.data.message)
           </div>
         ) : (
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-8">
-            {productsByCategory2.slice(0,12).map((item) => (
+            {productsByCategory2.slice(0,8).map((item) => (
               <Link
                 key={item._id}
                 href={`/product/${item.name}/${item._id}`}

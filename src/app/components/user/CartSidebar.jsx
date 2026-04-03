@@ -8,7 +8,6 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import {  X } from "lucide-react";
 
-import { useGlobalContext } from "../context/GlobalContext";
 import { addTocart, decreaseQuantity, removeFormuserCart, removeFromcart, updatQunentityinCart } from "../store/cartSlice";
 import { base_url } from "../store/utile";
 import Offervalue from "./Offervalue";

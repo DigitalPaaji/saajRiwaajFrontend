@@ -40,7 +40,7 @@ import { usePathname } from "next/navigation";
 import Account from "./Account";
 
 
-
+ 
 
 export default function Navbar() {
 const [openCategoryId, setOpenCategoryId] = useState(null);
@@ -179,7 +179,7 @@ function formatCategoryLabel(name) {
 
         <Link
            href={`/category/${formatCategoryPath(cat.category.name)}/${formatCategoryPath(cat.category._id)}`}
-          className={`flex items-center text-[16px]   uppercase transition-colors duration-300  font-serif
+          className={`flex items-center text-[16px]   uppercase transition-colors duration-300  
                        ${
     isHomePage 
       ? (isScrolled ? "text-[#292927] " : "text-white font-semibold")
@@ -323,7 +323,7 @@ function formatCategoryLabel(name) {
             onClick={() => setIsMobileMenuOpen(false)}
             className="text-[15px] font-semibold text-[#292927] hover:text-[#B67032] uppercase tracking-wide flex gap-4 items-center"
           >
-            <Icon size={18} />
+            {/* <Icon size={18} /> */}
             {cat.category.name}
           </Link>
 

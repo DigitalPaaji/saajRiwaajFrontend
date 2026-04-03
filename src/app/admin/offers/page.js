@@ -8,15 +8,12 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import PopupModal from "@/app/components/admin/ConfirmPopup";
 import ImagePreviewModal from "@/app/components/user/ImagePreview";
-import { useGlobalContext } from "../../components/context/GlobalContext";
 import axios from "axios";
 import { base_url } from "@/app/components/store/utile";
 
 export default function OffersPage() {
-  const { offers } = useGlobalContext();
-  
-  // Local state to manage UI updates instantly without reloading the page
-  const [localOffers, setLocalOffers] = useState([]);
+  // Unified State for Offers
+  const [offers, setOffers] = useState([]);
 
   // Form States
   const [title, setTitle] = useState("");
@@ -31,10 +28,20 @@ export default function OffersPage() {
   const [deleteOfferId, setDeleteOfferId] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
 
-  // Sync context offers with local state for instant UI updates
+  // Fetch Offers
+  const fetchOffer = async () => {
+    try {
+      const response = await axios.get(`${base_url}/offer/all`);
+      setOffers(response.data || []);
+    } catch (error) {
+      console.error("Fetch Error:", error);
+      setOffers([]);
+    }
+  };
+
   useEffect(() => {
-    if (offers) setLocalOffers(offers);
-  }, [offers]);
+    fetchOffer();
+  }, []);
 
   // Drag & Drop Handlers
   const handleDrag = (e) => {
@@ -71,27 +78,26 @@ export default function OffersPage() {
       formData.append("minquantity", minquantity);
       formData.append("price", price);
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/offer`, {
-        method: "POST",
-        body: formData,
+      const response = await axios.post(`${base_url}/offer`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
       });
 
-      const data = await res.json();
-      if (data.success) {
+      if (response.data.success) {
         toast.success("Offer added successfully!");
+        
         // Reset form
         setTitle("");
         setImage(null);
         setMinQuantity(1);
         setPrice("");
         
-        // Slight delay before reload to let toast show, or ideally trigger a context refetch here
-        setTimeout(() => window.location.reload(), 1500); 
+        // Fetch fresh data instead of reloading the page
+        fetchOffer(); 
       } else {
         toast.error("Failed to add offer.");
       }
-    } catch {
-      toast.error("Error adding offer. Check console or server.");
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Error adding offer.");
     } finally {
       setIsSubmitting(false);
     }
@@ -102,18 +108,16 @@ export default function OffersPage() {
     if (!deleteOfferId) return;
 
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_LOCAL_PORT}/offer/${deleteOfferId}`,
-        { method: "DELETE" }
-      );
+      const response = await axios.delete(`${base_url}/offer/${deleteOfferId}`);
 
-      if (res.ok) {
+      if (response.data.success || response.status === 200) {
         toast.success("Offer deleted!");
-        setLocalOffers((prev) => prev.filter((o) => o._id !== deleteOfferId));
+        // Instantly remove from UI
+        setOffers((prev) => prev.filter((o) => o._id !== deleteOfferId));
       } else {
         toast.error("Failed to delete.");
       }
-    } catch {
+    } catch (error) {
       toast.error("Error deleting offer.");
     } finally {
       setShowDeletePopup(false);
@@ -121,24 +125,24 @@ export default function OffersPage() {
     }
   };
 
-  // Toggle Status (Optimistic UI Update)
+  // Toggle Show on Page Status
   const toggleStatus = async (id, currentStatus) => {
-    // 1. Instantly update the UI so it feels fast
-    setLocalOffers((prev) =>
+    // 1. Optimistic UI update
+    setOffers((prev) =>
       prev.map((offer) =>
         offer._id === id ? { ...offer, showonpage: !currentStatus } : offer
       )
     );
 
     try {
-      // 2. Call the API
+      // 2. API Call
       const response = await axios.put(`${base_url}/offer/toggle/${id}`);
       if (response.data.success) {
-        toast.success(response.data.message);
+        toast.success(response.data.message || "Status updated");
       }
     } catch (error) {
-      // 3. Revert the UI back if the API fails
-      setLocalOffers((prev) =>
+      // 3. Revert the UI back if API fails
+      setOffers((prev) =>
         prev.map((offer) =>
           offer._id === id ? { ...offer, showonpage: currentStatus } : offer
         )
@@ -262,14 +266,14 @@ export default function OffersPage() {
             </thead>
 
             <tbody className="divide-y divide-gray-100">
-              {localOffers.length === 0 ? (
+              {offers.length === 0 ? (
                 <tr>
                   <td colSpan={5} className="text-center py-8 text-gray-500">
                     No offers found.
                   </td>
                 </tr>
               ) : (
-                localOffers.map((offer, index) => (
+                offers.map((offer, index) => (
                   <tr key={offer._id} className="hover:bg-gray-50 transition-colors">
                     <td className="px-6 py-4 text-sm text-gray-600">{index + 1}</td>
                     <td className="px-6 py-4 font-medium text-gray-800 capitalize">
@@ -279,10 +283,10 @@ export default function OffersPage() {
                     <td className="px-6 py-4">
                       <div
                         className="w-12 h-12 rounded-md overflow-hidden cursor-pointer border shadow-sm hover:opacity-80 transition"
-                        onClick={() => setPreviewImage(offer.image)}
+                        onClick={() => setPreviewImage(`${base_url}/uploads/${offer.image}`)}
                       >
                         <Image
-                          src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${offer.image}`}
+                          src={`${base_url}/uploads/${offer.image}`}
                           alt="Offer"
                           width={48}
                           height={48}

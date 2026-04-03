@@ -3,10 +3,12 @@ import React, { useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Facebook, Instagram, Twitter, Youtube, ArrowRight } from 'lucide-react';
-import { useGlobalContext } from "../context/GlobalContext";
+import { useSelector } from 'react-redux';
 
 export default function Footer() {
-  const { categories } = useGlobalContext();
+  const {info ,isError ,isLoading} = useSelector(state=>state.category);
+
+console.log(info,"sss")
 
   const formatCategoryPath = (name) => name?.trim().toLowerCase().replace(/\s+/g, '-');
   const formatCategoryLabel = (name) => 
@@ -46,7 +48,7 @@ export default function Footer() {
       <div className="py-20 px-4 md:px-12 lg:px-24 xl:px-40 2xl:px-52">
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-y-16 gap-x-12">
           
-          {/* Brand Identity */}
+        
           <div className="col-span-2 lg:col-span-2 pr-0 lg:pr-32">
             <Link href="/">
               <Image
@@ -71,24 +73,22 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Collections */}
+          
           <div>
             <h4 className="text-white text-xs font-bold tracking-[0.3em] uppercase mb-8">Collections</h4>
             <ul className="space-y-5">
-              {categories.slice(0, 6).map((cat) => (
-                <li key={cat._id}>
+              {!isLoading && info?.data?.map((cat) => (
+                <li key={cat.category._id}>
                   <Link 
-                    href={`/category/${formatCategoryPath(cat.name)}/${cat._id}`} 
+                    href={`/category/${formatCategoryPath(cat.category.name)}/${cat.category._id}`} 
                     className="text-zinc-400 hover:text-white text-xs md:text-[13px] uppercase tracking-[0.15em] transition-all duration-300 block hover:translate-x-1"
                   >
-                    {formatCategoryLabel(cat.name)}
+                    {formatCategoryLabel(cat.category.name)}
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
-
-          {/* Client Care */}
           <div>
             <h4 className="text-white text-xs font-bold tracking-[0.3em] uppercase mb-8">Client Care</h4>
             <ul className="space-y-5">

@@ -26,22 +26,35 @@ export default function Home() {
     <div className="min-h-screen   text-stone-800 overflow-hidden ">
        {/* <Offer/> */}
       {/* <Navbar/> */}
-      <Banner/> 
-      <Trust/>
 
-      {/* <HeroBanner /> */}
+
+
+
+      <Banner/> 
+    <Trust/>
+
+ 
 
       <Category/>
       <BestSeller/>
       <Reviews/>
 
-      <DealsSection/>
+       <DealsSection/>
       <Content/>
 
       <Neckwear2 />
 
-      <Exclusive2 />
-      <Faq/>
+    <Exclusive2 />
+         <Faq/>
+
+
+
+
+
+
+
+
+           {/* <HeroBanner /> */}
       {/* <Footer/> */}
      {/* <HeroBanner /> */}
       {/* <EditorialSection />

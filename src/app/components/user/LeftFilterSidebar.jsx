@@ -19,7 +19,7 @@ export default function LeftFilterSidebar({minPrice,maxPrice,Pid,subcategory,han
 const {  tags } = useGlobalContext();
 
 
-
+ 
 const {data} = useSelector(state=>state.category.info);
 
 

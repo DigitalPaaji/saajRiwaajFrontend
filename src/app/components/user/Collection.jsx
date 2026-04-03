@@ -8,11 +8,16 @@ import Pagination from "./Pagination";
 import { FiShoppingBag } from "react-icons/fi";
 import { ShoppingBag } from "lucide-react";
 import { FaStar } from "react-icons/fa6";
-import { useGlobalContext } from "../context/GlobalContext";
+import { base_url } from "../store/utile";
+import {  useDispatch, useSelector } from "react-redux";
+import { addTocart, addTocartUser } from "../store/cartSlice";
+import { addSlide } from "../store/sliderSlice";
+import axios from "axios";
+import { toast } from "react-toastify";
 export default function Collection({ product, pages, loading, fetchProducts }) {
-    const {  addToCart } =
-      useGlobalContext();
-  const router = useRouter();
+       const { user } = useSelector(state=>state.user)
+const dispatch  = useDispatch()
+  const router = useRouter();  
 
   const skeletons = Array.from({ length: 8 });
 
@@ -23,15 +28,42 @@ export default function Collection({ product, pages, loading, fetchProducts }) {
   const handleClear = () => {
     router.push("?");
   };
-  const handleAddToCart = (e, item) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (addToCart) addToCart(item);
+  const handleAddToCart = async(product) => {
+  try {
+
+    if(user){
+
+try {
+  const response = await axios.post(`${base_url}/cart/post`,{
+    productid:product._id, quantity:1, price:product.finalPrice,color:product.colorVariants[0]?._id
+  })
+  const data = await response.data;
+if(data.success){
+dispatch(addTocartUser(data.cart))
+  
+}
+} catch (error) {
+toast.error(error.response.data.message)  
+}
+
+
+
+    }
+    else{
+          console.log(product,"proooo")
+      dispatch(addTocart({product:product._id,quantity:1,price:product.finalPrice,color:product.colorVariants[0]?._id}))
+    }
+  } catch (error) {
+  toast.error(error?.response?.data?.message)
+  }finally{
+    dispatch(addSlide("cart"))
+  }
   };
 
   return (
     <section>
       <div className=" col-span-1 xl:col-span-8 flex flex-col justify-center px-4 ">
+        
         <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 lg:gap-8">
           {loading &&
             skeletons.map((_, idx) => (
@@ -94,7 +126,7 @@ export default function Collection({ product, pages, loading, fetchProducts }) {
         {/* Desktop Add to Cart */}
         <div className="hidden lg:group-hover:flex absolute inset-0 transition-all duration-300 items-end justify-center p-4 z-20 ">
           <button
-            onClick={(e) => handleAddToCart(e, item)}
+            onClick={(e) =>{ e.preventDefault() ,handleAddToCart(product)}}
             className="montserrat w-full text-black bg-white font-semibold py-2.5 text-xs rounded shadow-lg  transform translate-y-4 group-hover:-translate-y-1 transition-all duration-500 ease-out flex items-center justify-center gap-2"
           >
             <ShoppingBag size={16} />
@@ -105,7 +137,7 @@ export default function Collection({ product, pages, loading, fetchProducts }) {
         {/* Mobile Add to Cart */}
         <div className="lg:hidden absolute bottom-2 right-2 z-20">
           <button
-            onClick={(e) => handleAddToCart(e, item)}
+            onClick={(e) => {e.preventDefault() ,handleAddToCart(product)}}
             className="bg-white/90 backdrop-blur-sm p-2 rounded-full shadow-md active:scale-90 transition-transform text-[#292927] border border-gray-100"
           >
             <ShoppingBag size={18} />

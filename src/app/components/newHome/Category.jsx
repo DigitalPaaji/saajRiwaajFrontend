@@ -5,6 +5,7 @@ import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 
 import { useSelector } from 'react-redux';
+import { base_url } from '../store/utile';
 
 export default function ShopByCategories() {
 
@@ -58,7 +59,7 @@ export default function ShopByCategories() {
                 >
                   <div className="relative w-full aspect-[4/5] overflow-hidden bg-stone-100 mb-4 rounded-2xl">
                     <Image
-                      src={imageSrc}
+                      src={cat?.category?.image? `${base_url}/${cat?.category?.image}` :imageSrc}
                       alt={label}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
