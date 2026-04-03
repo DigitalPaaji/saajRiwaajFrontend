@@ -8,6 +8,7 @@ import { base_url } from '../store/utile';
 import { useDispatch, useSelector } from 'react-redux';
 import { addTocart, addTocartUser } from '../store/cartSlice';
 import { addSlide } from '../store/sliderSlice';
+import { Heart } from 'lucide-react';
 
 export default function Earrings() {
 
@@ -39,12 +40,6 @@ const fetchProductsByCategory2 = async (categoryId) => {
     setLoading(false)
   }
 };
-
- 
-
-
-
-
 
 useEffect(() => {
   fetchProductsByCategory2(earringsCategoryId);
@@ -82,12 +77,22 @@ toast.error(error.response.data.message)
   }
 }
  
-  const CardContent = ({ item }) => (
+  const CardContent = ({ item }) => {
+    const [soldCount, setSoldCount] = useState(null);
+  
+  
+    useEffect(() => {
+      if (item?._id) {
+        setSoldCount(item._id.slice(-2).charCodeAt()+new Date(Date.now()).getDate()-30);
+      }
+    }, [item]);
+  
+    return (
     <>
       {/* Image Container */}
       <div className="relative aspect-square overflow-hidden ">
         <Image
-        src={'/Images/2.webp'}
+        src={'/Images/3.webp'}
           // src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item.images?.[0]}`}
           alt={item.name}
           fill
@@ -97,14 +102,30 @@ toast.error(error.response.data.message)
       </div>
       
  {/* Content Area */}
-<div className="p-3 md:p-4 bg-white flex flex-col gap-3">
+<div className="p-3 md:p-4  bg-stone-100/50 flex flex-col gap-3">
 
   {/* NAME */}
-  <h3 className="text-sm md:text-base font-medium text-slate-900 leading-tight break-words montserrat capitalize">
+   <div className="flex items-center justify-between gap-1 ">
+            <h3 className="text-sm md:text-base font-medium text-slate-900 capitalize leading-tight break-words montserrat">
+              {item.name.toLowerCase()}
+            </h3>
+
+            <button
+              // onClick={()=>dispatch(!wishlist?.some((w) => w === product._id) ?addToWishlist(product._id) : removeFromWishlist(product._id) )}
+              className="cursor-pointer"
+            >
+              {/* {wishlist?.some((w) => w === product._id) ? ( */}
+              {/* <FaHeart className="w-6 h-6 text-red-500" />  */}
+              {/* ) : ( */}
+              <Heart className="w-6 h-6 text-stone-700" />
+              {/* )} */}
+            </button>
+          </div>
+  {/* <h3 className="text-sm md:text-base font-medium text-slate-900 leading-tight break-words montserrat capitalize">
     {item.name
       .toLowerCase()
       .replace(/\b\w/g, (char) => char.toUpperCase())}
-  </h3>
+  </h3> */}
 
   {/* ⭐ REVIEWS */}
   <div className="flex items-center gap-1">
@@ -114,7 +135,13 @@ toast.error(error.response.data.message)
     <FaStarHalfAlt size={12} className="text-yellow-500" />
     <span className="text-xs text-slate-500 ml-1">(120 reviews)</span>
   </div>
-
+{soldCount === undefined ? (
+  <div className="w-28 h-3 bg-gray-200 animate-pulse rounded"></div>
+) : (
+  <p className="text-[11px] text-red-600 font-semibold">
+    🔥 {soldCount} bought in last 24 hours
+  </p>
+)}
   {/* PRICE */}
   <div className="flex items-center gap-2">
     <span className="flex items-center text-[#8b5424] font-bold text-sm md:text-base">
@@ -134,19 +161,18 @@ toast.error(error.response.data.message)
   <button
    onClick={(e)=>{  e.preventDefault()
               handelAddtocartProduct(item)}}
-    className="w-full mt-1 
-               text-white font-semibold text-xs md:text-sm py-2 rounded-md 
-                bg-[#292927] shadow-sm transition-all duration-300"
+    className="w-full mt-1 font-semibold text-xs md:text-sm py-2 bg-gradient-to-r from-[#bc861a] via-[#f1d981] to-[#bc861a]   text-[#292927] shadow-sm transition-all duration-300"
   >
     Add to Cart
   </button>
 
 </div>
     </>
-  );
+  )
+};
 
   return (
-    <section className="py-12 md:py-16 px-4 md:px-12 lg:px-24 xl:px-40 2xl:px-52 bg-stone-100">
+    <section className="py-12 md:py-16 px-4 md:px-12 lg:px-24 xl:px-40 2xl:px-52">
     
 
       <div className="">
@@ -165,7 +191,7 @@ toast.error(error.response.data.message)
         {loading ? (
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-8">
             {Array.from({ length: 4 }).map((_, idx) => (
-              <div key={idx} className="animate-pulse rounded-lg bg-gray-100 aspect-[4/6]" />
+              <div key={idx} className="animate-pulse rounded-md bg-gray-100 aspect-[4/6]" />
             ))}
           </div>
         ) : (
@@ -174,7 +200,7 @@ toast.error(error.response.data.message)
               <Link
                 key={item._id}
                 href={`/product/${item.name}/${item._id}`}
-                className="group relative flex flex-col overflow-hidden rounded-lg transition-all duration-300"
+                className="group relative flex flex-col overflow-hidden rounded-md transition-all duration-300"
               >
                 <CardContent item={item} />
               </Link>

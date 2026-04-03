@@ -87,7 +87,7 @@ export default function FilterLayout() {
 
   return (
     <div className="">
-      <InnerBanner title={collection} idc={id} image="/Images/banner.webp" />
+      <InnerBanner title={collection} idc={id} image="/Images/banner.webp"  subcategory={subcategory} />
 
    
 <div className="py-12">

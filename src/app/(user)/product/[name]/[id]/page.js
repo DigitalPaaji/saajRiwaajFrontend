@@ -28,14 +28,13 @@ import { addTocart, addTocartUser } from "@/app/components/store/cartSlice";
 import { base_url } from "@/app/components/store/utile";
 import { addSlide } from "@/app/components/store/sliderSlice";
 import { FaStar } from "react-icons/fa6";
+import ProductDeal from "@/app/components/newHome/ProductDeals";
 
 export default function ProductDetail() {
+
   const { id } = useParams();
   const {
     refetchProductById,
- 
-
-
     setIsCartOpen,
     updateQty,
     cart,setAllCart,setIsAuthOpen,setAuthTab,setShowCheckout,setbuytypeCart
@@ -45,7 +44,37 @@ export default function ProductDetail() {
   const dispatch = useDispatch()
 
 
+const [viewerCount, setViewerCount] = useState(null);
+// 📌 VIEWER COUNT (Random, persists 30 minutes)
+useEffect(() => {
+  if (!id) return;
 
+  const storageKey = `viewerCount_${id}`;
+  const stored = JSON.parse(localStorage.getItem(storageKey));
+
+  const now = Date.now();
+  const THIRTY_MIN = 30 * 60 * 1000;
+
+  // If value exists & time not expired → use stored value
+  if (stored && now - stored.timestamp < THIRTY_MIN) {
+    setViewerCount(stored.count);
+    return;
+  }
+
+  // Else generate new number (1–40)
+  const randomCount = Math.floor(Math.random() * 40) + 1;
+
+  // Store with timestamp
+  localStorage.setItem(
+    storageKey,
+    JSON.stringify({ count: randomCount, timestamp: now })
+  );
+
+  setViewerCount(randomCount);
+}, [id]);
+
+
+  
   const [product, setProduct] = useState(null);
   const [selectedImage, setSelectedImage] = useState("");
 
@@ -87,6 +116,21 @@ useEffect(()=>{
     setFlipped((prev) => prev.map((f, i) => (i === index ? !f : f)));
   };
 
+  const [soldCount, setSoldCount] = useState(null);
+const { getSoldCount } = useGlobalContext();
+
+useEffect(() => {
+  if (!id) return;
+
+  const updateCount = () => {
+    const count = getSoldCount(id);
+    setSoldCount(count);
+  };
+
+  updateCount();
+// eslint-disable-next-line react-hooks/exhaustive-deps
+}, [id]);
+
 
   const cards = [
     {
@@ -95,7 +139,7 @@ useEffect(()=>{
       frontSubtitle: "Free shipping on orders above ₹799",
       backContent: (
         <div className="text-sm space-y-1">
-    <div>Estimated Delivery Time: 3–7 business days </div>
+    <div>Estimated Delivery Time: 3-7 business days </div>
     <div>All orders are carefully processed and packed</div>
     <div className="italic text-stone-700">
       *Delivery times may vary by location
@@ -151,7 +195,7 @@ setSelectedImage(selectedColorImage?.[0])
 },[selectedColorImage])
   if (!product)
     return (
-      <div className="flex flex-col xl:flex-row gap-6 px-4 md:px-12 xl:px-40 py-12 ">
+      <div className="flex flex-col xl:flex-row gap-6 px-4 md:px-12 lg:px-24 xl:px-40 2xl:px-52 py-12 ">
         {/* Left: Image Skeleton */}
         <div className="w-full xl:w-1/2 space-y-4 overflow-hidden">
           <div className="flex flex-wrap md:flex-row gap-4">
@@ -308,9 +352,6 @@ toast.error(error.response.data.message)
 }
 
 
-
-
-
   return (
     <div>
       <div className="relative flex flex-col items-center xl:flex-row xl:items-start justify-center flex-wrap xl:flex-nowrap gap-6 px-4 md:px-12 lg:px-24 xl:px-40 2xl:px-52 py-12">
@@ -318,17 +359,17 @@ toast.error(error.response.data.message)
         <div className="w-full xl:w-1/2 xl:sticky xl:top-24  ">
           <div className="flex flex-col md:flex-row items-center gap-4">
          
-         <div className="max-h-[600px] max-w-screen  overflow-y-auto no-scrollbar">
+         <div className="max-h-[600px] max-w-screen overflow-y-auto no-scrollbar">
           <div className="flex md:flex-col gap-4 pr-1 w-fit">
   {(selectedColorImage)?.map((img, idx) => (
    <div key={idx} className="relative w-24 h-24 cursor-pointer">
     <Image
-      src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${img}`}
-      // src={'/Images/3.webp'}
+      // src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${img}`}
+      src={'/Images/3.webp'}
       alt={' '}
       fill
       className={`object-cover object-center transition-all duration-200 ${
-        selectedImage === img ? "border-2 border-[#292927]" : ""
+        selectedImage === img ? "border border-[#292927c9]" : ""
       }`}
       onClick={() => setSelectedImage(img)}
       loading="lazy"
@@ -342,7 +383,8 @@ toast.error(error.response.data.message)
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
               style={{
-                backgroundImage: `url(${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${selectedImage})`,
+                backgroundImage: `url('/Images/3.webp')`,
+                // backgroundImage: `url(${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${selectedImage})`,
                 backgroundSize: isZoomed ? "150%" : "cover",
                 backgroundRepeat: "no-repeat",
                 backgroundPosition: isZoomed
@@ -361,7 +403,7 @@ toast.error(error.response.data.message)
           <div className="flex justify-between items-start">
             {/* LEFT SIDE (name + category) */}
             <div>
-              <h3 className="text-2xl md:text-4xl montserrat text-[#292927] capitalize">
+              <h3 className="text-2xl md:text-4xl font-serif  text-[#292927] capitalize">
                 {funshow(product.name,"name")}
               </h3>
               <p className="xl:text-md text-stone-700 mt-2 capitalize">
@@ -399,6 +441,8 @@ toast.error(error.response.data.message)
           {/* */}
           <div className=" space-y-6 w-fit">
             {/*  */}
+            <div>
+
             <div className="flex items-end gap-2">
               <span className="text-[#292927] text-2xl font-semibold tracking-wide">
                 ₹{ funshow(Math.floor(product.finalPrice),"finalPrice")}
@@ -413,6 +457,11 @@ toast.error(error.response.data.message)
                   </span>
                 </>
               )}
+            </div>
+                      {/* Inclusive of taxes */}
+          <span className="text-sm text-stone-700 block ">
+            Inclusive of all taxes
+          </span>
             </div>
             <div className="flex items-center justify-start gap-2">
 
@@ -479,14 +528,10 @@ toast.error(error.response.data.message)
 
           </div>
 
-          {/* Inclusive of taxes */}
-          <span className="text-sm text-stone-700 block mt-1">
-            Inclusive of all taxes
-          </span>
 
-          {/* Colors */}
+             {/* Colors */}
           {product.colorVariants?.length > 0 && selectedColor && (
-            <div className="space-y-2 mt-4">
+            <div className="space-y-2 my-4">
               <h3 className="text-lg font-mosetta font-semibold text-[#292927] tracking-wide">
                 Available Colors
               </h3>
@@ -552,6 +597,22 @@ toast.error(error.response.data.message)
               </p> */}
             </div>
           )}
+
+<ProductDeal/>
+          <div className="rounded-md bg-red-50 w-fit py-2">
+
+{soldCount !== null && (
+  <div className="  text-red-600 px-3 py-1.5  text-sm font-semibold w-fit flex items-center gap-1 ">
+    🔥 {soldCount} bought in last 24 hours
+  </div>
+)}
+{viewerCount !== null && (
+  <div className="mt-2  text-green-700 px-3 py-1.5 text-sm font-medium w-fit flex items-center gap-1">
+    👀 {viewerCount} people are viewing this right now
+  </div>
+)}
+          </div>
+       
 
 {/* CTA Buttons */}
 <div className="flex flex-col md:flex-row gap-4 mt-4">

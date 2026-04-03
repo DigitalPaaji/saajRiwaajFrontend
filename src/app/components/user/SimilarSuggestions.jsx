@@ -7,7 +7,9 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { useGlobalContext } from "../context/GlobalContext";
 import Image from "next/image";
-import { FaRupeeSign } from "react-icons/fa";
+import { FaRupeeSign, FaStarHalfAlt } from "react-icons/fa";
+import { FaStar } from "react-icons/fa6";
+import { Heart } from "lucide-react";
 
 export default function EarringsMarquee({ categoryId }) {
   const { 
@@ -155,10 +157,10 @@ useEffect(() => {
             spaceBetween={16}
             breakpoints={{
               640: { slidesPerView: 1.3 },
-              768: { slidesPerView: 3 },
-              1024: { slidesPerView: 4 },
-              1280: { slidesPerView: 5 },
-              1536: { slidesPerView: 6 },
+              768: { slidesPerView: 2.5 },
+              1024: { slidesPerView: 3 },
+              1280: { slidesPerView: 4 },
+              1536: { slidesPerView: 5 },
             }}
             autoplay={{
               delay: 1,
@@ -194,7 +196,55 @@ useEffect(() => {
     </div>
   )}
 </div>
-                    <div className="flex items-center lg:items-start lg:gap-2 flex-row justify-between py-4 px-2">
+                    <div className="p-3 md:p-4 flex flex-col gap-2 bg-stone-50">
+        <div className="flex flex-col gap-1 text-center sm:text-left">
+
+          {/* PRODUCT NAME */}
+          <div className="flex items-center justify-between gap-1 ">
+            <h3 className="text-sm md:text-base font-medium text-slate-900 capitalize leading-tight break-words montserrat">
+              {item.name.toLowerCase()}
+            </h3>
+
+            <button className="cursor-pointer">
+              <Heart className="w-6 h-6 text-stone-700" />
+            </button>
+          </div>
+
+          {/* ⭐ REVIEWS SECTION */}
+          <div className=" mb-1 flex items-center justify-center sm:justify-start gap-1">
+            {[1, 2, 3, 4].map((star) => (
+              <FaStar key={star} size={12} className="text-yellow-500" />
+            ))}
+            <FaStarHalfAlt size={12} className="text-yellow-500" />
+
+            <span className="text-xs text-slate-500 ml-1">(120 reviews)</span>
+          </div>
+
+{/* {soldCount === undefined ? (
+  <div className="w-28 h-3 bg-gray-200 animate-pulse rounded"></div>
+) : (
+  <p className="text-[11px] text-red-600 font-semibold">
+    🔥 {soldCount} bought in last 24 hours
+  </p>
+)} */}
+
+          {/* PRICE SECTION */}
+          <div className="flex items-center justify-center sm:justify-start gap-2 mt-1">
+            <span className="flex items-center text-[#8b5424] font-bold text-sm md:text-base">
+              <FaRupeeSign size={12} className="md:w-3.5" />
+              {Math.floor(item.finalPrice)}
+            </span>
+
+            {item.price > item.finalPrice && (
+              <span className="flex items-center text-slate-400 text-xs line-through">
+                <FaRupeeSign size={10} />
+                {Math.floor(item.price)}
+              </span>
+            )}
+          </div>
+        </div>
+      </div>      
+      {/* <div className="flex items-center lg:items-start lg:gap-2 flex-row justify-between py-4 px-2">
                   <h3 className="montserrat font-medium text-stone-700 group-hover:text-[#B67032] transition-colors duration-300 capitalize">
   {item.name
     .toLowerCase()
@@ -210,7 +260,7 @@ useEffect(() => {
                                                       </h3>
                
                </div>
-              
+               */}
                   </Link>
                 </SwiperSlide>
               );

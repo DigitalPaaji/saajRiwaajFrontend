@@ -38,23 +38,16 @@ export default function Home() {
       <Category/>
       <BestSeller/>
       <Reviews/>
-
-       <DealsSection/>
-      <Content/>
-
+      <DealsSection/>
       <Neckwear2 />
-
-    <Exclusive2 />
-         <Faq/>
-
+      <Exclusive2 />
+      {/*
 
 
 
+      <Content/> */}
 
-
-
-
-           {/* <HeroBanner /> */}
+      <Faq/>
       {/* <Footer/> */}
      {/* <HeroBanner /> */}
       {/* <EditorialSection />

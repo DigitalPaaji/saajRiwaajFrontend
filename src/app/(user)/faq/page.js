@@ -1,6 +1,7 @@
 "use client";
 import React, { Suspense, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Minus } from "lucide-react";
 import Banner from "../../components/user/InnerBanner";
 import axios from "axios";
@@ -73,6 +74,10 @@ export default function Faq() {
     fetchPages();
   }, []);
 
+  useEffect(() => {
+    fetchPages();
+  }, []);
+
   return (
     <div>
       <Suspense fallback={null}>
@@ -105,9 +110,36 @@ export default function Faq() {
                   setOpenIndex(openIndex === index ? -1 : index)
                 }
               />
+      <section className="px-4 md:px-12 lg:px-24 xl:px-40 2xl:px-52 bg-white">
+        <div className="max-w-7xl mx-auto py-12 md:py-16">
+
+          {/* HEADING SECTION */}
+          <div className="text-center mb-16">
+            <h2 className="text-[16px] uppercase tracking-[0.2em] text-zinc-500 mb-3">
+              The stuff everyone asks before their first order
+            </h2>
+            {/* <h3 className="text-3xl md:text-4xl font-serif text-[#292927]">
+              Got Questions?
+              <span className="italic"> We've Got Answers</span>
+            </h3> */}
+          </div>
+
+          {/* FAQ ACCORDION */}
+          <div className="mt-12 border-t border-zinc-200">
+            {faqData?.map((faq, index) => (
+              <AccordionItem
+                key={index}
+                question={faq.heading}
+                answer={faq.des}
+                isOpen={openIndex === index}
+                onClick={() =>
+                  setOpenIndex(openIndex === index ? -1 : index)
+                }
+              />
             ))}
           </div>
 
+          {/* CALL TO ACTION */}
           {/* CALL TO ACTION */}
           <div className="mt-16 text-center">
             <p className="text-xs text-zinc-400 uppercase tracking-widest mb-4">
@@ -117,7 +149,12 @@ export default function Faq() {
               href={"/contact"}
               className="text-[11px] uppercase tracking-widest font-semibold text-[#292927] border-b border-[#292927] pb-1 hover:text-zinc-500 hover:border-zinc-500 transition-colors"
             >
+            <Link
+              href={"/contact"}
+              className="text-[11px] uppercase tracking-widest font-semibold text-[#292927] border-b border-[#292927] pb-1 hover:text-zinc-500 hover:border-zinc-500 transition-colors"
+            >
               Contact Concierge
+            </Link>
             </Link>
           </div>
         </div>

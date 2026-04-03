@@ -1,8 +1,27 @@
 "use client";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export default function OurStory() {
   return (
+    <>
+          <div className="py-12 px-4 md:px-12 lg:px-24 xl:px-40 2xl:px-52">
+            <div className="mb-8 text-center">
+              <p className="text-[11px] text-zinc-400 uppercase tracking-[0.5em]">
+                Tradition meets contemporary value
+              </p>
+            </div>
+          <div className=" relative z-10 ">
+            <Image
+            width={1080}
+            height={700}
+              src="/Images/careImage.webp"
+              alt=""
+              className="w-full h-auto object-cover"
+            />
+          </div>
+            </div>                 
+    
     <section className="px-5 md:px-10 lg:px-20 xl:px-32 py-16 md:py-24 bg-gray-100">
       <div className="max-w-5xl mx-auto text-center">
         
@@ -73,5 +92,7 @@ export default function OurStory() {
         </motion.div>
       </div>
     </section>
+    </>
+
   );
 }

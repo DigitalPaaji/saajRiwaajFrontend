@@ -46,7 +46,7 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased  `}
       >
         <GoogleOAuthProvider  clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}>
-        <GlobalProvider>
+        {/* <GlobalProvider> */}
             {/* <AnnouncementBar /> */}
                 {/* <Navbar/> */}
                       {/* <CartSidebar/> */}
@@ -62,7 +62,7 @@ export default function RootLayout({ children }) {
 </LayoutComp>
               {/* <Footer /> */}
           
-        </GlobalProvider>
+        {/* </GlobalProvider> */}
         <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
         </GoogleOAuthProvider>
       </body>

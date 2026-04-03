@@ -1,26 +1,12 @@
-"use client";
-import React, { useState } from "react";
-import Image from "next/image"; // Added missing import
-import Link from "next/link"; // Added for better Next.js routing
-import AddressCompo from "./AddressCompo";
-import ProductCompo from "./ProductCompo";
-import { useDispatch, useSelector } from "react-redux";
-import { addSlide } from "@/app/components/store/sliderSlice";
-import { base_url } from "@/app/components/store/utile";
-import axios from "axios";
-import Swal from "sweetalert2";
+"use client"
+import React, { useState } from 'react'
+import AddressCompo from '../checkout/AddressCompo'
+import { useSelector } from 'react-redux';
 
-const CheckoutPage = () => {
-  const { user } = useSelector((state) => state.user);
-  const cartItems = useSelector((state) => state.cart.items);
-  const dispatch = useDispatch();
-
-  const [showPopup, setShowPopUp] = useState(false);
-  const [isLoading, setIsLoading] = useState(false); 
-
-
-
-  
+const page = () => {
+      const { user } = useSelector((state) => state.user);
+const [showPopup, setShowPopUp] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [addressData, setAddressData] = useState({
     name: "",
     email: "",
@@ -33,6 +19,8 @@ const CheckoutPage = () => {
       addressLine: "",
     },
   });
+
+
 
   const handelCheckout = async (finalAmount) => {
     if (!user) {
@@ -165,7 +153,7 @@ const CheckoutPage = () => {
     });
   };
 
-  // Success Popup Render
+
   if (showPopup) {
     return (
       <div className="z-[999] bg-black/60 fixed top-0 left-0 w-full h-screen flex justify-center items-center">
@@ -191,19 +179,24 @@ const CheckoutPage = () => {
     );
   }
 
-  // Main Render
   return (
+
     <div className="flex flex-col md:flex-row min-h-screen container mx-auto gap-6 p-4">
-      <div className="md:w-4/6">
-        <AddressCompo setAddressData={setAddressData} addressData={addressData} />
-      </div>
 
-      <div className="md:w-2/6">
-        {/* Pass isLoading to disable button while processing */}
-        <ProductCompo handelCheckout={handelCheckout} isLoading={isLoading} />
-      </div>
+  <div className="md:w-4/6">
+<AddressCompo setAddressData={setAddressData} addressData={addressData} />
+</div>
+
+ <div className="md:w-2/6">
+ 
+ 
+
+ 
+ </div>
+
+
     </div>
-  );
-};
+  )
+}
 
-export default CheckoutPage;
+export default page

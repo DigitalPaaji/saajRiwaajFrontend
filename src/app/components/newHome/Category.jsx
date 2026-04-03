@@ -57,7 +57,7 @@ export default function ShopByCategories() {
                   href={categoryPath}
                   className="group relative flex flex-col items-center overflow-hidden transition-all duration-500"
                 >
-                  <div className="relative w-full aspect-[4/5] overflow-hidden bg-stone-100 mb-4 rounded-2xl">
+                  <div className="relative w-full aspect-[4/5] overflow-hidden bg-stone-100 mb-4 rounded-md">
                     <Image
                       src={cat?.category?.image? `${base_url}/${cat?.category?.image}` :imageSrc}
                       alt={label}
@@ -68,7 +68,7 @@ export default function ShopByCategories() {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0">
-                      <span className="bg-white text-[#292927] px-6 py-2.5 text-[10px] font-bold tracking-[0.2em] uppercase shadow-2xl">
+                      <span className="bg-gradient-to-r from-[#bc861a] via-[#f1d981] to-[#bc861a]   text-[#292927]  px-6 py-2.5 text-[10px] font-bold tracking-[0.2em] uppercase shadow-2xl">
                         View Collection
                       </span>
                     </div>
@@ -89,7 +89,7 @@ export default function ShopByCategories() {
             /* --- SKELETON LOADING STATE --- */
             [1, 2, 3, 4].map((i) => (
               <div key={i} className="flex flex-col items-center w-full">
-                <div className="w-full aspect-[4/5] bg-gray-200 animate-pulse rounded-2xl mb-4" />
+                <div className="w-full aspect-[4/5] bg-gray-200 animate-pulse rounded-md mb-4" />
                 <div className="h-4 w-2/3 bg-gray-200 animate-pulse rounded" />
               </div>
             ))

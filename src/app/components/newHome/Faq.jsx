@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Minus } from "lucide-react"; // Or use standard SVG
 import { useDispatch, useSelector } from "react-redux";
 import { getFaqs } from "../store/faqSlice";
+import Link from "next/link";
 
 const FAQ_DATA = [
   {
@@ -71,10 +72,7 @@ const dispatch = useDispatch()
   },[])
   return (
     <section className="px-4 md:px-12 lg:px-24 xl:px-40 2xl:px-52 bg-white">
-       <div className=" relative z-10 py-12 md:py-16">
-        <img src="/Images/careImage.webp" alt="" className="w-full h-auto" />
 
-       </div>
       <div className="max-w-4xl mx-auto  py-12 md:py-16">
        
        
@@ -103,9 +101,9 @@ const dispatch = useDispatch()
           <p className="text-xs text-zinc-400 uppercase tracking-widest mb-4">
             Still have questions?
           </p>
-          <button className="text-[11px] uppercase tracking-widest font-semibold text-[#292927] border-b border-[#292927] pb-1 hover:text-zinc-500 hover:border-zinc-500 transition-colors">
+          <Link href={'/contact'} className="text-[11px] uppercase tracking-widest font-semibold text-[#292927] border-b border-[#292927] pb-1 hover:text-zinc-500 hover:border-zinc-500 transition-colors">
             Contact Concierge
-          </button>
+          </Link>
         </div>
       </div>
     </section>
