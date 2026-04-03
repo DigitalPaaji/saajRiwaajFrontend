@@ -1,75 +1,97 @@
 "use client";
-import React, { useCallback, useEffect, useState } from "react";
-import Link from "next/link";
-import { ArrowRight, Box, Layers, Sparkles } from "lucide-react";
-import Image from "next/image";
+import { Tags, Copy } from "lucide-react";
+import React, { useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay } from "swiper/modules";
+import "swiper/css";
 
-export default function ProductDeal() {
-  const [offers, setOffers] = useState([]);
+const deals = [
+  {
+    title: "First Order",
+    desc: "Get 25% Discount on your purchase",
+    note: "Automatically added in cart",
+    code: "FIRST25",
+  },
+  {
+    title: "Seasonal Discount",
+    desc: "Get 25% Discount on your purchase",
+    note: "Applied at checkout",
+    code: "SEASON25",
+  },
+  {
+    title: "Limited Time Deal",
+    desc: "Get 25% Discount on your purchase",
+    note: "Automatically added in cart",
+    code: "LIMIT25",
+  },
+  {
+    title: "Special Offer",
+    desc: "Get 25% Discount on your purchase",
+    note: "Added automatically",
+    code: "SPECIAL25",
+  },
+];
 
-  const fetchOffers = useCallback(async () => {
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/offer`);
-      const data = await res.json();
-      setOffers(data.filter((item) => item.showonpage));
-    } catch (err) {
-      console.error("Error fetching offers:", err);
-    }
-  }, []);
+function ProductDeals() {
+  const [copiedIndex, setCopiedIndex] = useState(null);
 
-  useEffect(() => {
-    fetchOffers();
-  }, [fetchOffers]);
+  const copyToClipboard = (code, index) => {
+    navigator.clipboard.writeText(code);
+    setCopiedIndex(index);
+
+    setTimeout(() => setCopiedIndex(null), 1500);
+  };
 
   return (
-    <>
-      {offers.length > 0 && (
-        <section className="py-12 md:py-16 px-4 md:px-12 lg:px-24 xl:px-40 2xl:px-52">
-          <div className="">
-            {/* Header - Minimalist & Bold */}
-            <div className="mb-4 text-center">
-             
-              <p className="text-md font-mosetta font-semibold text-[#292927] tracking-wide">
-                Ongoing Offers
-              </p>
+    <Swiper
+      modules={[Autoplay]}
+      slidesPerView="auto"
+      spaceBetween={14}
+      grabCursor={true}
+      loop={true}
+      autoplay={{
+        delay: 2500,
+        disableOnInteraction: false,
+      }}
+      className="w-full"
+    >
+      {deals.map((item, index) => (
+        <SwiperSlide key={index} className="!w-[300px]">
+          <div className="p-3 bg-green-50/40 space-y-2 rounded border border-green-100">
+            <div className="flex items-center gap-2">
+              <Tags size={16} className="text-green-600" />
+              <h3 className="text-green-600 font-semibold text-[15px]">
+                {item.title}
+              </h3>
             </div>
 
-            {/* Bundle Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-4">
-              {offers.map((item, index) => (
-                <Link
-                  key={item._id}
-                  href={`/offer/${item.slug}/${item._id}`}
-                  className="group relative w-full overflow-hidden bg-green-50 rounded-md flex flex-col justify-end"
-                >
-           
+            <p className="text-gray-700 text-[14px] font-semibold">
+              {item.desc}
+            </p>
 
-                  {/* Content Area */}
-                  <div className="relative z-10 p-8 transform transition-all duration-500 translate-y-4 group-hover:translate-y-0">
-                    <div className="space-y-4">
-                      <h3 className="text-3xl font-light text-white leading-tight italic capitalize font-serif">
-                        {item.title}
-                      </h3>
+            <p className="text-gray-500 capitalize tracking-wide text-[13px]">
+              {item.note}
+            </p>
 
-                      <div className="pt-4 flex items-center justify-between border-t border-white/10 mt-4">
-                        <span className="text-white font-semibold text-[10px] tracking-[0.4em] uppercase">
-                          Explore Bundle
-                        </span>
-                        <div className="w-8 h-8 rounded-full border border-white/30 flex items-center justify-center text-white group-hover:bg-white group-hover:text-black transition-all duration-500">
-                          <ArrowRight size={14} />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              ))}
+            {/* Coupon Code + Copy */}
+            <div className="flex items-center justify-between bg-white rounded border border-green-200 px-3 py-2 mt-2">
+              <span className="text-green-700 font-semibold text-sm tracking-wider">
+                {item.code}
+              </span>
+
+              <button
+                onClick={() => copyToClipboard(item.code, index)}
+                className="flex items-center gap-1 text-green-700 hover:text-green-900 transition text-sm"
+              >
+                <Copy size={14} />
+                {copiedIndex === index ? "Copied!" : "Copy"}
+              </button>
             </div>
-
-
           </div>
-
-        </section>
-      )}
-    </>
+        </SwiperSlide>
+      ))}
+    </Swiper>
   );
 }
+
+export default ProductDeals;

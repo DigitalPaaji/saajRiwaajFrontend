@@ -1,72 +1,82 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
-import { useGlobalContext } from '../context/GlobalContext';
+import React, { useEffect, useState } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
+import Image from "next/image";
+import Link from "next/link";
+import { useGlobalContext } from "../context/GlobalContext";
 
-export default function Banner({ title = '', image = '/Images/innerbanner.webp',idc="" }) {
-  const [bgImage, setBgImage] = useState('/Images/innerBanner3.webp');
+export default function HeroBanner() {
+  const pathname = usePathname();
   const searchParams = useSearchParams();
-const {subCategoriesMap} = useGlobalContext()
-const [subName,setSubname]=useState()
+  const { subCategoriesMap } = useGlobalContext();
 
-  const subcategory = searchParams.get('subcategory');
+  const [subName, setSubName] = useState(null);
 
-  useEffect(() => {
-    const updateImage = () => {
-      if (window.innerWidth < 768) {
-        setBgImage('/banner/desktop/chain.webp');
-      } else {
-        setBgImage('/banner/desktop/b1.webp');
-      }
-    };
+  const subcategory = searchParams.get("subcategory");
 
-    updateImage();
-    window.addEventListener('resize', updateImage);
-    return () => window.removeEventListener('resize', updateImage);
-  }, []);
-useEffect(()=>{
-  if (!subCategoriesMap || !idc || !subcategory) {
-    setSubname(null);
-    return;
-  }
+  // Map category → banner
+  const bannerMap = {
+    neckwear: "/Images/neckwear.webp",
+    exclusive: "/Images/chains.webp",
+    bangles: "/Images/bangles.webp",
+    earrings: "/Images/earringsbanner.webp",
+  };
 
- const cat = subCategoriesMap[idc]?.find(
-    (item) => item._id === subcategory
+  // Extract category from URL
+  const currentCategory = Object.keys(bannerMap).find((cat) =>
+    pathname.includes(cat)
   );
 
-  setSubname(cat || null);
-},[subCategoriesMap, idc, subcategory])
-  // helpers
-  const formatText = (str = '') =>
-    str.split('-').join(' ');
+  // Final banner image
+  const bannerImage = bannerMap[currentCategory] || "/Images/default.webp";
+
+  // helper to format title
+  const formatText = (str = "") => str?.split("-").join(" ");
+
+  // Create title (from URL)
+  const title = currentCategory ? formatText(currentCategory) : "";
+
+  // Get subcategory name
+  useEffect(() => {
+    if (!subCategoriesMap || !subcategory || !currentCategory) return;
+
+    const list = subCategoriesMap[currentCategory];
+    const found = list?.find((i) => i._id === subcategory);
+
+    setSubName(found || null);
+  }, [subCategoriesMap, subcategory, currentCategory]);
 
   return (
-    <div
-      className="relative w-full h-[250px] md:h-[400px] flex items-center justify-center text-[#B67032]   px-4 md:px-6 lg:px-12 xl:px-24 "
-      style={{
-        backgroundImage: `url(${bgImage})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-      }}
-    >
-      {/* Text Content */}
-      <div className="relative z-10 py-6">
-   <h1 className="text-2xl md:text-xl font-mosetta font-semibold text-[#292927] capitalize">
-         {formatText(title)}
-        </h1> 
+    <section className="relative w-full">
+
+      {/* Banner Image */}
+      <div className="relative w-full h-auto">
+        <Image
+          src={bannerImage}
+          alt="Category Banner"
+          width={1920}
+          height={700}
+          priority
+          className="w-full h-auto object-cover"
+        />
+      </div>
+
+      {/* TEXT BOX BELOW IMAGE */}
+      <div className="relative z-10 py-6 border-y border-gray-600/50 mt-4 text-center px-4 md:px-0">
+        <h1 className="text-2xl md:text-xl font-mosetta font-semibold text-[#292927] capitalize">
+          {title}
+        </h1>
 
         <div className="mt-2 text-sm md:text-base text-gray-800 space-x-1">
           <Link href="/" className="hover:underline">
             Home
           </Link>
           <span>/</span>
-          <span className="capitalize">{formatText(title)}</span>
+          <span className="capitalize">{title}</span>
 
-          {/* 👉 show subcategory only if exists */}
-          {subcategory && (
+          {/* Show Subcategory */}
+          {subcategory && subName && (
             <>
               <span>/</span>
               <span className="capitalize">{subName?.name}</span>
@@ -74,6 +84,6 @@ useEffect(()=>{
           )}
         </div>
       </div>
-    </div>
+    </section>
   );
 }

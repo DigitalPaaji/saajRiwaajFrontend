@@ -95,7 +95,7 @@ export default function Collection({ product, pages, loading, fetchProducts }) {
         <div className="hidden lg:group-hover:flex absolute inset-0 transition-all duration-300 items-end justify-center p-4 z-20 ">
           <button
             onClick={(e) => handleAddToCart(e, item)}
-            className="montserrat w-full text-black bg-white font-semibold py-2.5 text-xs rounded shadow-lg  transform translate-y-4 group-hover:-translate-y-1 transition-all duration-500 ease-out flex items-center justify-center gap-2"
+            className="montserrat w-full bg-gradient-to-r from-[#bc861a] via-[#f1d981] to-[#bc861a] text-[#292927] font-semibold py-2.5 text-xs rounded shadow-lg  transform translate-y-4 group-hover:-translate-y-1 transition-all duration-500 ease-out flex items-center justify-center gap-2"
           >
             <ShoppingBag size={16} />
             ADD TO CART

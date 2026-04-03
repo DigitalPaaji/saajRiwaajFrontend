@@ -29,6 +29,8 @@ import { base_url } from "@/app/components/store/utile";
 import { addSlide } from "@/app/components/store/sliderSlice";
 import { FaStar } from "react-icons/fa6";
 import ProductDeal from "@/app/components/newHome/ProductDeals";
+import ReviewsSection from "@/app/components/newHome/ProductReviews";
+import FaqSection from "@/app/components/newHome/Faq";
 
 export default function ProductDetail() {
 
@@ -360,9 +362,9 @@ toast.error(error.response.data.message)
           <div className="flex flex-col md:flex-row items-center gap-4">
          
          <div className="max-h-[600px] max-w-screen overflow-y-auto no-scrollbar">
-          <div className="flex md:flex-col gap-4 pr-1 w-fit">
+          <div className="flex md:flex-col gap-4 pr-1 w-fit items-start">
   {(selectedColorImage)?.map((img, idx) => (
-   <div key={idx} className="relative w-24 h-24 cursor-pointer">
+   <div key={idx} className="relative w-20 h-20 cursor-pointer">
     <Image
       // src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${img}`}
       src={'/Images/3.webp'}
@@ -404,7 +406,7 @@ toast.error(error.response.data.message)
             {/* LEFT SIDE (name + category) */}
             <div>
               <h3 className="text-2xl md:text-4xl font-serif  text-[#292927] capitalize">
-                {funshow(product.name,"name")}
+                {funshow(product.name.toLowerCase(),"name")}
               </h3>
               <p className="xl:text-md text-stone-700 mt-2 capitalize">
                 {product?.category?.name}{" "}
@@ -532,7 +534,7 @@ toast.error(error.response.data.message)
              {/* Colors */}
           {product.colorVariants?.length > 0 && selectedColor && (
             <div className="space-y-2 my-4">
-              <h3 className="text-lg font-mosetta font-semibold text-[#292927] tracking-wide">
+              <h3 className="text-md font-mosetta font-semibold text-[#292927] tracking-wide">
                 Available Colors
               </h3>
 
@@ -599,15 +601,15 @@ toast.error(error.response.data.message)
           )}
 
 <ProductDeal/>
-          <div className="rounded-md bg-red-50 w-fit py-2">
+          <div className="border-t border-gray-400/30 w-full py-2">
 
 {soldCount !== null && (
-  <div className="  text-red-600 px-3 py-1.5  text-sm font-semibold w-fit flex items-center gap-1 ">
+  <div className="  text-red-600 px-3 py-1  text-sm font-semibold w-fit flex items-center gap-1 ">
     🔥 {soldCount} bought in last 24 hours
   </div>
 )}
 {viewerCount !== null && (
-  <div className="mt-2  text-green-700 px-3 py-1.5 text-sm font-medium w-fit flex items-center gap-1">
+  <div className="mt-2  text-green-700 px-3 py-1 text-sm font-medium w-fit flex items-center gap-1">
     👀 {viewerCount} people are viewing this right now
   </div>
 )}
@@ -630,17 +632,7 @@ toast.error(error.response.data.message)
     <button
 
     onClick={()=>handelAddtocartProduct(product)}
-// onClick={()=>{handelAddtocart("cart"),setbuytypeCart(true)}}
-
-      // onClick={() => {
-      //   addToCart({
-      //     ...product,
-      //     color: selectedColor?.colorName, // 👈 हमेशा "color" नाम से save करो
-      //     qty: selectedQty,
-      //   });
-      //   setSelectedQty(1);
-      // }}
-      className="cursor-pointer w-full flex items-center justify-center gap-2 bg-[#8b5424e0] text-white px-4 py-3  hover:bg-[#a95c2e] transition text-sm font-medium tracking-wide"
+      className="cursor-pointer w-full flex items-center justify-center gap-2 bg-gradient-to-r from-[#bc861a] via-[#f1d981] to-[#bc861a] text-[#292927]  px-4 py-3  hover:bg-[#a95c2e] transition text-sm font-medium tracking-wide"
     >
       <ShoppingCart className="w-4 h-4" />
       Add to Cart
@@ -656,20 +648,11 @@ toast.error(error.response.data.message)
             item._id === product._id &&
             item.color === selectedColor?.colorName
         )
-      ) 
-      // {
-      //   addToCart({
-      //     ...product,
-      //     color: selectedColor?.colorName, 
-      //     qty: selectedQty,
-      //   });
-      // }
-
-     
+      )   
                 {setbuytypeCart(false) ,handelAddtocart("buy"),  setShowCheckout(true)}
           
     }}
-    className="w-full flex items-center justify-center gap-2 border border-[#8b5424e0] text-[#8b5424e0] px-4 py-3  hover:bg-[#fff4ed] transition text-sm font-medium tracking-wide"
+    className="w-full flex items-center justify-center gap-2 border border-[#bc861a] text-[#bc861a]  px-4 py-3 transition text-sm font-medium tracking-wide"
   >
     <CreditCard className="w-4 h-4" />
     Buy Now
@@ -751,6 +734,7 @@ toast.error(error.response.data.message)
               ))}
             </div>
           </div>
+  <ReviewsSection/>
         
           {/* Description */}
           {(product.description?.paragraphs?.length > 0 ||
@@ -781,11 +765,9 @@ toast.error(error.response.data.message)
       
         </div>
       </div>
-
+<FaqSection/>
       {product?.category && (
-        <Similar
-          categoryId={product?.category}
-        />
+        <Similar categoryId={product?.category} />
       )}
     </div>
   );

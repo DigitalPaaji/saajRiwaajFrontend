@@ -86,7 +86,7 @@ export default function FilterLayout() {
 
   return (
     <div>
-      <InnerBanner title={collection} idc={id} image="/Images/banner.webp" />
+      <InnerBanner title={collection} idc={id} image="/Images/neckwear.webp" />
 
       {/* Floating filter button (mobile only) */}
 <button

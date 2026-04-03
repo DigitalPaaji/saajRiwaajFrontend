@@ -11,6 +11,8 @@ import Trust from '../components/newHome/Trust';
 import Reviews from '../components/newHome/Reviews'
 import Faq from '../components/newHome/Faq'
 import Footer from '../components/newHome/Footer'
+import Tags from '../components/newHome/Tags'
+
 
 import HeroBanner from "../components/user/HeroBanner";
 import BestSellers from "../components/user/BestSellers";
@@ -33,6 +35,7 @@ export default function Home() {
 
       <Category/>
       <BestSeller/>
+      <Tags/>
       <Reviews/>
 
       <DealsSection/>

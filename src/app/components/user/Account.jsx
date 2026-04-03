@@ -130,8 +130,8 @@ const handleSave = async () => {
       
 
  
-           <div className="flex justify-between items-center px-4 py-6 border-b-[1px] border-[#99571d]">
-        <h2 className="text-xl font-mosetta font-medium text-[#99571d]">My Profile</h2>
+           <div className="flex justify-between items-center px-4 py-6 border-b-[1px] border-[#292927]">
+        <h2 className="text-lg montserrat font-medium text-[#292927]">My Profile</h2>
         <button onClick={() => setIsAuthOpen(false)}>
           <X className="w-5 h-5" />
         </button>
@@ -141,14 +141,14 @@ const handleSave = async () => {
       <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
         <div className="space-y-3">
           
-          <InfoRow icon={<User className="text-[#99571db7]"/>} label="Full Name" value={user?.name} />
-          <InfoRow icon={<Mail className="text-[#99571db7]"/>} label="Email" value={user?.email} />
+          <InfoRow icon={<User className="text-[#292927b7]"/>} label="Full Name" value={user?.name} />
+          <InfoRow icon={<Mail className="text-[#292927b7]"/>} label="Email" value={user?.email} />
 
           {!isEditing ? (
             <>
-              <InfoRow icon={<Phone className="text-[#99571db7]"/>} label="Phone" value={user?.phone} />
+              <InfoRow icon={<Phone className="text-[#292927b7]"/>} label="Phone" value={user?.phone} />
               <InfoRow
-                icon={<MapPin className="text-[#99571db7]"/>}
+                icon={<MapPin className="text-[#292927b7]"/>}
                 label="Address"
                 value={
                   user?.address
@@ -162,7 +162,7 @@ const handleSave = async () => {
 
 
               <button
-                className="flex items-center gap-1 px-3 py-1 bg-[#B67032] text-white text-sm rounded mt-2"
+                className="flex items-center gap-1 px-3 py-1 bg-[#292927] text-white text-sm rounded mt-2"
                 onClick={() => setIsEditing(true)}
               >
                 <Pencil className="w-4 h-4" /> Edit
@@ -173,20 +173,20 @@ const handleSave = async () => {
           <Link href={'/orders'} onClick={()=>{
            setIsAuthOpen(false)
           //  setIsOrderOpen(true)
-           }} className="flex items-center gap-3 text-stone-700 hover:text-[#B67032] transition-colors">
-            <Package className="w-5 h-5 text-[#99571db7]" />
+           }} className="flex items-center gap-3 text-stone-700 hover:text-[#292927] transition-colors">
+            <Package className="w-5 h-5 text-[#292927b7]" />
             <span className="text-md font-medium">My Orders</span>
           </Link>
           <button  onClick={() => {
                         dispatch(addSlide("wishlist"));
-                      }} className="flex items-center gap-3 text-stone-700 hover:text-[#B67032] transition-colors">
-            <Heart className="w-5 h-5 text-[#99571db7]" />
+                      }} className="flex items-center gap-3 text-stone-700 hover:text-[#292927] transition-colors">
+            <Heart className="w-5 h-5 text-[#292927b7]" />
             <span className="text-md font-medium">Wishlist</span>
           </button>
           <button   onClick={() => {
                         dispatch( addSlide("cart"));
-                      }} className="flex items-center gap-3 text-stone-700 hover:text-[#B67032] transition-colors">
-            <ShoppingCart className="w-5 h-5 text-[#99571db7]" />
+                      }} className="flex items-center gap-3 text-stone-700 hover:text-[#292927] transition-colors">
+            <ShoppingCart className="w-5 h-5 text-[#292927b7]" />
             <span className="text-md font-medium">Cart</span>
           </button>
         </div>
@@ -194,42 +194,42 @@ const handleSave = async () => {
           ) : (
             <>
               <EditableRow
-                icon={<Phone className="text-[#99571db7]"/>}
+                icon={<Phone className="text-[#292927b7]"/>}
                 label="Phone"
                 name="phone"
                 value={formData.phone}
                 onChange={handleChange}
               />
               <EditableRow
-                icon={<MapPin className="text-[#99571db7]"/>}
+                icon={<MapPin className="text-[#292927b7]"/>}
                 label="Address Line"
                 name="addressLine"
                 value={formData.addressLine}
                 onChange={handleChange}
               />
               <EditableRow
-                icon={<Building2  className="text-[#99571db7]"/>}
+                icon={<Building2  className="text-[#292927b7]"/>}
                 label="City"
                 name="city"
                 value={formData.city}
                 onChange={handleChange}
               />
               <EditableRow
-                icon={<Map  className="text-[#99571db7]"/>}
+                icon={<Map  className="text-[#292927b7]"/>}
                 label="State"
                 name="state"
                 value={formData.state}
                 onChange={handleChange}
               />
               <EditableRow
-                icon={<Globe  className="text-[#99571db7]"/>}
+                icon={<Globe  className="text-[#292927b7]"/>}
                 label="Country"
                 name="country"
                 value={formData.country}
                 onChange={handleChange}
               />
               <EditableRow
-                icon={<Hash  className="text-[#99571db7]"/>}
+                icon={<Hash  className="text-[#292927b7]"/>}
                 label="Pincode"
                 name="pincode"
                 value={formData.pincode}
@@ -245,7 +245,7 @@ const handleSave = async () => {
                   Cancel
                 </button>
                 <button
-                  className="flex-1 bg-[#B67032] text-white text-sm py-2 rounded flex items-center justify-center gap-1"
+                  className="flex-1 bg-[#292927] text-white text-sm py-2 rounded flex items-center justify-center gap-1"
                   onClick={handleSave}
                   disabled={isSaving}
                 >

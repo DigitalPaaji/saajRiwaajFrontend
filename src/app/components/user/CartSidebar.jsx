@@ -152,7 +152,7 @@ const removeFromCartuser = async(id)=>{
 
      
         <div className="relative z-10 flex justify-between items-center px-6 py-5 border-b border-gray-100 bg-white">
-          <h2 className="text-xl font-medium text-[#99571d]">Your Cart</h2>
+          <h2 className="text-lg font-medium montserrat text-[#292927]">Your Cart</h2>
           <button
             className="p-2 hover:bg-gray-100 rounded-full transition-colors"
             onClick={handleClose}
@@ -175,7 +175,7 @@ const removeFromCartuser = async(id)=>{
             <p className="text-lg font-medium text-gray-700">Your Cart Is Empty</p>
             <button 
               onClick={handleClose}
-              className="mt-4 text-[#B67032] underline hover:text-[#99571d]"
+              className="mt-4 text-[#292927] underline hover:text-[#292927]"
             >
               Start Shopping
             </button>
@@ -204,7 +204,7 @@ const removeFromCartuser = async(id)=>{
                         alt={item?.product?.name || "Product image"}
                         width={80}
                         height={80}
-                        className="w-20 h-20 rounded-lg object-cover border border-gray-100 group-hover:border-[#B67032] transition-colors"
+                        className="w-20 h-20 rounded-md object-cover border border-gray-100 group-hover:border-[#292927] transition-colors"
                       />
                     </Link>
 
@@ -214,7 +214,7 @@ const removeFromCartuser = async(id)=>{
                         href={`/product/${item?.product?.name}/${item?.product?._id}`}
                         onClick={handleClose}
                       >
-                        <h3 className="text-sm font-medium text-gray-900 truncate hover:text-[#B67032]">
+                        <h3 className="text-sm font-medium text-gray-900 truncate hover:text-[#292927]">
                           {item?.product?.name}
                         </h3>
                       </Link>
@@ -268,7 +268,7 @@ const removeFromCartuser = async(id)=>{
             <div className="p-6 border-t border-gray-100 bg-gray-50 space-y-4">
               
               {/* Table Integration */}
-              <div className="w-full overflow-hidden rounded-lg shadow-sm border border-gray-200 bg-white">
+              <div className="w-full overflow-hidden rounded-md shadow-sm border border-gray-200 bg-white">
                 <table className="w-full text-left border-collapse whitespace-nowrap">
                   <thead className="bg-gray-50 text-gray-600 uppercase text-[10px] font-semibold tracking-wider">
                     <tr>
@@ -301,7 +301,7 @@ const removeFromCartuser = async(id)=>{
 
               <p>-  ₹{discountPrice.toFixed(2)}</p>
                 </div>}
-              <div className="flex justify-between items-center text-lg font-medium text-gray-900 pt-2">
+              <div className="flex justify-between items-center text-lg montserrat font-medium text-gray-900 pt-2">
                 <span>Subtotal</span>
                 <span>
                   ₹{total.toFixed(2)}
@@ -316,14 +316,14 @@ const removeFromCartuser = async(id)=>{
                  href="/checkout"
                 onClick={()=>setIsCartOpen()}
                 >
-                  <button   className="w-full bg-[#B67032] hover:bg-[#99571d] text-white py-3.5 rounded-lg font-medium transition-colors duration-200 shadow-sm">
+                  <button   className="w-full bg-[#292927] hover:bg-[#292927] text-white py-3.5 rounded-md font-medium transition-colors duration-200 shadow-sm">
 
                   Checkout
                   </button>
                 </Link>
                 <button
                   onClick={handleClose}
-                  className="w-full text-sm text-gray-600 hover:text-[#B67032] font-medium py-2 transition-colors"
+                  className="w-full text-sm text-gray-600 hover:text-[#292927] font-medium py-2 transition-colors"
                 >
                   Continue Shopping
                 </button>
