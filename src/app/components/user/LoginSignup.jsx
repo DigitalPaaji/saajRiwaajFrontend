@@ -155,8 +155,8 @@ export default function AuthSidebar({ isAuthOpen, setIsAuthOpen }) {
           isAuthOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        <div className="flex justify-between items-center px-4 py-6 border-b-[1px] border-[#99571d]">
-          <h2 className="text-xl font-semibold">Customer Login</h2>
+        <div className="flex justify-between items-center px-4 py-6 border-b-[1px] border-[#292927]">
+          <h2 className="text-lg montserrat">Customer Login</h2>
           <button onClick={() => setIsAuthOpen(false)} disabled={isLoading}>
             <X className="w-5 h-5 text-gray-600 hover:text-black" />
           </button>
@@ -171,7 +171,7 @@ export default function AuthSidebar({ isAuthOpen, setIsAuthOpen }) {
               value={form.email}
               onChange={(e) => setForm({ email: e.target.value })}
               className={`w-full border p-2 rounded outline-none transition-all ${
-                errors.email ? "border-red-500" : "border-gray-400 focus:border-[#B67032]"
+                errors.email ? "border-red-500" : "border-gray-400 focus:border-[#292927]"
               } ${isLoading ? "opacity-60 cursor-not-allowed" : ""}`}
               disabled={showOtpFields || isLoading}
             />
@@ -196,7 +196,7 @@ export default function AuthSidebar({ isAuthOpen, setIsAuthOpen }) {
                     onKeyDown={(e) => handleKeyDown(e, index)}
                     onChange={(e) => handleChange(e.target, index)}
                     disabled={isLoading}
-                    className="w-10 h-10 md:w-12 md:h-12 border-2 rounded-lg text-center text-xl text-gray-800 bg-white outline-none transition-all border-gray-400 focus:border-[#B67032] focus:ring-2 focus:ring-[#e2ad7f] disabled:opacity-60"
+                    className="w-10 h-10 md:w-12 md:h-12 border-2 rounded-lg text-center text-xl text-gray-800 bg-white outline-none transition-all border-gray-400 focus:border-[#292927] focus:ring-2 focus:ring-[#e2ad7f] disabled:opacity-60"
                   />
                 ))}
               </div>
@@ -205,7 +205,7 @@ export default function AuthSidebar({ isAuthOpen, setIsAuthOpen }) {
 
           {!showOtpFields ? (
             <button
-              className="w-full bg-[#B67032] hover:bg-[#99571d] transition-colors text-white py-2 rounded flex justify-center items-center h-10 disabled:opacity-70"
+              className="w-full bg-[#292927] hover:bg-[#292927] transition-colors text-white py-2 rounded flex justify-center items-center h-10 disabled:opacity-70"
               onClick={handleSendOtp}
               disabled={isLoading}
             >
@@ -213,7 +213,7 @@ export default function AuthSidebar({ isAuthOpen, setIsAuthOpen }) {
             </button>
           ) : (
             <button
-              className="w-full bg-[#B67032] hover:bg-[#99571d] transition-colors text-white py-2 rounded flex justify-center items-center h-10 disabled:opacity-70"
+              className="w-full bg-[#292927] hover:bg-[#292927] transition-colors text-white py-2 rounded flex justify-center items-center h-10 disabled:opacity-70"
               onClick={verifyOtp}
               disabled={isLoading}
             >

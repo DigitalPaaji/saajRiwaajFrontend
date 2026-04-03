@@ -60,8 +60,8 @@ useEffect(()=>{
         </div>
 
         {/* Header */}
-        <div className="flex justify-between items-center px-4 py-6 border-b-[1px] border-[#99571d] relative z-10 bg-white">
-          <h2 className="text-xl font-mosetta font-medium text-[#99571d]">Wishlist</h2>
+        <div className="flex justify-between items-center px-4 py-6 border-b-[1px] border-[#292927] relative z-10 bg-white">
+          <h2 className="text-lg montserrat text-[#292927]">Wishlist</h2>
           <button className="cursor-pointer hover:bg-gray-100 p-1 rounded-full transition" onClick={() => setIsWishlistOpen()}>
             <X className="w-5 h-5" />
           </button>
@@ -109,7 +109,7 @@ useEffect(()=>{
                   {/* Item Details */}
                   <div className="flex-1 space-y-1 pr-6">
                     <Link href={`/product/${item.name}/${item._id}`} onClick={() => setIsWishlistOpen()}>
-                      <p className="capitalize font-medium hover:text-[#B67032] transition-colors">{item.name}</p>
+                      <p className="capitalize font-medium hover:text-[#292927] transition-colors">{item.name}</p>
                     </Link>
 
                     <div className="flex flex-col gap-2 pt-1">
@@ -126,7 +126,7 @@ useEffect(()=>{
                           {item.colorVariants.map((v, i) => (
                             <span
                               key={i}
-                              className="px-2 py-0.5 rounded-md border text-xs border-[#B67032] text-[#B67032] font-medium"
+                              className="px-2 py-0.5 rounded-md border text-xs border-[#292927] text-[#292927] font-medium"
                             >
                               {v?.colorName}
                             </span>
@@ -155,7 +155,7 @@ useEffect(()=>{
             <div className="p-4 border-t border-gray-100 bg-white pb-8">
               <button
                 onClick={() => setIsWishlistOpen()}
-                className="text-center text-md text-[#B67032] underline w-full font-medium hover:text-[#99571d] transition-colors"
+                className="text-center text-md text-[#292927] underline w-full font-medium hover:text-[#292927] transition-colors"
               >
                 Explore More
               </button>
