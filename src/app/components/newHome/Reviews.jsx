@@ -39,6 +39,7 @@ const StyleVideo = ({ videoSrc, label, price }) => {
           src={videoSrc}
           loop
           muted
+          preload="none"      
           playsInline
           className="w-full h-full object-cover rounded-md transition-transform duration-700 group-hover:scale-105"
         />

@@ -18,7 +18,7 @@ export default function HeroBanner() {
   // Map category → banner
   const bannerMap = {
     neckwear: "/Images/neckwear.webp",
-    exclusive: "/Images/chains.webp",
+    exclusive: "/Images/exclusivebanner.webp",
     bangles: "/Images/bangles.webp",
     earrings: "/Images/earringsbanner.webp",
   };
@@ -63,7 +63,7 @@ export default function HeroBanner() {
       </div>
 
       {/* TEXT BOX BELOW IMAGE */}
-      <div className="relative z-10 py-6 border-y border-gray-600/50 mt-4 text-center px-4 md:px-0">
+    {/* <div className="relative z-10 py-6 border-y border-gray-600/50 mt-4 text-center px-4 md:px-0">
         <h1 className="text-2xl md:text-xl font-mosetta font-semibold text-[#292927] capitalize">
           {title}
         </h1>
@@ -75,7 +75,6 @@ export default function HeroBanner() {
           <span>/</span>
           <span className="capitalize">{title}</span>
 
-          {/* Show Subcategory */}
           {subcategory && subName && (
             <>
               <span>/</span>
@@ -83,7 +82,7 @@ export default function HeroBanner() {
             </>
           )}
         </div>
-      </div>
+      </div> */}
     </section>
   );
 }

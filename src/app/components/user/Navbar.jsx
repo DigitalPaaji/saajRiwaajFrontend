@@ -162,7 +162,7 @@ function formatCategoryLabel(name) {
              />
 </Link>
 
-        {isLoading ? <div>Loading... </div> :
+        {isLoading ? "" :
 
       <nav className="hidden xl:flex items-center space-x-10">
  { info?.data?.length >0  && info?.data?.map((cat) => {

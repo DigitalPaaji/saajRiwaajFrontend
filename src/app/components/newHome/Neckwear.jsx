@@ -190,14 +190,14 @@ toast.error(error.response.data.message)
 
         {/* --- GRID LAYOUT --- */}
         {loading ? (
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 xl:gap-8">
             {Array.from({ length: 4 }).map((_, idx) => (
               <div key={idx} className="animate-pulse rounded-md bg-gray-100 aspect-[4/6]" />
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-8">
-            {productsByCategory2.slice(0,12).map((item) => (
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 xl:gap-8">
+            {productsByCategory2.slice(0,8).map((item) => (
               <Link
                 key={item._id}
                 href={`/product/${item.name}/${item._id}`}
@@ -211,7 +211,7 @@ toast.error(error.response.data.message)
         
         {!loading && productsByCategory2.length === 0 && (
           <div className="text-center py-20 text-stone-400">
-            No items available in this collection.
+            
           </div>
         )}
       </div>

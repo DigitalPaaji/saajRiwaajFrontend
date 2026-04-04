@@ -23,7 +23,10 @@ import { FaHeart, FaStarHalfAlt } from "react-icons/fa";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import { addToWishlist, removeFromWishlist } from "@/app/components/store/wishListSlice";
+import {
+  addToWishlist,
+  removeFromWishlist,
+} from "@/app/components/store/wishListSlice";
 import { addTocart, addTocartUser } from "@/app/components/store/cartSlice";
 import { base_url } from "@/app/components/store/utile";
 import { addSlide } from "@/app/components/store/sliderSlice";
@@ -33,57 +36,58 @@ import ReviewsSection from "@/app/components/newHome/ProductReviews";
 import FaqSection from "@/app/components/newHome/Faq";
 
 export default function ProductDetail() {
-
   const { id } = useParams();
   const {
     refetchProductById,
     setIsCartOpen,
     updateQty,
-    cart,setAllCart,setIsAuthOpen,setAuthTab,setShowCheckout,setbuytypeCart
+    cart,
+    setAllCart,
+    setIsAuthOpen,
+    setAuthTab,
+    setShowCheckout,
+    setbuytypeCart,
   } = useGlobalContext();
-  const wishlist = useSelector(state=>state.wishlist.items)
- const { user } = useSelector(state=>state.user)
-  const dispatch = useDispatch()
+  const wishlist = useSelector((state) => state.wishlist.items);
+  const { user } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
+  const [viewerCount, setViewerCount] = useState(null);
+  // 📌 VIEWER COUNT (Random, persists 30 minutes)
+  useEffect(() => {
+    if (!id) return;
 
-const [viewerCount, setViewerCount] = useState(null);
-// 📌 VIEWER COUNT (Random, persists 30 minutes)
-useEffect(() => {
-  if (!id) return;
+    const storageKey = `viewerCount_${id}`;
+    const stored = JSON.parse(localStorage.getItem(storageKey));
 
-  const storageKey = `viewerCount_${id}`;
-  const stored = JSON.parse(localStorage.getItem(storageKey));
+    const now = Date.now();
+    const THIRTY_MIN = 30 * 60 * 1000;
 
-  const now = Date.now();
-  const THIRTY_MIN = 30 * 60 * 1000;
+    // If value exists & time not expired → use stored value
+    if (stored && now - stored.timestamp < THIRTY_MIN) {
+      setViewerCount(stored.count);
+      return;
+    }
 
-  // If value exists & time not expired → use stored value
-  if (stored && now - stored.timestamp < THIRTY_MIN) {
-    setViewerCount(stored.count);
-    return;
-  }
+    // Else generate new number (1–40)
+    const randomCount = Math.floor(Math.random() * 40) + 1;
 
-  // Else generate new number (1–40)
-  const randomCount = Math.floor(Math.random() * 40) + 1;
+    // Store with timestamp
+    localStorage.setItem(
+      storageKey,
+      JSON.stringify({ count: randomCount, timestamp: now }),
+    );
 
-  // Store with timestamp
-  localStorage.setItem(
-    storageKey,
-    JSON.stringify({ count: randomCount, timestamp: now })
-  );
+    setViewerCount(randomCount);
+  }, [id]);
 
-  setViewerCount(randomCount);
-}, [id]);
-
-
-  
   const [product, setProduct] = useState(null);
   const [selectedImage, setSelectedImage] = useState("");
 
   const [zoomPos, setZoomPos] = useState({ x: 0, y: 0 });
   const [isZoomed, setIsZoomed] = useState(false);
-  const [addedtoCart,setAddedToCart] =useState(false)
-const [selectedColorImage,setSelectedColorImage]=  useState()
+  const [addedtoCart, setAddedToCart] = useState(false);
+  const [selectedColorImage, setSelectedColorImage] = useState();
 
   const handleMouseMove = (e) => {
     const { left, top, width, height } =
@@ -100,7 +104,7 @@ const [selectedColorImage,setSelectedColorImage]=  useState()
 
   const [flipped, setFlipped] = useState([false, false, false]);
   const [selectedColor, setSelectedColor] = useState(null);
-  const [newImg,setnewImg]= useState()
+  const [newImg, setnewImg] = useState();
   const [selectedQty, setSelectedQty] = useState(1);
 
   useEffect(() => {
@@ -109,30 +113,28 @@ const [selectedColorImage,setSelectedColorImage]=  useState()
       setSelectedQty(1);
     }
   }, [product]);
-useEffect(()=>{
-  setSelectedImage(newImg?.[0])
-},[newImg])
-
+  useEffect(() => {
+    setSelectedImage(newImg?.[0]);
+  }, [newImg]);
 
   const toggleFlip = (index) => {
     setFlipped((prev) => prev.map((f, i) => (i === index ? !f : f)));
   };
 
   const [soldCount, setSoldCount] = useState(null);
-const { getSoldCount } = useGlobalContext();
+  const { getSoldCount } = useGlobalContext();
 
-useEffect(() => {
-  if (!id) return;
+  useEffect(() => {
+    if (!id) return;
 
-  const updateCount = () => {
-    const count = getSoldCount(id);
-    setSoldCount(count);
-  };
+    const updateCount = () => {
+      const count = getSoldCount(id);
+      setSoldCount(count);
+    };
 
-  updateCount();
-// eslint-disable-next-line react-hooks/exhaustive-deps
-}, [id]);
-
+    updateCount();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
 
   const cards = [
     {
@@ -141,12 +143,12 @@ useEffect(() => {
       frontSubtitle: "Free shipping on orders above ₹799",
       backContent: (
         <div className="text-sm space-y-1">
-    <div>Estimated Delivery Time: 3-7 business days </div>
-    <div>All orders are carefully processed and packed</div>
-    <div className="italic text-stone-700">
-      *Delivery times may vary by location
-    </div> 
-  </div>
+          <div>Estimated Delivery Time: 3-7 business days </div>
+          <div>All orders are carefully processed and packed</div>
+          <div className="italic text-stone-700">
+            *Delivery times may vary by location
+          </div>
+        </div>
       ),
     },
     {
@@ -155,9 +157,11 @@ useEffect(() => {
       frontSubtitle: "Easy exchange within 24 hours",
       backContent: (
         <div className="list-disc list-inside text-sm space-y-1">
-       <p>Products are eligible for exchange only if received damaged. The issue must be reported within 24 hours of delivery with clear video proof. Any exchange request raised after 24 hours will be rejected.</p>
-
-
+          <p>
+            Products are eligible for exchange only if received damaged. The
+            issue must be reported within 24 hours of delivery with clear video
+            proof. Any exchange request raised after 24 hours will be rejected.
+          </p>
         </div>
       ),
     },
@@ -176,9 +180,9 @@ useEffect(() => {
     },
   ];
 
-  useEffect(()=>{
-setSelectedColorImage(product?.images)
-  },[ product])
+  useEffect(() => {
+    setSelectedColorImage(product?.images);
+  }, [product]);
 
   useEffect(() => {
     if (id) {
@@ -191,10 +195,9 @@ setSelectedColorImage(product?.images)
       })();
     }
   }, [id, refetchProductById]);
-useEffect(()=>{
-setSelectedImage(selectedColorImage?.[0])
-
-},[selectedColorImage])
+  useEffect(() => {
+    setSelectedImage(selectedColorImage?.[0]);
+  }, [selectedColorImage]);
   if (!product)
     return (
       <div className="flex flex-col xl:flex-row gap-6 px-4 md:px-12 lg:px-24 xl:px-40 2xl:px-52 py-12 ">
@@ -237,149 +240,134 @@ setSelectedImage(selectedColorImage?.[0])
       </div>
     );
 
+  const handelAddtocart = async (buytype) => {
+    // buytype ==="buy" ?   :  setbuytypeCart(true);
 
-
-
-
-    const handelAddtocart= async(buytype)=>{  
-            // buytype ==="buy" ?   :  setbuytypeCart(true);
-
-      const item = {productid:product._id,price:product.finalPrice,quantity:selectedQty,color:selectedColor?._id}
+    const item = {
+      productid: product._id,
+      price: product.finalPrice,
+      quantity: selectedQty,
+      color: selectedColor?._id,
+    };
     try {
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/cart/post`,{...item,buytype},{
-        withCredentials:true
-      })
-     
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_LOCAL_PORT}/cart/post`,
+        { ...item, buytype },
+        {
+          withCredentials: true,
+        },
+      );
+
       const data = await response.data;
-   
-   if (data.success) {
 
-  if (typeof window !== "undefined" && window.fbq) {
+      if (data.success) {
+        if (typeof window !== "undefined" && window.fbq) {
+          if (buytype === "cart") {
+            // ✅ Add to Cart Event
+            window.fbq("track", "AddToCart", {
+              content_ids: [product._id],
+              content_name: product.name,
+              value: product.finalPrice,
+              currency: "INR",
+            });
+          }
 
-    if (buytype === "cart") {
-      // ✅ Add to Cart Event
-      window.fbq('track', 'AddToCart', {
-        content_ids: [product._id],
-        content_name: product.name,
-        value: product.finalPrice,
-        currency: 'INR'
-      });
-    }
+          if (buytype === "buy") {
+            // ✅ Buy Now Event
+            window.fbq("track", "InitiateCheckout", {
+              content_ids: [product._id],
+              content_name: product.name,
+              value: product.finalPrice,
+              currency: "INR",
+            });
+          }
+        }
 
-    if (buytype === "buy") {
-      // ✅ Buy Now Event
-      window.fbq('track', 'InitiateCheckout', {
-        content_ids: [product._id],
-        content_name: product.name,
-        value: product.finalPrice,
-        currency: 'INR'
-      });
-    }
-
-  }
-
-  buytype === "buy" ? "" : toast.success(data.message);
-  buytype === "buy" ? "" : setAddedToCart(true);
-  setAllCart(data.cart);
-
-}
-
-
-      
-      
-      else{
-      setAuthTab("login"); 
-              setIsAuthOpen(true);
-                setAddedToCart(false)
-
+        buytype === "buy" ? "" : toast.success(data.message);
+        buytype === "buy" ? "" : setAddedToCart(true);
+        setAllCart(data.cart);
+      } else {
+        setAuthTab("login");
+        setIsAuthOpen(true);
+        setAddedToCart(false);
       }
     } catch (error) {
-               setAuthTab("login"); 
-              setIsAuthOpen(true);
-           setAddedToCart(false)
-
+      setAuthTab("login");
+      setIsAuthOpen(true);
+      setAddedToCart(false);
     }
-  
+  };
 
+  const funshow = (title, incl) => {
+    return product?.hidethings?.includes(incl) ? "" : title;
+  };
+
+  const handelColorImage = (img) => {
+    const newimgset = product?.images.filter((item, index) =>
+      img.includes(`${index}`),
+    );
+
+    setSelectedColorImage(newimgset);
+  };
+
+  const handelAddtocartProduct = async (product) => {
+    try {
+      if (user) {
+        try {
+          const response = await axios.post(`${base_url}/cart/post`, {
+            productid: product._id,
+            quantity: selectedQty,
+            price: product.finalPrice,
+            color: selectedColor?._id,
+          });
+          const data = await response.data;
+          if (data.success) {
+            dispatch(addTocartUser(data.cart));
+          }
+        } catch (error) {
+          toast.error(error.response.data.message);
+        }
+      } else {
+        dispatch(
+          addTocart({
+            product: product._id,
+            quantity: selectedQty,
+            price: product.finalPrice,
+            color: selectedColor?._id,
+          }),
+        );
+      }
+    } catch (error) {
+    } finally {
+      dispatch(addSlide("cart"));
     }
-
-
-const funshow=(title,incl)=>{
-
- return product?.hidethings?.includes(incl)? "" :title
-}
-
-
-
-const handelColorImage=(img)=>{
-  
-  const newimgset = product?.images.filter((item,index)=> img.includes(`${index}`)
-
-  )
-  
- setSelectedColorImage(newimgset)
-
-}
-
-
-
-const handelAddtocartProduct = async(product)=>{
-  try {
-    if(user){
-
-try {
-  const response = await axios.post(`${base_url}/cart/post`,{
-    productid:product._id, quantity:selectedQty, price:product.finalPrice,color:selectedColor?._id
-  })
-  const data = await response.data;
-if(data.success){
-dispatch(addTocartUser(data.cart))
-  
-}
-} catch (error) {
-toast.error(error.response.data.message)  
-}
-
-
-
-    }
-    else{
-      dispatch(addTocart({product:product._id,quantity:selectedQty,price:product.finalPrice,color:selectedColor?._id}))
-    }
-  } catch (error) {
-    
-  }finally{
-    dispatch(addSlide("cart"))
-  }
-}
-
+  };
 
   return (
-    <div>
+    <div className="relative z-50">
       <div className="relative flex flex-col items-center xl:flex-row xl:items-start justify-center flex-wrap xl:flex-nowrap gap-6 px-4 md:px-12 lg:px-24 xl:px-40 2xl:px-52 py-12">
         {/* Left: Sticky Images */}
         <div className="w-full xl:w-1/2 xl:sticky xl:top-24  ">
           <div className="flex flex-col md:flex-row items-center gap-4">
-         
-         <div className="max-h-[600px] max-w-screen overflow-y-auto no-scrollbar">
-          <div className="flex md:flex-col gap-4 pr-1 w-fit items-start">
-  {(selectedColorImage)?.map((img, idx) => (
-   <div key={idx} className="relative w-20 h-20 cursor-pointer">
-    <Image
-      // src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${img}`}
-      src={'/Images/3.webp'}
-      alt={' '}
-      fill
-      className={`object-cover object-center transition-all duration-200 ${
-        selectedImage === img ? "border border-[#292927c9]" : ""
-      }`}
-      onClick={() => setSelectedImage(img)}
-      loading="lazy"
-    />
-  </div>
-  ))}
-</div>
-        </div>    
+            <div className="max-h-[600px] max-w-screen overflow-y-auto no-scrollbar">
+              <div className="flex md:flex-col gap-4 pr-1 w-fit items-start">
+                {selectedColorImage?.map((img, idx) => (
+                  <div key={idx} className="relative w-20 h-20 cursor-pointer">
+                    <Image
+                      // src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${img}`}
+                      src={"/Images/3.webp"}
+                      alt={" "}
+                      fill
+                      className={`object-cover object-center transition-all duration-200 ${
+                        selectedImage === img ? "border border-[#292927c9]" : ""
+                      }`}
+                      onClick={() => setSelectedImage(img)}
+                      loading="lazy"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
             <div
               className="relative w-full h-[400px] md:h-[600px] lg:h-[700px] overflow-hidden  rounded-md  cursor-zoom-in"
               onMouseMove={handleMouseMove}
@@ -398,15 +386,13 @@ toast.error(error.response.data.message)
           </div>
         </div>
 
-       
-
         <div className="w-full xl:w-1/2 flex flex-col gap-2  ">
           {/* Title */}
           <div className="flex justify-between items-start">
             {/* LEFT SIDE (name + category) */}
             <div>
               <h3 className="text-2xl md:text-4xl font-serif  text-[#292927] capitalize">
-                {funshow(product.name.toLowerCase(),"name")}
+                {funshow(product.name.toLowerCase(), "name")}
               </h3>
               <p className="xl:text-md text-stone-700 mt-2 capitalize">
                 {product?.category?.name}{" "}
@@ -416,122 +402,126 @@ toast.error(error.response.data.message)
 
             {/* RIGHT SIDE (wishlist icon) */}
             <button
-             
-
-              onClick={()=>dispatch(!wishlist?.some((w) => w === product._id) ?addToWishlist(product._id) : removeFromWishlist(product._id) )}
+              onClick={() =>
+                dispatch(
+                  !wishlist?.some((w) => w === product._id)
+                    ? addToWishlist(product._id)
+                    : removeFromWishlist(product._id),
+                )
+              }
               className="cursor-pointer"
             >
               {wishlist?.some((w) => w === product._id) ? (
-                <FaHeart className="w-6 h-6 text-red-500" /> 
+                <FaHeart className="w-6 h-6 text-red-500" />
               ) : (
-                <Heart className="w-6 h-6 text-stone-700" /> 
+                <Heart className="w-6 h-6 text-stone-700" />
               )}
             </button>
           </div>
 
-                  {/*  */}
-        <div className="flex items-center justify-center sm:justify-start gap-1">
-          {/* Stars */}
-          {[1, 2, 3, 4].map((star) => (
-            <FaStar key={star} size={12} className="text-yellow-500" />
-          ))}
-          <FaStarHalfAlt size={12} className="text-yellow-500" />
-    
-
-        </div>  
+          {/*  */}
+          <div className="flex items-center justify-center sm:justify-start gap-1">
+            {/* Stars */}
+            {[1, 2, 3, 4].map((star) => (
+              <FaStar key={star} size={12} className="text-yellow-500" />
+            ))}
+            <FaStarHalfAlt size={12} className="text-yellow-500" />
+          </div>
 
           {/* */}
           <div className=" space-y-6 w-fit">
             {/*  */}
             <div>
-
-            <div className="flex items-end gap-2">
-              <span className="text-[#292927] text-2xl font-semibold tracking-wide">
-                ₹{ funshow(Math.floor(product.finalPrice),"finalPrice")}
+              <div className="flex items-end gap-2">
+                <span className="text-[#292927] text-2xl font-semibold tracking-wide">
+                  ₹{funshow(Math.floor(product.finalPrice), "finalPrice")}
+                </span>
+                {product.discount > 0 && (
+                  <>
+                    <span className="line-through text-stone-600 text-lg">
+                      ₹{funshow(product.price, "price")}
+                    </span>
+                    <span className="text-green-600 text-sm">
+                      {funshow(`(${product.discount}% OFF)`, "discount")}
+                    </span>
+                  </>
+                )}
+              </div>
+              {/* Inclusive of taxes */}
+              <span className="text-sm text-stone-700 block ">
+                Inclusive of all taxes
               </span>
-              {product.discount > 0 && (
-                <>
-                  <span className="line-through text-stone-600 text-lg">
-                    ₹{funshow(product.price,"price")}
-                  </span>
-                  <span className="text-green-600 text-sm">
-                     { funshow(`(${product.discount}% OFF)`,"discount")}
-                  </span>
-                </>
-              )}
-            </div>
-                      {/* Inclusive of taxes */}
-          <span className="text-sm text-stone-700 block ">
-            Inclusive of all taxes
-          </span>
             </div>
             <div className="flex items-center justify-start gap-2">
-
-  <h3 className="text-md font-mosetta font-semibold text-[#292927] tracking-wide">
-               Quantity
+              <h3 className="text-md font-mosetta font-semibold text-[#292927] tracking-wide">
+                Quantity
               </h3>
 
+              <div className="flex items-center gap-6 border border-gray-200 rounded-md px-2 py-1 text-gray-700 font-medium">
+                {/* Decrease */}
+                <button
+                  disabled={selectedQty === 1}
+                  className={`cursor-pointer text-lg rounded px-2 ${
+                    selectedQty === 1 ? "opacity-40 cursor-not-allowed" : ""
+                  }`}
+                  onClick={() => {
+                    if (selectedQty > 1) {
+                      const newQty = selectedQty - 1;
+                      setSelectedQty(newQty);
 
-<div className="flex items-center gap-6 border border-gray-200 rounded-md px-2 py-1 text-gray-700 font-medium">
- 
-     
-  {/* Decrease */}
-  <button
-    disabled={selectedQty === 1}
-    className={`cursor-pointer text-lg rounded px-2 ${
-      selectedQty === 1 ? "opacity-40 cursor-not-allowed": ""}`}
-    onClick={() => {
-      if (selectedQty > 1) {
-        const newQty = selectedQty - 1;
-        setSelectedQty(newQty);
+                      const inCart = cart.find(
+                        (item) =>
+                          item._id === product._id &&
+                          item.color === selectedColor?.colorName,
+                      );
+                      if (inCart)
+                        updateQty(
+                          product._id,
+                          newQty,
+                          selectedColor?.colorName,
+                        );
+                    }
+                  }}
+                >
+                  -
+                </button>
 
-        const inCart = cart.find(
-          (item) =>
-            item._id === product._id &&
-            item.color === selectedColor?.colorName
-        );
-        if (inCart) updateQty(product._id, newQty, selectedColor?.colorName);
-      }
-    }}
-  >
-    -
-  </button>
+                <span className="text-md font-semibold">{selectedQty}</span>
 
-  <span className="text-md font-semibold">{selectedQty}</span>
+                {/* Increase */}
+                <button
+                  disabled={selectedQty >= (selectedColor?.quantity ?? 1)}
+                  className={`cursor-pointer text-lg rounded px-2 ${
+                    selectedQty >= (selectedColor?.quantity ?? 1)
+                      ? "opacity-40 cursor-not-allowed"
+                      : ""
+                  }`}
+                  onClick={() => {
+                    if (selectedQty < (selectedColor?.quantity ?? 1)) {
+                      const newQty = selectedQty + 1;
+                      setSelectedQty(newQty);
 
-  {/* Increase */}
-  <button
-    disabled={selectedQty >= (selectedColor?.quantity ?? 1)}
-    className={`cursor-pointer text-lg rounded px-2 ${
-      selectedQty >= (selectedColor?.quantity ?? 1)
-        ? "opacity-40 cursor-not-allowed"
-        : ""
-    }`}
-    onClick={() => {
-      if (selectedQty < (selectedColor?.quantity ?? 1)) {
-        const newQty = selectedQty + 1;
-        setSelectedQty(newQty);
-
-        const inCart = cart.find(
-          (item) =>
-            item._id === product._id &&
-            item.color === selectedColor?.colorName
-        );
-        if (inCart) updateQty(product._id, newQty, selectedColor?.colorName);
-      }
-    }}
-  >
-    +
-  </button>
-</div>
+                      const inCart = cart.find(
+                        (item) =>
+                          item._id === product._id &&
+                          item.color === selectedColor?.colorName,
+                      );
+                      if (inCart)
+                        updateQty(
+                          product._id,
+                          newQty,
+                          selectedColor?.colorName,
+                        );
+                    }
+                  }}
+                >
+                  +
+                </button>
+              </div>
             </div>
-
-
-
           </div>
 
-
-             {/* Colors */}
+          {/* Colors */}
           {product.colorVariants?.length > 0 && selectedColor && (
             <div className="space-y-2 my-4">
               <h3 className="text-md font-mosetta font-semibold text-[#292927] tracking-wide">
@@ -557,29 +547,27 @@ toast.error(error.response.data.message)
                 ))}
               </div> */}
               <div className="flex flex-wrap gap-2">
-  {product.colorVariants.map((v, i) => (
-    <button
-      key={i}
-      onClick={() => {
-        v.images.length &&  handelColorImage(v.images) 
-        setSelectedColor(v);
-        setSelectedQty(1);
-       setAddedToCart(false)
-      }}
-      className={`px-3 py-1 border text-sm transition ${
-        selectedColor?.colorName === v?.colorName
-          ? " ring-[#292927] border-[#292927] text-[#292927] font-medium"
-          : "border-gray-300 text-gray-700"
-      }`}
-    >
-      
-      {v?.colorName.toLowerCase()
-    .replace(/\b\w/g, (char) => char.toUpperCase())}
-      
-    </button>
-  ))}
-</div>
-
+                {product.colorVariants.map((v, i) => (
+                  <button
+                    key={i}
+                    onClick={() => {
+                      v.images.length && handelColorImage(v.images);
+                      setSelectedColor(v);
+                      setSelectedQty(1);
+                      setAddedToCart(false);
+                    }}
+                    className={`px-3 py-1 border text-sm transition ${
+                      selectedColor?.colorName === v?.colorName
+                        ? " ring-[#292927] border-[#292927] text-[#292927] font-medium"
+                        : "border-gray-300 text-gray-700"
+                    }`}
+                  >
+                    {v?.colorName
+                      .toLowerCase()
+                      .replace(/\b\w/g, (char) => char.toUpperCase())}
+                  </button>
+                ))}
+              </div>
 
               {/* Stock Info */}
               {/* <p className="text-sm text-stone-600">
@@ -600,69 +588,63 @@ toast.error(error.response.data.message)
             </div>
           )}
 
-<ProductDeal/>
+          <ProductDeal />
           <div className="border-t border-gray-400/30 w-full py-2">
-
-{soldCount !== null && (
-  <div className="  text-red-600 px-3 py-1  text-sm font-semibold w-fit flex items-center gap-1 ">
-    🔥 {soldCount} bought in last 24 hours
-  </div>
-)}
-{viewerCount !== null && (
-  <div className="mt-2  text-green-700 px-3 py-1 text-sm font-medium w-fit flex items-center gap-1">
-    👀 {viewerCount} people are viewing this right now
-  </div>
-)}
+            {soldCount !== null && (
+              <div className="  text-red-600 px-3 py-1  text-sm font-semibold w-fit flex items-center gap-1 ">
+                🔥 {soldCount} bought in last 24 hours
+              </div>
+            )}
+            {viewerCount !== null && (
+              <div className="mt-2  text-green-700 px-3 py-1 text-sm font-medium w-fit flex items-center gap-1">
+                👀 {viewerCount} people are viewing this right now
+              </div>
+            )}
           </div>
-       
 
-{/* CTA Buttons */}
-<div className="flex flex-col md:flex-row gap-4 mt-4">
-  {addedtoCart ? (
-    
-    <button
-      onClick={() => setIsCartOpen(true)}
-      className="cursor-pointer w-full flex items-center justify-center gap-2 bg-green-600 text-white px-4 py-3 rounded hover:bg-green-700 transition text-sm font-medium tracking-wide"
-    >
-      <ShoppingCart className="w-4 h-4" />
-      Go to Cart
-    </button> 
-  ) : (
-    // If not in cart → Add to Cart
-    <button
+          {/* CTA Buttons */}
+          <div className="flex flex-col md:flex-row gap-4 mt-4">
+            {addedtoCart ? (
+              <button
+                onClick={() => setIsCartOpen(true)}
+                className="cursor-pointer w-full flex items-center justify-center gap-2 bg-green-600 text-white px-4 py-3 rounded hover:bg-green-700 transition text-sm font-medium tracking-wide"
+              >
+                <ShoppingCart className="w-4 h-4" />
+                Go to Cart
+              </button>
+            ) : (
+              // If not in cart → Add to Cart
+              <button
+                onClick={() => handelAddtocartProduct(product)}
+                className="cursor-pointer w-full flex items-center justify-center gap-2 bg-gradient-to-r from-[#bc861a] via-[#f1d981] to-[#bc861a] text-[#292927]  px-4 py-3  hover:bg-[#a95c2e] transition text-sm font-medium tracking-wide"
+              >
+                <ShoppingCart className="w-4 h-4" />
+                Add to Cart
+              </button>
+            )}
 
-    onClick={()=>handelAddtocartProduct(product)}
-      className="cursor-pointer w-full flex items-center justify-center gap-2 bg-gradient-to-r from-[#bc861a] via-[#f1d981] to-[#bc861a] text-[#292927]  px-4 py-3  hover:bg-[#a95c2e] transition text-sm font-medium tracking-wide"
-    >
-      <ShoppingCart className="w-4 h-4" />
-      Add to Cart
-    </button>
-  )}
+            {/* Buy Now */}
+            <button
+              onClick={() => {
+                if (
+                  !cart.some(
+                    (item) =>
+                      item._id === product._id &&
+                      item.color === selectedColor?.colorName,
+                  )
+                ) {
+                  (setbuytypeCart(false),
+                    handelAddtocart("buy"),
+                    setShowCheckout(true));
+                }
+              }}
+              className="w-full flex items-center justify-center gap-2 border border-[#bc861a] text-[#bc861a]  px-4 py-3 transition text-sm font-medium tracking-wide"
+            >
+              <CreditCard className="w-4 h-4" />
+              Buy Now
+            </button>
+          </div>
 
-  {/* Buy Now */}
-  <button
-    onClick={() => {
-      if (
-        !cart.some(
-          (item) =>
-            item._id === product._id &&
-            item.color === selectedColor?.colorName
-        )
-      )   
-                {setbuytypeCart(false) ,handelAddtocart("buy"),  setShowCheckout(true)}
-          
-    }}
-    className="w-full flex items-center justify-center gap-2 border border-[#bc861a] text-[#bc861a]  px-4 py-3 transition text-sm font-medium tracking-wide"
-  >
-    <CreditCard className="w-4 h-4" />
-    Buy Now
-  </button>
-</div>
-
-
-
-          
-          
           {/* <div className="flex flex-col md:flex-row gap-4">
            <button
   onClick={() => {
@@ -679,7 +661,7 @@ toast.error(error.response.data.message)
               Buy Now
             </button>
           </div> */}
-            {/* Shipping Info Section */}
+          {/* Shipping Info Section */}
           <div
             className="relative bg-cover md:bg-contain py-4"
             // style={{ backgroundImage: "url('/Images/bg4.png')" }}
@@ -701,27 +683,26 @@ toast.error(error.response.data.message)
                     } md:group-hover:rotate-y-180`}
                   >
                     {/* Front */}
-               <div className="absolute inset-0 flex flex-col items-center justify-end rounded-2xl backface-hidden p-6 text-center text-white">
-  <div className="relative w-12 h-12 mb-4">
-    <Image
-      src={`${card.img}`}
-      alt={card.frontTitle || "Card Image"}
-      fill
-      className="object-cover rounded grayscale-50 "
-      loading="lazy"
-    />
-  </div>
-  <h3 className="text-md md:text-lg font-mosetta text-black tracking-wide">
-    {card.frontTitle}
-  </h3>
-  <p className="mt-2 text-sm text-gray-800">
-    {card.frontSubtitle}
-  </p>
-</div>
+                    <div className="absolute inset-0 flex flex-col items-center justify-end rounded-2xl backface-hidden p-6 text-center text-white">
+                      <div className="relative w-12 h-12 mb-4">
+                        <Image
+                          src={`${card.img}`}
+                          alt={card.frontTitle || "Card Image"}
+                          fill
+                          className="object-cover rounded grayscale-50 "
+                          loading="lazy"
+                        />
+                      </div>
+                      <h3 className="text-md md:text-lg font-mosetta text-black tracking-wide">
+                        {card.frontTitle}
+                      </h3>
+                      <p className="mt-2 text-sm text-gray-800">
+                        {card.frontSubtitle}
+                      </p>
+                    </div>
 
                     {/* Back */}
                     <div className="absolute inset-0  rounded-2xl backface-hidden rotate-y-180 p-6 flex flex-col items-center justify-end text-white">
-                
                       <h3 className="text-lg  font-mosetta text-black tracking-wide">
                         {card.frontTitle}
                       </h3>
@@ -734,8 +715,8 @@ toast.error(error.response.data.message)
               ))}
             </div>
           </div>
-  <ReviewsSection/>
-        
+          <ReviewsSection />
+
           {/* Description */}
           {(product.description?.paragraphs?.length > 0 ||
             product.description?.bulletPoints?.length > 0) && (
@@ -761,14 +742,10 @@ toast.error(error.response.data.message)
               )}
             </div>
           )}
-
-      
         </div>
       </div>
-<FaqSection/>
-      {product?.category && (
-        <Similar categoryId={product?.category} />
-      )}
+      <FaqSection />
+      {product?.category && <Similar categoryId={product?.category} />}
     </div>
   );
 }
