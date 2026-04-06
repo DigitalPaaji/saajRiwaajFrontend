@@ -55,7 +55,7 @@ export default function Faq() {
             </h2>
 
             <h3 className="text-3xl md:text-4xl font-serif text-[#292927]">
-              Got Questions? <span className="italic">We've Got Answers</span>
+              Got Questions? <span className="italic">We&apos;ve Got Answers</span>
             </h3>
           </div>
 

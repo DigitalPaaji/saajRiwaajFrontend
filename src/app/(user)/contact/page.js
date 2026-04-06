@@ -81,7 +81,7 @@ export default function ContactPage() {
             <div className="h-px w-8 bg-gradient-to-l from-transparent to-amber-400" />
           </div>
           <h1 className="text-4xl md:text-6xl font-serif font-light text-gray-800 mb-4">
-            Let's Create <span className="text-amber-700 font-medium">Something Beautiful</span>
+            Let&apos;s Create <span className="text-amber-700 font-medium">Something Beautiful</span>
           </h1>
           <p className="text-gray-500 max-w-2xl mx-auto text-lg">
             Whether you have a question about our collections, need a custom piece, or simply want to share your thoughts — our team is here to assist you.
@@ -99,7 +99,7 @@ export default function ContactPage() {
           <div className="bg-white rounded-3xl shadow-2xl border border-amber-100/80 overflow-hidden transition-all duration-500 hover:shadow-3xl">
             <div className="bg-gradient-to-r from-amber-50 to-white px-8 py-6 border-b border-amber-100">
               <h3 className="text-2xl font-serif font-semibold text-gray-800">Send an Inquiry</h3>
-              <p className="text-gray-500 text-sm mt-1">We'll respond within 24 hours</p>
+              <p className="text-gray-500 text-sm mt-1">We&lsquo;ll respond within 24 hours</p>
             </div>
             
             <form onSubmit={handleSubmit} className="p-8 space-y-6">

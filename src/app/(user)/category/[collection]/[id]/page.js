@@ -39,7 +39,7 @@ export default function FilterLayout() {
     return params.toString();
   };
 
-  const fetchProducts = async (filters) => {
+  const fetchProducts = async () => {
     try {
       setLoading(true);
       const queryString = buildQuery();
@@ -59,6 +59,12 @@ export default function FilterLayout() {
   useEffect(() => {
     fetchProducts();
   }, [searchParams.toString(), id]);
+
+
+ useEffect(() => {
+    fetchProducts();
+  }, [ ]);
+
 
   const handleFilter = (filterData = {}, options = { resetPage: true }) => {
     const params = new URLSearchParams(searchParams.toString());
