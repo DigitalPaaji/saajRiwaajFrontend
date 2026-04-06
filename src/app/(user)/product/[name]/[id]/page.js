@@ -23,7 +23,10 @@ import { FaHeart, FaStarHalfAlt } from "react-icons/fa";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import { addToWishlist, removeFromWishlist } from "@/app/components/store/wishListSlice";
+import {
+  addToWishlist,
+  removeFromWishlist,
+} from "@/app/components/store/wishListSlice";
 import { addTocart, addTocartUser } from "@/app/components/store/cartSlice";
 import { base_url } from "@/app/components/store/utile";
 import { addSlide } from "@/app/components/store/sliderSlice";
@@ -34,7 +37,6 @@ import FaqSection from "@/app/components/newHome/Faq";
 import Link from "next/link";
 
 export default function ProductDetail() {
-
   const { id } = useParams();
 
 const  [product,setProduct]=useState(null);
@@ -54,8 +56,8 @@ const [viewerCount, setViewerCount] = useState(22);
 
   const [zoomPos, setZoomPos] = useState({ x: 0, y: 0 });
   const [isZoomed, setIsZoomed] = useState(false);
-  const [addedtoCart,setAddedToCart] =useState(false)
-const [selectedColorImage,setSelectedColorImage]=  useState()
+  const [addedtoCart, setAddedToCart] = useState(false);
+  const [selectedColorImage, setSelectedColorImage] = useState();
 
   const handleMouseMove = (e) => {
     const { left, top, width, height } =
@@ -72,7 +74,7 @@ const [selectedColorImage,setSelectedColorImage]=  useState()
 
   const [flipped, setFlipped] = useState([false, false, false]);
   const [selectedColor, setSelectedColor] = useState(null);
-  const [newImg,setnewImg]= useState()
+  const [newImg, setnewImg] = useState();
   const [selectedQty, setSelectedQty] = useState(1);
 
   useEffect(() => {
@@ -81,10 +83,9 @@ const [selectedColorImage,setSelectedColorImage]=  useState()
       setSelectedQty(1);
     }
   }, [product]);
-useEffect(()=>{
-  setSelectedImage(newImg?.[0])
-},[newImg])
-
+  useEffect(() => {
+    setSelectedImage(newImg?.[0]);
+  }, [newImg]);
 
   const toggleFlip = (index) => {
     setFlipped((prev) => prev.map((f, i) => (i === index ? !f : f)));
@@ -100,12 +101,12 @@ useEffect(()=>{
       frontSubtitle: "Free shipping on orders above ₹799",
       backContent: (
         <div className="text-sm space-y-1">
-    <div>Estimated Delivery Time: 3-7 business days </div>
-    <div>All orders are carefully processed and packed</div>
-    <div className="italic text-stone-700">
-      *Delivery times may vary by location
-    </div> 
-  </div>
+          <div>Estimated Delivery Time: 3-7 business days </div>
+          <div>All orders are carefully processed and packed</div>
+          <div className="italic text-stone-700">
+            *Delivery times may vary by location
+          </div>
+        </div>
       ),
     },
     {
@@ -114,9 +115,11 @@ useEffect(()=>{
       frontSubtitle: "Easy exchange within 24 hours",
       backContent: (
         <div className="list-disc list-inside text-sm space-y-1">
-       <p>Products are eligible for exchange only if received damaged. The issue must be reported within 24 hours of delivery with clear video proof. Any exchange request raised after 24 hours will be rejected.</p>
-
-
+          <p>
+            Products are eligible for exchange only if received damaged. The
+            issue must be reported within 24 hours of delivery with clear video
+            proof. Any exchange request raised after 24 hours will be rejected.
+          </p>
         </div>
       ),
     },
@@ -135,9 +138,9 @@ useEffect(()=>{
     },
   ];
 
-  useEffect(()=>{
-setSelectedColorImage(product?.images)
-  },[ product])
+  useEffect(() => {
+    setSelectedColorImage(product?.images);
+  }, [product]);
 
 
 useEffect(()=>{
@@ -279,31 +282,30 @@ toast.error(error.response.data.message)
 
 
   return (
-    <div>
+    <div className="relative z-50">
       <div className="relative flex flex-col items-center xl:flex-row xl:items-start justify-center flex-wrap xl:flex-nowrap gap-6 px-4 md:px-12 lg:px-24 xl:px-40 2xl:px-52 py-12">
         {/* Left: Sticky Images */}
         <div className="w-full xl:w-1/2 xl:sticky xl:top-24  ">
           <div className="flex flex-col md:flex-row items-center gap-4">
-         
-         <div className="max-h-[600px] max-w-screen overflow-y-auto no-scrollbar">
-          <div className="flex md:flex-col gap-4 pr-1 w-fit items-start">
-  {(selectedColorImage)?.map((img, idx) => (
-   <div key={idx} className="relative w-20 h-20 cursor-pointer">
-    <Image
-      // src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${img}`}
-      src={'/Images/3.webp'}
-      alt={' '}
-      fill
-      className={`object-cover object-center transition-all duration-200 ${
-        selectedImage === img ? "border border-[#292927c9]" : ""
-      }`}
-      onClick={() => setSelectedImage(img)}
-      loading="lazy"
-    />
-  </div>
-  ))}
-</div>
-        </div>    
+            <div className="max-h-[600px] max-w-screen overflow-y-auto no-scrollbar">
+              <div className="flex md:flex-col gap-4 pr-1 w-fit items-start">
+                {selectedColorImage?.map((img, idx) => (
+                  <div key={idx} className="relative w-20 h-20 cursor-pointer">
+                    <Image
+                      // src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${img}`}
+                      src={"/Images/3.webp"}
+                      alt={" "}
+                      fill
+                      className={`object-cover object-center transition-all duration-200 ${
+                        selectedImage === img ? "border border-[#292927c9]" : ""
+                      }`}
+                      onClick={() => setSelectedImage(img)}
+                      loading="lazy"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
             <div
               className="relative w-full h-[400px] md:h-[600px] lg:h-[700px] overflow-hidden  rounded-md  cursor-zoom-in"
               onMouseMove={handleMouseMove}
@@ -322,15 +324,13 @@ toast.error(error.response.data.message)
           </div>
         </div>
 
-       
-
         <div className="w-full xl:w-1/2 flex flex-col gap-2  ">
        
           <div className="flex justify-between items-start">
          
             <div>
               <h3 className="text-2xl md:text-4xl font-serif  text-[#292927] capitalize">
-                {funshow(product.name.toLowerCase(),"name")}
+                {funshow(product.name.toLowerCase(), "name")}
               </h3>
               <p className="xl:text-md text-stone-700 mt-2 capitalize">
                 {product?.category?.name}{" "}
@@ -340,122 +340,126 @@ toast.error(error.response.data.message)
 
             {/* RIGHT SIDE (wishlist icon) */}
             <button
-             
-
-              onClick={()=>dispatch(!wishlist?.some((w) => w === product._id) ?addToWishlist(product._id) : removeFromWishlist(product._id) )}
+              onClick={() =>
+                dispatch(
+                  !wishlist?.some((w) => w === product._id)
+                    ? addToWishlist(product._id)
+                    : removeFromWishlist(product._id),
+                )
+              }
               className="cursor-pointer"
             >
               {wishlist?.some((w) => w === product._id) ? (
-                <FaHeart className="w-6 h-6 text-red-500" /> 
+                <FaHeart className="w-6 h-6 text-red-500" />
               ) : (
-                <Heart className="w-6 h-6 text-stone-700" /> 
+                <Heart className="w-6 h-6 text-stone-700" />
               )}
             </button>
           </div>
 
-                  {/*  */}
-        <div className="flex items-center justify-center sm:justify-start gap-1">
-          {/* Stars */}
-          {[1, 2, 3, 4].map((star) => (
-            <FaStar key={star} size={12} className="text-yellow-500" />
-          ))}
-          <FaStarHalfAlt size={12} className="text-yellow-500" />
-    
-
-        </div>  
+          {/*  */}
+          <div className="flex items-center justify-center sm:justify-start gap-1">
+            {/* Stars */}
+            {[1, 2, 3, 4].map((star) => (
+              <FaStar key={star} size={12} className="text-yellow-500" />
+            ))}
+            <FaStarHalfAlt size={12} className="text-yellow-500" />
+          </div>
 
           {/* */}
           <div className=" space-y-6 w-fit">
             {/*  */}
             <div>
-
-            <div className="flex items-end gap-2">
-              <span className="text-[#292927] text-2xl font-semibold tracking-wide">
-                ₹{ funshow(Math.floor(product.finalPrice),"finalPrice")}
+              <div className="flex items-end gap-2">
+                <span className="text-[#292927] text-2xl font-semibold tracking-wide">
+                  ₹{funshow(Math.floor(product.finalPrice), "finalPrice")}
+                </span>
+                {product.discount > 0 && (
+                  <>
+                    <span className="line-through text-stone-600 text-lg">
+                      ₹{funshow(product.price, "price")}
+                    </span>
+                    <span className="text-green-600 text-sm">
+                      {funshow(`(${product.discount}% OFF)`, "discount")}
+                    </span>
+                  </>
+                )}
+              </div>
+              {/* Inclusive of taxes */}
+              <span className="text-sm text-stone-700 block ">
+                Inclusive of all taxes
               </span>
-              {product.discount > 0 && (
-                <>
-                  <span className="line-through text-stone-600 text-lg">
-                    ₹{funshow(product.price,"price")}
-                  </span>
-                  <span className="text-green-600 text-sm">
-                     { funshow(`(${product.discount}% OFF)`,"discount")}
-                  </span>
-                </>
-              )}
-            </div>
-                      {/* Inclusive of taxes */}
-          <span className="text-sm text-stone-700 block ">
-            Inclusive of all taxes
-          </span>
             </div>
             <div className="flex items-center justify-start gap-2">
-
-  <h3 className="text-md font-mosetta font-semibold text-[#292927] tracking-wide">
-               Quantity
+              <h3 className="text-md font-mosetta font-semibold text-[#292927] tracking-wide">
+                Quantity
               </h3>
 
+              <div className="flex items-center gap-6 border border-gray-200 rounded-md px-2 py-1 text-gray-700 font-medium">
+                {/* Decrease */}
+                <button
+                  disabled={selectedQty === 1}
+                  className={`cursor-pointer text-lg rounded px-2 ${
+                    selectedQty === 1 ? "opacity-40 cursor-not-allowed" : ""
+                  }`}
+                  onClick={() => {
+                    if (selectedQty > 1) {
+                      const newQty = selectedQty - 1;
+                      setSelectedQty(newQty);
 
-<div className="flex items-center gap-6 border border-gray-200 rounded-md px-2 py-1 text-gray-700 font-medium">
- 
-     
-  {/* Decrease */}
-  <button
-    disabled={selectedQty === 1}
-    className={`cursor-pointer text-lg rounded px-2 ${
-      selectedQty === 1 ? "opacity-40 cursor-not-allowed": ""}`}
-    onClick={() => {
-      if (selectedQty > 1) {
-        const newQty = selectedQty - 1;
-        setSelectedQty(newQty);
+                      const inCart = cart.find(
+                        (item) =>
+                          item._id === product._id &&
+                          item.color === selectedColor?.colorName,
+                      );
+                      if (inCart)
+                        updateQty(
+                          product._id,
+                          newQty,
+                          selectedColor?.colorName,
+                        );
+                    }
+                  }}
+                >
+                  -
+                </button>
 
-        const inCart = cart.find(
-          (item) =>
-            item._id === product._id &&
-            item.color === selectedColor?.colorName
-        );
-        if (inCart) updateQty(product._id, newQty, selectedColor?.colorName);
-      }
-    }}
-  >
-    -
-  </button>
+                <span className="text-md font-semibold">{selectedQty}</span>
 
-  <span className="text-md font-semibold">{selectedQty}</span>
+                {/* Increase */}
+                <button
+                  disabled={selectedQty >= (selectedColor?.quantity ?? 1)}
+                  className={`cursor-pointer text-lg rounded px-2 ${
+                    selectedQty >= (selectedColor?.quantity ?? 1)
+                      ? "opacity-40 cursor-not-allowed"
+                      : ""
+                  }`}
+                  onClick={() => {
+                    if (selectedQty < (selectedColor?.quantity ?? 1)) {
+                      const newQty = selectedQty + 1;
+                      setSelectedQty(newQty);
 
-  {/* Increase */}
-  <button
-    disabled={selectedQty >= (selectedColor?.quantity ?? 1)}
-    className={`cursor-pointer text-lg rounded px-2 ${
-      selectedQty >= (selectedColor?.quantity ?? 1)
-        ? "opacity-40 cursor-not-allowed"
-        : ""
-    }`}
-    onClick={() => {
-      if (selectedQty < (selectedColor?.quantity ?? 1)) {
-        const newQty = selectedQty + 1;
-        setSelectedQty(newQty);
-
-        const inCart = cart.find(
-          (item) =>
-            item._id === product._id &&
-            item.color === selectedColor?.colorName
-        );
-        if (inCart) updateQty(product._id, newQty, selectedColor?.colorName);
-      }
-    }}
-  >
-    +
-  </button>
-</div>
+                      const inCart = cart.find(
+                        (item) =>
+                          item._id === product._id &&
+                          item.color === selectedColor?.colorName,
+                      );
+                      if (inCart)
+                        updateQty(
+                          product._id,
+                          newQty,
+                          selectedColor?.colorName,
+                        );
+                    }
+                  }}
+                >
+                  +
+                </button>
+              </div>
             </div>
-
-
-
           </div>
 
-
-             {/* Colors */}
+          {/* Colors */}
           {product.colorVariants?.length > 0 && selectedColor && (
             <div className="space-y-2 my-4">
               <h3 className="text-md font-mosetta font-semibold text-[#292927] tracking-wide">
@@ -492,7 +496,7 @@ toast.error(error.response.data.message)
             </div>
           )}
 
-<ProductDeal/>
+          <ProductDeal />
           <div className="border-t border-gray-400/30 w-full py-2">
 
 
@@ -510,7 +514,6 @@ toast.error(error.response.data.message)
 
 
           </div>
-       
 
 {/* CTA Buttons */}
 <div className="flex flex-col md:flex-row gap-4 mt-4">
@@ -559,27 +562,26 @@ toast.error(error.response.data.message)
                     } md:group-hover:rotate-y-180`}
                   >
                     {/* Front */}
-               <div className="absolute inset-0 flex flex-col items-center justify-end rounded-2xl backface-hidden p-6 text-center text-white">
-  <div className="relative w-12 h-12 mb-4">
-    <Image
-      src={`${card.img}`}
-      alt={card.frontTitle || "Card Image"}
-      fill
-      className="object-cover rounded grayscale-50 "
-      loading="lazy"
-    />
-  </div>
-  <h3 className="text-md md:text-lg font-mosetta text-black tracking-wide">
-    {card.frontTitle}
-  </h3>
-  <p className="mt-2 text-sm text-gray-800">
-    {card.frontSubtitle}
-  </p>
-</div>
+                    <div className="absolute inset-0 flex flex-col items-center justify-end rounded-2xl backface-hidden p-6 text-center text-white">
+                      <div className="relative w-12 h-12 mb-4">
+                        <Image
+                          src={`${card.img}`}
+                          alt={card.frontTitle || "Card Image"}
+                          fill
+                          className="object-cover rounded grayscale-50 "
+                          loading="lazy"
+                        />
+                      </div>
+                      <h3 className="text-md md:text-lg font-mosetta text-black tracking-wide">
+                        {card.frontTitle}
+                      </h3>
+                      <p className="mt-2 text-sm text-gray-800">
+                        {card.frontSubtitle}
+                      </p>
+                    </div>
 
                     {/* Back */}
                     <div className="absolute inset-0  rounded-2xl backface-hidden rotate-y-180 p-6 flex flex-col items-center justify-end text-white">
-                
                       <h3 className="text-lg  font-mosetta text-black tracking-wide">
                         {card.frontTitle}
                       </h3>
@@ -592,8 +594,8 @@ toast.error(error.response.data.message)
               ))}
             </div>
           </div>
-  <ReviewsSection/>
-        
+          <ReviewsSection />
+
           {/* Description */}
           {(product.description?.paragraphs?.length > 0 ||
             product.description?.bulletPoints?.length > 0) && (
@@ -619,14 +621,10 @@ toast.error(error.response.data.message)
               )}
             </div>
           )}
-
-      
         </div>
       </div>
-<FaqSection/>
-      {product?.category && (
-        <Similar categoryId={product?.category} />
-      )}
+      <FaqSection />
+      {product?.category && <Similar categoryId={product?.category} />}
     </div>
   );
 }

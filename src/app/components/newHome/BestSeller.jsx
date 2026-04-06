@@ -283,7 +283,7 @@ const CardContent = ({ item }) => {
         </div>
 
         {Loading && isLoading ? (
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 xl:gap-8">
             {Array.from({ length: 4 }).map((_, idx) => (
               <div
                 key={idx}
@@ -292,7 +292,7 @@ const CardContent = ({ item }) => {
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 xl:gap-8">
             {filteredProducts.slice(0, 8)?.map((item) => (
               <Link
                 key={item._id}
@@ -307,7 +307,7 @@ const CardContent = ({ item }) => {
 
         {!Loading && !isLoading && filteredProducts.length === 0 && (
           <div className="text-center py-20 text-stone-400 italic">
-            No items found in this category.
+   
           </div>
         )}
       </div>

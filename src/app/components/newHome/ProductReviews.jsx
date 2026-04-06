@@ -116,7 +116,7 @@ export default function ReviewsSection() {
                   </p>
 
                   {/* USER INFO */}
-                  <div className="mt-4 border-t pt-3">
+                  <div className="mt-4 border-t pt-3 border-gray-600/40">
                     <p className="text-xs font-semibold text-[#292927] capitalize">
                       {r.name}
                     </p>

@@ -40,11 +40,11 @@ if(data.success){
 
 
   return (
-    <div className="px-4 md:px-12 xl:px-24 2xl:px-40 py-16 lg:py-32 flex flex-col items-center justify-center">
+    <div className="px-4 md:px-12 xl:px-24 2xl:px-40 py-16 lg:py-32 flex flex-col items-center justify-center overflow-hidden">
 
       {/* Header */}
       <div className="w-full text-center mb-10 md:mb-14">
-        <h1 className="text-2xl md:text-3xl  text-[#292927] mb-3 tracking-tight">
+        <h1 className="text-2xl md:text-3xl text-[#292927] mb-3 tracking-tight">
           FOR EVERY YOU
         </h1>
         <p className="text-gray-600 text-md xl:text-lg">
@@ -57,8 +57,9 @@ if(data.success){
         effect="coverflow"
         grabCursor={true}
         centeredSlides={true}
-        slidesPerView="auto"
         loop={true}
+        // Fix: slidePerView set to 5 on desktop via breakpoints
+        slidesPerView={"auto"} 
         autoplay={{
           delay: 3000,
           disableOnInteraction: false,
@@ -71,12 +72,25 @@ if(data.success){
           slideShadows: false,
         }}
         breakpoints={{
-          320: { coverflowEffect: { rotate: 15, stretch: -10, depth: 50 }},
-          768: { coverflowEffect: { rotate: 25, stretch: -20, depth: 100 }},
-          1024: { coverflowEffect: { rotate: 30, stretch: -30, depth: 150 }},
+          // Mobile
+          320: { 
+            slidesPerView: 2,
+            coverflowEffect: { rotate: 15, stretch: -10, depth: 50 }
+          },
+          // Tablet
+          768: { 
+            slidesPerView: 3,
+            coverflowEffect: { rotate: 25, stretch: -20, depth: 100 }
+          },
+          // Desktop: Now shows more slides by pulling them closer with 'stretch'
+          1280: { 
+            slidesPerView: 5,
+            coverflowEffect: { rotate: 30, stretch: -50, depth: 150 }
+          },
         }}
+        
         modules={[EffectCoverflow, Pagination, Navigation, Autoplay]}
-        className="h-[320px] sm:h-[370px] md:h-[420px] lg:h-[500px]"
+        className="w-full h-[320px] sm:h-[370px] md:h-[420px] lg:h-[500px]"
       >
         {tags?.length > 0 &&
           tags.map((tag) => {
