@@ -125,7 +125,7 @@ const Filter2 = ({ categoryid, maxPrice, minPrice, handleFilter }) => {
       >
         {/* Drawer Header */}
         <div className="flex items-center justify-between p-5 border-b border-gray-200">
-          <h2 className="text-xl font-bold">Filters</h2>
+          <h2 className="text-xl montserrat ">Filters</h2>
           <div className="flex items-center gap-4">
             <button onClick={handleClear} className="text-sm text-red-500 flex items-center gap-1 hover:underline">
               <RotateCcw size={14} /> Clear

@@ -55,6 +55,8 @@ const toggleCategory = (id) => {
   const {products} = useSelector(state=>state.randomProduct);
   const wishlist = useSelector(state=>state.wishlist.items)
   const { user } = useSelector(state=>state.user)
+  
+
   const dispatch = useDispatch()
   const cart = useSelector(state=>state.cart.items)
   const slider = useSelector(state=>state.slider.slide)
@@ -162,7 +164,7 @@ function formatCategoryLabel(name) {
              />
 </Link>
 
-        {isLoading ? <div>Loading... </div> :
+        {isLoading ? "" :
 
       <nav className="hidden xl:flex items-center space-x-10">
  { info?.data?.length >0  && info?.data?.map((cat) => {
@@ -321,7 +323,7 @@ function formatCategoryLabel(name) {
           <Link
             href={`/category/${formatCategoryPath(cat.category.name)}/${formatCategoryPath(cat.category._id)}`}
             onClick={() => setIsMobileMenuOpen(false)}
-            className="text-[15px] font-semibold text-[#292927] hover:text-[#B67032] uppercase tracking-wide flex gap-4 items-center"
+            className="text-[13px] montserrat font-semibold text-[#292927] hover:text-[#B67032] uppercase tracking-wide flex gap-4 items-center"
           >
             {/* <Icon size={18} /> */}
             {cat.category.name}

@@ -5,13 +5,19 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { toast } from "react-toastify";
 import Image from "next/image";
 import Link from "next/link";
-import { useGlobalContext } from "../../components/context/GlobalContext";
-import Banner from "../../components/user/InnerBanner";
-import { getOptimizedImage } from "@/app/components/utils/cloudinary";
+import Banner from "../../components/user/OtherBanner";
+import { useDispatch, useSelector } from "react-redux";
+import { addSlide } from "@/app/components/store/sliderSlice";
+import { MdProductionQuantityLimits } from "react-icons/md";
+import Category from "@/app/components/newHome/Category";
 
 export default function OrdersPage() {
-  const { allProducts, setIsAuthOpen } = useGlobalContext();
-  const [orders, setOrders] = useState([]);
+  const { user } = useSelector(state=>state.user)
+  const dispatch = useDispatch()
+
+
+
+   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
 const [cancelingOrder,setCancellingOrder]=useState()
 const [cancelReason, setCancelReason] = useState("");
@@ -198,18 +204,13 @@ const slugify= (name)=>{
 }
 
 
-  return (
-  <div>
-     <Suspense fallback={null}>
+if(!user){
+  return(<>
+    <Suspense fallback={null}>
 
     <Banner title="My Orders" />
      </Suspense>
-
-    <div className="px-4 sm:px-8 lg:px-24 xl:px-60 mx-auto my-16">
-      {loading ? (
-        <Skeleton count={5} height={40} className="mb-2 rounded" />
-      ) : orders.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-20">
+     <div className="flex flex-col items-center justify-center py-20">
           <h3 className="text-2xl font-semibold mb-4 text-center text-[#B67032]">
             No Orders Found
           </h3>
@@ -218,11 +219,43 @@ const slugify= (name)=>{
           </p>
 
           <button
-            onClick={() => setIsAuthOpen(true)}
+            onClick={() => dispatch(addSlide("login"))}
             className="w-fit px-4 bg-[#B67032] text-white py-2 rounded mt-6"
           >
             Login / Signup
           </button>
+        </div>
+        </>
+  )
+}
+
+
+  return (
+  <div>
+     <Suspense fallback={null}>
+
+    <Banner title="My Orders" />
+     </Suspense>
+
+
+
+
+    <div className="px-4 sm:px-8 lg:px-24 xl:px-60 mx-auto my-16">
+      {loading ? (
+        <Skeleton count={5} height={40} className="mb-2 rounded" />
+      ) : orders.length === 0 ? (
+        <div className="flex flex-col items-center justify-center py-20">
+          <div>
+
+<MdProductionQuantityLimits className="text-7xl text-[#B67032]" />
+        </div>
+          <h3 className="text-2xl font-semibold mb-4 text-center text-[#B67032]">
+            No Orders Found
+          </h3>
+       
+<Category />
+
+
         </div>
       ) : (
         <div className="space-y-6">
@@ -254,10 +287,12 @@ const slugify= (name)=>{
                   </span>
                 </div>
 
+
+{console.log(order)}
                 <div className="space-y-4 border-t border-[#d4af37]/40 pt-4">
                   {order.items.map((item) => {
-                    const product =
-                      allProducts.find((p) => p._id === item.product ) || {};
+                    const product =item.product
+                      // allProducts.find((p) => p._id === item.product ) || {};
 
                     return (
                       <div

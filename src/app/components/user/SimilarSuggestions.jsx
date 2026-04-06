@@ -1,98 +1,57 @@
 "use client";
-import React, { useCallback, useEffect, useState } from "react";
+import React, {useEffect, useState } from "react";
 import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
-import { useGlobalContext } from "../context/GlobalContext";
 import Image from "next/image";
 import { FaRupeeSign, FaStarHalfAlt } from "react-icons/fa";
 import { FaStar } from "react-icons/fa6";
 import { Heart } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { getRandomProduct } from "../store/randomProductSlice";
+import axios from "axios";
+import { base_url } from "../store/utile";
 
 export default function EarringsMarquee({ categoryId }) {
-  const { 
-    allProducts,
-    refetchAllProducts, 
-    subCategoriesMap,
-    refetchProductsByCategory,
-  } = useGlobalContext();
-  const [filteredProducts, setFilteredProducts] = useState([]);
-  const [similarLoading, setSimilarLoading] = useState(true);
-const [allLoading, setAllLoading] = useState(true);
+ 
+  
   const [loading, setLoading] = useState(true);
-    const [productsByCategory, setProductsByCategory] = useState([]);
-
-  const subCategories = subCategoriesMap[categoryId] || [];
-
-
-  
-     const fetchProductsByCategory = useCallback(async (categoryId,page=1) => {
-        try {setLoading(true)
-          const res = await fetch(
-            `${process.env.NEXT_PUBLIC_LOCAL_PORT}/product/random/${categoryId}?page=${page}`
-          );
-          const data = await res.json();
-     
-  
-          setProductsByCategory(data.products);
-        } catch (err) {
-          console.error("Error fetching products by category:", err);
-         
-        }finally{
-          setLoading(false)
-        }
-     }, []);
+  const dispatch = useDispatch();
+  const { products, isLoading } = useSelector((state) => state.randomProduct);
+  const [allProduct,setAllProduct]=useState([ ])
 
 
-useEffect(() => {
-  if (!categoryId) return;
-
-  let mounted = true;
-
-  const fetchData = async () => {
-    setSimilarLoading(true);
+  const fetchRandomProduct = async () => {
     try {
-      const result = await refetchProductsByCategory(categoryId);
+      setLoading(true)
+     const response = await axios.get(`${base_url}/product/getrandomproduct`)
+   const data = await response.data;
+if(data.success){
+  setAllProduct(data.products)
+}
 
-      if (mounted && Array.isArray(result)) {
-        setFilteredProducts((prev) =>
-          prev.length === result.length ? prev : result
-        );
-      }
-    } catch (err) {
-      console.error("Error fetching similar products:", err);
-      if (mounted) setFilteredProducts([]);
-    } finally {
-      if (mounted) setSimilarLoading(false);
+    } catch (error) {
+      setAllProduct([ ])
+    }finally{
+      setLoading(false)
     }
-  };
-
-  fetchData();
-fetchProductsByCategory(categoryId)
-  return () => {
-    mounted = false;
-  };
-}, [categoryId]); 
-useEffect(() => {
-  let mounted = true;
-
-  const fetchAll = async () => {
-    setAllLoading(true);
-    await refetchAllProducts();
-    if (mounted) setAllLoading(false);
-  };
-
-  fetchAll();
-
-  return () => {
-    mounted = false;
-  };
-}, []);
+  }
+    
 
 
 
+
+
+
+
+
+  useEffect(() => {
+   fetchRandomProduct()
+      dispatch(getRandomProduct(categoryId));
+  
+  }, [categoryId]);
 
 
 
@@ -117,15 +76,7 @@ useEffect(() => {
           loop
           className="mt-4 xl:mt-0"
         >
-          {subCategories.map((sub) => (
-            <SwiperSlide key={sub._id} className="!w-auto">
-              {/* <Link href={`/category/neckwear/${sub._id}`}> */}
-                <div className="montserrat hover:underline  text-nowrap px-4 py-2 transition-all duration-300 text-[#B67032] text-sm lg:text-md cursor-pointer">
-                  {sub.name.toUpperCase()}
-                </div>
-              {/* </Link> */}
-            </SwiperSlide>
-          ))}
+          
         </Swiper>
        </div>
       </div>
@@ -135,7 +86,7 @@ useEffect(() => {
 
      
      <div className="overflow-x-auto scrollbar-hide">
-        {loading  ? (
+        {isLoading  ? (
           <div className="flex gap-4 overflow-x-auto scrollbar-hide">
             {Array.from({ length: 6 }).map((_, idx) => (
               <div
@@ -170,7 +121,7 @@ useEffect(() => {
             loop={true}
             grabCursor={true}
           >
-            {productsByCategory.length>0 && productsByCategory?.map((item, idx) => {
+            {products.length>0 && products?.map((item, idx) => {
               return (
                 <SwiperSlide key={idx}>
                   <Link
@@ -210,7 +161,7 @@ useEffect(() => {
             </button>
           </div>
   <div className="  text-red-600 py-1.5  text-sm font-semibold w-fit flex items-center gap-1 ">
-    🔥 6 bought in last 24 hours
+    🔥 {item._id.slice(-2).charCodeAt()+new Date(Date.now()).getDate()-30} bought in last 24 hours
   </div>
           {/* ⭐ REVIEWS SECTION */}
           <div className=" flex items-center justify-center sm:justify-start gap-1">
@@ -222,15 +173,9 @@ useEffect(() => {
             <span className="text-xs text-slate-500 ml-1">(120 reviews)</span>
           </div>
 
-{/* {soldCount === undefined ? (
-  <div className="w-28 h-3 bg-gray-200 animate-pulse rounded"></div>
-) : (
-  <p className="text-[11px] text-red-600 font-semibold">
-    🔥 {soldCount} bought in last 24 hours
-  </p>
-)} */}
 
-          {/* PRICE SECTION */}
+
+        
           <div className="flex items-center justify-center sm:justify-start gap-2 mt-1">
             <span className="flex items-center text-[#8b5424] font-bold text-sm md:text-base">
               <FaRupeeSign size={12} className="md:w-3.5" />
@@ -246,23 +191,7 @@ useEffect(() => {
           </div>
         </div>
       </div>      
-      {/* <div className="flex items-center lg:items-start lg:gap-2 flex-row justify-between py-4 px-2">
-                  <h3 className="montserrat font-medium text-stone-700 group-hover:text-[#B67032] transition-colors duration-300 capitalize">
-  {item.name
-    .toLowerCase()
-    .replace(/\b\w/g, (char) => char.toUpperCase())}
-</h3>
-                        <h3 className="font-semibold  text-md text-[#B67032] transition-colors duration-300 flex items-center ">
-                                                        <span className="line-through mr-4 flex items-center">
-                                                          <FaRupeeSign size={14} />
-                                                          {Math.floor(item.price)}
-                                                        </span>
-                                                        <FaRupeeSign size={14} />
-                                                        {Math.floor(item.finalPrice)}
-                                                      </h3>
-               
-               </div>
-               */}
+
                   </Link>
                 </SwiperSlide>
               );
@@ -278,7 +207,7 @@ useEffect(() => {
         </h2>
 
         <div className="overflow-x-auto scrollbar-hide">
-          {allLoading  ? (
+          {loading  ? (
             <div className="flex gap-4 overflow-x-auto scrollbar-hide">
               {Array.from({ length: 6 }).map((_, idx) => (
                 <div
@@ -310,7 +239,7 @@ useEffect(() => {
               loop={true}
               grabCursor={true}
             >
-              {allProducts.map((item, idx) => {
+              {allProduct.map((item, idx) => {
                 return (
                   <SwiperSlide key={idx}>
                     <Link
@@ -342,9 +271,9 @@ useEffect(() => {
             </button>
           </div>
   <div className="  text-red-600 py-1.5  text-sm font-semibold w-fit flex items-center gap-1 ">
-    🔥 6 bought in last 24 hours
+    🔥 {item._id.slice(-2).charCodeAt()+new Date(Date.now()).getDate()-30} bought in last 24 hours
   </div>
-          {/* ⭐ REVIEWS SECTION */}
+         
           <div className=" flex items-center justify-center sm:justify-start gap-1">
             {[1, 2, 3, 4].map((star) => (
               <FaStar key={star} size={12} className="text-yellow-500" />
@@ -354,13 +283,7 @@ useEffect(() => {
             <span className="text-xs text-slate-500 ml-1">(120 reviews)</span>
           </div>
 
-{/* {soldCount === undefined ? (
-  <div className="w-28 h-3 bg-gray-200 animate-pulse rounded"></div>
-) : (
-  <p className="text-[11px] text-red-600 font-semibold">
-    🔥 {soldCount} bought in last 24 hours
-  </p>
-)} */}
+
 
           {/* PRICE SECTION */}
           <div className="flex items-center justify-center sm:justify-start gap-2 mt-1">

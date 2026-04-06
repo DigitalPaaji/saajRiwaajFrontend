@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 export default function Footer() {
   const {info ,isError ,isLoading} = useSelector(state=>state.category);
 
-console.log(info,"sss")
+
 
   const formatCategoryPath = (name) => name?.trim().toLowerCase().replace(/\s+/g, '-');
   const formatCategoryLabel = (name) => 

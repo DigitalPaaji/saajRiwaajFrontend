@@ -24,6 +24,7 @@ import { MdLocalOffer } from 'react-icons/md';
 import { TbTruckDelivery } from "react-icons/tb";
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import Image from 'next/image';
 
 const OrderCompo = ({ id }) => {
   const [order, setOrder] = useState(null);

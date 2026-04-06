@@ -50,7 +50,7 @@ const ProductCompo = ({ handelCheckout }) => {
     }
   };
 
-  useEffect(() => {
+  useEffect(() => { 
     if (!user) {
       if (cartItems && cartItems.length > 0) {
         fetchWishlist(cartItems);

@@ -1,7 +1,7 @@
 "use client";
 
 import { Suspense, useEffect, useState } from "react";
-import Banner from "../../components/user/InnerBanner";
+import Banner from "../../components/user/OtherBanner";
 import axios from "axios";
 import { base_url } from "@/app/components/store/utile";
 
@@ -43,13 +43,14 @@ export default function PrivacyPage() {
     <div>
  <Suspense fallback={null}>
 
-      <Banner title="Delivery Information" />
+      <Banner title="Delivery Information"  />
+
  </Suspense>
 
 
       <div className="px-4 sm:px-8 lg:px-24 xl:px-60 mx-auto my-16">
         {!loading && privacyData?.map((section, index) => (
-          <div key={index} className="mb-10">
+          <div key={index} className="mb-6">
             {section.heading && (
               <h2 className="text-lg font-semibold mb-3 text-[#111]">
                 {section.heading}

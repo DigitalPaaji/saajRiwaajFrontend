@@ -31,53 +31,25 @@ import { FaStar } from "react-icons/fa6";
 import ProductDeal from "@/app/components/newHome/ProductDeals";
 import ReviewsSection from "@/app/components/newHome/ProductReviews";
 import FaqSection from "@/app/components/newHome/Faq";
+import Link from "next/link";
 
 export default function ProductDetail() {
 
   const { id } = useParams();
-  const {
-    refetchProductById,
-    setIsCartOpen,
-    updateQty,
-    cart,setAllCart,setIsAuthOpen,setAuthTab,setShowCheckout,setbuytypeCart
-  } = useGlobalContext();
-  const wishlist = useSelector(state=>state.wishlist.items)
- const { user } = useSelector(state=>state.user)
-  const dispatch = useDispatch()
+
+const  [product,setProduct]=useState(null);
+const [loading ,setLoading]=useState(true)
+const wishlist = useSelector(state=>state.wishlist.items)
+const { user } = useSelector(state=>state.user)
+const dispatch = useDispatch()
 
 
-const [viewerCount, setViewerCount] = useState(null);
-// 📌 VIEWER COUNT (Random, persists 30 minutes)
-useEffect(() => {
-  if (!id) return;
+const [viewerCount, setViewerCount] = useState(22);
 
-  const storageKey = `viewerCount_${id}`;
-  const stored = JSON.parse(localStorage.getItem(storageKey));
-
-  const now = Date.now();
-  const THIRTY_MIN = 30 * 60 * 1000;
-
-  // If value exists & time not expired → use stored value
-  if (stored && now - stored.timestamp < THIRTY_MIN) {
-    setViewerCount(stored.count);
-    return;
-  }
-
-  // Else generate new number (1–40)
-  const randomCount = Math.floor(Math.random() * 40) + 1;
-
-  // Store with timestamp
-  localStorage.setItem(
-    storageKey,
-    JSON.stringify({ count: randomCount, timestamp: now })
-  );
-
-  setViewerCount(randomCount);
-}, [id]);
 
 
   
-  const [product, setProduct] = useState(null);
+
   const [selectedImage, setSelectedImage] = useState("");
 
   const [zoomPos, setZoomPos] = useState({ x: 0, y: 0 });
@@ -118,20 +90,7 @@ useEffect(()=>{
     setFlipped((prev) => prev.map((f, i) => (i === index ? !f : f)));
   };
 
-  const [soldCount, setSoldCount] = useState(null);
-const { getSoldCount } = useGlobalContext();
 
-useEffect(() => {
-  if (!id) return;
-
-  const updateCount = () => {
-    const count = getSoldCount(id);
-    setSoldCount(count);
-  };
-
-  updateCount();
-// eslint-disable-next-line react-hooks/exhaustive-deps
-}, [id]);
 
 
   const cards = [
@@ -180,21 +139,48 @@ useEffect(() => {
 setSelectedColorImage(product?.images)
   },[ product])
 
-  useEffect(() => {
-    if (id) {
-      (async () => {
-        const data = await refetchProductById(id);
-        if (data) {
-          setProduct(data);
-          setSelectedImage(data.images?.[0]);
-        }
-      })();
-    }
-  }, [id, refetchProductById]);
+
 useEffect(()=>{
 setSelectedImage(selectedColorImage?.[0])
 
 },[selectedColorImage])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const fetchProduct = async(productid)=>{
+  try {setLoading(true)
+    const response = await axios.get(`${base_url}/product/id/${productid}`)
+    const data = await response.data;
+  setProduct(data)
+   setSelectedImage(data.images?.[0]);
+  } catch (error) {
+    setProduct(null)
+  }finally{
+    setLoading(false)
+  }
+}
+
+
+useEffect(()=>{
+fetchProduct(id)
+},[ ])
+
+
+
+
   if (!product)
     return (
       <div className="flex flex-col xl:flex-row gap-6 px-4 md:px-12 lg:px-24 xl:px-40 2xl:px-52 py-12 ">
@@ -240,68 +226,6 @@ setSelectedImage(selectedColorImage?.[0])
 
 
 
-
-    const handelAddtocart= async(buytype)=>{  
-            // buytype ==="buy" ?   :  setbuytypeCart(true);
-
-      const item = {productid:product._id,price:product.finalPrice,quantity:selectedQty,color:selectedColor?._id}
-    try {
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/cart/post`,{...item,buytype},{
-        withCredentials:true
-      })
-     
-      const data = await response.data;
-   
-   if (data.success) {
-
-  if (typeof window !== "undefined" && window.fbq) {
-
-    if (buytype === "cart") {
-      // ✅ Add to Cart Event
-      window.fbq('track', 'AddToCart', {
-        content_ids: [product._id],
-        content_name: product.name,
-        value: product.finalPrice,
-        currency: 'INR'
-      });
-    }
-
-    if (buytype === "buy") {
-      // ✅ Buy Now Event
-      window.fbq('track', 'InitiateCheckout', {
-        content_ids: [product._id],
-        content_name: product.name,
-        value: product.finalPrice,
-        currency: 'INR'
-      });
-    }
-
-  }
-
-  buytype === "buy" ? "" : toast.success(data.message);
-  buytype === "buy" ? "" : setAddedToCart(true);
-  setAllCart(data.cart);
-
-}
-
-
-      
-      
-      else{
-      setAuthTab("login"); 
-              setIsAuthOpen(true);
-                setAddedToCart(false)
-
-      }
-    } catch (error) {
-               setAuthTab("login"); 
-              setIsAuthOpen(true);
-           setAddedToCart(false)
-
-    }
-  
-
-    }
 
 
 const funshow=(title,incl)=>{
@@ -401,9 +325,9 @@ toast.error(error.response.data.message)
        
 
         <div className="w-full xl:w-1/2 flex flex-col gap-2  ">
-          {/* Title */}
+       
           <div className="flex justify-between items-start">
-            {/* LEFT SIDE (name + category) */}
+         
             <div>
               <h3 className="text-2xl md:text-4xl font-serif  text-[#292927] capitalize">
                 {funshow(product.name.toLowerCase(),"name")}
@@ -538,24 +462,7 @@ toast.error(error.response.data.message)
                 Available Colors
               </h3>
 
-              {/* <div className="flex flex-wrap gap-2">
-                {product.colorVariants.map((v, i) => (
-                  <button
-                    key={i}
-                    onClick={() => {
-                      setSelectedColor(v);
-                      setSelectedQty(1);
-                    }}
-                    style={{ backgroundColor: v.colorName.toLowerCase() }}
-                    className={`w-6 h-6 rounded-full  transition ${
-                      selectedColor?.colorName === v.colorName
-                        ? "ring-2 ring-[#292927] ring-offset-1"
-                        : "border-gray-300"
-                    }`}
-                    title={v.colorName} // tooltip for accessibility
-                  />
-                ))}
-              </div> */}
+           
               <div className="flex flex-wrap gap-2">
   {product.colorVariants.map((v, i) => (
     <button
@@ -581,54 +488,33 @@ toast.error(error.response.data.message)
 </div>
 
 
-              {/* Stock Info */}
-              {/* <p className="text-sm text-stone-600">
-                {selectedColor?.quantity > 0 ? (
-                  <>
-                    Only{" "}
-                    <span className="font-semibold">
-                      {selectedColor?.quantity}
-                    </span>{" "}
-                    left - order fast!
-                  </>
-                ) : (
-                  <span className="text-red-600 font-semibold">
-                    Out of Stock
-                  </span>
-                )}
-              </p> */}
+           
             </div>
           )}
 
 <ProductDeal/>
           <div className="border-t border-gray-400/30 w-full py-2">
 
-{soldCount !== null && (
+
   <div className="  text-red-600 px-3 py-1  text-sm font-semibold w-fit flex items-center gap-1 ">
-    🔥 {soldCount} bought in last 24 hours
+    🔥 {product._id.slice(-2).charCodeAt()+new Date(Date.now()).getDate()-30} bought in last 24 hours
   </div>
-)}
+
 {viewerCount !== null && (
   <div className="mt-2  text-green-700 px-3 py-1 text-sm font-medium w-fit flex items-center gap-1">
-    👀 {viewerCount} people are viewing this right now
+    {/* 👀 */}
+    <img  src='/Images/watch.gif'  className="h-6 "/>
+     {viewerCount} people are viewing this right now
   </div>
 )}
+
+
           </div>
        
 
 {/* CTA Buttons */}
 <div className="flex flex-col md:flex-row gap-4 mt-4">
-  {addedtoCart ? (
-    
-    <button
-      onClick={() => setIsCartOpen(true)}
-      className="cursor-pointer w-full flex items-center justify-center gap-2 bg-green-600 text-white px-4 py-3 rounded hover:bg-green-700 transition text-sm font-medium tracking-wide"
-    >
-      <ShoppingCart className="w-4 h-4" />
-      Go to Cart
-    </button> 
-  ) : (
-    // If not in cart → Add to Cart
+
     <button
 
     onClick={()=>handelAddtocartProduct(product)}
@@ -637,49 +523,21 @@ toast.error(error.response.data.message)
       <ShoppingCart className="w-4 h-4" />
       Add to Cart
     </button>
-  )}
 
-  {/* Buy Now */}
-  <button
-    onClick={() => {
-      if (
-        !cart.some(
-          (item) =>
-            item._id === product._id &&
-            item.color === selectedColor?.colorName
-        )
-      )   
-                {setbuytypeCart(false) ,handelAddtocart("buy"),  setShowCheckout(true)}
-          
-    }}
+
+
+  <Link
+  
+  href={`/buy?color=${selectedColor?._id}&price=${product.finalPrice}&product=${product._id}&quantity=${selectedQty}`}
+ 
     className="w-full flex items-center justify-center gap-2 border border-[#bc861a] text-[#bc861a]  px-4 py-3 transition text-sm font-medium tracking-wide"
   >
     <CreditCard className="w-4 h-4" />
     Buy Now
-  </button>
+  </Link>
 </div>
 
-
-
-          
-          
-          {/* <div className="flex flex-col md:flex-row gap-4">
-           <button
-  onClick={() => {
-    addToCart({ ...product, selectedColor, selectedQty });
-    setSelectedQty(1);
-  }}
-              className="cursor-pointer w-full flex items-center justify-center gap-2 bg-[#292927] text-white px-4 py-3 rounded hover:bg-[#a95c2e] transition text-sm font-medium tracking-wide"
-            >
-              <ShoppingCart className="w-4 h-4" />
-              Add to Cart
-            </button>
-            <button className="w-full flex items-center justify-center gap-2 border border-[#292927] text-[#292927] px-4 py-3 rounded hover:bg-[#fff4ed] transition text-sm font-medium tracking-wide">
-              <CreditCard className="w-4 h-4" />
-              Buy Now
-            </button>
-          </div> */}
-            {/* Shipping Info Section */}
+  
           <div
             className="relative bg-cover md:bg-contain py-4"
             // style={{ backgroundImage: "url('/Images/bg4.png')" }}

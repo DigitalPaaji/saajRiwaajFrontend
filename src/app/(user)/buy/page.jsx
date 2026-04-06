@@ -1,12 +1,29 @@
 "use client"
-import React, { useState } from 'react'
+import React, { Suspense, useState } from 'react'
 import AddressCompo from '../checkout/AddressCompo'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useRouter, useSearchParams } from 'next/navigation'; // <-- ADDED useRouter
+import ProductCompo from './ProductCompo';
+import { addSlide } from '@/app/components/store/sliderSlice';
+import { base_url } from '@/app/components/store/utile';
+import Swal from 'sweetalert2';
+import axios from 'axios'; // <-- ADDED to prevent reference error
+import Image from 'next/image'; // <-- ADDED to prevent reference error
 
-const page = () => {
-      const { user } = useSelector((state) => state.user);
-const [showPopup, setShowPopUp] = useState(false);
+const Page = () => { // Changed 'page' to 'Page' for standard React component naming
+  const { user } = useSelector((state) => state.user);
+  const [showPopup, setShowPopUp] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
+  
+  const params = useSearchParams();
+  const router = useRouter(); // <-- INITIALIZED router
+  
+  const [fullPrice, setFullPrice] = useState(0);
+  const color = params.get("color");
+  const product = params.get("product");
+  const quantity = Number(params.get("quantity")) || 1;
+
   const [addressData, setAddressData] = useState({
     name: "",
     email: "",
@@ -20,15 +37,12 @@ const [showPopup, setShowPopUp] = useState(false);
     },
   });
 
-
-
   const handelCheckout = async (finalAmount) => {
     if (!user) {
       dispatch(addSlide("login"));
       return;
     }
 
-    // 1. Basic Validation
     const { name, email, phone, address } = addressData;
     if (!name || !email || !phone || !address.pincode || !address.addressLine) {
       Swal.fire({
@@ -43,7 +57,6 @@ const [showPopup, setShowPopUp] = useState(false);
     try {
       await handlePayOnline(finalAmount);
     } catch (error) {
-      console.error("Checkout Error:", error);
       Swal.fire("Error", "Something went wrong during checkout.", "error");
     } finally {
       setIsLoading(false);
@@ -60,12 +73,12 @@ const [showPopup, setShowPopUp] = useState(false);
         body: JSON.stringify({
           amount: finalAmount,
           type: "ONLINE",
-          items: cartItems.map((c) => ({
-            product: c?.product?._id,
-            quantity: c?.quantity,
-            price: c.price,
-            color: c?.color,
-          })),
+          items: [{
+            product: product,
+            quantity: quantity,
+            price: fullPrice,
+            color: color,
+          }],
           shippingAddress: addressData,
           paymentMethod: "ONLINE",
         }),
@@ -89,7 +102,6 @@ const [showPopup, setShowPopUp] = useState(false);
       const data = await ppRes.json();
 
       if (data.tokenUrl) {
-        // Pass finalAmount so the FB Pixel can access it in the callback
         await openPhonePePayPage(data.tokenUrl, order.productOrder._id, finalAmount);
       } else {
         Swal.fire("Error", "Failed to start payment process!", "error");
@@ -114,22 +126,27 @@ const [showPopup, setShowPopUp] = useState(false);
             
             // Verify payment status with backend
             const statusRes = await axios.post(
-              `${base_url}/order/phonepe/status/${orderId}`,
-              { buytype: "cart" }
-            );
+              `${base_url}/order/phonepe/status/${orderId}?buytype="buy`);
 
             if (statusRes.data.success) {
               // Trigger FB Pixel
               if (typeof window !== "undefined" && window.fbq) {
                 window.fbq("track", "Purchase", {
-                  value: finalAmount, // Now correctly defined in scope
+                  value: finalAmount, 
                   currency: "INR",
                   content_type: "product",
                 });
               }
+              
               // Show success popup
               setShowPopUp(true);
-              // REMOVED location.reload() -> This was destroying the React state and hiding the popup immediately.
+              
+              // <-- ADDED REDIRECT LOGIC -->
+              // Wait 2.5 seconds so the user can see the success popup, then redirect to "/"
+              setTimeout(() => {
+                router.push('/');
+              }, 2500); 
+
             } else {
               Swal.fire("Payment Failed", statusRes.data.message || "Payment verification failed.", "error");
             }
@@ -153,7 +170,6 @@ const [showPopup, setShowPopUp] = useState(false);
     });
   };
 
-
   if (showPopup) {
     return (
       <div className="z-[999] bg-black/60 fixed top-0 left-0 w-full h-screen flex justify-center items-center">
@@ -168,35 +184,32 @@ const [showPopup, setShowPopUp] = useState(false);
           <h3 className="text-green-600 text-2xl font-mosetta font-medium">
             Order placed successfully! 🎉
           </h3>
-          <a
-            href="/orders"
-            className="px-6 py-3 mt-2 w-full bg-[#B67032] hover:bg-[#9a5e29] transition-colors text-white rounded-md font-medium"
-          >
-            View Order Details
-          </a>
+          <p className="text-sm text-gray-500">Redirecting to home...</p>
         </div>
       </div>
     );
   }
 
   return (
-
     <div className="flex flex-col md:flex-row min-h-screen container mx-auto gap-6 p-4">
+      <div className="md:w-4/6">
+        <AddressCompo setAddressData={setAddressData} addressData={addressData} />
+      </div>
 
-  <div className="md:w-4/6">
-<AddressCompo setAddressData={setAddressData} addressData={addressData} />
-</div>
-
- <div className="md:w-2/6">
- 
- 
-
- 
- </div>
-
-
+      <div className="md:w-2/6">
+        <Suspense fallback={""}>
+          <ProductCompo 
+            productid={product}  
+            quantity={quantity} 
+            colorid={color}  
+            handelCheckout={handelCheckout} 
+            isLoading={isLoading} 
+            setFullPrice={setFullPrice}  
+          />
+        </Suspense>
+      </div>
     </div>
   )
 }
 
-export default page
+export default Page

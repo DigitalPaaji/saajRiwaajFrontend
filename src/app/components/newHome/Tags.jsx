@@ -7,44 +7,37 @@ import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 
-import { useSelector } from "react-redux";
 import Image from "next/image";
 import Link from "next/link";
+import axios from 'axios';
+import { base_url } from '../store/utile';
+import { useEffect, useState } from 'react';
 
 export default function BestSellersCarousel() {
 
-  // ⭐ Fetching Categories from Redux (NO AXIOS)
-  const { data: categories } = useSelector((state) => state.category.info);
+   const [tags,setTags]=useState([ ])
 
-  // Format URL slug
-  function formatCategoryPath(name) {
-    return name.trim().toLowerCase().replace(/\s+/g, "-");
+  const fetchTags = async()=>{
+    try {
+      const response =  await axios.get(`${base_url}/tag/getfrontend`)
+      const data = await response.data;
+if(data.success){
+  setTags(data.tags)
+}
+
+    } catch (error) {
+      setTags([ ])
+    }
+
+
   }
+  
+  useEffect(()=>{
+    fetchTags()
+  },[ ])
 
-  // Format title
-  function formatCategoryLabel(name) {
-    return name
-      .trim()
-      .split(" ")
-      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-      .join(" ");
-  }
 
-  // Static fallback images  
-  const getCategoryImage = (categoryName) => {
-    const name = categoryName.toLowerCase().trim();
-    const staticImages = {
-      "bangles": "/Images/category/bangles.webp",
-      "earrings": "/Images/category/earrings.webp",
-      "exclusive": "/Images/category/exclusive.webp",
-      "neckwear": "/Images/category/neckwear.webp",
-    "bangles": "/Images/category/bangles.webp",
-      "earrings": "/Images/category/earrings.webp",
-      "exclusive": "/Images/category/exclusive.webp",
-      "neckwear": "/Images/category/neckwear.webp",
-    };
-    return staticImages[name] || "/Images/category/exclusive.webp";
-  };
+
 
   return (
     <div className="px-4 md:px-12 xl:px-24 2xl:px-40 py-16 lg:py-32 flex flex-col items-center justify-center">
@@ -85,26 +78,22 @@ export default function BestSellersCarousel() {
         modules={[EffectCoverflow, Pagination, Navigation, Autoplay]}
         className="h-[320px] sm:h-[370px] md:h-[420px] lg:h-[500px]"
       >
-        {categories?.length > 0 &&
-          categories.map((cat) => {
-            const category = cat.category;
-            const label = formatCategoryLabel(category.name);
-            const imageSrc = getCategoryImage(category.name);
-            const path = `/category/${formatCategoryPath(category.name)}/${category._id}`;
+        {tags?.length > 0 &&
+          tags.map((tag) => {
+
 
             return (
               <SwiperSlide
-                key={category._id}
+                key={tag._id}
                 className="!w-[220px] sm:!w-[260px] md:!w-[320px] lg:!w-[380px]"
               >
-                <Link href={path}>
+                <Link href={"/"}>
                   <div className="relative w-full h-full rounded-2xl overflow-hidden transition-transform duration-300 hover:scale-105">
                     <Image
-                      src={imageSrc}
-                      alt={label}
+                      src={`${base_url}/${tag.image}`}
+                      alt={tag.name}
                       fill
                       className="object-cover"
-                      priority={category.name.toLowerCase() === "earrings"}
                     />
 
                     {/* gradient + hover text */}
