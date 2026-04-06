@@ -18,6 +18,7 @@ const OrdersList = () => {
   }, [fetchOrders]);
 
   const handelDeleteOrder = async(id)=>{
+
     try {
       const response = await axios.delete(`${base_url}/order/delete/${id}`);
       const data = await response.data;
@@ -118,7 +119,7 @@ const OrdersList = () => {
                     </td>
 
                     <td className="p-3 border-b">
-    <button onClick={()=>handelDeleteOrder(order._id)}>Delete Order</button>
+    <button onClick={(e)=>{e.preventDefault(),handelDeleteOrder(order._id)}}>Delete Order</button>
                       </td>
                   </tr>
                 ))}

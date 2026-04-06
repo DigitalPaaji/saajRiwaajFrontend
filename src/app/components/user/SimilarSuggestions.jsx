@@ -7,7 +7,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import Image from "next/image";
 import { FaRupeeSign, FaStarHalfAlt } from "react-icons/fa";
-import { FaStar } from "react-icons/fa6";
+import { FaRegStar, FaStar } from "react-icons/fa6";
 import { Heart } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { getRandomProduct } from "../store/randomProductSlice";
@@ -165,12 +165,19 @@ if(data.success){
   </div>
           {/* ⭐ REVIEWS SECTION */}
           <div className=" flex items-center justify-center sm:justify-start gap-1">
-            {[1, 2, 3, 4].map((star) => (
-              <FaStar key={star} size={12} className="text-yellow-500" />
-            ))}
-            <FaStarHalfAlt size={12} className="text-yellow-500" />
+           {[...Array(5)].map((_, index) => {
+                                                                  const starValue = index + 1;
+                                                        
+                                                                  if (item.rating >= starValue) {
+                                                                    return <FaStar key={index} className="text-yellow-500" />;
+                                                                  } else if (item.rating >= starValue - 0.5) {
+                                                                    return <FaStarHalfAlt key={index} className="text-yellow-500" />;
+                                                                  } else {
+                                                                    return <FaRegStar key={index} className="text-yellow-500" />;
+                                                                  }
+                                                                })}
 
-            <span className="text-xs text-slate-500 ml-1">(120 reviews)</span>
+            <span className="text-xs text-slate-500 ml-1">({item.reviewCount || 0} reviews)</span>
           </div>
 
 
@@ -275,12 +282,19 @@ if(data.success){
   </div>
          
           <div className=" flex items-center justify-center sm:justify-start gap-1">
-            {[1, 2, 3, 4].map((star) => (
-              <FaStar key={star} size={12} className="text-yellow-500" />
-            ))}
-            <FaStarHalfAlt size={12} className="text-yellow-500" />
+           {[...Array(5)].map((_, index) => {
+                                                                  const starValue = index + 1;
+                                                        
+                                                                  if (item.rating >= starValue) {
+                                                                    return <FaStar key={index} className="text-yellow-500" />;
+                                                                  } else if (item.rating >= starValue - 0.5) {
+                                                                    return <FaStarHalfAlt key={index} className="text-yellow-500" />;
+                                                                  } else {
+                                                                    return <FaRegStar key={index} className="text-yellow-500" />;
+                                                                  }
+                                                                })}
 
-            <span className="text-xs text-slate-500 ml-1">(120 reviews)</span>
+            <span className="text-xs text-slate-500 ml-1">({item.reviewCount || 0} reviews)</span>
           </div>
 
 

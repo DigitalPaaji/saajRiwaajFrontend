@@ -30,11 +30,16 @@ import {
 import { addTocart, addTocartUser } from "@/app/components/store/cartSlice";
 import { base_url } from "@/app/components/store/utile";
 import { addSlide } from "@/app/components/store/sliderSlice";
-import { FaStar } from "react-icons/fa6";
+import { FaRegStar, FaStar } from "react-icons/fa6";
 import ProductDeal from "@/app/components/newHome/ProductDeals";
 import ReviewsSection from "@/app/components/newHome/ProductReviews";
 import FaqSection from "@/app/components/newHome/Faq";
 import Link from "next/link";
+import io from "socket.io-client"
+
+let socket;
+
+
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -46,7 +51,7 @@ const { user } = useSelector(state=>state.user)
 const dispatch = useDispatch()
 
 
-const [viewerCount, setViewerCount] = useState(22);
+const [viewerCount, setViewerCount] = useState(0);
 
 
 
@@ -58,7 +63,7 @@ const [viewerCount, setViewerCount] = useState(22);
   const [isZoomed, setIsZoomed] = useState(false);
   const [addedtoCart, setAddedToCart] = useState(false);
   const [selectedColorImage, setSelectedColorImage] = useState();
-
+const [productReview,setProductReview]=useState([ ])
   const handleMouseMove = (e) => {
     const { left, top, width, height } =
       e.currentTarget.getBoundingClientRect();
@@ -175,10 +180,37 @@ const fetchProduct = async(productid)=>{
     setLoading(false)
   }
 }
+const fetchReviews = async(productid)=>{
+  try {
+    const response = await axios.get(`${base_url}/review/get/${productid}`)
+    const data = await response.data;
+    console.log(data,"reviews")
+if(data.success){
+setProductReview(data.data)
+}
+  } catch (error) {
+    
+  }
+}
 
 
 useEffect(()=>{
+socket = io(`${base_url}`); // backend URL
+
+    socket.emit("joinProduct", id);
+
+    socket.on("viewerCount", (count) => {
+      setViewerCount(count);
+    });
+
+
 fetchProduct(id)
+fetchReviews(id)
+
+ return () => {
+      socket.emit("leaveProduct", id);
+      socket.disconnect();
+    };
 },[ ])
 
 
@@ -311,8 +343,8 @@ toast.error(error.response.data.message)
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
               style={{
-                backgroundImage: `url('/Images/3.webp')`,
-                // backgroundImage: `url(${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${selectedImage})`,
+                // backgroundImage: `url('/Images/3.webp')`,
+                backgroundImage: `url(${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${selectedImage})`,
                 backgroundSize: isZoomed ? "150%" : "cover",
                 backgroundRepeat: "no-repeat",
                 backgroundPosition: isZoomed
@@ -360,10 +392,17 @@ toast.error(error.response.data.message)
           {/*  */}
           <div className="flex items-center justify-center sm:justify-start gap-1">
             {/* Stars */}
-            {[1, 2, 3, 4].map((star) => (
-              <FaStar key={star} size={12} className="text-yellow-500" />
-            ))}
-            <FaStarHalfAlt size={12} className="text-yellow-500" />
+              {[...Array(5)].map((_, index) => {
+                     const starValue = index + 1;
+           
+                     if (product.rating >= starValue) {
+                       return <FaStar key={index} className="text-yellow-500" />;
+                     } else if (product.rating >= starValue - 0.5) {
+                       return <FaStarHalfAlt key={index} className="text-yellow-500" />;
+                     } else {
+                       return <FaRegStar key={index} className="text-yellow-500" />;
+                     }
+                   })}
           </div>
 
           {/* */}
@@ -508,7 +547,7 @@ toast.error(error.response.data.message)
   <div className="mt-2  text-green-700 px-3 py-1 text-sm font-medium w-fit flex items-center gap-1">
     {/* 👀 */}
     <img  src='/Images/watch.gif'  className="h-6 "/>
-     {viewerCount} people are viewing this right now
+     {viewerCount+20} people are viewing this right now
   </div>
 )}
 
@@ -594,7 +633,7 @@ toast.error(error.response.data.message)
               ))}
             </div>
           </div>
-          <ReviewsSection />
+          <ReviewsSection sampleReviews={productReview}  rating={product.rating} reviewCount={product.reviewCount}  />
 
           {/* Description */}
           {(product.description?.paragraphs?.length > 0 ||

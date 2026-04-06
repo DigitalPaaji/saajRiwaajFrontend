@@ -9,6 +9,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addTocart, addTocartUser } from '../store/cartSlice';
 import { addSlide } from '../store/sliderSlice';
 import { Heart } from 'lucide-react';
+import { FaHeart, FaRegStar } from 'react-icons/fa6';
+import { addToWishlist, removeFromWishlist } from '../store/wishListSlice';
 
 export default function Earrings() {
 
@@ -17,6 +19,7 @@ const dispatch = useDispatch()
  const [loading,setLoading]=useState(true)
    const [productsByCategory2, setProductsByCategory2] = useState([ ]);
  const { user } = useSelector(state=>state.user)
+  const wishlist = useSelector(state=>state.wishlist.items)
 
   const earringsCategoryId = process.env.NEXT_PUBLIC_EARRINGS_CATEGORY_ID
 
@@ -111,14 +114,22 @@ toast.error(error.response.data.message)
             </h3>
 
             <button
-              // onClick={()=>dispatch(!wishlist?.some((w) => w === product._id) ?addToWishlist(product._id) : removeFromWishlist(product._id) )}
+               onClick={(e)=>{
+                            e.preventDefault(),
+                            dispatch(
+                                !wishlist?.some((w) => w === item._id)
+                                  ? addToWishlist(item._id)
+                                  : removeFromWishlist(item._id),
+                              )} }
               className="cursor-pointer"
             >
-              {/* {wishlist?.some((w) => w === product._id) ? ( */}
-              {/* <FaHeart className="w-6 h-6 text-red-500" />  */}
-              {/* ) : ( */}
-              <Heart className="w-6 h-6 text-stone-700" />
-              {/* )} */}
+             
+               {wishlist?.some((w) => w === item._id) ? (
+                              <FaHeart className="w-6 h-6 text-red-500" />
+                            ) : (
+                              <Heart className="w-6 h-6 text-stone-700" />
+                            )} 
+            
             </button>
           </div>
   {/* <h3 className="text-sm md:text-base font-medium text-slate-900 leading-tight break-words montserrat capitalize">
@@ -129,11 +140,18 @@ toast.error(error.response.data.message)
 
   {/* ⭐ REVIEWS */}
   <div className="flex items-center gap-1">
-    {[1, 2, 3, 4].map((i) => (
-      <FaStar key={i} size={12} className="text-yellow-500" />
-    ))}
-    <FaStarHalfAlt size={12} className="text-yellow-500" />
-    <span className="text-xs text-slate-500 ml-1">(120 reviews)</span>
+    {[...Array(5)].map((_, index) => {
+                                   const starValue = index + 1;
+                         
+                                   if (item.rating >= starValue) {
+                                     return <FaStar key={index} className="text-yellow-500" />;
+                                   } else if (item.rating >= starValue - 0.5) {
+                                     return <FaStarHalfAlt key={index} className="text-yellow-500" />;
+                                   } else {
+                                     return <FaRegStar key={index} className="text-yellow-500" />;
+                                   }
+                                 })}
+    <span className="text-xs text-slate-500 ml-1">({item.reviewCount || 0 } reviews)</span>
   </div>
 {soldCount === undefined ? (
   <div className="w-28 h-3 bg-gray-200 animate-pulse rounded"></div>

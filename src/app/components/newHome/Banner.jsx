@@ -12,13 +12,13 @@ const Carousel = () => {
   const banners = [
       { 
       desktop: "everyday.webp", 
-      mobile: "b1.webp",
+      mobile: "1.webp",
       title: "Everyday Elegance",
       subtitle: "Shop Collection"
     },
       { 
       desktop: "exclusive.webp", 
-      mobile: "b1.webp",
+      mobile: "2.webp",
       title: "The Bridal Edit",
       subtitle: "Discover Now"
     },

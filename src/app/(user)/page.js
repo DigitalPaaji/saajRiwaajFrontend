@@ -29,8 +29,16 @@ export default function Home() {
        {/* <Offer/> */}
       {/* <Navbar/> */}
 
-
-
+{/* {wishlist?.some((w) => w === product._id) ? (
+                <FaHeart className="w-6 h-6 text-red-500" />
+              ) : (
+                <Heart className="w-6 h-6 text-stone-700" />
+              )} */}
+ {/* dispatch(
+                  !wishlist?.some((w) => w === product._id)
+                    ? addToWishlist(product._id)
+                    : removeFromWishlist(product._id),
+                ) */}
 
       <Banner/> 
     <Trust/>

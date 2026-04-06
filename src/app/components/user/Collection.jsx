@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import Pagination from "./Pagination";
 import { FiShoppingBag } from "react-icons/fi";
 import { ShoppingBag } from "lucide-react";
-import { FaStar } from "react-icons/fa6";
+import { FaRegStar, FaStar } from "react-icons/fa6";
 import { base_url } from "../store/utile";
 import {  useDispatch, useSelector } from "react-redux";
 import { addTocart, addTocartUser } from "../store/cartSlice";
@@ -155,18 +155,22 @@ className="montserrat w-full bg-gradient-to-r from-[#bc861a] via-[#f1d981] to-[#
                     {/* ⭐ REVIEWS SECTION */}
                     <div className="flex items-center justify-center sm:justify-start gap-1">
                       {/* Stars */}
-                      {[1, 2, 3, 4].map((star) => (
-                        <FaStar
-                          key={star}
-                          size={12}
-                          className="text-yellow-500"
-                        />
-                      ))}
-                      <FaStarHalfAlt size={12} className="text-yellow-500" />
+                     {[...Array(5)].map((_, index) => {
+                                                       const starValue = index + 1;
+                                             
+                                                       if (product.rating >= starValue) {
+                                                         return <FaStar key={index} className="text-yellow-500" />;
+                                                       } else if (product.rating >= starValue - 0.5) {
+                                                         return <FaStarHalfAlt key={index} className="text-yellow-500" />;
+                                                       } else {
+                                                         return <FaRegStar key={index} className="text-yellow-500" />;
+                                                       }
+                                                     })}
+                     
 
                       {/* Review count */}
                       <span className="text-xs text-slate-500 ml-1">
-                        (120 reviews)
+                        ({product.reviewCount} reviews)
                       </span>
                     </div>
                     <h3 className="flex items-center md:text-md font-semibold text-[#292927] transition-colors duration-300">

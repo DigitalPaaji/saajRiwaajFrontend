@@ -40,7 +40,7 @@ try {
     if(data.success){
         setFullReviews(prev=>([...prev,data.data]))
         toast.success(data.message)
-        setFormData({ name: '', email: '', title: '', review: '', rating: '5' });
+        setFormData({ name: '', email: '', title: '', review: '', rating: '5',product });
     }
 } catch (error) {
     toast.error(error.response.data.message)

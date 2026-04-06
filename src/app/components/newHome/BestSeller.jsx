@@ -12,12 +12,15 @@ import { getRandomProduct } from "../store/randomProductSlice";
 import { addTocart, addTocartUser } from "../store/cartSlice";
 import { addSlide } from "../store/sliderSlice";
 import { toast } from "react-toastify";
-import { FaHeart } from "react-icons/fa6";
+import { FaHeart, FaRegStar } from "react-icons/fa6";
+import { addToWishlist, removeFromWishlist } from "../store/wishListSlice";
 // import { useGlobalContext } from "../context/GlobalContext";
 
 export default function MostLovedFeatured() {
   const { data } = useSelector((state) => state.category.info);
   const { user } = useSelector((state) => state.user);
+  const wishlist = useSelector(state=>state.wishlist.items)
+  
   const [filteredProducts, setfilteredProducts] = useState([]);
   const [allProduct, setAllProduct] = useState([]);
   const [Loading, setIsLoading] = useState(true);
@@ -146,19 +149,38 @@ const CardContent = ({ item }) => {
               {item.name.toLowerCase()}
             </h3>
 
-            <button className="cursor-pointer">
-              <Heart className="w-6 h-6 text-stone-700" />
+            <button className="cursor-pointer"
+            onClick={(e)=>{
+              e.preventDefault(),
+              dispatch(
+                  !wishlist?.some((w) => w === item._id)
+                    ? addToWishlist(item._id)
+                    : removeFromWishlist(item._id),
+                )} }
+            >
+             {wishlist?.some((w) => w === item._id) ? (
+                <FaHeart className="w-6 h-6 text-red-500" />
+              ) : (
+                <Heart className="w-6 h-6 text-stone-700" />
+              )} 
             </button>
           </div>
 
           {/* ⭐ REVIEWS SECTION */}
           <div className=" mb-1 flex items-center justify-center sm:justify-start gap-1">
-            {[1, 2, 3, 4].map((star) => (
-              <FaStar key={star} size={12} className="text-yellow-500" />
-            ))}
-            <FaStarHalfAlt size={12} className="text-yellow-500" />
+            {[...Array(5)].map((_, index) => {
+                                const starValue = index + 1;
+                      
+                                if (item.rating >= starValue) {
+                                  return <FaStar key={index} className="text-yellow-500" />;
+                                } else if (item.rating >= starValue - 0.5) {
+                                  return <FaStarHalfAlt key={index} className="text-yellow-500" />;
+                                } else {
+                                  return <FaRegStar key={index} className="text-yellow-500" />;
+                                }
+                              })}
 
-            <span className="text-xs text-slate-500 ml-1">(120 reviews)</span>
+            <span className="text-xs text-slate-500 ml-1">({item.reviewCount || 0 } reviews)</span>
           </div>
 
 {soldCount === undefined ? (

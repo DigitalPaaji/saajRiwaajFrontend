@@ -4,61 +4,61 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/autoplay";
-import { FaStar, FaStarHalfAlt } from "react-icons/fa";
+import { FaStar, FaStarHalfAlt,FaRegStar  } from "react-icons/fa";
 
-export default function ReviewsSection() {
-  const [reviews, setReviews] = useState([]);
+export default function ReviewsSection({sampleReviews,reviewCount,rating}) {
+   const totalStars = 5;
 
-  // 🔥 SAMPLE REVIEWS (fallback)
-  const sampleReviews = [
-    {
-      name: "Simran",
-      email: "simran@example.com",
-      title: "Amazing Quality!",
-      rating: 5,
-      review:
-        "Loved the finish and craftsmanship. Delivery was super fast as well!",
-    },
-    {
-      name: "Rahul",
-      email: "rahul@example.com",
-      title: "Highly Recommended",
-      rating: 4,
-      review:
-        "The jewellery looks even better in real life. Totally worth it!",
-    },
-    {
-      name: "Ayesha",
-      email: "ayesha@example.com",
-      title: "Beautiful & Elegant",
-      rating: 5,
-      review:
-        "I bought this for my sister and she absolutely loved it. Stunning design!",
-    },
-  ];
+  // // 🔥 SAMPLE REVIEWS (fallback)
+  // const sampleReviews = [
+  //   {
+  //     name: "Simran",
+  //     email: "simran@example.com",
+  //     title: "Amazing Quality!",
+  //     rating: 5,
+  //     review:
+  //       "Loved the finish and craftsmanship. Delivery was super fast as well!",
+  //   },
+  //   {
+  //     name: "Rahul",
+  //     email: "rahul@example.com",
+  //     title: "Highly Recommended",
+  //     rating: 4,
+  //     review:
+  //       "The jewellery looks even better in real life. Totally worth it!",
+  //   },
+  //   {
+  //     name: "Ayesha",
+  //     email: "ayesha@example.com",
+  //     title: "Beautiful & Elegant",
+  //     rating: 5,
+  //     review:
+  //       "I bought this for my sister and she absolutely loved it. Stunning design!",
+  //   },
+  // ];
 
-  // ⭐ FETCH REVIEWS FROM BACKEND (auto fallback to sample)
-  useEffect(() => {
-    async function fetchReviews() {
-      try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_LOCAL_PORT}/api/reviews`
-        );
-        const data = await res.json();
+  // // ⭐ FETCH REVIEWS FROM BACKEND (auto fallback to sample)
+  // useEffect(() => {
+  //   async function fetchReviews() {
+  //     try {
+  //       const res = await fetch(
+  //         `${process.env.NEXT_PUBLIC_LOCAL_PORT}/api/reviews`
+  //       );
+  //       const data = await res.json();
 
-        if (Array.isArray(data) && data.length > 0) {
-          setReviews(data);
-        } else {
-          setReviews(sampleReviews);
-        }
-      } catch (error) {
-        console.log("Failed to fetch reviews → Using sample reviews.");
-        setReviews(sampleReviews); // fallback
-      }
-    }
+  //       if (Array.isArray(data) && data.length > 0) {
+  //         setReviews(data);
+  //       } else {
+  //         setReviews(sampleReviews);
+  //       }
+  //     } catch (error) {
+  //       console.log("Failed to fetch reviews → Using sample reviews.");
+  //       setReviews(sampleReviews); // fallback
+  //     }
+  //   }
 
-    fetchReviews();
-  }, []);
+  //   fetchReviews();
+  // }, []);
 
   return (
     <section className="py-6 px-4">
@@ -69,17 +69,27 @@ export default function ReviewsSection() {
             What Our Customers Say
           </h2>
 
-          <div className="mt-2 flex items-center gap-2 text-[#292927]">
-            <span className="text-xl">4.8</span>
-            <div className="flex gap-1">
-              <FaStar className="text-yellow-500" />
-              <FaStar className="text-yellow-500" />
-              <FaStar className="text-yellow-500" />
-              <FaStar className="text-yellow-500" />
-              <FaStarHalfAlt className="text-yellow-500" />
-            </div>
-            <span className="text-sm text-slate-500">(312 reviews)</span>
-          </div>
+         <div className="mt-2 flex items-center gap-2 text-[#292927]">
+      <span className="text-xl">{rating.toFixed(1)}</span>
+
+      <div className="flex gap-1">
+        {[...Array(totalStars)].map((_, index) => {
+          const starValue = index + 1;
+
+          if (rating >= starValue) {
+            return <FaStar key={index} className="text-yellow-500" />;
+          } else if (rating >= starValue - 0.5) {
+            return <FaStarHalfAlt key={index} className="text-yellow-500" />;
+          } else {
+            return <FaRegStar key={index} className="text-yellow-500" />;
+          }
+        })}
+      </div>
+
+      <span className="text-sm text-slate-500">
+        ({reviewCount} reviews)
+      </span>
+    </div>
         </div>
 
         {/* REVIEWS SWIPER */}
@@ -96,7 +106,7 @@ export default function ReviewsSection() {
             loop
             className="mt-4 md:mt-0"
           >
-            {reviews.map((r, index) => (
+            {sampleReviews.length > 0 && sampleReviews.map((r, index) => (
               <SwiperSlide key={index} className="!w-[260px] lg:!w-[300px]">
                 <div className="bg-white rounded-xl shadow p-5 border border-stone-200">
                   <h3 className="font-semibold text-[#292927] text-sm capitalize">
@@ -125,6 +135,8 @@ export default function ReviewsSection() {
                 </div>
               </SwiperSlide>
             ))}
+
+
           </Swiper>
         </div>
       </div>

@@ -12,6 +12,7 @@ import "swiper/css/navigation";
 import { ArrowRight, ShoppingBag } from "lucide-react";
 import axios from "axios";
 import { base_url } from "../store/utile";
+import { FaRegStar } from "react-icons/fa6";
 
 export default function EarringsSlider() {
 const [featuredProducts,setFeaturedProducts]=useState([ ])
@@ -129,13 +130,21 @@ const fetchFeaturedProducts = async () => {
            <ShoppingBag size={14} />
             </div>
           </div>
-        {/* ⭐ REVIEWS SECTION */}
+      
         <div className="flex items-center justify-center sm:justify-start gap-1">
           {/* Stars */}
-          {[1, 2, 3, 4].map((star) => (
-            <FaStar key={star} size={12} className="text-yellow-500" />
-          ))}
-          <FaStarHalfAlt size={12} className="text-yellow-500" />
+           {[...Array(5)].map((_, index) => {
+                                             const starValue = index + 1;
+                                   
+                                             if (item.rating >= starValue) {
+                                               return <FaStar key={index} className="text-yellow-500" />;
+                                             } else if (item.rating >= starValue - 0.5) {
+                                               return <FaStarHalfAlt key={index} className="text-yellow-500" />;
+                                             } else {
+                                               return <FaRegStar key={index} className="text-yellow-500" />;
+                                             }
+                                           })}
+          
     
 
         </div>        {/* PRICE SECTION */}
