@@ -292,8 +292,8 @@ toast.error(error.response.data.message)
                 {selectedColorImage?.map((img, idx) => (
                   <div key={idx} className="relative w-20 h-20 cursor-pointer">
                     <Image
-                      // src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${img}`}
-                      src={"/Images/3.webp"}
+                      src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${img}`}
+                      // src={"/Images/3.webp"}
                       alt={" "}
                       fill
                       className={`object-cover object-center transition-all duration-200 ${

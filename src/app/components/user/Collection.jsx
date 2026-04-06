@@ -114,8 +114,8 @@ toast.error(error.response.data.message)
                   <div className="group relative aspect-[4/5] overflow-hidden ">
                     <div className="relative w-full h-full overflow-hidden group">
                       <Image
-                       src={'/Images/1.webp'}
-                        // src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${product.images?.[0]}`}
+                      //  src={'/Images/1.webp'}
+                        src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${product.images?.[0]}`}
                         alt={" "}
                         fill
                         className="object-cover transition-transform duration-500 group-hover:scale-105"

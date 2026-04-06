@@ -104,12 +104,12 @@ const fetchFeaturedProducts = async () => {
                   >
                     {/* 1. Image Layer */}
                     <Image
-                     src={'/Images/4.webp'}
-                     //  src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${
-                      //   hoveredId === item._id && item.images?.[1]
-                      //     ? item.images[1]
-                      //     : item.images?.[0]
-                      // }`}
+                    //  src={'/Images/4.webp'}
+                      src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item.images?.[0]
+                        // hoveredId === item._id && item.images?.[1]
+                        //   ? item.images[1]
+                        //   : item.images?.[0]
+                      }`}
                       alt={item.name}
                       fill
                       className="object-cover z-0 transition-transform duration-700 group-hover:scale-105"

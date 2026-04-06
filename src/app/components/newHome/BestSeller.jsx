@@ -99,7 +99,7 @@ const CardContent = ({ item }) => {
       {/* Image */}
       <div className="relative aspect-square overflow-hidden bg-gray-50 ">
         <Image
-          src={"/Images/3.webp"}
+          src={`${base_url}/uploads/${item.images?.[1]}`}
           alt={item.name}
           fill
           sizes="(max-width: 768px) 50vw, 33vw"

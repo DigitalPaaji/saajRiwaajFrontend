@@ -92,8 +92,8 @@ toast.error(error.response.data.message)
       {/* Image Container */}
       <div className="relative aspect-square overflow-hidden ">
         <Image
-        src={'/Images/3.webp'}
-          // src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item.images?.[0]}`}
+        // src={'/Images/3.webp'}
+          src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item.images?.[0]}`}
           alt={item.name}
           fill
           className="absolute inset-0 object-cover"
