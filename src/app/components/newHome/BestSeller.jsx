@@ -99,8 +99,11 @@ const CardContent = ({ item }) => {
 
   return (
     <>
-      {/* Image */}
+   
       <div className="relative aspect-square overflow-hidden bg-gray-50 ">
+
+
+
         <Image
           src={`${base_url}/uploads/${item.images?.[1]}`}
           alt={item.name}
@@ -111,6 +114,14 @@ const CardContent = ({ item }) => {
 
         {/* Desktop Add to Cart */}
         <div className="hidden lg:group-hover:flex absolute inset-0 transition-all duration-300 items-end justify-center p-4 z-20 ">
+    
+    
+     {item.outofstock ?   <button
+               
+    className="montserrat cursor-not-allowed w-full border border-red-50/50 font-semibold backdrop-blur-lg  text-red-900 py-2.5 text-xs rounded shadow-lg  transform translate-y-4 group-hover:-translate-y-1 transition-all duration-500 ease-out flex items-center justify-center gap-2"          >
+                <ShoppingBag size={16} />
+                OUT OF STOCK
+              </button>  :
           <button
             onClick={(e) => {
               e.preventDefault();
@@ -123,6 +134,7 @@ const CardContent = ({ item }) => {
             <ShoppingBag size={16} />
             ADD TO CART
           </button>
+}
         </div>
 
         {/* Mobile Add to Cart */}

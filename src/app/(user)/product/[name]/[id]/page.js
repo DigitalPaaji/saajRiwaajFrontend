@@ -556,7 +556,12 @@ toast.error(error.response.data.message)
 
 {/* CTA Buttons */}
 <div className="flex flex-col md:flex-row gap-4 mt-4">
-
+{product.outofstock ? <button 
+   
+  className="w-full flex items-center justify-center gap-2 bg-red-200 font-semibold text-red-500 px-4 py-3 text-sm  tracking-wide cursor-not-allowed"
+>
+  Out of Stock
+</button> :
     <button
 
     onClick={()=>handelAddtocartProduct(product)}
@@ -565,9 +570,17 @@ toast.error(error.response.data.message)
       <ShoppingCart className="w-4 h-4" />
       Add to Cart
     </button>
+}
 
-
-
+{product.outofstock ? <div
+  
+  
+ 
+    className=" cursor-not-allowed w-full flex items-center justify-center gap-2 border border-[#bc861a] text-[#bc861a]  px-4 py-3 transition text-sm font-medium tracking-wide"
+  >
+    <CreditCard className="w-4 h-4" />
+    Buy Now
+  </div>:
   <Link
   
   href={`/buy?color=${selectedColor?._id}&price=${product.finalPrice}&product=${product._id}&quantity=${selectedQty}`}
@@ -577,6 +590,7 @@ toast.error(error.response.data.message)
     <CreditCard className="w-4 h-4" />
     Buy Now
   </Link>
+}
 </div>
 
   

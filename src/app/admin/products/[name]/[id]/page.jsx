@@ -385,6 +385,7 @@ const handleUpdate = async (e) => {
     formData.append("isNewArrival", product.isNewArrival);
     formData.append("deleteBarcode", product.deleteBarcode);
     formData.append("deletethumbnail", product.deletethumbnail)
+    formData.append("outofstock", product.outofstock)
 
     // 🔹 Objects / Arrays (stringify)
     formData.append("description", JSON.stringify(product.description));
@@ -394,7 +395,7 @@ const handleUpdate = async (e) => {
     formData.append("hidethings", JSON.stringify(product.hidethings));
     formData.append("deleteImage", JSON.stringify(product.deleteImage));
 
-    // 🔹 Existing images (names/paths)
+   
     formData.append("images", JSON.stringify(product.images));
 
   if (Array.isArray(product?.newImages)) {
@@ -1391,6 +1392,60 @@ const removeNewImages=(indx)=>{
               )}
 
 
+
+
+
+
+
+
+
+
+    <div>
+                  <label htmlFor="tags" className={labelClasses}>
+                  Out of Stock
+                  </label>
+
+                  <div className={cardClasses + " space-y-3"}>
+                   
+
+
+
+<div  disabled={isViewMode}
+  onClick={() => !isViewMode && setProduct(prev => ({ ...prev, outofstock: !prev.outofstock }))}
+  className={`relative w-full h-12 rounded-full cursor-pointer transition-all duration-300 ease-in-out p-1 flex items-center 
+    ${product.outofstock ? "bg-slate-200" : "bg-green-500"}`}
+>
+  {/* Sliding Knob */}
+  <div className={`h-10 w-1/2 rounded-full bg-white shadow-md transform transition-transform duration-300 flex items-center justify-center font-bold text-xs uppercase
+    ${product.outofstock ? "translate-x-full text-red-600" : "translate-x-0 text-green-600"}`}>
+    {product.outofstock ? "Out" : "In"}
+  </div>
+  
+  {/* Background Labels */}
+  <div className="absolute inset-0 flex justify-between items-center px-6 text-xs font-bold pointer-events-none uppercase">
+    <span className={product.outofstock ? "opacity-0" : "text-white"}>In Stock</span>
+    <span className={product.outofstock ? "text-slate-500" : "opacity-0"}>Sold Out</span>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+                  </div>
+
+
+
+
+                </div>
+
+
+
+
+
                 
                 <div>
                   <label htmlFor="tags" className={labelClasses}>
@@ -1441,7 +1496,7 @@ const removeNewImages=(indx)=>{
 <div className="flex flex-wrap gap-3">
 
 
-<ReviewSection product={id} />
+<ReviewSection product={id}  isViewMode={isViewMode}/>
 
 </div>
  

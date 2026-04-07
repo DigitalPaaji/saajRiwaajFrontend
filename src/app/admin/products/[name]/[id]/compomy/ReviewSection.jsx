@@ -4,7 +4,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
 
-const ReviewSection = ({product}) => {
+const ReviewSection = ({product,isViewMode}) => {
   // 1. Manage form state
   const [formData, setFormData] = useState({
     name: '',
@@ -89,7 +89,7 @@ toast.success(data.message)
   return (
     <div className=" ">
     
-      
+      {!isViewMode && 
       <div  className="space-y-5">
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -102,7 +102,7 @@ toast.success(data.message)
               value={formData.name}
               onChange={handleChange}
               placeholder="John Doe"
-              required
+              
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
             />
           </div>
@@ -116,7 +116,7 @@ toast.success(data.message)
               value={formData.email}
               onChange={handleChange}
               placeholder="john@example.com"
-              required
+              
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
             />
           </div>
@@ -132,7 +132,7 @@ toast.success(data.message)
             value={formData.title}
             onChange={handleChange}
             placeholder="Summarize your experience"
-            required
+            
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
           />
         </div>
@@ -165,7 +165,7 @@ toast.success(data.message)
             value={formData.review}
             onChange={handleChange}
             placeholder="Tell us what you thought..."
-            required
+            
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition resize-y"
           ></textarea>
         </div>
@@ -179,6 +179,7 @@ toast.success(data.message)
         </button>
 
       </div>
+}
 
 <table className="w-full text-left text-sm border-collapse">
       <thead className="bg-gray-100 border-b">
@@ -199,6 +200,7 @@ toast.success(data.message)
             <td className="p-3">{item.createdAt.substring(0, 10)}</td>
             <td className="p-3">
               <button 
+              disabled={isViewMode}
                 onClick={() => handleDelete(item._id)} 
                 className="text-red-600 hover:text-red-800 font-semibold"
               >
