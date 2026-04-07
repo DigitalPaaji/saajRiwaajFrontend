@@ -101,7 +101,7 @@ if(data.success){
                 key={tag._id}
                 className="!w-[220px] sm:!w-[260px] md:!w-[320px] lg:!w-[380px]"
               >
-                <Link href={"/"}>
+                <Link href={`/tag/${tag.name.toLowerCase().replace(/\s+/g, '-')}/${tag._id}`}>
                   <div className="relative w-full h-full rounded-2xl overflow-hidden transition-transform duration-300 hover:scale-105">
                     <Image
                       src={`${base_url}/${tag.image}`}

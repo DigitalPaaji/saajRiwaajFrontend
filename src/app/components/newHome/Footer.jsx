@@ -31,16 +31,14 @@ export default function Footer() {
               Be the first to explore our latest heritage collections and private gallery openings.
             </p>
           </div>
-          <div className="w-full lg:w-auto flex items-center border-b border-white/30 py-3 focus-within:border-white transition-colors">
-            <input 
-              type="email" 
-              placeholder="ENTER YOUR EMAIL" 
-              className="bg-transparent text-xs md:text-sm tracking-[0.2em] outline-none w-full lg:w-80 uppercase placeholder:text-zinc-600"
-            />
+          <Link href={'/contact'} className="w-full lg:w-auto flex items-center border-b border-white/30 py-3 focus-within:border-white transition-colors">
+ <h5 className="bg-transparent text-xs md:text-sm tracking-[0.2em] outline-none w-full lg:w-80 uppercase placeholder:text-zinc-600">
+            Get In Touch
+          </h5>
             <button className="text-white hover:translate-x-2 transition-transform duration-300">
               <ArrowRight size={20} strokeWidth={1} />
             </button>
-          </div>
+          </Link>
         </div>
       </div>
 
