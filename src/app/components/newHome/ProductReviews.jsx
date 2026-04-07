@@ -62,7 +62,7 @@ export default function ReviewsSection({sampleReviews,reviewCount,rating}) {
 
   return (
     <section className="py-6 px-4">
-      {/* TOP HEADING */}
+      {reviewCount > 0  && 
       <div className="space-y-6 mb-10">
         <div>
           <h2 className="text-xl md:text-2xl montserrat font-semibold text-[#292927] capitalize">
@@ -130,7 +130,6 @@ export default function ReviewsSection({sampleReviews,reviewCount,rating}) {
                     <p className="text-xs font-semibold text-[#292927] capitalize">
                       {r.name}
                     </p>
-                    <p className="text-[11px] text-slate-500">{r.email}</p>
                   </div>
                 </div>
               </SwiperSlide>
@@ -139,7 +138,7 @@ export default function ReviewsSection({sampleReviews,reviewCount,rating}) {
 
           </Swiper>
         </div>
-      </div>
+      </div>}
     </section>
   );
 }

@@ -1,9 +1,11 @@
 "use client";
 import { Tags, Copy } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
+import axios from "axios";
+import { base_url } from "../store/utile";
 
 const deals = [
   {
@@ -34,6 +36,7 @@ const deals = [
 
 function ProductDeals() {
   const [copiedIndex, setCopiedIndex] = useState(null);
+ const [allCouponCode,setAllCouponCode]= useState([ ])
 
   const copyToClipboard = (code, index) => {
     navigator.clipboard.writeText(code);
@@ -42,6 +45,22 @@ function ProductDeals() {
     setTimeout(() => setCopiedIndex(null), 1500);
   };
 
+
+
+  const fetchCouponCode= async()=>{
+    try {
+      const response = await axios.get(`${base_url}/coupon`);
+      const data = await response.data;
+setAllCouponCode(data.coupons)
+    } catch (error) {
+      setAllCouponCode([ ])
+    }
+  }
+
+
+  useEffect(()=>{
+    fetchCouponCode()
+  },[])
   return (
     <Swiper
       modules={[Autoplay]}
@@ -55,22 +74,22 @@ function ProductDeals() {
       }}
       className="w-full"
     >
-      {deals.map((item, index) => (
+      { allCouponCode.length > 0 && allCouponCode?.map((item, index) => (
         <SwiperSlide key={index} className="!w-[300px]">
           <div className="p-3 bg-green-50/40 space-y-2 rounded border border-green-100">
             <div className="flex items-center gap-2">
               <Tags size={16} className="text-green-600" />
               <h3 className="text-green-600 font-semibold text-[15px]">
-                {item.title}
+                {item.code}
               </h3>
             </div>
 
             <p className="text-gray-700 text-[14px] font-semibold">
-              {item.desc}
+             Get {item.discountPercent}% Discount on your purchase
             </p>
 
             <p className="text-gray-500 capitalize tracking-wide text-[13px]">
-              {item.note}
+              {/* {item.note} */}
             </p>
 
             {/* Coupon Code + Copy */}
