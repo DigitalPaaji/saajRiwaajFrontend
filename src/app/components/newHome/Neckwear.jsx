@@ -8,7 +8,7 @@ import { base_url } from '../store/utile';
 import { useDispatch, useSelector } from 'react-redux';
 import { addTocart, addTocartUser } from '../store/cartSlice';
 import { addSlide } from '../store/sliderSlice';
-import { Heart } from 'lucide-react';
+import { Heart, ShoppingBag } from 'lucide-react';
 import { FaHeart, FaRegStar } from 'react-icons/fa6';
 import { addToWishlist, removeFromWishlist } from '../store/wishListSlice';
 
@@ -175,7 +175,12 @@ toast.error(error.response.data.message)
     )}
   </div>
 
-  {/* 🛒 ADD TO CART BUTTON */}
+ {item.outofstock ?   <button
+               
+    className="montserrat cursor-not-allowed w-full border border-red-50/50 font-semibold backdrop-blur-lg  text-red-900 py-2.5 text-xs rounded shadow-lg  transform translate-y-4 group-hover:-translate-y-1 transition-all duration-500 ease-out flex items-center justify-center gap-2"          >
+                <ShoppingBag size={16} />
+                OUT OF STOCK
+              </button>  :
   <button
    onClick={(e)=>{  e.preventDefault()
               handelAddtocartProduct(item)}}
@@ -183,6 +188,7 @@ toast.error(error.response.data.message)
   >
     Add to Cart
   </button>
+  }
 
 </div>
     </>

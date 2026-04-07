@@ -26,19 +26,7 @@ import Content from '../components/newHome/Content'
 export default function Home() {
   return (
     <div className="min-h-screen   text-stone-800 overflow-hidden ">
-       {/* <Offer/> */}
-      {/* <Navbar/> */}
 
-{/* {wishlist?.some((w) => w === product._id) ? (
-                <FaHeart className="w-6 h-6 text-red-500" />
-              ) : (
-                <Heart className="w-6 h-6 text-stone-700" />
-              )} */}
- {/* dispatch(
-                  !wishlist?.some((w) => w === product._id)
-                    ? addToWishlist(product._id)
-                    : removeFromWishlist(product._id),
-                ) */}
 
       <Banner/> 
     <Trust/>

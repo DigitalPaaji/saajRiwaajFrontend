@@ -7,12 +7,13 @@ import "swiper/css";
 import "swiper/css/navigation";
 import Image from "next/image";
 import { FaRupeeSign, FaStarHalfAlt } from "react-icons/fa";
-import { FaRegStar, FaStar } from "react-icons/fa6";
+import { FaHeart, FaRegStar, FaStar } from "react-icons/fa6";
 import { Heart } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { getRandomProduct } from "../store/randomProductSlice";
 import axios from "axios";
 import { base_url } from "../store/utile";
+import { addToWishlist, removeFromWishlist } from "../store/wishListSlice";
 
 export default function EarringsMarquee({ categoryId }) {
  
@@ -21,7 +22,7 @@ export default function EarringsMarquee({ categoryId }) {
   const dispatch = useDispatch();
   const { products, isLoading } = useSelector((state) => state.randomProduct);
   const [allProduct,setAllProduct]=useState([ ])
-
+const wishlist = useSelector(state=>state.wishlist.items)
 
   const fetchRandomProduct = async () => {
     try {
@@ -156,9 +157,28 @@ if(data.success){
               {item.name.toLowerCase()}
             </h3>
 
-            <button className="cursor-pointer">
-              <Heart className="w-6 h-6 text-stone-700" />
-            </button>
+           <button
+                          onClick={(e)=>{
+                                       e.preventDefault(),
+                                       dispatch(
+                                           !wishlist?.some((w) => w === item._id)
+                                             ? addToWishlist(item._id)
+                                             : removeFromWishlist(item._id),
+                                         )} }
+                         className="cursor-pointer"
+                       >
+                        
+                          {wishlist?.some((w) => w === item._id) ? (
+                                         <FaHeart className="w-6 h-6 text-red-500" />
+                                       ) : (
+                                         <Heart className="w-6 h-6 text-stone-700" />
+                                       )} 
+                       
+                       </button>
+
+
+
+
           </div>
   <div className="  text-red-600 py-1.5  text-sm font-semibold w-fit flex items-center gap-1 ">
     🔥 {item._id.slice(-2).charCodeAt()+new Date(Date.now()).getDate()-30} bought in last 24 hours
@@ -273,9 +293,24 @@ if(data.success){
               {item.name.toLowerCase()}
             </h3>
 
-            <button className="cursor-pointer">
-              <Heart className="w-6 h-6 text-stone-700" />
-            </button>
+            <button
+                          onClick={(e)=>{
+                                       e.preventDefault(),
+                                       dispatch(
+                                           !wishlist?.some((w) => w === item._id)
+                                             ? addToWishlist(item._id)
+                                             : removeFromWishlist(item._id),
+                                         )} }
+                         className="cursor-pointer"
+                       >
+                        
+                          {wishlist?.some((w) => w === item._id) ? (
+                                         <FaHeart className="w-6 h-6 text-red-500" />
+                                       ) : (
+                                         <Heart className="w-6 h-6 text-stone-700" />
+                                       )} 
+                       
+                       </button>
           </div>
   <div className="  text-red-600 py-1.5  text-sm font-semibold w-fit flex items-center gap-1 ">
     🔥 {item._id.slice(-2).charCodeAt()+new Date(Date.now()).getDate()-30} bought in last 24 hours

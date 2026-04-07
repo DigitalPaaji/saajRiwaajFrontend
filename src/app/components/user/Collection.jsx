@@ -109,8 +109,10 @@ toast.error(error.response.data.message)
                 <Link
                   href={`/product/${product.name}/${product._id}`}
                   key={product._id}
-                  className="group block border border-stone-200 p-4 "
+                  className="group block border border-stone-200 p-4 relative"
                 >
+
+                
                   <div className="group relative aspect-[4/5] overflow-hidden ">
                     <div className="relative w-full h-full overflow-hidden group">
                       <Image
@@ -125,12 +127,18 @@ toast.error(error.response.data.message)
                             
         {/* Desktop Add to Cart */}
         <div className="hidden lg:group-hover:flex absolute inset-0 transition-all duration-300 items-end justify-center p-4 z-20 ">
-          <button
+        {product.outofstock ?   <button
+           
+className="montserrat cursor-not-allowed w-full border border-red-50/50 font-semibold backdrop-blur-lg  text-red-900 py-2.5 text-xs rounded shadow-lg  transform translate-y-4 group-hover:-translate-y-1 transition-all duration-500 ease-out flex items-center justify-center gap-2"          >
+            <ShoppingBag size={16} />
+            OUT OF STOCK
+          </button>  : <button
             onClick={(e) =>{ e.preventDefault() ,handleAddToCart(product)}}
 className="montserrat w-full bg-gradient-to-r from-[#bc861a] via-[#f1d981] to-[#bc861a] text-[#292927] font-semibold py-2.5 text-xs rounded shadow-lg  transform translate-y-4 group-hover:-translate-y-1 transition-all duration-500 ease-out flex items-center justify-center gap-2"          >
             <ShoppingBag size={16} />
             ADD TO CART
           </button>
+}
         </div>
 
         {/* Mobile Add to Cart */}
