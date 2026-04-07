@@ -177,8 +177,8 @@ toast.error(error.response.data.message)
 
  {item.outofstock ?   <button
                
-    className="montserrat cursor-not-allowed w-full border border-red-50/50 font-semibold backdrop-blur-lg  text-red-900 py-2.5 text-xs rounded shadow-lg  transform translate-y-4 group-hover:-translate-y-1 transition-all duration-500 ease-out flex items-center justify-center gap-2"          >
-                <ShoppingBag size={16} />
+   className="w-full mt-1 font-semibold text-xs md:text-sm py-2 bg-red-50 text-red-700 shadow-sm transition-all duration-300"         >
+                
                 OUT OF STOCK
               </button>  :
   <button
@@ -188,10 +188,8 @@ toast.error(error.response.data.message)
   >
     Add to Cart
   </button>
-  }
-
-</div>
-    </>
+  }</div>
+</>
   )
 };
 
