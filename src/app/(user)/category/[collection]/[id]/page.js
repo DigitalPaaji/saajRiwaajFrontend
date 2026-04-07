@@ -96,7 +96,7 @@ export default function FilterLayout() {
       <InnerBanner title={collection} idc={id} image="/Images/banner.webp"  subcategory={subcategory} />
 
    
-<div className="py-12">
+<div className="py-4 lg:py-12">
 <div className="relative flex gap-6  py-6  px-4 md:px-12 lg:px-24 xl:px-40 2xl:px-52 ">
 
 <aside className="w-full" >

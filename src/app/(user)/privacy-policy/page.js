@@ -1,7 +1,7 @@
 "use client";
 
 import { Suspense, useEffect, useState } from "react";
-import Banner from "../../components/user/InnerBanner";
+import Banner from "../../components/user/OtherBanner";
 import axios from "axios";
 import { base_url } from "@/app/components/store/utile";
 
