@@ -17,12 +17,17 @@ const Carousel = () => {
       subtitle: "Shop Collection"
     },
       { 
-      desktop: "exclusive.webp", 
-      mobile: "2.webp",
+      desktop: "wedding.webp", 
+      mobile: "3.webp",
       title: "The Bridal Edit",
       subtitle: "Discover Now"
     },
-
+      { 
+      desktop: "exclusive.webp", 
+      mobile: "2.webp",
+      title: "The Signature Series",
+      subtitle: "Discover Now"
+    },
   ];
 
   return (
