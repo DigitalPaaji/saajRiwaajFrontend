@@ -49,7 +49,7 @@ function ProductDeals() {
 
   const fetchCouponCode= async()=>{
     try {
-      const response = await axios.get(`${base_url}/coupon`);
+      const response = await axios.get(`${base_url}/coupon/all`);
       const data = await response.data;
 setAllCouponCode(data.coupons)
     } catch (error) {

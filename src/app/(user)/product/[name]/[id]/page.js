@@ -465,7 +465,7 @@ toast.error(error.response.data.message)
 
                 <span className="text-md font-semibold">{selectedQty}</span>
 
-                {/* Increase */}
+       
                 <button
                   disabled={selectedQty >= (selectedColor?.quantity ?? 1)}
                   className={`cursor-pointer text-lg rounded px-2 ${
