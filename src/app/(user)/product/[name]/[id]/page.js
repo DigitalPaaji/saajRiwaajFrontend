@@ -381,12 +381,7 @@ export default function ProductDetail() {
                   -
                 </button>
                 <span className="text-md font-semibold">{selectedQty}</span>
-<<<<<<< Updated upstream
-
-       
-=======
->>>>>>> Stashed changes
-                <button
+         <button
                   disabled={selectedQty >= (selectedColor?.quantity ?? 1)}
                   className={`cursor-pointer text-lg rounded px-2 ${selectedQty >= (selectedColor?.quantity ?? 1)
                       ? "opacity-40 cursor-not-allowed"
