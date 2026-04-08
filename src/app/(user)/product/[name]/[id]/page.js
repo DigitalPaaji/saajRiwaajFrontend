@@ -1,20 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react"; // Added useRef
 import { useParams } from "next/navigation";
-import { useGlobalContext } from "../../../../components/context/GlobalContext";
 import Image from "next/image";
 import Similar from "../../../../components/user/SimilarSuggestions";
 
 import {
-  PackageSearch,
-  RefreshCcw,
-  Factory,
-  Sparkles,
-  Info,
-  Palette,
-  Tags,
-  ShieldCheck,
   ShoppingCart,
   CreditCard,
   Heart,
@@ -39,31 +30,28 @@ import io from "socket.io-client"
 
 let socket;
 
-
-
 export default function ProductDetail() {
   const { id } = useParams();
 
-const  [product,setProduct]=useState(null);
-const [loading ,setLoading]=useState(true)
-const wishlist = useSelector(state=>state.wishlist.items)
-const { user } = useSelector(state=>state.user)
-const dispatch = useDispatch()
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true)
+  const wishlist = useSelector(state => state.wishlist.items)
+  const { user } = useSelector(state => state.user)
+  const dispatch = useDispatch()
 
+  const [viewerCount, setViewerCount] = useState(0);
 
-const [viewerCount, setViewerCount] = useState(0);
-
-
-
-  
+  // New State for Sticky Bar
+  const [showStickyBar, setShowStickyBar] = useState(false);
+  const ctaAreaRef = useRef(null);
 
   const [selectedImage, setSelectedImage] = useState("");
-
   const [zoomPos, setZoomPos] = useState({ x: 0, y: 0 });
   const [isZoomed, setIsZoomed] = useState(false);
   const [addedtoCart, setAddedToCart] = useState(false);
   const [selectedColorImage, setSelectedColorImage] = useState();
-const [productReview,setProductReview]=useState([ ])
+  const [productReview, setProductReview] = useState([])
+
   const handleMouseMove = (e) => {
     const { left, top, width, height } =
       e.currentTarget.getBoundingClientRect();
@@ -88,6 +76,7 @@ const [productReview,setProductReview]=useState([ ])
       setSelectedQty(1);
     }
   }, [product]);
+
   useEffect(() => {
     setSelectedImage(newImg?.[0]);
   }, [newImg]);
@@ -95,9 +84,6 @@ const [productReview,setProductReview]=useState([ ])
   const toggleFlip = (index) => {
     setFlipped((prev) => prev.map((f, i) => (i === index ? !f : f)));
   };
-
-
-
 
   const cards = [
     {
@@ -147,94 +133,79 @@ const [productReview,setProductReview]=useState([ ])
     setSelectedColorImage(product?.images);
   }, [product]);
 
+  useEffect(() => {
+    setSelectedImage(selectedColorImage?.[0])
+  }, [selectedColorImage])
 
-useEffect(()=>{
-setSelectedImage(selectedColorImage?.[0])
-
-},[selectedColorImage])
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const fetchProduct = async(productid)=>{
-  try {setLoading(true)
-    const response = await axios.get(`${base_url}/product/id/${productid}`)
-    const data = await response.data;
-  setProduct(data)
-   setSelectedImage(data.images?.[0]);
-  } catch (error) {
-    setProduct(null)
-  }finally{
-    setLoading(false)
+  const fetchProduct = async (productid) => {
+    try {
+      setLoading(true)
+      const response = await axios.get(`${base_url}/product/id/${productid}`)
+      const data = await response.data;
+      setProduct(data)
+      setSelectedImage(data.images?.[0]);
+    } catch (error) {
+      setProduct(null)
+    } finally {
+      setLoading(false)
+    }
   }
-}
-const fetchReviews = async(productid)=>{
-  try {
-    const response = await axios.get(`${base_url}/review/get/${productid}`)
-    const data = await response.data;
-    console.log(data,"reviews")
-if(data.success){
-setProductReview(data.data)
-}
-  } catch (error) {
-    
+
+  const fetchReviews = async (productid) => {
+    try {
+      const response = await axios.get(`${base_url}/review/get/${productid}`)
+      const data = await response.data;
+      if (data.success) {
+        setProductReview(data.data)
+      }
+    } catch (error) { }
   }
-}
 
-
-useEffect(()=>{
-socket = io(`${base_url}`); // backend URL
-
+  useEffect(() => {
+    socket = io(`${base_url}`);
     socket.emit("joinProduct", id);
-
     socket.on("viewerCount", (count) => {
       setViewerCount(count);
     });
 
+    fetchProduct(id)
+    fetchReviews(id)
 
-fetchProduct(id)
-fetchReviews(id)
-
- return () => {
+    return () => {
       socket.emit("leaveProduct", id);
       socket.disconnect();
     };
-},[ ])
+  }, []);
 
+  // Intersection Observer to detect when the main CTA is out of view
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setShowStickyBar(!entry.isIntersecting);
+      },
+      { threshold: 0 }
+    );
 
+    if (ctaAreaRef.current) {
+      observer.observe(ctaAreaRef.current);
+    }
 
+    return () => observer.disconnect();
+  }, [loading]);
 
   if (!product)
     return (
       <div className="flex flex-col xl:flex-row gap-6 px-4 md:px-12 lg:px-24 xl:px-40 2xl:px-52 py-12 ">
-        {/* Left: Image Skeleton */}
         <div className="w-full xl:w-1/2 space-y-4 overflow-hidden">
           <div className="flex flex-wrap md:flex-row gap-4">
             <div className="flex md:flex-col gap-4">
               {[1, 2, 3, 4].map((i) => (
-                <div
-                  key={i}
-                  className="w-24 h-24 bg-gray-200 animate-pulse rounded-lg"
-                />
+                <div key={i} className="w-24 h-24 bg-gray-200 animate-pulse rounded-lg" />
               ))}
             </div>
             <div className="flex-1 h-[400px] xl:h-[600px] bg-gray-200 animate-pulse rounded-md" />
           </div>
         </div>
-
-        {/* Right: Details Skeleton */}
         <div className="w-full xl:w-1/2 flex flex-col gap-6">
           <div className="space-y-2">
             <div className="h-6 bg-gray-200 animate-pulse w-2/3 rounded" />
@@ -247,10 +218,7 @@ fetchReviews(id)
           </div>
           <div className="space-y-2">
             {[1, 2, 3].map((i) => (
-              <div
-                key={i}
-                className="h-4 bg-gray-200 animate-pulse rounded w-full"
-              />
+              <div key={i} className="h-4 bg-gray-200 animate-pulse rounded w-full" />
             ))}
           </div>
           <div className="h-40 bg-gray-200 animate-pulse rounded" />
@@ -258,60 +226,38 @@ fetchReviews(id)
       </div>
     );
 
-
-
-
-
-
-const funshow=(title,incl)=>{
-
- return product?.hidethings?.includes(incl)? "" :title
-}
-
-
-
-const handelColorImage=(img)=>{
-  
-  const newimgset = product?.images.filter((item,index)=> img.includes(`${index}`)
-
-  )
-  
- setSelectedColorImage(newimgset)
-
-}
-
-
-
-const handelAddtocartProduct = async(product)=>{
-  try {
-    if(user){
-
-try {
-  const response = await axios.post(`${base_url}/cart/post`,{
-    productid:product._id, quantity:selectedQty, price:product.finalPrice,color:selectedColor?._id
-  })
-  const data = await response.data;
-if(data.success){
-dispatch(addTocartUser(data.cart))
-  
-}
-} catch (error) {
-toast.error(error.response.data.message)  
-}
-
-
-
-    }
-    else{
-      dispatch(addTocart({product:product._id,quantity:selectedQty,price:product.finalPrice,color:selectedColor?._id}))
-    }
-  } catch (error) {
-    
-  }finally{
-    dispatch(addSlide("cart"))
+  const funshow = (title, incl) => {
+    return product?.hidethings?.includes(incl) ? "" : title
   }
-}
 
+  const handelColorImage = (img) => {
+    const newimgset = product?.images.filter((item, index) => img.includes(`${index}`))
+    setSelectedColorImage(newimgset)
+  }
+
+  const handelAddtocartProduct = async (product) => {
+    try {
+      if (user) {
+        try {
+          const response = await axios.post(`${base_url}/cart/post`, {
+            productid: product._id, quantity: selectedQty, price: product.finalPrice, color: selectedColor?._id
+          })
+          const data = await response.data;
+          if (data.success) {
+            dispatch(addTocartUser(data.cart))
+          }
+        } catch (error) {
+          toast.error(error.response.data.message)
+        }
+      }
+      else {
+        dispatch(addTocart({ product: product._id, quantity: selectedQty, price: product.finalPrice, color: selectedColor?._id }))
+      }
+    } catch (error) {
+    } finally {
+      dispatch(addSlide("cart"))
+    }
+  }
 
   return (
     <div className="relative z-50">
@@ -325,12 +271,10 @@ toast.error(error.response.data.message)
                   <div key={idx} className="relative w-20 h-20 cursor-pointer">
                     <Image
                       src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${img}`}
-                      // src={"/Images/3.webp"}
                       alt={" "}
                       fill
-                      className={`object-cover object-center transition-all duration-200 ${
-                        selectedImage === img ? "border border-[#292927c9]" : ""
-                      }`}
+                      className={`object-cover object-center transition-all duration-200 ${selectedImage === img ? "border border-[#292927c9]" : ""
+                        }`}
                       onClick={() => setSelectedImage(img)}
                       loading="lazy"
                     />
@@ -343,7 +287,6 @@ toast.error(error.response.data.message)
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
               style={{
-                // backgroundImage: `url('/Images/3.webp')`,
                 backgroundImage: `url(${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${selectedImage})`,
                 backgroundSize: isZoomed ? "150%" : "cover",
                 backgroundRepeat: "no-repeat",
@@ -357,9 +300,7 @@ toast.error(error.response.data.message)
         </div>
 
         <div className="w-full xl:w-1/2 flex flex-col gap-2  ">
-       
           <div className="flex justify-between items-start">
-         
             <div>
               <h3 className="text-2xl md:text-4xl font-serif  text-[#292927] capitalize">
                 {funshow(product.name.toLowerCase(), "name")}
@@ -369,8 +310,6 @@ toast.error(error.response.data.message)
                 {product.subcategory?.name && `→ ${product.subcategory.name}`}
               </p>
             </div>
-
-            {/* RIGHT SIDE (wishlist icon) */}
             <button
               onClick={() =>
                 dispatch(
@@ -389,25 +328,20 @@ toast.error(error.response.data.message)
             </button>
           </div>
 
-          {/*  */}
-          <div className="flex items-center justify-center sm:justify-start gap-1">
-            {/* Stars */}
-              {[...Array(5)].map((_, index) => {
-                     const starValue = index + 1;
-           
-                     if (product.rating >= starValue) {
-                       return <FaStar key={index} className="text-yellow-500" />;
-                     } else if (product.rating >= starValue - 0.5) {
-                       return <FaStarHalfAlt key={index} className="text-yellow-500" />;
-                     } else {
-                       return <FaRegStar key={index} className="text-yellow-500" />;
-                     }
-                   })}
+          <div className="flex items-center  justify-start gap-1">
+            {[...Array(5)].map((_, index) => {
+              const starValue = index + 1;
+              if (product.rating >= starValue) {
+                return <FaStar key={index} className="text-yellow-500" />;
+              } else if (product.rating >= starValue - 0.5) {
+                return <FaStarHalfAlt key={index} className="text-yellow-500" />;
+              } else {
+                return <FaRegStar key={index} className="text-yellow-500" />;
+              }
+            })}
           </div>
 
-          {/* */}
           <div className=" space-y-6 w-fit">
-            {/*  */}
             <div>
               <div className="flex items-end gap-2">
                 <span className="text-[#292927] text-2xl font-semibold tracking-wide">
@@ -424,7 +358,6 @@ toast.error(error.response.data.message)
                   </>
                 )}
               </div>
-              {/* Inclusive of taxes */}
               <span className="text-sm text-stone-700 block ">
                 Inclusive of all taxes
               </span>
@@ -433,62 +366,36 @@ toast.error(error.response.data.message)
               <h3 className="text-md font-mosetta font-semibold text-[#292927] tracking-wide">
                 Quantity
               </h3>
-
               <div className="flex items-center gap-6 border border-gray-200 rounded-md px-2 py-1 text-gray-700 font-medium">
-                {/* Decrease */}
                 <button
                   disabled={selectedQty === 1}
-                  className={`cursor-pointer text-lg rounded px-2 ${
-                    selectedQty === 1 ? "opacity-40 cursor-not-allowed" : ""
-                  }`}
+                  className={`cursor-pointer text-lg rounded px-2 ${selectedQty === 1 ? "opacity-40 cursor-not-allowed" : ""
+                    }`}
                   onClick={() => {
                     if (selectedQty > 1) {
                       const newQty = selectedQty - 1;
                       setSelectedQty(newQty);
-
-                      const inCart = cart.find(
-                        (item) =>
-                          item._id === product._id &&
-                          item.color === selectedColor?.colorName,
-                      );
-                      if (inCart)
-                        updateQty(
-                          product._id,
-                          newQty,
-                          selectedColor?.colorName,
-                        );
                     }
                   }}
                 >
                   -
                 </button>
-
                 <span className="text-md font-semibold">{selectedQty}</span>
+<<<<<<< Updated upstream
 
        
+=======
+>>>>>>> Stashed changes
                 <button
                   disabled={selectedQty >= (selectedColor?.quantity ?? 1)}
-                  className={`cursor-pointer text-lg rounded px-2 ${
-                    selectedQty >= (selectedColor?.quantity ?? 1)
+                  className={`cursor-pointer text-lg rounded px-2 ${selectedQty >= (selectedColor?.quantity ?? 1)
                       ? "opacity-40 cursor-not-allowed"
                       : ""
-                  }`}
+                    }`}
                   onClick={() => {
                     if (selectedQty < (selectedColor?.quantity ?? 1)) {
                       const newQty = selectedQty + 1;
                       setSelectedQty(newQty);
-
-                      const inCart = cart.find(
-                        (item) =>
-                          item._id === product._id &&
-                          item.color === selectedColor?.colorName,
-                      );
-                      if (inCart)
-                        updateQty(
-                          product._id,
-                          newQty,
-                          selectedColor?.colorName,
-                        );
                     }
                   }}
                 >
@@ -498,175 +405,115 @@ toast.error(error.response.data.message)
             </div>
           </div>
 
-          {/* Colors */}
           {product.colorVariants?.length > 0 && selectedColor && (
             <div className="space-y-2 my-4">
               <h3 className="text-md font-mosetta font-semibold text-[#292927] tracking-wide">
                 Available Colors
               </h3>
-
-           
               <div className="flex flex-wrap gap-2">
-  {product.colorVariants.map((v, i) => (
-    <button
-      key={i}
-      onClick={() => {
-        v.images.length &&  handelColorImage(v.images) 
-        setSelectedColor(v);
-        setSelectedQty(1);
-       setAddedToCart(false)
-      }}
-      className={`px-3 py-1 border text-sm transition ${
-        selectedColor?.colorName === v?.colorName
-          ? " ring-[#292927] border-[#292927] text-[#292927] font-medium"
-          : "border-gray-300 text-gray-700"
-      }`}
-    >
-      
-      {v?.colorName.toLowerCase()
-    .replace(/\b\w/g, (char) => char.toUpperCase())}
-      
-    </button>
-  ))}
-</div>
-
-
-           
+                {product.colorVariants.map((v, i) => (
+                  <button
+                    key={i}
+                    onClick={() => {
+                      v.images.length && handelColorImage(v.images)
+                      setSelectedColor(v);
+                      setSelectedQty(1);
+                      setAddedToCart(false)
+                    }}
+                    className={`px-3 py-1 border text-sm transition ${selectedColor?.colorName === v?.colorName
+                        ? " ring-[#292927] border-[#292927] text-[#292927] font-medium"
+                        : "border-gray-300 text-gray-700"
+                      }`}
+                  >
+                    {v?.colorName.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase())}
+                  </button>
+                ))}
+              </div>
             </div>
           )}
 
           <ProductDeal />
-          <div className="border-t border-gray-400/30 w-full py-2">
 
+          {/* This wrapper helps track if buttons are on screen */}
+          <div ref={ctaAreaRef}>
+            <div className="border-t border-gray-400/30 w-full py-2">
+              <div className=" text-red-600 px-3 py-1 text-sm font-semibold w-fit flex items-center gap-1 ">
+                🔥 {product._id.slice(-2).charCodeAt() + new Date(Date.now()).getDate() - 30} bought in last 24 hours
+              </div>
+              {viewerCount !== null && (
+                <div className="mt-2 text-green-700 px-3 py-1 text-sm font-medium w-fit flex items-center gap-1">
+                  <img src='/Images/watch.gif' className="h-6 " />
+                  {viewerCount + 20} people are viewing this right now
+                </div>
+              )}
+            </div>
 
-  <div className="  text-red-600 px-3 py-1  text-sm font-semibold w-fit flex items-center gap-1 ">
-    🔥 {product._id.slice(-2).charCodeAt()+new Date(Date.now()).getDate()-30} bought in last 24 hours
-  </div>
+            {/* CTA Buttons - Normal Styling */}
+            <div className="flex flex-col md:flex-row gap-4 mt-4">
+              {product.outofstock ? (
+                <button className="w-full flex items-center justify-center gap-2 bg-red-200 font-semibold text-red-500 px-4 py-3 text-sm tracking-wide cursor-not-allowed">
+                  Out of Stock
+                </button>
+              ) : (
+                <button
+                  onClick={() => handelAddtocartProduct(product)}
+                  className="cursor-pointer w-full flex items-center justify-center gap-2 bg-gradient-to-r from-[#bc861a] via-[#f1d981] to-[#bc861a] text-[#292927] px-4 py-3 hover:bg-[#a95c2e] transition text-sm font-medium tracking-wide"
+                >
+                  <ShoppingCart className="w-4 h-4" />
+                  Add to Cart
+                </button>
+              )}
 
-{viewerCount !== null && (
-  <div className="mt-2  text-green-700 px-3 py-1 text-sm font-medium w-fit flex items-center gap-1">
-    {/* 👀 */}
-    <img  src='/Images/watch.gif'  className="h-6 "/>
-     {viewerCount+20} people are viewing this right now
-  </div>
-)}
-
-
+              {product.outofstock ? (
+                <div className=" cursor-not-allowed w-full flex items-center justify-center gap-2 border border-[#bc861a] text-[#bc861a] px-4 py-3 transition text-sm font-medium tracking-wide">
+                  <CreditCard className="w-4 h-4" />
+                  Buy Now
+                </div>
+              ) : (
+                <Link
+                  href={`/buy?color=${selectedColor?._id}&price=${product.finalPrice}&product=${product._id}&quantity=${selectedQty}`}
+                  className="w-full flex items-center justify-center gap-2 border border-[#bc861a] text-[#bc861a] px-4 py-3 transition text-sm font-medium tracking-wide"
+                >
+                  <CreditCard className="w-4 h-4" />
+                  Buy Now
+                </Link>
+              )}
+            </div>
           </div>
 
-{/* CTA Buttons */}
-<div className="flex flex-col md:flex-row gap-4 mt-4">
-{product.outofstock ? <button 
-   
-  className="w-full flex items-center justify-center gap-2 bg-red-200 font-semibold text-red-500 px-4 py-3 text-sm  tracking-wide cursor-not-allowed"
->
-  Out of Stock
-</button> :
-    <button
-
-    onClick={()=>handelAddtocartProduct(product)}
-      className="cursor-pointer w-full flex items-center justify-center gap-2 bg-gradient-to-r from-[#bc861a] via-[#f1d981] to-[#bc861a] text-[#292927]  px-4 py-3  hover:bg-[#a95c2e] transition text-sm font-medium tracking-wide"
-    >
-      <ShoppingCart className="w-4 h-4" />
-      Add to Cart
-    </button>
-}
-
-{product.outofstock ? <div
-  
-  
- 
-    className=" cursor-not-allowed w-full flex items-center justify-center gap-2 border border-[#bc861a] text-[#bc861a]  px-4 py-3 transition text-sm font-medium tracking-wide"
-  >
-    <CreditCard className="w-4 h-4" />
-    Buy Now
-  </div>:
-  <Link
-  
-  href={`/buy?color=${selectedColor?._id}&price=${product.finalPrice}&product=${product._id}&quantity=${selectedQty}`}
- 
-    className="w-full flex items-center justify-center gap-2 border border-[#bc861a] text-[#bc861a]  px-4 py-3 transition text-sm font-medium tracking-wide"
-  >
-    <CreditCard className="w-4 h-4" />
-    Buy Now
-  </Link>
-}
-</div>
-
-  
-          <div
-            className="relative bg-cover md:bg-contain py-4"
-            // style={{ backgroundImage: "url('/Images/bg4.png')" }}
-          >
-            {/* Overlay for readability */}
-            {/* <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#ffffff1c]"></div> */}
-
-            {/* Content */}
+          <div className="relative bg-cover md:bg-contain py-4">
             <div className="relative z-10 grid md:grid-cols-3 mx-auto">
               {cards.map((card, i) => (
-                <div
-                  key={i}
-                  className="group perspective cursor-pointer"
-                  onClick={() => toggleFlip(i)}
-                >
-                  <div
-                    className={`relative w-full h-52  lg:h-72 2xl:h-52  transition-transform duration-700 preserve-3d ${
-                      flipped[i] ? "rotate-y-180" : ""
-                    } md:group-hover:rotate-y-180`}
-                  >
-                    {/* Front */}
+                <div key={i} className="group perspective cursor-pointer" onClick={() => toggleFlip(i)}>
+                  <div className={`relative w-full h-52 lg:h-72 2xl:h-52 transition-transform duration-700 preserve-3d ${flipped[i] ? "rotate-y-180" : ""} md:group-hover:rotate-y-180`}>
                     <div className="absolute inset-0 flex flex-col items-center justify-end rounded-2xl backface-hidden p-6 text-center text-white">
                       <div className="relative w-12 h-12 mb-4">
-                        <Image
-                          src={`${card.img}`}
-                          alt={card.frontTitle || "Card Image"}
-                          fill
-                          className="object-cover rounded grayscale-50 "
-                          loading="lazy"
-                        />
+                        <Image src={`${card.img}`} alt={card.frontTitle || "Card Image"} fill className="object-cover rounded grayscale-50 " loading="lazy" />
                       </div>
-                      <h3 className="text-md md:text-lg font-mosetta text-black tracking-wide">
-                        {card.frontTitle}
-                      </h3>
-                      <p className="mt-2 text-sm text-gray-800">
-                        {card.frontSubtitle}
-                      </p>
+                      <h3 className="text-md md:text-lg font-mosetta text-black tracking-wide">{card.frontTitle}</h3>
+                      <p className="mt-2 text-sm text-gray-800">{card.frontSubtitle}</p>
                     </div>
-
-                    {/* Back */}
-                    <div className="absolute inset-0  rounded-2xl backface-hidden rotate-y-180 p-6 flex flex-col items-center justify-end text-white">
-                      <h3 className="text-lg  font-mosetta text-black tracking-wide">
-                        {card.frontTitle}
-                      </h3>
-                      <div className="text-sm leading-relaxed text-gray-800">
-                        {card.backContent}
-                      </div>
+                    <div className="absolute inset-0 rounded-2xl backface-hidden rotate-y-180 p-6 flex flex-col items-center justify-end text-white">
+                      <h3 className="text-lg font-mosetta text-black tracking-wide">{card.frontTitle}</h3>
+                      <div className="text-sm leading-relaxed text-gray-800">{card.backContent}</div>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
           </div>
-          <ReviewsSection sampleReviews={productReview}  rating={product.rating} reviewCount={product.reviewCount}  />
+
+          <ReviewsSection sampleReviews={productReview} rating={product.rating} reviewCount={product.reviewCount} />
 
           {/* Description */}
-          {(product.description?.paragraphs?.length > 0 ||
-            product.description?.bulletPoints?.length > 0) && (
+          {(product.description?.paragraphs?.length > 0 || product.description?.bulletPoints?.length > 0) && (
             <div className="my-4">
-              <h3 className="text-lg font-mosetta font-semibold text-[#292927] ">
-                Description
-              </h3>
-
-              {/* Paragraphs */}
+              <h3 className="text-lg font-mosetta font-semibold text-[#292927] ">Description</h3>
               {product.description?.paragraphs?.map((para, idx) => (
-                <p key={idx} className="xl:text-md  text-stone-800 my-4">
-                  {para}
-                </p>
+                <p key={idx} className="xl:text-md text-stone-800 my-4">{para}</p>
               ))}
-
-              {/* Bullet Points */}
               {product.description?.bulletPoints?.length > 0 && (
-                <div className=" xl:text-md text-stone-800 marker:text-[#292927]  space-y-2">
+                <div className=" xl:text-md text-stone-800 marker:text-[#292927] space-y-2">
                   {product.description.bulletPoints.map((point, idx) => (
                     <h6 key={idx}>{point}</h6>
                   ))}
@@ -678,6 +525,732 @@ toast.error(error.response.data.message)
       </div>
       <FaqSection />
       {product?.category && <Similar categoryId={product?.category} />}
+
+      {/* --- FIXED BOTTOM BAR (Visible on all screen sizes when scrolled past) --- */}
+{/* --- FIXED BOTTOM BAR --- */}
+<div className={`fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 p-3 z-[100] transition-transform duration-300 ${showStickyBar ? "translate-y-0 shadow-[0_-5px_15px_rgba(0,0,0,0.1)]" : "translate-y-full"}`}>
+  <div className="max-w-screen-xl mx-auto flex flex-row items-center justify-center gap-4 md:gap-8 lg:gap-16">
+    
+    {/* Price Section */}
+    <div className="hidden sm:flex flex-col items-start leading-tight">
+      <div className="flex items-center gap-2">
+        <span className="text-[#292927] text-xl font-semibold tracking-wide">
+          ₹{funshow(Math.floor(product.finalPrice), "finalPrice")}
+        </span>
+        {product.discount > 0 && (
+          <span className="line-through text-stone-500 text-sm">
+            ₹{funshow(product.price, "price")}
+          </span>
+        )}
+      </div>
+      <span className="text-[10px] text-stone-500 uppercase font-medium">Incl. all taxes</span>
+    </div>
+
+    {/* Buttons Section */}
+    <div className="flex items-center justify-center gap-3 w-full sm:w-auto">
+      {product.outofstock ? (
+        <button className="w-full min-w-[200px] flex items-center justify-center gap-2 bg-red-200 font-semibold text-red-500 px-4 py-3 text-sm tracking-wide cursor-not-allowed">
+          Out of Stock
+        </button>
+      ) : (
+        <>
+          <button
+            onClick={() => handelAddtocartProduct(product)}
+            className="cursor-pointer w-full sm:w-[160px] md:w-[200px] flex items-center justify-center gap-2 bg-gradient-to-r from-[#bc861a] via-[#f1d981] to-[#bc861a] text-[#292927] px-4 py-3 hover:bg-[#a95c2e] transition text-sm font-medium tracking-wide"
+          >
+            <ShoppingCart className="w-4 h-4" />
+            <span className="whitespace-nowrap">Add to Cart</span>
+          </button>
+
+          <Link
+            href={`/buy?color=${selectedColor?._id}&price=${product.finalPrice}&product=${product._id}&quantity=${selectedQty}`}
+            className="w-full sm:w-[160px] md:w-[200px] flex items-center justify-center gap-2 border border-[#bc861a] text-[#bc861a] px-4 py-3 transition text-sm font-medium tracking-wide bg-white"
+          >
+            <CreditCard className="w-4 h-4" />
+            <span className="whitespace-nowrap">Buy Now</span>
+          </Link>
+        </>
+      )}
+    </div>
+  </div>
+</div>
     </div>
   );
 }
+
+
+
+
+// "use client";
+// import { useEffect, useState } from "react";
+// import { useParams } from "next/navigation";
+// import Image from "next/image";
+// import Similar from "../../../../components/user/SimilarSuggestions";
+
+// import {
+//   ShoppingCart,
+//   CreditCard,
+//   Heart,
+// } from "lucide-react";
+// import { FaHeart, FaStarHalfAlt } from "react-icons/fa";
+// import axios from "axios";
+// import { toast } from "react-toastify";
+// import { useDispatch, useSelector } from "react-redux";
+// import {
+//   addToWishlist,
+//   removeFromWishlist,
+// } from "@/app/components/store/wishListSlice";
+// import { addTocart, addTocartUser } from "@/app/components/store/cartSlice";
+// import { base_url } from "@/app/components/store/utile";
+// import { addSlide } from "@/app/components/store/sliderSlice";
+// import { FaRegStar, FaStar } from "react-icons/fa6";
+// import ProductDeal from "@/app/components/newHome/ProductDeals";
+// import ReviewsSection from "@/app/components/newHome/ProductReviews";
+// import FaqSection from "@/app/components/newHome/Faq";
+// import Link from "next/link";
+// import io from "socket.io-client"
+
+// let socket;
+
+
+
+// export default function ProductDetail() {
+//   const { id } = useParams();
+
+// const  [product,setProduct]=useState(null);
+// const [loading ,setLoading]=useState(true)
+// const wishlist = useSelector(state=>state.wishlist.items)
+// const { user } = useSelector(state=>state.user)
+// const dispatch = useDispatch()
+
+
+// const [viewerCount, setViewerCount] = useState(0);
+
+
+
+  
+
+//   const [selectedImage, setSelectedImage] = useState("");
+
+//   const [zoomPos, setZoomPos] = useState({ x: 0, y: 0 });
+//   const [isZoomed, setIsZoomed] = useState(false);
+//   const [addedtoCart, setAddedToCart] = useState(false);
+//   const [selectedColorImage, setSelectedColorImage] = useState();
+// const [productReview,setProductReview]=useState([ ])
+//   const handleMouseMove = (e) => {
+//     const { left, top, width, height } =
+//       e.currentTarget.getBoundingClientRect();
+//     const x = ((e.clientX - left) / width) * 100;
+//     const y = ((e.clientY - top) / height) * 100;
+//     setZoomPos({ x, y });
+//     setIsZoomed(true);
+//   };
+
+//   const handleMouseLeave = () => {
+//     setIsZoomed(false);
+//   };
+
+//   const [flipped, setFlipped] = useState([false, false, false]);
+//   const [selectedColor, setSelectedColor] = useState(null);
+//   const [newImg, setnewImg] = useState();
+//   const [selectedQty, setSelectedQty] = useState(1);
+
+//   useEffect(() => {
+//     if (product?.colorVariants?.length > 0) {
+//       setSelectedColor(product.colorVariants[0]);
+//       setSelectedQty(1);
+//     }
+//   }, [product]);
+//   useEffect(() => {
+//     setSelectedImage(newImg?.[0]);
+//   }, [newImg]);
+
+//   const toggleFlip = (index) => {
+//     setFlipped((prev) => prev.map((f, i) => (i === index ? !f : f)));
+//   };
+
+
+
+
+//   const cards = [
+//     {
+//       img: "/Images/shipping.png",
+//       frontTitle: "Shipping Policy",
+//       frontSubtitle: "Free shipping on orders above ₹799",
+//       backContent: (
+//         <div className="text-sm space-y-1">
+//           <div>Estimated Delivery Time: 3-7 business days </div>
+//           <div>All orders are carefully processed and packed</div>
+//           <div className="italic text-stone-700">
+//             *Delivery times may vary by location
+//           </div>
+//         </div>
+//       ),
+//     },
+//     {
+//       img: "/Images/return.png",
+//       frontTitle: "Exchange Policy",
+//       frontSubtitle: "Easy exchange within 24 hours",
+//       backContent: (
+//         <div className="list-disc list-inside text-sm space-y-1">
+//           <p>
+//             Products are eligible for exchange only if received damaged. The
+//             issue must be reported within 24 hours of delivery with clear video
+//             proof. Any exchange request raised after 24 hours will be rejected.
+//           </p>
+//         </div>
+//       ),
+//     },
+//     {
+//       img: "/Images/care.png",
+//       frontTitle: "Care Instructions",
+//       frontSubtitle: "Handle with love & care",
+//       backContent: (
+//         <div className="list-disc list-inside text-sm space-y-1">
+//           <p>Avoid water, perfume, and hairspray</p>
+//           <p>Store in a dry, cool place separately</p>
+//           <p>Clean gently with a soft cloth</p>
+//           <p>Remove before physical activity</p>
+//         </div>
+//       ),
+//     },
+//   ];
+
+//   useEffect(() => {
+//     setSelectedColorImage(product?.images);
+//   }, [product]);
+
+
+// useEffect(()=>{
+// setSelectedImage(selectedColorImage?.[0])
+
+// },[selectedColorImage])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// const fetchProduct = async(productid)=>{
+//   try {setLoading(true)
+//     const response = await axios.get(`${base_url}/product/id/${productid}`)
+//     const data = await response.data;
+//   setProduct(data)
+//    setSelectedImage(data.images?.[0]);
+//   } catch (error) {
+//     setProduct(null)
+//   }finally{
+//     setLoading(false)
+//   }
+// }
+// const fetchReviews = async(productid)=>{
+//   try {
+//     const response = await axios.get(`${base_url}/review/get/${productid}`)
+//     const data = await response.data;
+//     console.log(data,"reviews")
+// if(data.success){
+// setProductReview(data.data)
+// }
+//   } catch (error) {
+    
+//   }
+// }
+
+
+// useEffect(()=>{
+// socket = io(`${base_url}`); // backend URL
+
+//     socket.emit("joinProduct", id);
+
+//     socket.on("viewerCount", (count) => {
+//       setViewerCount(count);
+//     });
+
+
+// fetchProduct(id)
+// fetchReviews(id)
+
+//  return () => {
+//       socket.emit("leaveProduct", id);
+//       socket.disconnect();
+//     };
+// },[ ])
+
+
+
+
+//   if (!product)
+//     return (
+//       <div className="flex flex-col xl:flex-row gap-6 px-4 md:px-12 lg:px-24 xl:px-40 2xl:px-52 py-12 ">
+//         {/* Left: Image Skeleton */}
+//         <div className="w-full xl:w-1/2 space-y-4 overflow-hidden">
+//           <div className="flex flex-wrap md:flex-row gap-4">
+//             <div className="flex md:flex-col gap-4">
+//               {[1, 2, 3, 4].map((i) => (
+//                 <div
+//                   key={i}
+//                   className="w-24 h-24 bg-gray-200 animate-pulse rounded-lg"
+//                 />
+//               ))}
+//             </div>
+//             <div className="flex-1 h-[400px] xl:h-[600px] bg-gray-200 animate-pulse rounded-md" />
+//           </div>
+//         </div>
+
+//         {/* Right: Details Skeleton */}
+//         <div className="w-full xl:w-1/2 flex flex-col gap-6">
+//           <div className="space-y-2">
+//             <div className="h-6 bg-gray-200 animate-pulse w-2/3 rounded" />
+//             <div className="h-4 bg-gray-200 animate-pulse w-1/3 rounded" />
+//           </div>
+//           <div className="h-6 bg-gray-200 animate-pulse w-1/4 rounded" />
+//           <div className="flex gap-4">
+//             <div className="h-10 bg-gray-200 animate-pulse flex-1 rounded" />
+//             <div className="h-10 bg-gray-200 animate-pulse flex-1 rounded" />
+//           </div>
+//           <div className="space-y-2">
+//             {[1, 2, 3].map((i) => (
+//               <div
+//                 key={i}
+//                 className="h-4 bg-gray-200 animate-pulse rounded w-full"
+//               />
+//             ))}
+//           </div>
+//           <div className="h-40 bg-gray-200 animate-pulse rounded" />
+//         </div>
+//       </div>
+//     );
+
+
+
+
+
+
+// const funshow=(title,incl)=>{
+
+//  return product?.hidethings?.includes(incl)? "" :title
+// }
+
+
+
+// const handelColorImage=(img)=>{
+  
+//   const newimgset = product?.images.filter((item,index)=> img.includes(`${index}`)
+
+//   )
+  
+//  setSelectedColorImage(newimgset)
+
+// }
+
+
+
+// const handelAddtocartProduct = async(product)=>{
+//   try {
+//     if(user){
+
+// try {
+//   const response = await axios.post(`${base_url}/cart/post`,{
+//     productid:product._id, quantity:selectedQty, price:product.finalPrice,color:selectedColor?._id
+//   })
+//   const data = await response.data;
+// if(data.success){
+// dispatch(addTocartUser(data.cart))
+  
+// }
+// } catch (error) {
+// toast.error(error.response.data.message)  
+// }
+
+
+
+//     }
+//     else{
+//       dispatch(addTocart({product:product._id,quantity:selectedQty,price:product.finalPrice,color:selectedColor?._id}))
+//     }
+//   } catch (error) {
+    
+//   }finally{
+//     dispatch(addSlide("cart"))
+//   }
+// }
+
+
+//   return (
+//     <div className="relative z-50">
+//       <div className="relative flex flex-col items-center xl:flex-row xl:items-start justify-center flex-wrap xl:flex-nowrap gap-6 px-4 md:px-12 lg:px-24 xl:px-40 2xl:px-52 py-12">
+//         {/* Left: Sticky Images */}
+//         <div className="w-full xl:w-1/2 xl:sticky xl:top-24  ">
+//           <div className="flex flex-col md:flex-row items-center gap-4">
+//             <div className="max-h-[600px] max-w-screen overflow-y-auto no-scrollbar">
+//               <div className="flex md:flex-col gap-4 pr-1 w-fit items-start">
+//                 {selectedColorImage?.map((img, idx) => (
+//                   <div key={idx} className="relative w-20 h-20 cursor-pointer">
+//                     <Image
+//                       src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${img}`}
+//                       // src={"/Images/3.webp"}
+//                       alt={" "}
+//                       fill
+//                       className={`object-cover object-center transition-all duration-200 ${
+//                         selectedImage === img ? "border border-[#292927c9]" : ""
+//                       }`}
+//                       onClick={() => setSelectedImage(img)}
+//                       loading="lazy"
+//                     />
+//                   </div>
+//                 ))}
+//               </div>
+//             </div>
+//             <div
+//               className="relative w-full h-[400px] md:h-[600px] lg:h-[700px] overflow-hidden  rounded-md  cursor-zoom-in"
+//               onMouseMove={handleMouseMove}
+//               onMouseLeave={handleMouseLeave}
+//               style={{
+//                 // backgroundImage: `url('/Images/3.webp')`,
+//                 backgroundImage: `url(${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${selectedImage})`,
+//                 backgroundSize: isZoomed ? "150%" : "cover",
+//                 backgroundRepeat: "no-repeat",
+//                 backgroundPosition: isZoomed
+//                   ? `${zoomPos.x}% ${zoomPos.y}%`
+//                   : "center",
+//                 transition: "background-size 0.3s ease",
+//               }}
+//             ></div>
+//           </div>
+//         </div>
+
+//         <div className="w-full xl:w-1/2 flex flex-col gap-2  ">
+       
+//           <div className="flex justify-between items-start">
+         
+//             <div>
+//               <h3 className="text-2xl md:text-4xl font-serif  text-[#292927] capitalize">
+//                 {funshow(product.name.toLowerCase(), "name")}
+//               </h3>
+//               <p className="xl:text-md text-stone-700 mt-2 capitalize">
+//                 {product?.category?.name}{" "}
+//                 {product.subcategory?.name && `→ ${product.subcategory.name}`}
+//               </p>
+//             </div>
+
+//             {/* RIGHT SIDE (wishlist icon) */}
+//             <button
+//               onClick={() =>
+//                 dispatch(
+//                   !wishlist?.some((w) => w === product._id)
+//                     ? addToWishlist(product._id)
+//                     : removeFromWishlist(product._id),
+//                 )
+//               }
+//               className="cursor-pointer"
+//             >
+//               {wishlist?.some((w) => w === product._id) ? (
+//                 <FaHeart className="w-6 h-6 text-red-500" />
+//               ) : (
+//                 <Heart className="w-6 h-6 text-stone-700" />
+//               )}
+//             </button>
+//           </div>
+
+//           {/*  */}
+//           <div className="flex items-center justify-center sm:justify-start gap-1">
+//             {/* Stars */}
+//               {[...Array(5)].map((_, index) => {
+//                      const starValue = index + 1;
+           
+//                      if (product.rating >= starValue) {
+//                        return <FaStar key={index} className="text-yellow-500" />;
+//                      } else if (product.rating >= starValue - 0.5) {
+//                        return <FaStarHalfAlt key={index} className="text-yellow-500" />;
+//                      } else {
+//                        return <FaRegStar key={index} className="text-yellow-500" />;
+//                      }
+//                    })}
+//           </div>
+
+//           {/* */}
+//           <div className=" space-y-6 w-fit">
+//             {/*  */}
+//             <div>
+//               <div className="flex items-end gap-2">
+//                 <span className="text-[#292927] text-2xl font-semibold tracking-wide">
+//                   ₹{funshow(Math.floor(product.finalPrice), "finalPrice")}
+//                 </span>
+//                 {product.discount > 0 && (
+//                   <>
+//                     <span className="line-through text-stone-600 text-lg">
+//                       ₹{funshow(product.price, "price")}
+//                     </span>
+//                     <span className="text-green-600 text-sm">
+//                       {funshow(`(${product.discount}% OFF)`, "discount")}
+//                     </span>
+//                   </>
+//                 )}
+//               </div>
+//               {/* Inclusive of taxes */}
+//               <span className="text-sm text-stone-700 block ">
+//                 Inclusive of all taxes
+//               </span>
+//             </div>
+//             <div className="flex items-center justify-start gap-2">
+//               <h3 className="text-md font-mosetta font-semibold text-[#292927] tracking-wide">
+//                 Quantity
+//               </h3>
+
+//               <div className="flex items-center gap-6 border border-gray-200 rounded-md px-2 py-1 text-gray-700 font-medium">
+//                 {/* Decrease */}
+//                 <button
+//                   disabled={selectedQty === 1}
+//                   className={`cursor-pointer text-lg rounded px-2 ${
+//                     selectedQty === 1 ? "opacity-40 cursor-not-allowed" : ""
+//                   }`}
+//                   onClick={() => {
+//                     if (selectedQty > 1) {
+//                       const newQty = selectedQty - 1;
+//                       setSelectedQty(newQty);
+
+//                       const inCart = cart.find(
+//                         (item) =>
+//                           item._id === product._id &&
+//                           item.color === selectedColor?.colorName,
+//                       );
+//                       if (inCart)
+//                         updateQty(
+//                           product._id,
+//                           newQty,
+//                           selectedColor?.colorName,
+//                         );
+//                     }
+//                   }}
+//                 >
+//                   -
+//                 </button>
+
+//                 <span className="text-md font-semibold">{selectedQty}</span>
+
+//                 {/* Increase */}
+//                 <button
+//                   disabled={selectedQty >= (selectedColor?.quantity ?? 1)}
+//                   className={`cursor-pointer text-lg rounded px-2 ${
+//                     selectedQty >= (selectedColor?.quantity ?? 1)
+//                       ? "opacity-40 cursor-not-allowed"
+//                       : ""
+//                   }`}
+//                   onClick={() => {
+//                     if (selectedQty < (selectedColor?.quantity ?? 1)) {
+//                       const newQty = selectedQty + 1;
+//                       setSelectedQty(newQty);
+
+//                       const inCart = cart.find(
+//                         (item) =>
+//                           item._id === product._id &&
+//                           item.color === selectedColor?.colorName,
+//                       );
+//                       if (inCart)
+//                         updateQty(
+//                           product._id,
+//                           newQty,
+//                           selectedColor?.colorName,
+//                         );
+//                     }
+//                   }}
+//                 >
+//                   +
+//                 </button>
+//               </div>
+//             </div>
+//           </div>
+
+//           {/* Colors */}
+//           {product.colorVariants?.length > 0 && selectedColor && (
+//             <div className="space-y-2 my-4">
+//               <h3 className="text-md font-mosetta font-semibold text-[#292927] tracking-wide">
+//                 Available Colors
+//               </h3>
+
+           
+//               <div className="flex flex-wrap gap-2">
+//   {product.colorVariants.map((v, i) => (
+//     <button
+//       key={i}
+//       onClick={() => {
+//         v.images.length &&  handelColorImage(v.images) 
+//         setSelectedColor(v);
+//         setSelectedQty(1);
+//        setAddedToCart(false)
+//       }}
+//       className={`px-3 py-1 border text-sm transition ${
+//         selectedColor?.colorName === v?.colorName
+//           ? " ring-[#292927] border-[#292927] text-[#292927] font-medium"
+//           : "border-gray-300 text-gray-700"
+//       }`}
+//     >
+      
+//       {v?.colorName.toLowerCase()
+//     .replace(/\b\w/g, (char) => char.toUpperCase())}
+      
+//     </button>
+//   ))}
+// </div>
+
+
+           
+//             </div>
+//           )}
+
+//           <ProductDeal />
+//           <div className="border-t border-gray-400/30 w-full py-2">
+
+
+//   <div className="  text-red-600 px-3 py-1  text-sm font-semibold w-fit flex items-center gap-1 ">
+//     🔥 {product._id.slice(-2).charCodeAt()+new Date(Date.now()).getDate()-30} bought in last 24 hours
+//   </div>
+
+// {viewerCount !== null && (
+//   <div className="mt-2  text-green-700 px-3 py-1 text-sm font-medium w-fit flex items-center gap-1">
+//     {/* 👀 */}
+//     <img  src='/Images/watch.gif'  className="h-6 "/>
+//      {viewerCount+20} people are viewing this right now
+//   </div>
+// )}
+
+
+//           </div>
+
+// {/* CTA Buttons */}
+// <div className="flex flex-col md:flex-row gap-4 mt-4">
+// {product.outofstock ? <button 
+   
+//   className="w-full flex items-center justify-center gap-2 bg-red-200 font-semibold text-red-500 px-4 py-3 text-sm  tracking-wide cursor-not-allowed"
+// >
+//   Out of Stock
+// </button> :
+//     <button
+
+//     onClick={()=>handelAddtocartProduct(product)}
+//       className="cursor-pointer w-full flex items-center justify-center gap-2 bg-gradient-to-r from-[#bc861a] via-[#f1d981] to-[#bc861a] text-[#292927]  px-4 py-3  hover:bg-[#a95c2e] transition text-sm font-medium tracking-wide"
+//     >
+//       <ShoppingCart className="w-4 h-4" />
+//       Add to Cart
+//     </button>
+// }
+
+// {product.outofstock ? <div
+  
+  
+ 
+//     className=" cursor-not-allowed w-full flex items-center justify-center gap-2 border border-[#bc861a] text-[#bc861a]  px-4 py-3 transition text-sm font-medium tracking-wide"
+//   >
+//     <CreditCard className="w-4 h-4" />
+//     Buy Now
+//   </div>:
+//   <Link
+  
+//   href={`/buy?color=${selectedColor?._id}&price=${product.finalPrice}&product=${product._id}&quantity=${selectedQty}`}
+ 
+//     className="w-full flex items-center justify-center gap-2 border border-[#bc861a] text-[#bc861a]  px-4 py-3 transition text-sm font-medium tracking-wide"
+//   >
+//     <CreditCard className="w-4 h-4" />
+//     Buy Now
+//   </Link>
+// }
+// </div>
+
+  
+//           <div
+//             className="relative bg-cover md:bg-contain py-4"
+//             // style={{ backgroundImage: "url('/Images/bg4.png')" }}
+//           >
+//             {/* Overlay for readability */}
+//             {/* <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#ffffff1c]"></div> */}
+
+//             {/* Content */}
+//             <div className="relative z-10 grid md:grid-cols-3 mx-auto">
+//               {cards.map((card, i) => (
+//                 <div
+//                   key={i}
+//                   className="group perspective cursor-pointer"
+//                   onClick={() => toggleFlip(i)}
+//                 >
+//                   <div
+//                     className={`relative w-full h-52  lg:h-72 2xl:h-52  transition-transform duration-700 preserve-3d ${
+//                       flipped[i] ? "rotate-y-180" : ""
+//                     } md:group-hover:rotate-y-180`}
+//                   >
+//                     {/* Front */}
+//                     <div className="absolute inset-0 flex flex-col items-center justify-end rounded-2xl backface-hidden p-6 text-center text-white">
+//                       <div className="relative w-12 h-12 mb-4">
+//                         <Image
+//                           src={`${card.img}`}
+//                           alt={card.frontTitle || "Card Image"}
+//                           fill
+//                           className="object-cover rounded grayscale-50 "
+//                           loading="lazy"
+//                         />
+//                       </div>
+//                       <h3 className="text-md md:text-lg font-mosetta text-black tracking-wide">
+//                         {card.frontTitle}
+//                       </h3>
+//                       <p className="mt-2 text-sm text-gray-800">
+//                         {card.frontSubtitle}
+//                       </p>
+//                     </div>
+
+//                     {/* Back */}
+//                     <div className="absolute inset-0  rounded-2xl backface-hidden rotate-y-180 p-6 flex flex-col items-center justify-end text-white">
+//                       <h3 className="text-lg  font-mosetta text-black tracking-wide">
+//                         {card.frontTitle}
+//                       </h3>
+//                       <div className="text-sm leading-relaxed text-gray-800">
+//                         {card.backContent}
+//                       </div>
+//                     </div>
+//                   </div>
+//                 </div>
+//               ))}
+//             </div>
+//           </div>
+//           <ReviewsSection sampleReviews={productReview}  rating={product.rating} reviewCount={product.reviewCount}  />
+
+//           {/* Description */}
+//           {(product.description?.paragraphs?.length > 0 ||
+//             product.description?.bulletPoints?.length > 0) && (
+//             <div className="my-4">
+//               <h3 className="text-lg font-mosetta font-semibold text-[#292927] ">
+//                 Description
+//               </h3>
+
+//               {/* Paragraphs */}
+//               {product.description?.paragraphs?.map((para, idx) => (
+//                 <p key={idx} className="xl:text-md  text-stone-800 my-4">
+//                   {para}
+//                 </p>
+//               ))}
+
+//               {/* Bullet Points */}
+//               {product.description?.bulletPoints?.length > 0 && (
+//                 <div className=" xl:text-md text-stone-800 marker:text-[#292927]  space-y-2">
+//                   {product.description.bulletPoints.map((point, idx) => (
+//                     <h6 key={idx}>{point}</h6>
+//                   ))}
+//                 </div>
+//               )}
+//             </div>
+//           )}
+//         </div>
+//       </div>
+//       <FaqSection />
+//       {product?.category && <Similar categoryId={product?.category} />}
+//     </div>
+//   );
+// }

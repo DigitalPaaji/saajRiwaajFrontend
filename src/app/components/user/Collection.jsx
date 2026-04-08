@@ -129,7 +129,7 @@ toast.error(error.response.data.message)
         <div className="hidden lg:group-hover:flex absolute inset-0 transition-all duration-300 items-end justify-center p-4 z-20 ">
         {product.outofstock ?   <button
            
-className="montserrat cursor-not-allowed w-full border border-red-50/50 font-semibold backdrop-blur-lg  text-red-900 py-2.5 text-xs rounded shadow-lg  transform translate-y-4 group-hover:-translate-y-1 transition-all duration-500 ease-out flex items-center justify-center gap-2"          >
+className="montserrat cursor-not-allowed w-full border border-red-50 bg-white/60 font-semibold backdrop-blur-lg  text-red-900 py-2.5 text-xs rounded shadow-lg  transform translate-y-4 group-hover:-translate-y-1 transition-all duration-500 ease-out flex items-center justify-center gap-2"          >
             <ShoppingBag size={16} />
             OUT OF STOCK
           </button>  : <button
