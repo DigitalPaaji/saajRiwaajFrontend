@@ -59,12 +59,16 @@ const Filter2 = ({ categoryid, maxPrice, minPrice, handleFilter }) => {
     setShowPriceDropdown(false);
   };
 
-  // Clear all filters
+
+  
   const handleClear = () => {
     // Navigates to the current path without any query parameters
     router.push(window.location.pathname);
     setIsDrawerOpen(false);
     setShowPriceDropdown(false);
+
+
+
   };
 
 // console.log(sub)

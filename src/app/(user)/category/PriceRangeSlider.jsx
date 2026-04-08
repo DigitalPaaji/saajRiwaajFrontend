@@ -8,8 +8,8 @@ const pricelimit = 10000
 
 
 
-  const [min, setMin] = useState(minPrice);
-  const [max, setMax] = useState(maxPrice);
+  const [min, setMin] = useState(minPrice || 0);
+  const [max, setMax] = useState(maxPrice || 10000);
 
   const rangeTrackRef = useRef(null);
 
