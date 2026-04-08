@@ -9,56 +9,7 @@ import { FaStar, FaStarHalfAlt,FaRegStar  } from "react-icons/fa";
 export default function ReviewsSection({sampleReviews,reviewCount,rating}) {
    const totalStars = 5;
 
-  // // 🔥 SAMPLE REVIEWS (fallback)
-  // const sampleReviews = [
-  //   {
-  //     name: "Simran",
-  //     email: "simran@example.com",
-  //     title: "Amazing Quality!",
-  //     rating: 5,
-  //     review:
-  //       "Loved the finish and craftsmanship. Delivery was super fast as well!",
-  //   },
-  //   {
-  //     name: "Rahul",
-  //     email: "rahul@example.com",
-  //     title: "Highly Recommended",
-  //     rating: 4,
-  //     review:
-  //       "The jewellery looks even better in real life. Totally worth it!",
-  //   },
-  //   {
-  //     name: "Ayesha",
-  //     email: "ayesha@example.com",
-  //     title: "Beautiful & Elegant",
-  //     rating: 5,
-  //     review:
-  //       "I bought this for my sister and she absolutely loved it. Stunning design!",
-  //   },
-  // ];
 
-  // // ⭐ FETCH REVIEWS FROM BACKEND (auto fallback to sample)
-  // useEffect(() => {
-  //   async function fetchReviews() {
-  //     try {
-  //       const res = await fetch(
-  //         `${process.env.NEXT_PUBLIC_LOCAL_PORT}/api/reviews`
-  //       );
-  //       const data = await res.json();
-
-  //       if (Array.isArray(data) && data.length > 0) {
-  //         setReviews(data);
-  //       } else {
-  //         setReviews(sampleReviews);
-  //       }
-  //     } catch (error) {
-  //       console.log("Failed to fetch reviews → Using sample reviews.");
-  //       setReviews(sampleReviews); // fallback
-  //     }
-  //   }
-
-  //   fetchReviews();
-  // }, []);
 
   return (
     <section className="py-6 px-4">
@@ -92,7 +43,7 @@ export default function ReviewsSection({sampleReviews,reviewCount,rating}) {
     </div>
         </div>
 
-        {/* REVIEWS SWIPER */}
+       
         <div>
           <Swiper
             modules={[Autoplay]}

@@ -1,9 +1,8 @@
 "use client";
-
-import Collection from "../../../components/user/Collection";
-import InnerBanner from "../../../components/user/OtherBanner";
 import { useEffect, useState } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
+import Collection from "@/app/components/user/Collection";
+import InnerBanner from "@/app/components/user/OtherBanner";
 
 
 // --- SAMPLE DATA FOR LAYOUT PART ---
@@ -55,9 +54,9 @@ const SAMPLE_PRODUCTS = [
 ];
 
 export default function FilterLayout() {
-  const [product, setProducts] = useState(SAMPLE_PRODUCTS); // Start with sample
+  const [product, setProducts] = useState([ ] );
   const [pages, setPages] = useState({ page: 1, pages: 1 });
-  const { collection, id } = useParams();
+  const {  id } = useParams();
   const [loading, setLoading] = useState(false);
   
   const route = useRouter();
@@ -66,14 +65,14 @@ export default function FilterLayout() {
   const page = searchParams.get("page") || 1;
   const minPrice = searchParams.get("minPrice") || 0;
   const maxPrice = searchParams.get("maxPrice") || 10000;
-  const subcategory = searchParams.get("subcategory");
+//   const subcategory = searchParams.get("subcategory");
 
   const fetchProducts = async () => {
     if (!id) return;
     try {
       setLoading(true);
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_LOCAL_PORT}/product/category/${id}?${searchParams.toString()}`
+        `${process.env.NEXT_PUBLIC_LOCAL_PORT}/tag/product/${id}?${searchParams.toString()}`
       );
       const data = await res.json();
       if (data.products?.length > 0) {
