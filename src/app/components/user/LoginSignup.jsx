@@ -5,9 +5,6 @@ import { toast } from "react-toastify";
 import { GoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { base_url } from "../store/utile";
-// Assuming you still need these if they are used elsewhere in your app:
-// import { useGlobalContext } from "../context/GlobalContext";
-// import Account from "./Account";
 
 export default function AuthSidebar({ isAuthOpen, setIsAuthOpen }) {
   const [form, setForm] = useState({ email: "" });
@@ -32,14 +29,14 @@ export default function AuthSidebar({ isAuthOpen, setIsAuthOpen }) {
       setErrors({ email: emailError });
       return;
     }
-    
+
     setErrors({ email: "" });
     setIsLoading(true);
 
     try {
       const response = await axios.post(`${base_url}/user/loginUser`, form);
       const data = response.data;
-      
+
       if (data.success) {
         toast.success(data.message);
         setShowOtpFields(true);
@@ -55,29 +52,27 @@ export default function AuthSidebar({ isAuthOpen, setIsAuthOpen }) {
   const handleGoogleLogin = async (credentialResponse) => {
     const token = credentialResponse.credential;
     setIsLoading(true);
- const cart = JSON.parse(localStorage.getItem("cart")) || [];
-      const wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
     try {
-      const response = await axios.post(
-        `${base_url}/user/loginUser/google`,
-        {  token2: token,
-           cart,
-           wishlist, }
-      );
+      const response = await axios.post(`${base_url}/user/loginUser/google`, {
+        token2: token,
+        cart,
+        wishlist,
+      });
       const data = await response.data;
-        if (data.success) {
-  
+      if (data.success) {
         localStorage.removeItem("cart");
         localStorage.removeItem("wishlist");
         toast.success(data.message);
         location.reload();
       }
-     
     } catch (error) {
       toast.error(
-        error.response?.data?.message || 
-        (error.response?.data?.errors && Object.values(error.response.data.errors)[0]?.message) || 
-        "Google Login failed."
+        error.response?.data?.message ||
+          (error.response?.data?.errors &&
+            Object.values(error.response.data.errors)[0]?.message) ||
+          "Google Login failed.",
       );
     } finally {
       setIsLoading(false);
@@ -85,15 +80,24 @@ export default function AuthSidebar({ isAuthOpen, setIsAuthOpen }) {
   };
 
   const handleChange = (element, index) => {
-    if (isNaN(element.value)) return false;
+    const value = element.value;
+    if (isNaN(value)) return false;
 
     const newOtp = [...otp];
-    newOtp[index] = element.value;
+    newOtp[index] = value.substring(value.length - 1); // Ensure only last char is kept
     setOtp(newOtp);
 
-  
-    if (element.value !== "" && index < 5) {
+    // Move focus to next input
+    if (value !== "" && index < 5) {
       inputRef.current[index + 1].focus();
+    }
+
+    // Auto-verify if the last box is filled and we have a full OTP
+    if (index === 5 && value !== "") {
+      const fullOtp = newOtp.join("");
+      if (fullOtp.length === 6) {
+        verifyOtp(newOtp);
+      }
     }
   };
 
@@ -103,17 +107,17 @@ export default function AuthSidebar({ isAuthOpen, setIsAuthOpen }) {
     }
   };
 
-  const verifyOtp = async () => {
-    const fullOtp = otp.join("");
+  const verifyOtp = async (providedOtp = null) => {
+    const otpArray = providedOtp || otp;
+    const fullOtp = Array.isArray(otpArray) ? otpArray.join("") : otpArray;
+
     if (fullOtp.length < 6) {
       toast.error("Please enter the complete 6-digit OTP.");
       return;
     }
 
     setIsLoading(true);
-
     try {
-      // Safely parse local storage
       const cart = JSON.parse(localStorage.getItem("cart")) || [];
       const wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
 
@@ -124,12 +128,10 @@ export default function AuthSidebar({ isAuthOpen, setIsAuthOpen }) {
         wishlist,
       });
 
-      const data = response.data;
-      if (data.success) {
-  
+      if (response.data.success) {
         localStorage.removeItem("cart");
         localStorage.removeItem("wishlist");
-        toast.success(data.message);
+        toast.success(response.data.message);
         location.reload();
       }
     } catch (error) {
@@ -139,13 +141,41 @@ export default function AuthSidebar({ isAuthOpen, setIsAuthOpen }) {
     }
   };
 
+  const handlePaste = (e) => {
+    e.preventDefault();
+    const pasteData = e.clipboardData
+      .getData("text")
+      .replace(/[^0-9]/g, "")
+      .slice(0, 6)
+      .split("");
+
+    if (pasteData.length === 0) return;
+
+    const newOtp = [...otp];
+    pasteData.forEach((char, index) => {
+      newOtp[index] = char;
+    });
+    setOtp(newOtp);
+
+    // Focus the last filled input or the 6th input
+    const lastIdx = pasteData.length < 6 ? pasteData.length : 5;
+    inputRef.current[lastIdx]?.focus();
+
+    // Automatically verify if 6 digits are pasted
+    if (pasteData.length === 6) {
+      // Use a small timeout to ensure state update has processed if needed,
+      // or call your logic directly using the newOtp variable.
+      verifyOtp(newOtp);
+    }
+  };
+
   return (
     <>
       {/* Overlay */}
       {isAuthOpen && (
         <div
           className="fixed inset-0 bg-black/50 z-[998]"
-          onClick={() => !isLoading && setIsAuthOpen(false)} 
+          onClick={() => !isLoading && setIsAuthOpen(false)}
         />
       )}
 
@@ -171,7 +201,9 @@ export default function AuthSidebar({ isAuthOpen, setIsAuthOpen }) {
               value={form.email}
               onChange={(e) => setForm({ email: e.target.value })}
               className={`w-full border p-2 rounded outline-none transition-all ${
-                errors.email ? "border-red-500" : "border-gray-400 focus:border-[#292927]"
+                errors.email
+                  ? "border-red-500"
+                  : "border-gray-400 focus:border-[#292927]"
               } ${isLoading ? "opacity-60 cursor-not-allowed" : ""}`}
               disabled={showOtpFields || isLoading}
             />
@@ -185,7 +217,7 @@ export default function AuthSidebar({ isAuthOpen, setIsAuthOpen }) {
               <p className="text-gray-600 font-medium mb-3 text-center">
                 Enter Verification Code
               </p>
-              <div className="flex justify-between gap-2">
+              <div className="flex justify-between gap-2"  onPaste={handlePaste}>
                 {otp.map((data, index) => (
                   <input
                     key={index}
@@ -194,6 +226,7 @@ export default function AuthSidebar({ isAuthOpen, setIsAuthOpen }) {
                     value={data}
                     ref={(elm) => (inputRef.current[index] = elm)}
                     onKeyDown={(e) => handleKeyDown(e, index)}
+                   
                     onChange={(e) => handleChange(e.target, index)}
                     disabled={isLoading}
                     className="w-10 h-10 md:w-12 md:h-12 border-2 rounded-lg text-center text-xl text-gray-800 bg-white outline-none transition-all border-gray-400 focus:border-[#292927] focus:ring-2 focus:ring-[#e2ad7f] disabled:opacity-60"
@@ -209,7 +242,11 @@ export default function AuthSidebar({ isAuthOpen, setIsAuthOpen }) {
               onClick={handleSendOtp}
               disabled={isLoading}
             >
-              {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Send OTP"}
+              {isLoading ? (
+                <Loader2 className="w-5 h-5 animate-spin" />
+              ) : (
+                "Send OTP"
+              )}
             </button>
           ) : (
             <button
@@ -217,22 +254,28 @@ export default function AuthSidebar({ isAuthOpen, setIsAuthOpen }) {
               onClick={verifyOtp}
               disabled={isLoading}
             >
-              {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Verify OTP"}
+              {isLoading ? (
+                <Loader2 className="w-5 h-5 animate-spin" />
+              ) : (
+                "Verify OTP"
+              )}
             </button>
           )}
 
           <div className="relative flex items-center py-2">
             <div className="flex-grow border-t border-gray-300"></div>
-            <span className="flex-shrink-0 mx-4 text-sm text-stone-500">or</span>
+            <span className="flex-shrink-0 mx-4 text-sm text-stone-500">
+              or
+            </span>
             <div className="flex-grow border-t border-gray-300"></div>
           </div>
 
           <div className="flex justify-center pointer-events-auto">
             <div className={isLoading ? "opacity-50 pointer-events-none" : ""}>
-               <GoogleLogin 
-                 onSuccess={handleGoogleLogin} 
-                 onError={() => toast.error("Google Login Failed")} 
-               />
+              <GoogleLogin
+                onSuccess={handleGoogleLogin}
+                onError={() => toast.error("Google Login Failed")}
+              />
             </div>
           </div>
         </div>
