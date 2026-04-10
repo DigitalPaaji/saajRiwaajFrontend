@@ -414,12 +414,15 @@ export default function ProductDetail() {
                       setSelectedQty(1);
                       setAddedToCart(false)
                     }}
-                    className={`px-3 py-1 border text-sm transition ${selectedColor?.colorName === v?.colorName
+                    className={` text-sm border rounded-full transition ${selectedColor?.colorName === v?.colorName
                         ? " ring-[#292927] border-[#292927] text-[#292927] font-medium"
                         : "border-gray-300 text-gray-700"
                       }`}
                   >
-                    {v?.colorName.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase())}
+                     <div className="h-9 w-9 rounded-full " style={{background:`${v?.colorName || "#fff"}`}}>
+
+                    </div>
+               {/* <input type="color" value={v?.colorName} /> */}
                   </button>
                 ))}
               </div>

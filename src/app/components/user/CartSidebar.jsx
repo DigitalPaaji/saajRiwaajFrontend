@@ -220,9 +220,13 @@ const removeFromCartuser = async(id)=>{
                       <p className="text-sm text-gray-500 mt-1">₹{item?.price}</p>
                       
             
-                      <span className="inline-block mt-2 border border-gray-200 rounded-md px-2 py-0.5 text-xs text-gray-600 bg-gray-50">
-                        {item.product.colorVariants.find((itm2) => `${itm2._id}` === item.color)?.colorName}
-                      </span>
+                      <div className="inline-block mt-2 border border-gray-200 rounded-full text-xs text-gray-600 bg-gray-50">
+                       
+                        <div className="h-7 w-7 rounded-full " style={{background:`${item.product.colorVariants.find((itm2) => `${itm2._id}` === item.color)?.colorName || "#fff"}`}}>
+
+                    </div>
+                        {/* {item.product.colorVariants.find((itm2) => `${itm2._id}` === item.color)?.colorName} */}
+                      </div>
 
                       {/* Quantity Controls */}
                       <div className="flex items-center gap-3 mt-3">

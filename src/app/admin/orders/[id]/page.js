@@ -260,9 +260,16 @@ const OrderDetails = () => {
               </td>
  
   
-             <td className="p-3 border-b">{  item?.product?.colorVariants.find(
+             <td className="p-3 border-b">
+              
+             
+    <div  className="h-6 w-6 rounded-full" style={{background:`${ item?.product?.colorVariants.find(
       (variant) => variant?._id.toString() === item.color.toString()
-    )?.colorName}</td>
+    )?.colorName }`}}>
+
+    </div>
+    
+    </td>
               <td className="p-3 border-b">{item?.quantity}</td>
               <td className="p-3 border-b">₹{item.price}</td>
               <td className="p-3 border-b">₹{item?.quantity * item.price}</td>

@@ -468,7 +468,12 @@ const removeNewImages=(indx)=>{
   })
 }
 
+const changeColoredit=(e,index)=>{
+  const colorCode = e.target.value
+ const colorVariants= product.colorVariants.map((item,inde)=> index==inde ? {...item,colorName:colorCode}  : item   )
+  setProduct(prev=>({...prev,colorVariants}))
 
+}
 
 
   return (
@@ -925,6 +930,7 @@ const removeNewImages=(indx)=>{
                           Color Name
                         </label>
                         <input
+                        type="color"
                           id="colorName"
                           placeholder="e.g., Rose Gold"
                           value={variant.colorName}
@@ -934,7 +940,7 @@ const removeNewImages=(indx)=>{
                               colorName: e.target.value,
                             }))
                           }
-                          className={inputClasses}
+                          className={` h-10 w-full`}
                         />
                       </div>
                       <div>
@@ -973,7 +979,7 @@ const removeNewImages=(indx)=>{
                       </div>
 {showImg && (
   <>
-    {/* BACKDROP */}
+  
     <div
       className="fixed inset-0 bg-black/50 z-40"
       onClick={() => setShowImg(false)}
@@ -1164,7 +1170,8 @@ const removeNewImages=(indx)=>{
 <div className="bg-gray-100 rounded-lg p-2 flex items-center justify-between text-sm w-full">
                        
                           <div className="flex items-center gap-2">
-                            <span className="font-semibold">{v.colorName}</span>
+                            {/* <span className="font-semibold">{v.colorName}</span> */}
+                            <input type="color" disable value={v.colorName} onChange={(e)=>{changeColoredit(e,i)}} />
                             <span className="text-gray-500">
                               (Qty: {v?.quantity})
                             </span>

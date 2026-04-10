@@ -158,9 +158,12 @@ if (isLoading) {
                            {item?.product?.name}
                          </h3>
                          <div className="flex items-center gap-2 mt-1">
-                           <span className="text-xs text-gray-500 border border-gray-200 bg-gray-50 px-2 py-0.5 rounded-md">
+                           {/* <span className="text-xs text-gray-500 border border-gray-200 bg-gray-50 px-2 py-0.5 rounded-md">
                              {colorVariant || "Standard"}
-                           </span>
+                           </span> */}
+                            <div className="h-7 w-7 rounded-full " style={{background:`${colorVariant}`}}>
+
+                    </div>
                          </div>
                        </div>
    

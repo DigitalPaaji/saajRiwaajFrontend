@@ -804,6 +804,7 @@ export default function AddProductPage() {
                         Color Name
                       </label>
                       <input
+                      type="color"
                         id="colorName"
                         placeholder="e.g., Rose Gold"
                         value={variant?.colorName}
@@ -813,7 +814,7 @@ export default function AddProductPage() {
                             colorName: e.target.value,
                           }))
                         }
-                        className={inputClasses}
+                          className={` h-10 w-full`}
                       />
                     </div>
                     <div>
