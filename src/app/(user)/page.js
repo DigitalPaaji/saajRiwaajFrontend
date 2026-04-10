@@ -45,7 +45,7 @@ export default function Home() {
 
 
       <Content/> */}
-
+<TrustSection />
       <Faq/>
       {/* <Footer/> */}
      {/* <HeroBanner /> */}
@@ -54,7 +54,7 @@ export default function Home() {
       <Exclusive />
       <Neckwear /> 
       <BestSellers />
-      <TrustSection /> */}
+       */}
     </div>
   );
 }

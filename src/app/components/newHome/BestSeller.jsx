@@ -199,7 +199,7 @@ const CardContent = ({ item }) => {
   <div className="w-28 h-3 bg-gray-200 animate-pulse rounded"></div>
 ) : (
   <p className="text-[11px] text-red-600 font-semibold">
-    🔥 {soldCount} bought in last 24 hours
+    🔥 {soldCount} bought in last 30 days
   </p>
 )}
 

@@ -2,6 +2,7 @@
 import React, { useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
+import { Instagram } from "lucide-react";
 
 // 1. Added poster paths to your data
 const VIDEO_DATA = [
@@ -66,7 +67,15 @@ export default function StyleEdit() {
           <p className="text-stone-600 text-sm md:text-[18px] max-w-xl mx-auto font-light leading-relaxed">
             Join 1,500+ women who style SaajRiwaaj their way
           </p>
-        </div>
+          <div className="">
+                          <a href="https://www.instagram.com/saajriwaaj/" className="flex items-center gap-2 mt-3 justify-center text-purple-800 underline"><Instagram size={18} strokeWidth={1.2} />
+                          
+                                     SaajRiwaaj
+                          </a>
+            
+            </div>
+          
+                 </div>
 
         <Swiper
           spaceBetween={16}

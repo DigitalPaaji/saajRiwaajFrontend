@@ -56,7 +56,7 @@ const SAMPLE_PRODUCTS = [
 export default function FilterLayout() {
   const [product, setProducts] = useState([ ] );
   const [pages, setPages] = useState({ page: 1, pages: 1 });
-  const {  id } = useParams();
+  const { name, id } = useParams();
   const [loading, setLoading] = useState(false);
   
   const route = useRouter();
@@ -107,10 +107,8 @@ export default function FilterLayout() {
 
   return (
     <div className="bg-white min-h-screen">
-      <InnerBanner title={'Shop By Occassion'} />
+      <InnerBanner title={name.split("-").join(" ")} />
 
-
-      {/* Product Grid Section */}
       <div className="py-8 px-4 md:px-12 lg:px-24 xl:px-40 2xl:px-52">
         <main className="w-full">
           <Collection

@@ -8,46 +8,39 @@ import {
   FiClock, 
   FiMapPin, 
   FiCamera,
-  FiHeart
+  FiHeart,
+  FiDroplet,
+  FiFeather
 } from 'react-icons/fi';
 import { FaWhatsapp, FaStar } from 'react-icons/fa';
+import { IoDiamondOutline } from 'react-icons/io5';
 
 const TrustSection = () => {
-  const brandColor = "#99571d";
+  const brandColor = "#292927";
   const accentColor = "#B67032";
 
-  const features = [
-    {
-      icon: <FiMapPin className="w-6 h-6" />,
-      title: "Pan India Delivery",
-      description: "Delivering safely to every corner of India."
-    },
-    {
-      icon: <FiClock className="w-6 h-6" />,
-      title: "Express Dispatch",
-      description: "Estimated delivery across India in 3–7 business days."
-    },
-    {
-      icon: <FiTruck className="w-6 h-6" />,
-      title: "Free Shipping",
-      description: "Enjoy free shipping on all orders above ₹799."
-    },
-    {
-      icon: <FiCamera className="w-6 h-6" />,
-      title: "24h Damage Exchange",
-      description: "Report issues with video proof within 24 hours."
-    },
-    {
-      icon: <FiHeart className="w-6 h-6" />,
-      title: "Care Instructions",
-      description: "Avoid water & perfume; store in a dry, cool place."
-    },
-    {
-      icon: <FaWhatsapp className="w-6 h-6" />,
-      title: "24/7 Support",
-      description: "Always here for you via WhatsApp support."
-    }
-  ];
+const features = [
+  {
+    icon: <FiShield className="w-6 h-6" />,
+    title: "Anti-Tarnish Coating",
+    description: "3-layer coating that keeps your jewellery shining for 2+ years — not 2 months."
+  },
+  {
+    icon: <FiDroplet className="w-6 h-6" />,
+    title: "100% Skin-Safe",
+    description: "Nickel-free, lead-free. Tested for sensitive skin. Zero green marks, guaranteed."
+  },
+  {
+    icon: <FiFeather className="w-6 h-6" />,
+    title: "Featherlight Comfort",
+    description: "Wear them from morning meetings to midnight parties — no sore ears, no heavy necks."
+  },
+  {
+    icon: <IoDiamondOutline className="w-6 h-6" />,
+    title: "Handcrafted Detailing",
+    description: "Each piece is hand-finished by artisans. Mass-produced? Never. Machine-stamped? No way."
+  }
+];
 
   return (
     <section className="relative py-20 px-4 overflow-hidden">
@@ -79,8 +72,8 @@ const TrustSection = () => {
             </div>
           </div>
 
-          <h2 className="text-xl md:text-3xl font-mosetta text-[#99571d] mb-4">
-            Trusted by 5,000+ women across India
+          <h2 className="text-xl md:text-3xl montserrat text-[#292927] mb-4">
+           Why 1,500+ Women Trust SaajRiwaaj
           </h2>
           
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 text-stone-500">
@@ -92,29 +85,29 @@ const TrustSection = () => {
             </div>
             <span className="hidden sm:inline text-stone-300">|</span>
             <div className="flex items-center gap-2 font-serif italic text-md">
-              <span>12,000+ Orders Delivered</span>
+              <span>We don't just say "premium quality" — here's exactly what makes us different.</span>
             </div>
           </div>
         </div>
 
         {/* --- PART 2: TRUST BADGES GRID --- */}
-        <div className="flex items-center justify-center flex-wrap gap-8 xl:gap-12">
+        <div className="flex  flex-wrap justify-center gap-8 xl:gap-16">
           {features.map((feature, index) => (
             <div key={index} className="group flex flex-col items-center text-center">
               {/* Circular Icon Container matching product circle style */}
               <div 
-                className="w-20 h-20 rounded-full flex items-center justify-center mb-5 transition-all duration-500  shadow-sm border border-stone-100 group-hover:shadow-lg group-hover:-translate-y-1"
+                className="w-12 lg:w-20 h-12 lg:h-20 rounded-2xl flex items-center justify-center mb-5 transition-all duration-500  shadow-sm bg-gradient-to-r from-[#bc861a] via-[#f1d981] to-[#bc861a]   text-[#292927] group-hover:shadow-lg group-hover:-translate-y-1"
                 style={{ color: brandColor }}
               >
-                <div className="p-4 rounded-full" style={{ backgroundColor: `${brandColor}10` }}>
+                <div className="p-2 lg:p-4 rounded-full" style={{ backgroundColor: `${brandColor}10` }}>
                   {feature.icon}
                 </div>
               </div>
               
-              <h3 className="font-serif font-medium text-stone-800 text-base mb-2 group-hover:text-[#B67032] transition-colors">
+              <h3 className=" font-medium text-stone-800 text-base mb-2 group-hover:text-[#B67032] transition-colors">
                 {feature.title}
               </h3>
-              <p className="text-sm text-stone-500 leading-snug max-w-[140px]">
+              <p className="text-sm text-stone-500 leading-snug max-w-[200px]">
                 {feature.description}
               </p>
             </div>

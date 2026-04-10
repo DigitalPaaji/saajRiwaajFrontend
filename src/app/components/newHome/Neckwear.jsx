@@ -86,7 +86,9 @@ toast.error(error.response.data.message)
   
     useEffect(() => {
       if (item?._id) {
-        setSoldCount(item._id.slice(-2).charCodeAt()+new Date(Date.now()).getDate()-30);
+        setSoldCount(
+  (parseInt(item._id.slice(-4), 16) % 27) + 4
+);
       }
     }, [item]);
   
@@ -157,7 +159,7 @@ toast.error(error.response.data.message)
   <div className="w-28 h-3 bg-gray-200 animate-pulse rounded"></div>
 ) : (
   <p className="text-[11px] text-red-600 font-semibold">
-    🔥 {soldCount} bought in last 24 hours
+    🔥 {soldCount} bought in last 30 days
   </p>
 )}
   {/* PRICE */}

@@ -181,7 +181,9 @@ if(data.success){
 
           </div>
   <div className="  text-red-600 py-1.5  text-sm font-semibold w-fit flex items-center gap-1 ">
-    🔥 {item._id.slice(-2).charCodeAt()+new Date(Date.now()).getDate()-30} bought in last 24 hours
+    🔥 {
+  (parseInt(item._id.slice(-4), 16) % 27) + 4
+} bought in last 30 days
   </div>
           {/* ⭐ REVIEWS SECTION */}
           <div className=" flex items-center justify-center sm:justify-start gap-1">
@@ -313,7 +315,9 @@ if(data.success){
                        </button>
           </div>
   <div className="  text-red-600 py-1.5  text-sm font-semibold w-fit flex items-center gap-1 ">
-    🔥 {item._id.slice(-2).charCodeAt()+new Date(Date.now()).getDate()-30} bought in last 24 hours
+    🔥 {
+  (parseInt(item._id.slice(-4), 16) % 27) + 4
+} bought in last 30 days
   </div>
          
           <div className=" flex items-center justify-center sm:justify-start gap-1">

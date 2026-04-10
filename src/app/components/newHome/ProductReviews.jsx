@@ -12,9 +12,9 @@ export default function ReviewsSection({sampleReviews,reviewCount,rating}) {
 
 
   return (
-    <section className="py-6 px-4">
+    <section className=" ">
       {reviewCount > 0  && 
-      <div className="space-y-6 mb-10">
+      <div className="space-y-6 mb-10 py-6 px-4">
         <div>
           <h2 className="text-xl md:text-2xl montserrat font-semibold text-[#292927] capitalize">
             What Our Customers Say

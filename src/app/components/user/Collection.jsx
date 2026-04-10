@@ -181,6 +181,13 @@ className="montserrat w-full bg-gradient-to-r from-[#bc861a] via-[#f1d981] to-[#
                         ({product.reviewCount} reviews)
                       </span>
                     </div>
+                  <div>
+                    
+                    
+                      🔥 {
+  (parseInt(product._id.slice(-4), 16) % 27) + 4
+}  bought in last 30 days
+                    </div>
                     <h3 className="flex items-center md:text-md font-semibold text-[#292927] transition-colors duration-300">
                       <span className="line-through mr-3 flex items-center text-gray-700 text-sm">
                         <FaRupeeSign size={14} />

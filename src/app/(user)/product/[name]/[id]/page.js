@@ -107,23 +107,22 @@ export default function ProductDetail() {
       backContent: (
         <div className="list-disc list-inside text-sm space-y-1">
           <p>
-            Products are eligible for exchange only if received damaged. The
+            Products are eligible for exchange only withing 24 hours and if received damaged. The
             issue must be reported within 24 hours of delivery with clear video
-            proof. Any exchange request raised after 24 hours will be rejected.
+            proof
+            
           </p>
         </div>
       ),
     },
     {
       img: "/Images/care.png",
-      frontTitle: "Care Instructions",
-      frontSubtitle: "Handle with love & care",
+      frontTitle: "Care Tips",
+      frontSubtitle: "Packed with Love, Handle with Care",
       backContent: (
         <div className="list-disc list-inside text-sm space-y-1">
-          <p>Avoid water, perfume, and hairspray</p>
-          <p>Store in a dry, cool place separately</p>
-          <p>Clean gently with a soft cloth</p>
-          <p>Remove before physical activity</p>
+          <p>Avoid water, perfume, and hairspray. Store in a dry, cool place separately</p>
+          <p>Clean gently with a soft cloth. Remove before physical activity</p>
         </div>
       ),
     },
@@ -433,7 +432,9 @@ export default function ProductDetail() {
           <div ref={ctaAreaRef}>
             <div className="border-t border-gray-400/30 w-full py-2">
               <div className=" text-red-600 px-3 py-1 text-sm font-semibold w-fit flex items-center gap-1 ">
-                🔥 {product._id.slice(-2).charCodeAt() + new Date(Date.now()).getDate() - 30} bought in last 24 hours
+                🔥 {
+  (parseInt(product._id.slice(-4), 16) % 27) + 4
+} bought in last 30 days
               </div>
               {viewerCount !== null && (
                 <div className="mt-2 text-green-700 px-3 py-1 text-sm font-medium w-fit flex items-center gap-1">
@@ -477,16 +478,18 @@ export default function ProductDetail() {
           </div>
 
           <div className="relative bg-cover md:bg-contain py-4">
-            <div className="relative z-10 grid md:grid-cols-3 mx-auto">
+            <div className=" hidden  relative z-10 lg:grid md:grid-cols-3 mx-auto">
               {cards.map((card, i) => (
                 <div key={i} className="group perspective cursor-pointer" onClick={() => toggleFlip(i)}>
-                  <div className={`relative w-full h-52 lg:h-72 2xl:h-52 transition-transform duration-700 preserve-3d ${flipped[i] ? "rotate-y-180" : ""} md:group-hover:rotate-y-180`}>
-                    <div className="absolute inset-0 flex flex-col items-center justify-end rounded-2xl backface-hidden p-6 text-center text-white">
+                  <div className={`relative w-full  min-h-[10rem] 2xl:h-52 transition-transform duration-700 preserve-3d ${flipped[i] ? "rotate-y-180" : ""} md:group-hover:rotate-y-180`}>
+                    <div className=" absolute inset-0 flex flex-col items-center justify-end rounded-2xl backface-hidden p-6 text-center text-white">
                       <div className="relative w-12 h-12 mb-4">
                         <Image src={`${card.img}`} alt={card.frontTitle || "Card Image"} fill className="object-cover rounded grayscale-50 " loading="lazy" />
                       </div>
                       <h3 className="text-md md:text-lg font-mosetta text-black tracking-wide">{card.frontTitle}</h3>
                       <p className="mt-2 text-sm text-gray-800">{card.frontSubtitle}</p>
+                                        
+
                     </div>
                     <div className="absolute inset-0 rounded-2xl backface-hidden rotate-y-180 p-6 flex flex-col items-center justify-end text-white">
                       <h3 className="text-lg font-mosetta text-black tracking-wide">{card.frontTitle}</h3>
@@ -496,6 +499,32 @@ export default function ProductDetail() {
                 </div>
               ))}
             </div>
+
+
+
+<div className=" relative z-10 grid lg:hidden md:grid-cols-3 mx-auto">
+              {cards.map((card, i) => (
+                <div key={i} className="group perspective cursor-pointer" >
+                  <div className={`relative w-full h- lg:h-72 2xl:h-52 transition-transform duration-700 preserve-3d ${flipped[i] ? "rotate-y-180" : ""} md:group-hover:rotate-y-180`}>
+                    <div className=" lg:absolute inset-0 flex flex-col items-center justify-end rounded-2xl backface-hidden p-6 text-center text-white">
+                      <div className="relative w-12 h-12 mb-4">
+                        <Image src={`${card.img}`} alt={card.frontTitle || "Card Image"} fill className="object-cover rounded grayscale-50 " loading="lazy" />
+                      </div>
+                      <h3 className="text-md md:text-lg font-mosetta text-black tracking-wide">{card.frontTitle}</h3>
+                      <p className="mt-2 text-sm text-gray-800">{card.frontSubtitle}</p>
+                                            <div className="text-sm lg:hidden leading-relaxed text-gray-800">{card.backContent}</div>
+
+                    </div>
+                    <div className="absolute inset-0 rounded-2xl backface-hidden rotate-y-180 p-6 flex flex-col items-center justify-end text-white">
+                      <h3 className="text-lg font-mosetta text-black tracking-wide">{card.frontTitle}</h3>
+                      <div className="text-sm leading-relaxed text-gray-800">{card.backContent}</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+
           </div>
 
           <ReviewsSection sampleReviews={productReview} rating={product.rating} reviewCount={product.reviewCount} />
@@ -1108,7 +1137,7 @@ export default function ProductDetail() {
 
 
 //   <div className="  text-red-600 px-3 py-1  text-sm font-semibold w-fit flex items-center gap-1 ">
-//     🔥 {product._id.slice(-2).charCodeAt()+new Date(Date.now()).getDate()-30} bought in last 24 hours
+//     🔥 {product._id.slice(-2).charCodeAt()+new Date(Date.now()).getDate()-30} bought in last 30 days
 //   </div>
 
 // {viewerCount !== null && (
