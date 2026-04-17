@@ -5,6 +5,7 @@ import { Plus, Minus } from "lucide-react"; // Or use standard SVG
 import { useDispatch, useSelector } from "react-redux";
 import { getFaqs } from "../store/faqSlice";
 import Link from "next/link";
+import Image from "next/image";
 
 const FAQ_DATA = [
   {
@@ -71,6 +72,17 @@ const dispatch = useDispatch()
     dispatch(getFaqs())
   },[])
   return (
+    <>
+        <div className=" relative z-10  pt-6 md:pt-8 lg:pt-12 px-4 md:px-12 lg:px-24 xl:px-40 2xl:px-52">
+                <Image
+                width={1080}
+                height={700}
+                  src="/Images/careImage.webp"
+                  alt=""
+                  className="w-full h-auto object-cover"
+                />
+              </div>
+
     <section className="px-4 md:px-12 lg:px-24 xl:px-40 2xl:px-52 bg-white">
 
       <div className="max-w-4xl mx-auto  py-12 md:py-16">
@@ -107,5 +119,7 @@ const dispatch = useDispatch()
         </div>
       </div>
     </section>
+    </>
+
   );
 }
