@@ -133,11 +133,12 @@ const ImageUploader = ({
 };
 
 export default function AddProductPage() {
-  const { offers } = useGlobalContext();
+  // const { offers } = useGlobalContext();
   const [previewImage, setPreviewImage] = useState(null);
   const [categories, setCategories] = useState([]);
 
   const [tags, setTags] = useState([]);
+  const [offers,setOffers]=useState([ ])
   const [subCategories, setSubCategories] = useState([]);
   const [product, setProduct] = useState({
     name: "",
@@ -223,9 +224,22 @@ export default function AddProductPage() {
     }
   }, []);
 
+ const fetchOffers = useCallback(async () => {
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/offer/all`);
+      const data = await res.json();
+
+      setOffers(data || []);
+    } catch (err) {
+      console.error("Error fetching tags:", err);
+    }
+  }, []);
+
+
   useEffect(() => {
     fetchTags();
     fetchCategories();
+    fetchOffers();
   }, [fetchTags, fetchCategories]);
 
   const handleBarcodeUpload = useCallback(async (files) => {

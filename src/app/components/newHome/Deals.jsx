@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, Box, Layers, Sparkles } from "lucide-react";
 import Image from "next/image";
+import { base_url } from "../store/utile";
 
 export default function DealsSection() {
   const [offers, setOffers] = useState([]);
@@ -21,6 +22,8 @@ export default function DealsSection() {
     fetchOffers();
   }, [fetchOffers]);
 
+
+  console.log(offers)
   return (
     <>
       {offers.length > 0 && (
@@ -39,7 +42,7 @@ export default function DealsSection() {
 
             {/* Bundle Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-4">
-              {offers.map((item, index) => (
+              {offers.map((item, index) => ( 
                 <Link
                   key={item._id}
                   href={`/offer/${item.slug}/${item._id}`}
@@ -48,8 +51,8 @@ export default function DealsSection() {
                   {/* Background Image - Use your sample images here */}
                   <div className="absolute inset-0 z-0">
                     <Image
-                      src={"/Images/3.webp"}
-                      // src={`/Image/${(index % 5) + 1}.webp`}
+                      // src={"/Images/3.webp"}
+                      src={`${base_url}/uploads/${item.image}`}
                       alt={item.title}
                       fill
                       className="object-cover"

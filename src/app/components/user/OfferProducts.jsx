@@ -9,7 +9,7 @@ export default function Collection({ offerId }) {
 
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [hoveredIndex, setHoveredIndex] = useState(null);
+
 
   const skeletons = Array.from({ length: 6 });
 
@@ -56,14 +56,10 @@ export default function Collection({ offerId }) {
                 >
                   <div
   className="group relative aspect-square overflow-hidden hover:shadow-xl transition-all duration-300"
-  onMouseEnter={() => setHoveredIndex(index)}
-  onMouseLeave={() => setHoveredIndex(null)}
+
 >
   <Image
-    src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${
-      hoveredIndex === index && product.images?.[1]
-        ? product.images[1]
-        : product.images?.[0]} `}
+    src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${product.images?.[0]} `}
     alt={product.name || "Product image"}
     fill
     sizes="(max-width: 768px) 50vw, 25vw"

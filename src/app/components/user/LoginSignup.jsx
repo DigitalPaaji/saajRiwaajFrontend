@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { GoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { base_url } from "../store/utile";
-
+  
 export default function AuthSidebar({ isAuthOpen, setIsAuthOpen }) {
   const [form, setForm] = useState({ email: "" });
   const [showOtpFields, setShowOtpFields] = useState(false);

@@ -153,9 +153,8 @@ const ImageUploader = ({
 };
 
 export default function AddProductPage() {
-  const { offers } = useGlobalContext();
   const [categories, setCategories] = useState([]);
-
+  const [offers,setOffers]=useState([ ])
   const [tags, setTags] = useState([]);
 
   const [subCategories, setSubCategories] = useState([]);
@@ -202,9 +201,19 @@ export default function AddProductPage() {
       console.error("Error fetching tags:", err);
     }
   }, []);
+const fetchOffers = useCallback(async () => {
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_LOCAL_PORT}/offer/all`);
+      const data = await res.json();
 
+      setOffers(data || []);
+    } catch (err) {
+      console.error("Error fetching tags:", err);
+    }
+  }, []);
   useEffect(() => {
     fetchTags();
+    fetchOffers();
     fetchCategories();
   }, [fetchTags, fetchCategories]);
 
@@ -1065,13 +1074,13 @@ export default function AddProductPage() {
                         <input
                           type="checkbox"
                           value={offerId}
-                          checked={product.offer.includes(offerId)}
+                          checked={product?.offer?.includes(offerId)}
                           onChange={(e) => {
                             const checked = e.target.checked;
                             setProduct((prev) => ({
                               ...prev,
                               offer: checked
-                                ? [...prev.offer, offerId]
+                                ? prev?.offer ? [...prev?.offer,offerId]:[ offerId]
                                 : prev.offer.filter((id) => id !== offerId),
                             }));
                           }}
