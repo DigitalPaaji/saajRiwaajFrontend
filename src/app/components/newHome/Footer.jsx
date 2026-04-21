@@ -67,10 +67,10 @@ export default function Footer() {
               contemporary sophistication.
             </p>
             <div className="flex space-x-6">
-              <a href="#" target='_blank' className="text-white hover:text-zinc-400 transition-colors"><Facebook size={18} strokeWidth={1.2} /></a>
+              <a href="https://www.facebook.com/profile.php?id=61584118391329" target='_blank' className="text-white hover:text-zinc-400 transition-colors"><Facebook size={18} strokeWidth={1.2} /></a>
               <a href="https://www.instagram.com/saajriwaaj/" target='_blank' className="text-white hover:text-zinc-400 transition-colors"><Instagram size={18} strokeWidth={1.2} /></a>
-              <a href="#"  target='_blank' className="text-white hover:text-zinc-400 transition-colors"><Lollipop  size={18} strokeWidth={1.2} className='rotate-45' /></a>
-              <a href="#" target='_blank' className="text-white hover:text-zinc-400 transition-colors"><MailOpen    size={18} strokeWidth={1.2}/></a>
+              <a href="https://in.pinterest.com/SaajRiwaaj/"  target='_blank' className="text-white hover:text-zinc-400 transition-colors"><Lollipop  size={18} strokeWidth={1.2} className='rotate-45' /></a>
+              <a href="mailto:saajriwaaj22@gmail.com" target='_blank' className="text-white hover:text-zinc-400 transition-colors"><MailOpen    size={18} strokeWidth={1.2}/></a>
             </div>
           </div>
 
@@ -93,10 +93,10 @@ export default function Footer() {
           <div>
             <h4 className="text-white text-xs font-bold tracking-[0.3em] uppercase mb-8">Client Care</h4>
             <ul className="space-y-5">
-              <li><Link href="/delivery-information" className="text-zinc-400 hover:text-white text-xs md:text-[13px] uppercase tracking-[0.15em] transition-all duration-300 block hover:translate-x-1">Shipping</Link></li>
-              <li><Link href="/refund-policy" className="text-zinc-400 hover:text-white text-xs md:text-[13px] uppercase tracking-[0.15em] transition-all duration-300 block hover:translate-x-1">Returns</Link></li>
-              <li><Link href="/faq" className="text-zinc-400 hover:text-white text-xs md:text-[13px] uppercase tracking-[0.15em] transition-all duration-300 block hover:translate-x-1">Assistance</Link></li>
-              <li><Link href="/contact" className="text-zinc-400 hover:text-white text-xs md:text-[13px] uppercase tracking-[0.15em] transition-all duration-300 block hover:translate-x-1">Book Appointment</Link></li>
+              <li><Link  href="/delivery-information"   className="text-zinc-400 hover:text-white text-xs md:text-[13px] uppercase tracking-[0.15em] transition-all duration-300 block hover:translate-x-1">Shipping</Link></li>
+              <li><Link href="/refund-policy"    className="text-zinc-400 hover:text-white text-xs md:text-[13px] uppercase tracking-[0.15em] transition-all duration-300 block hover:translate-x-1">Returns</Link></li>
+              <li><Link href="/faq"    className="text-zinc-400 hover:text-white text-xs md:text-[13px] uppercase tracking-[0.15em] transition-all duration-300 block hover:translate-x-1">Assistance</Link></li>
+              <li><Link href="/contact"    className="text-zinc-400 hover:text-white text-xs md:text-[13px] uppercase tracking-[0.15em] transition-all duration-300 block hover:translate-x-1">Book Appointment</Link></li>
             </ul>
           </div>
 
@@ -104,9 +104,9 @@ export default function Footer() {
           <div>
             <h4 className="text-white text-xs font-bold tracking-[0.3em] uppercase mb-8">Explore</h4>
             <ul className="space-y-5">
-              <li><Link href="/about" className="text-zinc-400 hover:text-white text-xs md:text-[13px] uppercase tracking-[0.15em] transition-all duration-300 block hover:translate-x-1">Our Story</Link></li>
-              <li><Link href="/privacy-policy" className="text-zinc-400 hover:text-white text-xs md:text-[13px] uppercase tracking-[0.15em] transition-all duration-300 block hover:translate-x-1">Privacy</Link></li>
-              <li><Link href="/terms-and-conditions" className="text-zinc-400 hover:text-white text-xs md:text-[13px] uppercase tracking-[0.15em] transition-all duration-300 block hover:translate-x-1">Terms</Link></li>
+              <li><Link href="/about"   className="text-zinc-400 hover:text-white text-xs md:text-[13px] uppercase tracking-[0.15em] transition-all duration-300 block hover:translate-x-1">Our Story</Link></li>
+              <li><Link href="/privacy-policy"   className="text-zinc-400 hover:text-white text-xs md:text-[13px] uppercase tracking-[0.15em] transition-all duration-300 block hover:translate-x-1">Privacy</Link></li>
+              <li><Link href="/terms-and-conditions"   className="text-zinc-400 hover:text-white text-xs md:text-[13px] uppercase tracking-[0.15em] transition-all duration-300 block hover:translate-x-1">Terms</Link></li>
             </ul>
           </div>
         </div>

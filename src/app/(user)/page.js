@@ -39,13 +39,14 @@ export default function Home() {
       <Reviews/>
       <DealsSection/>
       <Neckwear2 />
+      <TrustSection />
       <Exclusive2 />
       {/*
 
 
 
       <Content/> */}
-<TrustSection />
+
       <Faq/>
       {/* <Footer/> */}
      {/* <HeroBanner /> */}

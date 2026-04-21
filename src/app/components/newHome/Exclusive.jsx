@@ -42,7 +42,7 @@ const fetchFeaturedProducts = async () => {
   }, [ ]);
 
   return (
-    <section className="py-12 md:py-16 px-4 md:px-12 lg:px-24 xl:px-40 2xl:px-52 relative overflow-hidden">
+    <section className="py-8 md:py-12 px-4 md:px-12 lg:px-24 xl:px-40 2xl:px-52 relative overflow-hidden">
 
       <div className="relative z-10">
         {/* --- HEADING SECTION --- */}

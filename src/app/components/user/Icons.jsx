@@ -3,12 +3,14 @@ import Link from 'next/link';
 import React from 'react'
 
 function Icons() {
+  const message = "Hello Saajriwaaj, I’m interested in your jewellery collection. Could you share more details?";
+
   return ( 
     <div>
         {/* Floating Contact Icon */}
         <div className=" flex flex-col items-center justify-center gap-2 fixed  bottom-4 right-4 z-[999999]">
             <Link
-              href="https://wa.me/9988823422"
+              href={`https://wa.me/9988823422?text=${encodeURIComponent(message)}`}
               className=" text-white  flex items-center justify-center  "
             >
               <Image 

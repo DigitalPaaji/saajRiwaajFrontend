@@ -34,6 +34,7 @@ export default function PrivacyPage() {
     };
   
     useEffect(()=>{
+      window.scrollTo(0, 0);
       fetchPages()  
     },[])
   

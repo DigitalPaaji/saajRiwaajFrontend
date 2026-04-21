@@ -73,13 +73,12 @@ const dispatch = useDispatch()
   },[])
   return (
     <>
-        <div className=" relative z-10  pt-6 md:pt-8 lg:pt-12 px-4 md:px-12 lg:px-24 xl:px-40 2xl:px-52">
-                <Image
-                width={1080}
-                height={700}
+        <div className=" relative z-10  pt-6 md:pt-8 lg:pt-12 ">
+                <img
+              
                   src="/Images/careImage.webp"
                   alt=""
-                  className="w-full h-auto object-cover"
+                  className="w-full  "
                 />
               </div>
 

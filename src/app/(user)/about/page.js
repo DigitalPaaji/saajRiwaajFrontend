@@ -33,6 +33,7 @@ const [returnsPolicyData,setFaqData]=useState()
     };
   
     useEffect(()=>{
+      window.scrollTo(0, 0);
       fetchPages()
     },[])
 

@@ -58,7 +58,7 @@ if(data.success){
         grabCursor={true}
         centeredSlides={true}
         loop={true}
-       
+       direction='horizontal'
         slidesPerView={"auto"} 
         autoplay={{
           delay: 3000,
