@@ -121,7 +121,7 @@ const removeFromCartuser = async(id)=>{
   }
 }
 
-
+console.log(products)
   return (
     <>
      
@@ -189,6 +189,8 @@ const removeFromCartuser = async(id)=>{
                   (itm2) => `${itm2._id}` === item.color
                 )?.quantity || 0;
                 const isMaxQtyReached = variantQty <= item?.quantity;
+                const selectimg= item.selectedVariant.images[0] || 0 
+
 
                 return (
                   <div key={item._id} className="flex items-start gap-4 group">
@@ -199,7 +201,7 @@ const removeFromCartuser = async(id)=>{
                       className="shrink-0"
                     >
                       <Image
-                        src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item?.product?.images?.[0]}`}
+                        src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item?.product?.images?.[selectimg]}`}
                         alt={item?.product?.name || "Product image"}
                         width={80}
                         height={80}
@@ -231,7 +233,7 @@ const removeFromCartuser = async(id)=>{
                       {/* Quantity Controls */}
                       <div className="flex items-center gap-3 mt-3">
                         <div className="flex items-center border border-gray-200 rounded-md">
-                          <button
+                          <div
                             className={`px-3 py-1 text-lg leading-none ${
                               item?.quantity <= 1 ? "text-gray-300 cursor-not-allowed" : "text-gray-600 hover:bg-gray-50"
                             }`}
@@ -239,9 +241,9 @@ const removeFromCartuser = async(id)=>{
                             disabled={item?.quantity <= 1}
                           >
                             -
-                          </button>
+                          </div>
                           <span className="px-2 text-sm font-medium w-8 text-center">{item?.quantity}</span>
-                          <button
+                          <div
                             className={`px-3 py-1 text-lg leading-none ${
                               isMaxQtyReached ? "text-gray-300 cursor-not-allowed" : "text-gray-600 hover:bg-gray-50"
                             }`}
@@ -249,7 +251,7 @@ const removeFromCartuser = async(id)=>{
                             disabled={isMaxQtyReached}
                           >
                             +
-                          </button>
+                          </div>
                         </div>
                       </div>
                     </div>

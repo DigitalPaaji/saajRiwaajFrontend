@@ -124,12 +124,9 @@ useEffect(()=>{
                       {item.colorVariants && item.colorVariants.length > 0 && (
                         <div className="flex flex-wrap gap-2">
                           {item.colorVariants.map((v, i) => (
-                            <span
-                              key={i}
-                              className="px-2 py-0.5 rounded-md border text-xs border-[#292927] text-[#292927] font-medium"
-                            >
-                              {v?.colorName}
-                            </span>
+                             <div className="h-7 w-7 rounded-full " style={{background:`${v?.colorName}`}}>
+
+                    </div>
                           ))}
                         </div>
                       )}

@@ -199,7 +199,7 @@ if(data.success){
                                                                   }
                                                                 })}
 
-            <span className="text-xs text-slate-500 ml-1">({item.reviewCount || 0} reviews)</span>
+        {item.reviewCount > 0 &&      <span className="text-xs text-slate-500 ml-1">({item.reviewCount} reviews)</span> }
           </div>
 
 
@@ -333,7 +333,7 @@ if(data.success){
                                                                   }
                                                                 })}
 
-            <span className="text-xs text-slate-500 ml-1">({item.reviewCount || 0} reviews)</span>
+          {item.reviewCount > 0 &&    <span className="text-xs text-slate-500 ml-1">({item.reviewCount || 0} reviews)</span> }
           </div>
 
 

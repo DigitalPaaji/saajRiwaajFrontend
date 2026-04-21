@@ -153,7 +153,8 @@ toast.error(error.response.data.message)
                                      return <FaRegStar key={index} className="text-yellow-500" />;
                                    }
                                  })}
-    <span className="text-xs text-slate-500 ml-1">({item.reviewCount || 0 } reviews)</span>
+                                 {item.reviewCount > 0 &&
+    <span className="text-xs text-slate-500 ml-1">({item.reviewCount} reviews)</span> }
   </div>
 {soldCount === undefined ? (
   <div className="w-28 h-3 bg-gray-200 animate-pulse rounded"></div>

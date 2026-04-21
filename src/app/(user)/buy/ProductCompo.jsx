@@ -134,7 +134,7 @@ if (isLoading) {
                    const colorVariant = item.product?.colorVariants?.find(
                      (itm2) => `${itm2._id}` === item.color
                    )?.colorName;
-   
+   const selectimg= item.selectedVariant.images[0] || 0 
                    return (
                      <div
                        key={item._id}
@@ -142,7 +142,7 @@ if (isLoading) {
                      >
                        <div className="relative shrink-0">
                          <Image
-                           src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item?.product?.images?.[0]}`}
+                           src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item?.product?.images?.[selectimg]}`}
                            alt={item?.product?.name || "Product image"}
                            width={64}
                            height={64}

@@ -45,7 +45,7 @@ if(data.success){
       {/* Header */}
       <div className="w-full text-center mb-10 md:mb-14">
         <h1 className="text-2xl md:text-3xl text-[#292927] mb-3 tracking-tight">
-          FOR EVERY YOU
+   Shop by Occassion
         </h1>
         <p className="text-gray-600 text-md xl:text-lg">
           Explore our most popular categories in 3D coverflow style
@@ -58,7 +58,7 @@ if(data.success){
         grabCursor={true}
         centeredSlides={true}
         loop={true}
-        // Fix: slidePerView set to 5 on desktop via breakpoints
+       
         slidesPerView={"auto"} 
         autoplay={{
           delay: 3000,

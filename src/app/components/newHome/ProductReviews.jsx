@@ -60,7 +60,7 @@ export default function ReviewsSection({sampleReviews,reviewCount,rating}) {
             {sampleReviews.length > 0 && sampleReviews.map((r, index) => (
               <SwiperSlide key={index} className="!w-[260px] lg:!w-[300px]">
                 <div className="bg-white rounded-xl shadow p-5 border border-stone-200">
-                  <h3 className="font-semibold text-[#292927] text-sm capitalize">
+                  <h3 className="font-semibold text-[#292927] text-sm capitalize leading-relaxed line-clamp-1">
                     {r.title}
                   </h3>
 

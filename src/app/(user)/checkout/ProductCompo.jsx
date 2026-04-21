@@ -149,7 +149,7 @@ const ProductCompo = ({ handelCheckout }) => {
                 const colorVariant = item.product?.colorVariants?.find(
                   (itm2) => `${itm2._id}` === item.color
                 )?.colorName;
-
+const selectimg= item.selectedVariant.images[0] || 0 
                 return (
                   <div
                     key={item._id}
@@ -157,7 +157,7 @@ const ProductCompo = ({ handelCheckout }) => {
                   >
                     <div className="relative shrink-0">
                       <Image
-                        src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item?.product?.images?.[0]}`}
+                        src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item?.product?.images?.[selectimg]}`}
                         alt={item?.product?.name || "Product image"}
                         width={64}
                         height={64}
@@ -169,7 +169,7 @@ const ProductCompo = ({ handelCheckout }) => {
                     </div>
 
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-sm font-medium text-gray-900 truncate">
+                        <h3 className="text-sm font-medium text-gray-900 truncate">
                         {item?.product?.name}
                       </h3>
                       <div className="flex items-center gap-2 mt-1">

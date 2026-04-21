@@ -58,18 +58,20 @@ const features = [
               "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop",
               "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=100&fit=crop",
               "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop",
-              "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=100&h=100&fit=crop"
+              "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=100&h=100&fit=crop",
+  "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop",
+  // "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=100&h=100&fit=crop"
             ].map((src, i) => (
               <div key={i} className="w-12 h-12 rounded-full border-4 border-white overflow-hidden shadow-md">
                 <img src={src} alt="Customer" className="w-full h-full object-cover" />
               </div>
             ))}
-            <div 
+            {/* <div 
               className="w-12 h-12 rounded-full border-4 border-white flex items-center justify-center text-xs font-bold shadow-md text-white"
               style={{ backgroundColor: accentColor }}
             >
-              5k+
-            </div>
+              ++
+            </div> */}
           </div>
 
           <h2 className="text-xl md:text-3xl montserrat text-[#292927] mb-4">

@@ -177,9 +177,11 @@ className="montserrat w-full bg-gradient-to-r from-[#bc861a] via-[#f1d981] to-[#
                      
 
                       {/* Review count */}
+                      {product.reviewCount > 0 &&
                       <span className="text-xs text-slate-500 ml-1">
                         ({product.reviewCount} reviews)
                       </span>
+}
                     </div>
                   <div>
                     

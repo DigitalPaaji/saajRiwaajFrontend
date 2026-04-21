@@ -2,8 +2,11 @@
 import React, { useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Facebook, Instagram, Twitter, Youtube, ArrowRight } from 'lucide-react';
+import { Facebook, Instagram, Twitter, Youtube, ArrowRight, MailOpen, Lollipop } from 'lucide-react';
 import { useSelector } from 'react-redux';
+import { BiLogoGmail } from 'react-icons/bi';
+import { RiPinterestLine } from 'react-icons/ri';
+import { CgMail } from 'react-icons/cg';
 
 export default function Footer() {
   const {info ,isError ,isLoading} = useSelector(state=>state.category);
@@ -64,10 +67,10 @@ export default function Footer() {
               contemporary sophistication.
             </p>
             <div className="flex space-x-6">
-              <a href="#" className="text-white hover:text-zinc-400 transition-colors"><Facebook size={18} strokeWidth={1.2} /></a>
-              <a href="https://www.instagram.com/saajriwaaj/" className="text-white hover:text-zinc-400 transition-colors"><Instagram size={18} strokeWidth={1.2} /></a>
-              <a href="#" className="text-white hover:text-zinc-400 transition-colors"><Twitter size={18} strokeWidth={1.2} /></a>
-              <a href="#" className="text-white hover:text-zinc-400 transition-colors"><Youtube size={18} strokeWidth={1.2} /></a>
+              <a href="#" target='_blank' className="text-white hover:text-zinc-400 transition-colors"><Facebook size={18} strokeWidth={1.2} /></a>
+              <a href="https://www.instagram.com/saajriwaaj/" target='_blank' className="text-white hover:text-zinc-400 transition-colors"><Instagram size={18} strokeWidth={1.2} /></a>
+              <a href="#"  target='_blank' className="text-white hover:text-zinc-400 transition-colors"><Lollipop  size={18} strokeWidth={1.2} className='rotate-45' /></a>
+              <a href="#" target='_blank' className="text-white hover:text-zinc-400 transition-colors"><MailOpen    size={18} strokeWidth={1.2}/></a>
             </div>
           </div>
 
