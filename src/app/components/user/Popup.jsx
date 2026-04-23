@@ -4,6 +4,7 @@ import { FiX, FiCopy, FiUnlock } from 'react-icons/fi';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { addSlide } from '../store/sliderSlice';
+import { base_url } from '../store/utile';
 
 const Popup = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -121,7 +122,8 @@ const Popup = () => {
           </button>
 
           <img
-            src="/Images/category/earrings.webp"
+            // src="/Images/category/earrings.webp"
+            src={`${base_url}/uploads/1772084151159-424599470.webp`}
             alt="Elegant jewelry collection"
             className="absolute inset-0 w-full h-full object-cover object-center sepia-[0.2]"
           />
