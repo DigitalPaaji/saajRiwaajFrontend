@@ -93,7 +93,7 @@ useEffect(()=>{
 
 const updateCart= async(type,id)=>{
 
-console.log(id)
+
 
 try {
 const response = await axios.put(`${base_url}/cart/update/${id}`,{type});
@@ -121,7 +121,6 @@ const removeFromCartuser = async(id)=>{
   }
 }
 
-console.log(products)
   return (
     <>
      

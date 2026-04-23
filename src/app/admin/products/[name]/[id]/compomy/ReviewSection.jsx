@@ -32,7 +32,7 @@ const [fullReviews,setFullReviews]= useState([ ])
 
   const handleSubmit =async (e) => {
     e.preventDefault();
-    console.log('Submitted Review Data:', formData);
+  
   
 try {
     const response = await axios.post(`${base_url}/review/create`,formData);

@@ -5,11 +5,9 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useGlobalContext } from "@/app/components/context/GlobalContext";
 import axios from "axios";
 import { base_url } from "@/app/components/store/utile";
 export default function UsersList() {
-  // const { allUsers } = useGlobalContext()
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
 

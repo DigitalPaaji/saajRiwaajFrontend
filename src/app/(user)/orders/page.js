@@ -288,7 +288,7 @@ if(!user){
                 </div>
 
 
-{console.log(order)}
+
                 <div className="space-y-4 border-t border-[#d4af37]/40 pt-4">
                   {order.items.map((item) => {
                     const product =item.product

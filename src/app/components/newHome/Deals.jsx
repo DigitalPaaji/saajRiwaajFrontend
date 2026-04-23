@@ -23,7 +23,7 @@ export default function DealsSection() {
   }, [fetchOffers]);
 
 
-  console.log(offers)
+
   return (
     <>
       {offers.length > 0 && (

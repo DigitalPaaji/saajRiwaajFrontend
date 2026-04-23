@@ -191,7 +191,7 @@ toast.error(error.response.data.message)
   >
     Add to Cart
   </button>
-  }</div>
+  }</div>  
 </>
   )
 };

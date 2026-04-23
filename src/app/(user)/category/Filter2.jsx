@@ -48,7 +48,7 @@ const Filter2 = ({ categoryid, maxPrice, minPrice, handleFilter }) => {
 
   // Subcategory Handler
   const handleSubCategory = (subId) => {
-    // console.log(subId)
+   
     if (subId === currentSub) {
       handleFilter({ subcategory: null }, { resetPage: true }); 
     } else {
@@ -71,7 +71,7 @@ const Filter2 = ({ categoryid, maxPrice, minPrice, handleFilter }) => {
 
   };
 
-// console.log(sub)
+
 
   return (
     <div className="w-full relative">

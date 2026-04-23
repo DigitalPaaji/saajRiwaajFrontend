@@ -88,6 +88,7 @@ const dispatch = useDispatch()
        
        
         <div className="text-center mb-4 lg:mb-16">
+
           <h2 className="text-[10px] uppercase tracking-[0.3em] text-zinc-400 mb-3">
            The stuff everyone asks before their first order
           </h2>
@@ -95,6 +96,11 @@ const dispatch = useDispatch()
            Got Questions? <span className="italic"> We've Got Answers</span>
           </h3>
         </div>
+
+
+
+                                                  
+
 
         <div className="mt-4 lg:mt-12 border-t border-zinc-100">
           {faqs?.slice(0,5).map((faq, index) => (

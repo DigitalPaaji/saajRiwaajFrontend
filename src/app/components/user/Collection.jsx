@@ -50,7 +50,7 @@ toast.error(error.response.data.message)
 
     }
     else{
-          console.log(product,"proooo")
+     
       dispatch(addTocart({product:product._id,quantity:1,price:product.finalPrice,color:product.colorVariants[0]?._id}))
     }
   } catch (error) {
