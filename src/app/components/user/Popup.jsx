@@ -14,12 +14,12 @@ const Popup = () => {
   const user = useSelector(state => state.user?.user);
 
   // Dynamic values based on authentication status
-  const discountAmount = user ? "25% Off" : "15% Off";
-  const couponCode = user ? "SAAJRIWAAJ25" : "SAAJRIWAAJ15";
+  const discountAmount = "25% Off" 
+  const couponCode =  "SAAJRIWAAJ25"
 
   useEffect(() => {
     const hasSeenPopup = localStorage.getItem('hasSeenDiscountPopup');
-
+ 
     if (!hasSeenPopup) {
       const timer = setTimeout(() => {
         setIsOpen(true);
@@ -69,9 +69,7 @@ const Popup = () => {
             <div className="w-full max-w-sm bg-white/60 border border-[#e5dfd3] rounded-xl p-3 mb-6 flex items-center justify-between text-left shadow-sm">
               <div className="flex items-center gap-2">
                 <FiUnlock className="text-[#bc861a] w-5 h-5" />
-                <span className="text-sm text-stone-700">
-                  Want <strong>25% off</strong> instead?
-                </span>
+                
               </div>
               <button
                 onClick={() => dispatch(addSlide("login"))}
