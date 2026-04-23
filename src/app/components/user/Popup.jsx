@@ -15,7 +15,7 @@ const Popup = () => {
 
   // Dynamic values based on authentication status
   const discountAmount = user ? "25% Off" : "15% Off";
-  const couponCode = user ? "welcome25" : "Saajriwaaj15";
+  const couponCode = user ? "SAAJRIWAAJ25" : "SAAJRIWAAJ15";
 
   useEffect(() => {
     const hasSeenPopup = localStorage.getItem('hasSeenDiscountPopup');
