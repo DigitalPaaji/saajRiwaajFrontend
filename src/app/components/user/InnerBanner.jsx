@@ -13,7 +13,7 @@ export default function Banner({ title, idc, subcategory = "" }) {
     if (slug.includes("neckwear")) return "/Images/neckwear.webp";
     if (slug.includes("bangles")) return "/Images/bangles.webp";
     if (slug.includes("exclusive")) return "/Images/exclusivebanner.webp";
-    return "/Images/innerBanner3.webp";
+    return "/Images/bangles.webp";
   };
 
   const bannerImage = getBannerImage();
