@@ -44,7 +44,7 @@ export default function ShopByCategories() {
         </div>
 
         {/* --- CATEGORY GRID / SKELETON --- */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-8">
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-2 lg:gap-8">
           {data && data.length > 0 ? (
             data.map((cat) => {
               const categoryPath = `/category/${formatCategoryPath(cat.category.name)}/${cat.category._id}`;
