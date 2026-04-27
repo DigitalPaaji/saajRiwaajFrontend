@@ -19,7 +19,7 @@ import {
   removeFromWishlist,
 } from "@/app/components/store/wishListSlice";
 import { addTocart, addTocartUser } from "@/app/components/store/cartSlice";
-import { base_url } from "@/app/components/store/utile";
+import { base_url, fbEvent, PixelEvents } from "@/app/components/store/utile";
 import { addSlide } from "@/app/components/store/sliderSlice";
 import { FaRegStar, FaStar } from "react-icons/fa6";
 import ProductDeal from "@/app/components/newHome/ProductDeals";
@@ -143,6 +143,7 @@ export default function ProductDetail() {
       const data = await response.data;
       setProduct(data)
       setSelectedImage(data.images?.[0]);
+ 
     } catch (error) {
       setProduct(null)
     } finally {
@@ -252,11 +253,28 @@ export default function ProductDetail() {
       else {
         dispatch(addTocart({ product: product._id, quantity: selectedQty, price: product.finalPrice, color: selectedColor?._id }))
       }
+
+fbEvent(PixelEvents.ADD_TO_CART,{
+    content_name: product.name,
+    content_ids: [product._id],
+    value: product.finalPrice,
+    currency: "INR",
+  })
+
     } catch (error) {
     } finally {
       dispatch(addSlide("cart"))
     }
   }
+
+  useEffect(()=>{
+          fbEvent("ViewContent", {
+    content_name: product.name,
+    content_ids: [product._id],
+    value: product.finalPrice,
+    currency: "INR",
+  });
+  },[product])
 
   return (
     <div className="relative z-50">
@@ -310,12 +328,19 @@ export default function ProductDetail() {
               </p>
             </div>
             <button
-              onClick={() =>
+              onClick={() =>{
                 dispatch(
                   !wishlist?.some((w) => w === product._id)
                     ? addToWishlist(product._id)
                     : removeFromWishlist(product._id),
-                )
+                ),
+                fbEvent("AddToWishlist", {
+  content_name: product.name,
+  content_ids: [product._id],
+});
+
+
+              }
               }
               className="cursor-pointer"
             >

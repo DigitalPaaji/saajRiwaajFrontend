@@ -6,7 +6,7 @@ import AddressCompo from "./AddressCompo";
 import ProductCompo from "./ProductCompo";
 import { useDispatch, useSelector } from "react-redux";
 import { addSlide } from "@/app/components/store/sliderSlice";
-import { base_url } from "@/app/components/store/utile";
+import { base_url, fbEvent } from "@/app/components/store/utile";
 import axios from "axios";
 import Swal from "sweetalert2";
 
@@ -54,6 +54,7 @@ const CheckoutPage = () => {
     setIsLoading(true);
     try {
       await handlePayOnline(finalAmount);
+      
     } catch (error) {
       console.error("Checkout Error:", error);
       Swal.fire("Error", "Something went wrong during checkout.", "error");
@@ -132,13 +133,13 @@ const CheckoutPage = () => {
 
             if (statusRes.data.success) {
               // Trigger FB Pixel
-              if (typeof window !== "undefined" && window.fbq) {
-                window.fbq("track", "Purchase", {
-                  value: finalAmount, // Now correctly defined in scope
-                  currency: "INR",
-                  content_type: "product",
-                });
-              }
+           
+
+              fbEvent("Purchase", {
+  value: finalAmount,
+  currency: "INR",
+   content_type: "product",
+});
               // Show success popup
               setShowPopUp(true);
               // REMOVED location.reload() -> This was destroying the React state and hiding the popup immediately.
