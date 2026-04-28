@@ -193,6 +193,19 @@ export default function ProductDetail() {
     return () => observer.disconnect();
   }, [loading]);
 
+
+   useEffect(() => {
+  if (!product) return;
+
+  fbEvent("ViewContent", {
+    content_name: product.name,
+    content_ids: [product._id],
+    value: product.finalPrice,
+    currency: "INR",
+  });
+}, [product])
+
+
   if (!product)
     return (
       <div className="flex flex-col xl:flex-row gap-6 px-4 md:px-12 lg:px-24 xl:px-40 2xl:px-52 py-12 ">
@@ -267,14 +280,7 @@ fbEvent(PixelEvents.ADD_TO_CART,{
     }
   }
 
-  useEffect(()=>{
-          fbEvent("ViewContent", {
-    content_name: product.name,
-    content_ids: [product._id],
-    value: product.finalPrice,
-    currency: "INR",
-  });
-  },[product])
+ 
 
   return (
     <div className="relative z-50">
