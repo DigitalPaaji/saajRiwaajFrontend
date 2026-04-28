@@ -188,7 +188,7 @@ const removeFromCartuser = async(id)=>{
                   (itm2) => `${itm2._id}` === item.color
                 )?.quantity || 0;
                 const isMaxQtyReached = variantQty <= item?.quantity;
-                const selectimg= item.selectedVariant.images[0] || 0 
+                const selectimg= item?.selectedVariant?.images[0] || 0 
 
 
                 return (
