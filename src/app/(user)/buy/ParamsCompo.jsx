@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useRouter, useSearchParams } from 'next/navigation'; // <-- ADDED useRouter
 import ProductCompo from './ProductCompo';
 import { addSlide } from '@/app/components/store/sliderSlice';
-import { base_url } from '@/app/components/store/utile';
+import { base_url, fbEvent } from '@/app/components/store/utile';
 import Swal from 'sweetalert2';
 import axios from 'axios'; // <-- ADDED to prevent reference error
 import Image from 'next/image'; // <-- ADDED to prevent reference error
@@ -130,14 +130,12 @@ const ParamsCompo = () => { // Changed 'page' to 'Page' for standard React compo
 
             if (statusRes.data.success) {
               // Trigger FB Pixel
-              if (typeof window !== "undefined" && window.fbq) {
-                window.fbq("track", "Purchase", {
-                  value: finalAmount, 
-                  currency: "INR",
-                  content_type: "product",
-                });
-              }
-              
+                    fbEvent("Purchase", {
+              value: finalAmount,
+              currency: "INR",
+               content_type: "product",
+            });
+               
               // Show success popup
               setShowPopUp(true);
               

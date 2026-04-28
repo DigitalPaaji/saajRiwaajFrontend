@@ -1,5 +1,5 @@
 "use client"
-import { base_url } from '@/app/components/store/utile';
+import { base_url, fbEvent } from '@/app/components/store/utile';
 import Offervalue from '@/app/components/user/Offervalue';
 import axios from 'axios';
 import Image from 'next/image';
@@ -60,6 +60,10 @@ fetchWishlist([{product:productid,quantity,color:colorid}]);
     );
     setSubtotal(total);
     setFullPrice(total)
+      fbEvent("InitiateCheckout", {
+      value: total,
+      currency: "INR",
+    });
   }, [products]);
 
  const handleCouponCode = async () => {

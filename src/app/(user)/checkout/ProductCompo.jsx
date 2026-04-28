@@ -7,7 +7,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { Loader2, X } from "lucide-react";
 
-import { base_url } from "@/app/components/store/utile";
+import { base_url, fbEvent } from "@/app/components/store/utile";
 import Offervalue from "@/app/components/user/Offervalue";
 
 const ProductCompo = ({ handelCheckout }) => {
@@ -70,6 +70,12 @@ const ProductCompo = ({ handelCheckout }) => {
       0
     );
     setSubtotal(total);
+
+
+    fbEvent("InitiateCheckout", {
+  value: total,
+  currency: "INR",
+});
   }, [products]);
 
   // Handle Coupon Logic
