@@ -155,7 +155,7 @@ const ProductCompo = ({ handelCheckout }) => {
                 const colorVariant = item.product?.colorVariants?.find(
                   (itm2) => `${itm2._id}` === item.color
                 )?.colorName;
-const selectimg= item.selectedVariant.images[0] || 0 
+const selectimg= item?.selectedVariant?.images[0] || 0 
                 return (
                   <div
                     key={item._id}
