@@ -31,15 +31,9 @@ export default function RootLayout({ children }) {
  <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
  
-      </head>
 
 
-
-
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased  `}
-      >
- <Script
+  <Script
           id="facebook-pixel"
           strategy="afterInteractive"
         >
@@ -67,6 +61,15 @@ export default function RootLayout({ children }) {
             src="https://www.facebook.com/tr?id=1692823222163457&ev=PageView&noscript=1"
           />
         </noscript>
+      </head>
+
+
+
+
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased  `}
+      >
+
 
         
         <GoogleOAuthProvider  clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}>
