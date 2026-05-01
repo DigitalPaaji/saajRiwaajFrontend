@@ -86,12 +86,22 @@ if(data.success){
           // Tablet
           768: { 
             slidesPerView: 3,
-            coverflowEffect: { rotate: 25, stretch: -20, depth: 100 }
+            coverflowEffect: {  rotate: 50,
+          stretch: 0,
+          depth: 100,
+          modifier: 1,
+          slideShadows: true }
           },
           // Desktop: Now shows more slides by pulling them closer with 'stretch'
           1280: { 
             slidesPerView: 5,
-            coverflowEffect: { rotate: 30, stretch: -50, depth: 150 }
+            coverflowEffect:{
+          rotate: 50,
+          stretch: 0,
+          depth: 100,
+          modifier: 1,
+          slideShadows: true,
+        }
           },
         }}
         
