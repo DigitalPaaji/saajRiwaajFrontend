@@ -55,21 +55,20 @@ if(data.success){
   {tags?.length > 0 &&
       <Swiper
                effect={'coverflow'}
-        grabCursor={true}
         centeredSlides={true}
         loop={true}
          slidesPerView={'auto'}
+           grabCursor= {true}
         autoplay={{
           delay: 3000,
-          disableOnInteraction: false,
         }}
-          coverflowEffect={{
-          rotate: 50,
-          stretch: 0,
-          depth: 100,
-          modifier: 1,
-          slideShadows: true,
-        }}
+        //   coverflowEffect={{
+        //   rotate: 50,
+        //   stretch: 0,
+        //   depth: 100,
+        //   modifier: 1,
+        //   slideShadows: true,
+        // }}
         // coverflowEffect={{
         //   rotate: 25,
         //   stretch: -20,
@@ -81,27 +80,27 @@ if(data.success){
           // Mobile
           320: { 
             slidesPerView: 2,
-            coverflowEffect: { rotate: 15, stretch: -10, depth: 50 }
+            // coverflowEffect: { rotate: 15, stretch: -10, depth: 50 }
           },
           // Tablet
           768: { 
             slidesPerView: 3,
-            coverflowEffect: {  rotate: 50,
-          stretch: 0,
-          depth: 100,
-          modifier: 1,
-          slideShadows: true }
+          //   coverflowEffect: {  rotate: 50,
+          // stretch: 0,
+          // depth: 100,
+          // modifier: 1,
+          // slideShadows: true }
           },
-          // Desktop: Now shows more slides by pulling them closer with 'stretch'
+        
           1280: { 
             slidesPerView: 5,
-            coverflowEffect:{
-          rotate: 50,
-          stretch: 0,
-          depth: 100,
-          modifier: 1,
-          slideShadows: true,
-        }
+        //     coverflowEffect:{
+        //   rotate: 50,
+        //   stretch: 0,
+        //   depth: 100,
+        //   modifier: 1,
+        //   slideShadows: true,
+        // }
           },
         }}
         
@@ -143,3 +142,18 @@ if(data.success){
 }    </div>
   );
 }
+
+
+// const swiper = new Swiper('.swiper', {
+//   slidesPerView: 5,
+//   spaceBetween: 18,
+//   slidesPerGroupSkip: 1,
+
+//   loop: true,
+//   effect: "coverflow",
+//   navigation: {
+//     nextEl: ".swiper-button-next",
+//     prevEl: ".swiper-button-prev"
+//   },
+//   autoplay: true
+// });
