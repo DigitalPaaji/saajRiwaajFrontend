@@ -1,113 +1,121 @@
 'use client';
+import { useEffect, useState } from 'react';
+import Image from "next/image";
+import Link from "next/link";
+import axios from 'axios';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { EffectCoverflow, Pagination, Navigation, Autoplay } from 'swiper/modules';
+import { EffectCoverflow, Pagination, Autoplay } from 'swiper/modules';
 
 import 'swiper/css';
 import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
-import 'swiper/css/navigation';
 
-import Image from "next/image";
-import Link from "next/link";
-import axios from 'axios';
 import { base_url } from '../store/utile';
-import { useEffect, useState } from 'react';
 
 export default function BestSellersCarousel() {
+  const [tags, setTags] = useState([]);
 
-   const [tags,setTags]=useState([ ])
-
-  const fetchTags = async()=>{
+  const fetchTags = async () => {
     try {
-      const response =  await axios.get(`${base_url}/tag/getfrontend`)
-      const data = await response.data;
-if(data.success){
-  setTags(data.tags)
-}
-
+      const response = await axios.get(`${base_url}/tag/getfrontend`);
+      const data = response.data;
+      if (data.success) {
+        setTags(data.tags);
+      }
     } catch (error) {
-      setTags([ ])
+      console.error("Error fetching tags:", error);
+      setTags([]);
     }
+  };
 
-
-  }
-  
-  useEffect(()=>{
-    fetchTags()
-  },[ ])
-
-
-
+  useEffect(() => {
+    fetchTags();
+  }, []);
 
   return (
-    <div className="px-4 md:px-12 xl:px-24 2xl:px-40 py-16 lg:py-32 flex flex-col items-center justify-center overflow-hidden">
-
+    <div className="px-4 md:px-12 xl:px-24 2xl:px-40 py-16 lg:py-32 flex flex-col items-center justify-center overflow-hidden bg-[#fafafa]">
+      
       {/* Header */}
       <div className="w-full text-center mb-10 md:mb-14">
-        <h1 className="text-2xl md:text-3xl text-[#292927] mb-3 tracking-tight">
-   Shop by Occassion
+        <h1 className="text-3xl md:text-4xl font-semibold text-[#292927] mb-4 tracking-tight">
+          Shop by Occasion
         </h1>
-        <p className="text-gray-600 text-md xl:text-lg">
+        <p className="text-gray-500 text-base md:text-lg max-w-2xl mx-auto">
           Explore our most popular categories in 3D coverflow style
         </p>
       </div>
 
       {/* SWIPER */}
-
-      {tags?.length > 0 &&   
-      <Swiper 
-      
-       key={tags.length}
-  loop={true}
-  loopedSlides={tags.length}
-  initialSlide={0}
-  grabCursor={true}
-  spaceBetween={24}
-  autoplay={{
-    delay: 3000,
-    disableOnInteraction: false,
-  }}
-  breakpoints={{
-    320: { slidesPerView: 1.5 },
-    768: { slidesPerView: 2.5 },
-    1024: { slidesPerView: 3.5 },
-    1280: { slidesPerView: 4.5 },
-  }}
-  modules={[Autoplay]}
-      >
-        {tags?.length > 0 &&
-          tags.map((tag) => {
-
-
-            return (
-              <SwiperSlide
-                key={tag._id}
-                className="!w-[220px] sm:!w-[260px] md:!w-[320px] lg:!w-[380px]"
-              >
+      {tags?.length > 0 && (
+        <div className="w-full max-w-[1400px]">
+          <Swiper
+            effect={'coverflow'}
+            grabCursor={true}
+            centeredSlides={true}
+            loop={true}
+            // Adjusted breakpoints for coverflow depth
+            breakpoints={{
+              320: { slidesPerView: 1.5 },
+              768: { slidesPerView: 2 },
+              1024: { slidesPerView: 3 },
+              1280: { slidesPerView: 3.5 },
+            }}
+            coverflowEffect={{
+              rotate: 15,          // Slide rotation angle
+              stretch: 0,          // Stretch space between slides
+              depth: 250,          // Depth offset (creates the 3D effect)
+              modifier: 1,         // Effect multiplier
+              slideShadows: false, // Disabled default shadows to use custom Tailwind shadows
+            }}
+            autoplay={{
+              delay: 3500,
+              disableOnInteraction: false,
+            }}
+            pagination={{ 
+              clickable: true,
+              dynamicBullets: true,
+            }}
+            modules={[EffectCoverflow, Autoplay, Pagination]}
+            className="w-full pb-16 pt-8" // Padding bottom for pagination dots
+          >
+            {tags.map((tag) => (
+              <SwiperSlide key={tag._id}>
                 <Link href={`/tag/${tag.name.toLowerCase().replace(/\s+/g, '-')}/${tag._id}`}>
-                  <div className="relative w-full h-full rounded-2xl overflow-hidden transition-transform duration-300 hover:scale-105">
+                  
+                  {/* Aspect Ratio Container with Group for Hover Effects */}
+                  <div className="group relative w-full aspect-[4/5] rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 bg-gray-100">
+                    
                     <Image
                       src={`${base_url}/${tag.image}`}
                       alt={tag.name}
                       fill
-                      className="object-cover"
+                      className="object-cover transform group-hover:scale-110 transition-transform duration-700 ease-in-out"
                     />
 
-                    {/* gradient + hover text */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 hover:opacity-100 transition duration-500" />
+                    {/* Gradient Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-500" />
 
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-all duration-500 translate-y-4 hover:translate-y-0">
-                      <span className="bg-gradient-to-r from-[#bc861a] via-[#f1d981] to-[#bc861a] text-[#292927] px-6 py-2 text-[10px] font-bold uppercase tracking-[0.2em] shadow-lg">
-                        Shop Now
-                      </span>
+                    {/* Content / Text */}
+                    <div className="absolute inset-0 p-6 flex flex-col justify-end items-center text-center">
+                      <h3 className="text-white text-xl md:text-2xl font-bold tracking-wide mb-3 transform translate-y-6 group-hover:translate-y-0 transition-transform duration-500 ease-out">
+                        {tag.name}
+                      </h3>
+
+                      {/* CTA Button */}
+                      <div className="opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-500 delay-75 ease-out">
+                        <span className="inline-block bg-gradient-to-r from-[#bc861a] via-[#f1d981] to-[#bc861a] text-[#292927] px-6 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] rounded-full shadow-[0_4px_15px_rgba(188,134,26,0.4)]">
+                          Shop Now
+                        </span>
+                      </div>
                     </div>
+
                   </div>
                 </Link>
               </SwiperSlide>
-            );
-          })}
-      </Swiper>
-}
+            ))}
+          </Swiper>
+        </div>
+      )}
     </div>
   );
 }
