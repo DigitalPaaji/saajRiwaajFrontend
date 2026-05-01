@@ -52,68 +52,80 @@ if(data.success){
         </p>
       </div>
 
-  {tags?.length > 0 &&
-    <Swiper
-        loop={true}
+      {/* SWIPER */}
+      <Swiper
+        initialSlide={0}
+               effect={'coverflow'}
         grabCursor={true}
         centeredSlides={true}
-        spaceBetween={24}
+        loop={true}
+         slidesPerView={'auto'}
+       direction='horizontal'
         autoplay={{
           delay: 3000,
-          disableOnInteraction: false, // Keeps autoplay running after user interaction
+          disableOnInteraction: false,
         }}
+        
+        // coverflowEffect={{
+        //   rotate: 25,
+        //   stretch: -20,
+        //   depth: 100,
+        //   modifier: 1,
+        //   slideShadows: false,
+        // }}
         breakpoints={{
           // Mobile
-          320: { slidesPerView: 1.5 },
+          320: { 
+            slidesPerView: 2,
+            coverflowEffect: { rotate: 15, stretch: -10, depth: 50 }
+          },
           // Tablet
-          768: { slidesPerView: 2.5 },
-          // Laptop
-          1024: { slidesPerView: 3.5 },
-          // Desktop
-          1280: { slidesPerView: 4.5 },
+          768: { 
+            slidesPerView: 3,
+            coverflowEffect: { rotate: 25, stretch: -20, depth: 100 }
+          },
+          // Desktop: Now shows more slides by pulling them closer with 'stretch'
+          1280: { 
+            slidesPerView: 5,
+            coverflowEffect: { rotate: 30, stretch: -50, depth: 150 }
+          },
         }}
-        modules={[Autoplay]}
-        className="w-full"
+        
+        modules={[EffectCoverflow, Pagination, Navigation, Autoplay]}
+        className="w-full h-[320px] sm:h-[370px] md:h-[420px] lg:h-[500px]"
       >
-        {tags.map((tag) => (
-          <SwiperSlide key={tag._id} className="pb-8">
-            <Link href={`/tag/${tag.name.toLowerCase().replace(/\s+/g, '-')}/${tag._id}`}>
-              {/* Group wrapper for unified hover effects */}
-              <div className="group relative w-full aspect-[4/5] rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-shadow duration-500 bg-gray-100">
-                
-                {/* Image with zoom-in hover effect */}
-                <Image
-                  src={`${base_url}/${tag.image}`}
-                  alt={tag.name}
-                  fill
-                  className="object-cover transform group-hover:scale-110 transition-transform duration-700 ease-in-out"
-                />
+        {tags?.length > 0 &&
+          tags.map((tag) => {
 
-                {/* Always-on subtle gradient to make text readable, darkens on hover */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-500" />
 
-                {/* Content Container */}
-                <div className="absolute inset-0 p-6 flex flex-col justify-end items-center text-center">
-                  
-                  {/* Category/Tag Name */}
-                  <h3 className="text-white text-xl md:text-2xl font-bold tracking-wide mb-3 transform translate-y-6 group-hover:translate-y-0 transition-transform duration-500 ease-out">
-                    {tag.name}
-                  </h3>
+            return (
+              <SwiperSlide
+                key={tag._id}
+                className="!w-[220px] sm:!w-[260px] md:!w-[320px] lg:!w-[380px]"
+              >
+                <Link href={`/tag/${tag.name.toLowerCase().replace(/\s+/g, '-')}/${tag._id}`}>
+                  <div className="relative w-full h-full rounded-2xl overflow-hidden transition-transform duration-300 hover:scale-105">
+                    <Image
+                      src={`${base_url}/${tag.image}`}
+                      alt={tag.name}
+                      fill
+                      className="object-cover"
+                    />
 
-                  {/* Shop Now Button */}
-                  <div className="opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-500 delay-75 ease-out">
-                    <span className="inline-block bg-gradient-to-r from-[#bc861a] via-[#f1d981] to-[#bc861a] text-[#292927] px-6 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] rounded-full shadow-[0_4px_15px_rgba(188,134,26,0.4)] hover:shadow-[0_4px_20px_rgba(188,134,26,0.6)]">
-                      Shop Now
-                    </span>
+                    {/* gradient + hover text */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 hover:opacity-100 transition duration-500" />
+
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-all duration-500 translate-y-4 hover:translate-y-0">
+                      <span className="bg-gradient-to-r from-[#bc861a] via-[#f1d981] to-[#bc861a] text-[#292927] px-6 py-2 text-[10px] font-bold uppercase tracking-[0.2em] shadow-lg">
+                        Shop Now
+                      </span>
+                    </div>
                   </div>
-
-                </div>
-              </div>
-            </Link>
-          </SwiperSlide>
-        ))}
+                </Link>
+              </SwiperSlide>
+            );
+          })}
       </Swiper>
-}    </div>
+    </div>
   );
 }
-
