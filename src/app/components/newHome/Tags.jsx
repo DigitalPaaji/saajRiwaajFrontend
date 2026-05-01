@@ -54,23 +54,30 @@ if(data.success){
 
       {/* SWIPER */}
       <Swiper
-        effect="coverflow"
+               effect={'coverflow'}
         grabCursor={true}
         centeredSlides={true}
         loop={true}
+         slidesPerView={'auto'}
        direction='horizontal'
-        slidesPerView={"auto"} 
         autoplay={{
           delay: 3000,
           disableOnInteraction: false,
         }}
-        coverflowEffect={{
-          rotate: 25,
-          stretch: -20,
+          coverflowEffect={{
+          rotate: 50,
+          stretch: 0,
           depth: 100,
           modifier: 1,
-          slideShadows: false,
+          slideShadows: true,
         }}
+        // coverflowEffect={{
+        //   rotate: 25,
+        //   stretch: -20,
+        //   depth: 100,
+        //   modifier: 1,
+        //   slideShadows: false,
+        // }}
         breakpoints={{
           // Mobile
           320: { 
