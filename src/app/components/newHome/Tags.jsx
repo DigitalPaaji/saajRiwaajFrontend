@@ -52,7 +52,7 @@ if(data.success){
         </p>
       </div>
 
-      {/* SWIPER */}
+  {tags?.length > 0 &&
       <Swiper
                effect={'coverflow'}
         grabCursor={true}
@@ -131,6 +131,6 @@ if(data.success){
             );
           })}
       </Swiper>
-    </div>
+}    </div>
   );
 }
