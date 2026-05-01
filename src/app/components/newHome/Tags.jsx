@@ -54,7 +54,6 @@ if(data.success){
 
   {tags?.length > 0 &&
       <Swiper
-               effect={'coverflow'}
         centeredSlides={true}
         loop={true}
          slidesPerView={'auto'}
@@ -148,9 +147,8 @@ if(data.success){
 //   slidesPerView: 5,
 //   spaceBetween: 18,
 //   slidesPerGroupSkip: 1,
-
+//   grabCursor: true,
 //   loop: true,
-//   effect: "coverflow",
 //   navigation: {
 //     nextEl: ".swiper-button-next",
 //     prevEl: ".swiper-button-prev"
