@@ -49,6 +49,9 @@ export default function BestSellersCarousel() {
       {tags?.length > 0 && (
         <div className="w-full max-w-[1400px]">
           <Swiper
+            key={tags.length}
+             loopedSlides={tags.length}
+               initialSlide={0}
             effect={'coverflow'}
             grabCursor={true}
             centeredSlides={true}
@@ -97,9 +100,9 @@ export default function BestSellersCarousel() {
 
                     {/* Content / Text */}
                     <div className="absolute inset-0 p-6 flex flex-col justify-end items-center text-center">
-                      <h3 className="text-white text-xl md:text-2xl font-bold tracking-wide mb-3 transform translate-y-6 group-hover:translate-y-0 transition-transform duration-500 ease-out">
+                      {/* <h3 className="text-white text-xl md:text-2xl font-bold tracking-wide mb-3 transform translate-y-6 group-hover:translate-y-0 transition-transform duration-500 ease-out">
                         {tag.name}
-                      </h3>
+                      </h3> */}
 
                       {/* CTA Button */}
                       <div className="opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-500 delay-75 ease-out">
