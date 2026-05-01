@@ -53,46 +53,27 @@ if(data.success){
       </div>
 
       {/* SWIPER */}
-      <Swiper
-        initialSlide={0}
-               effect={'coverflow'}
-        grabCursor={true}
-        centeredSlides={true}
-        loop={true}
-         slidesPerView={'auto'}
-       direction='horizontal'
-        autoplay={{
-          delay: 3000,
-          disableOnInteraction: false,
-        }}
-        
-        // coverflowEffect={{
-        //   rotate: 25,
-        //   stretch: -20,
-        //   depth: 100,
-        //   modifier: 1,
-        //   slideShadows: false,
-        // }}
-        breakpoints={{
-          // Mobile
-          320: { 
-            slidesPerView: 2,
-            coverflowEffect: { rotate: 15, stretch: -10, depth: 50 }
-          },
-          // Tablet
-          768: { 
-            slidesPerView: 3,
-            coverflowEffect: { rotate: 25, stretch: -20, depth: 100 }
-          },
-          // Desktop: Now shows more slides by pulling them closer with 'stretch'
-          1280: { 
-            slidesPerView: 5,
-            coverflowEffect: { rotate: 30, stretch: -50, depth: 150 }
-          },
-        }}
-        
-        modules={[EffectCoverflow, Pagination, Navigation, Autoplay]}
-        className="w-full h-[320px] sm:h-[370px] md:h-[420px] lg:h-[500px]"
+
+      {tags?.length > 0 &&   
+      <Swiper 
+      
+       key={tags.length}
+  loop={true}
+  loopedSlides={tags.length}
+  initialSlide={0}
+  grabCursor={true}
+  spaceBetween={24}
+  autoplay={{
+    delay: 3000,
+    disableOnInteraction: false,
+  }}
+  breakpoints={{
+    320: { slidesPerView: 1.5 },
+    768: { slidesPerView: 2.5 },
+    1024: { slidesPerView: 3.5 },
+    1280: { slidesPerView: 4.5 },
+  }}
+  modules={[Autoplay]}
       >
         {tags?.length > 0 &&
           tags.map((tag) => {
@@ -126,6 +107,7 @@ if(data.success){
             );
           })}
       </Swiper>
+}
     </div>
   );
 }
