@@ -59,7 +59,6 @@ if(data.success){
         centeredSlides={true}
         loop={true}
          slidesPerView={'auto'}
-       direction='horizontal'
         autoplay={{
           delay: 3000,
           disableOnInteraction: false,
