@@ -161,7 +161,7 @@ className="montserrat w-full bg-gradient-to-r from-[#bc861a] via-[#f1d981] to-[#
                         .toLowerCase()}
                     </h3>
                     {/* ⭐ REVIEWS SECTION */}
-                    <div className="flex items-center justify-center sm:justify-start gap-1">
+                    <div className="flex items-center justify-start gap-1">
                       {/* Stars */}
                      {[...Array(5)].map((_, index) => {
                                                        const starValue = index + 1;

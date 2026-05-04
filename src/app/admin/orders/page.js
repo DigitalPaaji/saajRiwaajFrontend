@@ -76,7 +76,7 @@ const OrdersList = () => {
                     <td className="p-3 border-b">
                       {new Date(order.createdAt).toLocaleDateString()}
                     </td>
-                    <td className="p-3 border-b">₹{order.amount}</td>
+                    <td className="p-3 border-b">₹{Number(order?.amount || 0).toFixed(2)}</td>
                     <td className="p-3 border-b">
                       <span
                         className={`px-2 py-1 rounded-lg  ${

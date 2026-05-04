@@ -220,7 +220,7 @@ const AddressCompo = ({setAddressData,addressData}) => {
                     name="country"
                     value={addressData.address.country}
                     onChange={handleNestedChange}
-                    readOnly // Usually country is fixed for local stores, remove readOnly if needed
+                    readOnly 
                     className="w-full pl-10 pr-4 py-2.5 bg-gray-100 border border-gray-200 rounded-lg text-gray-500 cursor-not-allowed outline-none"
                   />
                 </div>

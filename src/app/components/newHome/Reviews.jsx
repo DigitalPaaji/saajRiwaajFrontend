@@ -12,7 +12,7 @@ const VIDEO_DATA = [
   { id: 4, src: "/videos/6.mp4",  poster: "/Images/r4.webp", label: "Sloane Backpack", price: "₹ 3,499" },
   { id: 5, src: "/videos/7.mp4",  poster: "/Images/r5.webp", label: "Jeff Crossbody", price: "₹ 2,099" },
   { id: 6, src: "/videos/4.mp4",  poster: "/Images/r7.webp", label: "Sloane Backpack", price: "₹ 3,499" },
-  { id: 7, src: "/videos/5.webm", poster: "/Images/r6.webp", label: "Jeff Crossbody", price: "₹ 2,099" },
+  // { id: 7, src: "/videos/5.webm", poster: "/Images/r6.webp", label: "Jeff Crossbody", price: "₹ 2,099" },
 ];
 
 const StyleVideo = ({ videoSrc, poster, label, price }) => {

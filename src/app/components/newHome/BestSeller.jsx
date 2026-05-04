@@ -105,7 +105,7 @@ const CardContent = ({ item }) => {
 
 
         <Image
-          src={`${base_url}/uploads/${item.images?.[1]}`}
+          src={`${base_url}/uploads/${item.images?.[0]}`}
           alt={item.name}
           fill
           sizes="(max-width: 768px) 50vw, 33vw"
@@ -179,7 +179,7 @@ const CardContent = ({ item }) => {
           </div>
 
           {/* ⭐ REVIEWS SECTION */}
-          <div className=" mb-1 flex items-center justify-center sm:justify-start gap-1">
+          <div className=" mb-1 flex items-center  justify-start gap-1">
             {[...Array(5)].map((_, index) => {
                                 const starValue = index + 1;
                       
@@ -191,20 +191,20 @@ const CardContent = ({ item }) => {
                                   return <FaRegStar key={index} className="text-yellow-500" />;
                                 }
                               })}
-{item.reviewCount > 0 &&
-            <span className="text-xs text-slate-500 ml-1">({item.reviewCount  } reviews)</span> }
+{/* {item.reviewCount > 0 &&
+            <span className="text-xs text-slate-500 ml-1">({item.reviewCount  } reviews)</span> } */}
           </div>
 
 {soldCount === undefined ? (
   <div className="w-28 h-3 bg-gray-200 animate-pulse rounded"></div>
 ) : (
-  <p className="text-[11px] text-red-600 font-semibold">
+  <p className="text-[11px] text-red-600 font-semibold  text-start">
     🔥 {soldCount} bought in last 30 days
   </p>
 )}
 
           {/* PRICE SECTION */}
-          <div className="flex items-center justify-center sm:justify-start gap-2 mt-1">
+          <div className="flex items-center justify-start gap-2 mt-1">
             <span className="flex items-center text-[#8b5424] font-bold text-sm md:text-base">
               <FaRupeeSign size={12} className="md:w-3.5" />
               {Math.floor(item.finalPrice)}

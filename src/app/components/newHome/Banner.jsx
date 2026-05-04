@@ -12,7 +12,7 @@ const Carousel = () => {
   const banners = [
       { 
       desktop: "everyday.webp", 
-      mobile: "1.webp",
+      mobile: "2.webp",
       title: "Everyday Elegance",
       subtitle: "Shop Collection"
     },
@@ -24,7 +24,7 @@ const Carousel = () => {
     },
       { 
       desktop: "exclusive.webp", 
-      mobile: "2.webp",
+      mobile: "1.webp",
       title: "The Signature Series",
       subtitle: "Discover Now"
     },

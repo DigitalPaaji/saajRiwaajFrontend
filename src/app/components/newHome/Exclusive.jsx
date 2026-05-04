@@ -106,11 +106,7 @@ const fetchFeaturedProducts = async () => {
                     {/* 1. Image Layer */}
                     <Image
                     //  src={'/Images/4.webp'}
-                      src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item.images?.[0]
-                        // hoveredId === item._id && item.images?.[1]
-                        //   ? item.images[1]
-                        //   : item.images?.[0]
-                      }`}
+                      src={`${process.env.NEXT_PUBLIC_LOCAL_PORT}/uploads/${item.images?.[0]}`}
                       alt={item.name}
                       fill
                       className="object-cover z-0 transition-transform duration-700 group-hover:scale-105"
@@ -131,7 +127,7 @@ const fetchFeaturedProducts = async () => {
             </div>
           </div>
       
-        <div className="flex items-center justify-center sm:justify-start gap-1">
+        <div className="flex items-center justify-start gap-1">
           {/* Stars */}
            {[...Array(5)].map((_, index) => {
                                              const starValue = index + 1;
