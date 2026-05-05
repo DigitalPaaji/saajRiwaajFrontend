@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react"; // Added useRef
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import Similar from "../../../../components/user/SimilarSuggestions";
 
@@ -38,7 +38,7 @@ export default function ProductDetail() {
   const wishlist = useSelector(state => state.wishlist.items)
   const { user } = useSelector(state => state.user)
   const dispatch = useDispatch()
-
+ const route = useRouter()
   const [viewerCount, setViewerCount] = useState(0);
 
   // New State for Sticky Bar
@@ -500,13 +500,16 @@ fbEvent(PixelEvents.ADD_TO_CART,{
                   Buy Now
                 </div>
               ) : (
-                <Link
-                  href={`/buy?color=${selectedColor?._id}&price=${product.finalPrice}&product=${product._id}&quantity=${selectedQty}`}
-                  className="w-full flex items-center justify-center gap-2 border border-[#bc861a] text-[#bc861a] px-4 py-3 transition text-sm font-medium tracking-wide"
+                <div
+                 onClick={() => {user ?  route.push(`/buy?color=${selectedColor?._id}&price=${product.finalPrice}&product=${product._id}&quantity=${selectedQty}`) :
+                                                dispatch( addSlide("login")) 
+                                              }} 
+              
+                  className="w-full cursor-pointer flex items-center justify-center gap-2 border border-[#bc861a] text-[#bc861a] px-4 py-3 transition text-sm font-medium tracking-wide"
                 >
                   <CreditCard className="w-4 h-4" />
                   Buy Now
-                </Link>
+                </div>
               )}
             </div>
           </div>

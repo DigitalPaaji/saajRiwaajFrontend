@@ -11,6 +11,8 @@ import {  X } from "lucide-react";
 import { addTocart, decreaseQuantity, removeFormuserCart, removeFromcart, updatQunentityinCart } from "../store/cartSlice";
 import { base_url } from "../store/utile";
 import Offervalue from "./Offervalue";
+import { addSlide } from "../store/sliderSlice";
+import { useRouter } from "next/navigation";
 
 
 export default function CartSidebar({ setIsCartOpen, isCartOpen }) {
@@ -18,8 +20,8 @@ export default function CartSidebar({ setIsCartOpen, isCartOpen }) {
   const { user } = useSelector(state=>state.user)
   // Redux state
   const cartitem = useSelector((state) => state.cart.items);
-  
-
+  const route = useRouter() 
+ 
 
   const [products, setProducts] = useState([]);
 
@@ -316,15 +318,17 @@ const removeFromCartuser = async(id)=>{
 
         
               <div className="space-y-3 pt-2">
-                <Link
+                {/* <Link
                  href="/checkout"
-                onClick={()=>setIsCartOpen()}
-                >
-                  <button   className="w-full bg-[#292927] hover:bg-[#292927] text-white py-3.5 rounded-md font-medium transition-colors duration-200 shadow-sm">
+                
+                > */}
+                  <button   onClick={() => {user ? (setIsCartOpen(),  route.push("/checkout")  ) :
+                                dispatch( addSlide("login")) 
+                              }}  className="w-full bg-[#292927] hover:bg-[#292927] text-white py-3.5 rounded-md font-medium transition-colors duration-200 shadow-sm">
 
                   Checkout
                   </button>
-                </Link>
+                {/* </Link> */}
                 <button
                   onClick={handleClose}
                   className="w-full text-sm text-gray-600 hover:text-[#292927] font-medium py-2 transition-colors"
