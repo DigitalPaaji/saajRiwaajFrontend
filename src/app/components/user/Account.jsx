@@ -107,7 +107,7 @@ const handleSave = async () => {
       const data = await response.data;
       if(data.success){
         toast.success(data.message)
-        location.reload()
+        location.href="/"
       }
     } catch (error) {
       toast.error(error.response.data.message)

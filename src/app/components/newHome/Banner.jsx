@@ -69,11 +69,11 @@ const Carousel = () => {
                   <h2 className="text-white text-3xl md:text-4xl xl:text-6xl font-mosetta px-2 font-medium tracking-[0.4rem] drop-shadow-2xl">
                     {banner.title}
                   </h2>
-                  <div className="mt-2 lg:mt-8">
-                    <span className="inline-block text-white text-xs xl:text-sm montserrat  pb-2 border-b border-white/80 pointer-events-auto cursor-pointer uppercase tracking-[0.2em]">
+                 <div className="mt-2 lg:mt-8">
+                    <span className="inline-block text-white text-xs xl:text-sm montserrat  pb-2 border-b border-white/80 uppercase tracking-[0.2em]">
                       {banner.subtitle}
                     </span>
-                  </div>
+                  </div> 
                 </div>
               </div>
 
