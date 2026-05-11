@@ -221,7 +221,7 @@ export default function AuthSidebar({ isAuthOpen, setIsAuthOpen }) {
                 {otp.map((data, index) => (
                   <input
                     key={index}
-                    type="text"
+                    type="number"
                     maxLength="1"
                     value={data}
                     ref={(elm) => (inputRef.current[index] = elm)}
