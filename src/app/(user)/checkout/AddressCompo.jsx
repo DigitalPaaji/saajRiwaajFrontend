@@ -121,10 +121,11 @@ const AddressCompo = ({setAddressData,addressData}) => {
                 <input
                   type="tel"
                   name="phone"
+                  disabled
                   value={addressData.phone}
                   onChange={handleMainChange}
                   placeholder="+91 98765 43210"
-                  className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-[#B67032]/20 focus:border-[#B67032] transition-all outline-none"
+                  className=" cursor-not-allowed w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-[#B67032]/20 focus:border-[#B67032] transition-all outline-none"
                   required
                 />
               </div>

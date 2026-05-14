@@ -7,39 +7,27 @@ import axios from "axios";
 import { base_url } from "../store/utile";
   
 export default function AuthSidebar({ isAuthOpen, setIsAuthOpen }) {
-  const [form, setForm] = useState({ email: "" });
+  const [form, setForm] = useState({ email: "",phone:"" });
   const [showOtpFields, setShowOtpFields] = useState(false);
   const [otp, setOtp] = useState(new Array(6).fill(""));
   const [errors, setErrors] = useState({ email: "" });
   const [isLoading, setIsLoading] = useState(false); // Added loading state
   const inputRef = useRef([]);
+  const [logid,setlogid]=useState(null)
 
   const handleSendOtp = async () => {
-    const { email } = form;
-    let emailError = "";
-
-    if (!email) {
-      emailError = "Email is required.";
-    } else {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(email)) emailError = "Invalid email format.";
-    }
-
-    if (emailError) {
-      setErrors({ email: emailError });
-      return;
-    }
-
-    setErrors({ email: "" });
+    
+    
     setIsLoading(true);
 
     try {
       const response = await axios.post(`${base_url}/user/loginUser`, form);
-      const data = response.data;
+      const data =  response.data;
 
-      if (data.success) {
-        toast.success(data.message);
+      if (data.body.status=="success") {
+        toast.success(data.body.desc);
         setShowOtpFields(true);
+        setlogid(data.body.logid)
         setTimeout(() => inputRef.current[0]?.focus(), 50);
       }
     } catch (error) {
@@ -122,7 +110,8 @@ export default function AuthSidebar({ isAuthOpen, setIsAuthOpen }) {
       const wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
 
       const response = await axios.post(`${base_url}/user/verifyotp`, {
-        email: form.email,
+        phone: form.phone,
+        logid,
         otp: fullOtp,
         cart,
         wishlist,
@@ -195,11 +184,11 @@ export default function AuthSidebar({ isAuthOpen, setIsAuthOpen }) {
         <div className="p-5 space-y-4">
           <div>
             <input
-              type="email"
-              placeholder="Email"
+              type="number"
+              placeholder="Phone Number"
               autoComplete="email"
-              value={form.email}
-              onChange={(e) => setForm({ email: e.target.value })}
+              value={form.phone}
+              onChange={(e) => setForm({ phone: e.target.value })}
               className={`w-full border p-2 rounded outline-none transition-all ${
                 errors.email
                   ? "border-red-500"
