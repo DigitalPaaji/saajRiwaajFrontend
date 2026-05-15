@@ -278,7 +278,7 @@ function formatCategoryLabel(name) {
               dispatch( addSlide("user"));
             }}
             className='p-2  '>
-        <span className="w-8 h-8 flex items-center justify-center bg-[#77481f] text-white rounded-full font-semibold">{user?.email?.substr(0,1).toUpperCase()}</span>
+        <span className="w-8 h-8 flex items-center justify-center bg-[#77481f] text-white rounded-full font-semibold">{user?.email? user?.email?.substr(0,1).toUpperCase() :<User className="w-5 h-5" />}</span>
               
              
             </button>
